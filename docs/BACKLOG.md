@@ -6,7 +6,8 @@
 > [`archive/BACKLOG_history_2026-10-19.md`](archive/BACKLOG_history_2026-10-19.md): this file as it stood before the
 > clean-up of 19.10, word for word, with the full text (cause, tasks, acceptance check) of every card.
 > **Audience:** P1 (to distribute the work), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-10-20 on `main` `cefd4c4`: current defaults, [`DECISIONS.md`](DECISIONS.md) rows 35–45,
+> **Last verified:** 2026-10-20: `main` detector bytes from `0f02b28` (H1 publication `cefd4c4`), current defaults,
+> [`DECISIONS.md`](DECISIONS.md) rows 35–45; fresh paired R3 Set F investigation on `69cf4b8`;
 > committed integration/H1 evidence, GitHub release/CI and open PR #43. `python3 scripts/detector_freeze.py verify`
 > re-run: **FAIL** (2 added and 12 changed detector files against the B4 seal). No new seal or release.
 > **Status:** current. "Current plan" below replaces every dated target: **P0** before the code stop, **P1** before the pitch,
@@ -17,8 +18,9 @@
 
 This section replaces every dated target below. **P0** must be in before the code stop (code, configuration, seal);
 **P1** before the pitch on 23.10 (evaluation, documents, deck, rehearsals; no code); **P2** after 23.10 unless time
-remains. **Current source: `main` `cefd4c4`**, including the 19.10 integration and the user-authorized partial H1
-improvement. Its detector bytes equal measured merge `0f02b28`; H1 is still **OPEN**
+remains. **Current detector source: main's 19.10 integration plus the user-authorized partial H1 improvement**
+(published at `cefd4c4`). Its detector bytes equal measured merge `0f02b28`; the R3 follow-up changes reporting only.
+H1 is still **OPEN**
 ([publication](evidence/h1_partial_integration_2026-10-20/README.md)). The former integration branch
 `claude/optimistic-mccarthy-z5nmwd` has already landed through PR #42.
 
@@ -34,7 +36,7 @@ Pinned reports: [shipping review][p4-shipping], [integration review][p4-integrat
 | F1a local rail reference (`lowobj.local_rail_margin` 0.01, cross-rail rule off) | **on** | ride low-kind false STOP episodes 4/6 → 1/1, gate exit 0 (F1 lane) | P3: accepted long-object risk plus **new capped-top miss** reported in P4 shipping B1; P4 measures exposure (T4) |
 | H′ mount cross-check (`cluster.mount_cross_tol` 0.5) | **on** | removes the 8 false STOP frames on the Falcon tunnel ceiling; 0 gate rows change | — |
 | S2 settle (`tracking.settle_min_hits`) | off | can delay an object entering the gauge | — |
-| R3 cable confirmation (P3) | **on** | hanging cable in set O: first STOP 35.1 m (was 30.1), held from 40.0 m (was 31.8); gate exit 0 | P3: set F sustained median 34.2 → 17.8 m; P4 shipping B2 reports fast confirmation preceding the ego veto |
+| R3 cable confirmation (P3) | **on** | hanging cable improves; Set F median 34.2 →17.8 m explained by successful coverage 2/6 →4/6, no lost hits ([follow-up](evidence/r3_sustained_2026-10-20/README.md)) | P3: P4 shipping B2 fast confirmation / ego-veto interaction and B3 accumulation limit remain open |
 | L16/S3 orientation (P3) | **on** | rotated ring-free mounts no longer adopt a wrong orientation; gate and Falcon preserved | P3/P4: P4 shipping A1 reports persistent FAULT on synthetic open-air startup; real exposure T1 pending |
 | K2 axis on curves (`track.axis_joint_fit=false`), variant B = v5b without K1 | **held off** (decision 44) | original Falcon attribution was revised in PR #43 (122.27 m first person STOP, 37 person frames without STOP); the marked tunnels cube still loses STOPs (29 → 13 in the 2.5–250 m crop). `small_center` gate loss also remains | **P4 P0**: measured candidate and independent review, then captain's decision; v5c exists only in PR #43 ([report][p4-k2]) |
 | K1 per-distance axis smoothing (`track.walls_smoothing_distance`) | off | standing train STOP at 100 m 82 → 255 / 260, but adds a false STOP on `doubleT_platform` (gate A measured on the integration branch) | P4, in the same package |
@@ -80,7 +82,8 @@ Pinned reports: [shipping review][p4-shipping], [integration review][p4-integrat
 
 | prio | work | state / depends on |
 |---|---|---|
-| P0 | Triage P4 shipping findings A1 (L16 open-air FAULT), B1 (F1a capped-top miss), B2 (R3 ego-veto race), plus B3/B4 limits; verify on H1 main, propose measured fixes. Explain set F cable sustained median 34.2 →17.8 m | review reports available in PR #43, not closed; real-data T1/T4 pending ([review][p4-shipping], [handoff][p4-handoff]); after code stop, captain-approved review fixes only |
+| P0 | Triage P4 shipping findings A1 (L16 open-air FAULT), B1 (F1a capped-top miss), B2 (R3 ego-veto race), plus B3/B4 limits; verify on H1 main, propose measured fixes | review reports available in PR #43, not closed; real-data T1/T4 pending ([review][p4-shipping], [handoff][p4-handoff]); after code stop, captain-approved review fixes only |
+| done | Investigate Set F cable sustained median 34.2 →17.8 m and repair aggregate-only reporting | fresh 30-sequence paired run, 3,060 rows/side: 0 lost hits, 9 added cable hits, no false-detection increase; coverage 2/6 →4/6, original-success cohort unchanged ([record](evidence/r3_sustained_2026-10-20/README.md)) |
 | P1 | Q&A preparation and mock jury: the algorithm, curves (what K2 ships and costs), why not 300 m, dust, the second lidar, false alarms; technical check of `ALGORITHM.md` and the slides | — |
 | P1 | H1 (tall narrow objects, the open High finding): retain the implemented partial improvement; obtain a validated far-axis reference, resolve remaining misses and complete independent review | user-authorized main integration, **overall OPEN**; A-axis 82 ->114/177, 63 misses remain ([publication](evidence/h1_partial_integration_2026-10-20/README.md)) |
 | P2 | F1a without the B1 risk (a long low object along one rail raises its own reference); Falcon far range (route-map variant, second boundary); M1 moving-object probes (the organizers: objects may move); C1, R1/R2, S4, N6 | after 23.10 |
@@ -128,10 +131,10 @@ point estimates and the former dates of every row are in the archive.
 
 | id | item | state | prio |
 |---|---|---|---|
-| CI | repair CI (account billing) | latest main run on `cefd4c4` fails before steps with billing/spending-limit annotation; blocks E1 | P0 |
+| CI | repair CI (account billing) | checked main run on `cefd4c4` fails before steps with billing/spending-limit annotation; blocks E1 | P0 |
 | reseal | reseal 1.2.0 after the last code change | `detector_freeze.py verify` FAILS now; P1 + P4, needs P4's review and the final gate/X3 | P0 |
 | L16/S3 | ring-free orientation + bounded orientation search | **on**; P4 synthetic review reports open-air startup FAULT (PR #43 A1); real exposure/fix/current-source review pending | P0 |
-| R3 | thin cables (hanging 5 cm: first STOP 30.1 → 35.1 m) | **on**; P4 reports ego-veto race (B2), accumulated-cluster limit (B3); set F row 34.2 →17.8 m open | P0 |
+| R3 | thin cables (hanging 5 cm: first STOP 30.1 → 35.1 m) | **on**; Set F aggregate concern resolved: coverage 2/6 →4/6, fixed cohort 34.2 →34.2 m, 0 lost hits. P4 B2/B3 review findings remain open | P0 |
 | F1 | near-field low-object false STOPs | F1a and H′ **on**, S2 settle off; current gate/Falcon done. New P4 capped-top miss (B1) awaits verification/fix; old accepted long-object risk remains | P0 / P2 |
 | K1 / K2 | gauge on curves, standing train | **both off** (`walls_smoothing_distance=0`, `axis_joint_fit=false`), decision 44; v5c proposed only in PR #43, real-data acceptance pending | P0 / P2 |
 | N3 | dust | guard **off** (fails acceptance); organizer dust checked on `4cf8e27`, H1/final-source replay pending | P0 |
@@ -265,8 +268,14 @@ a new candidate needs X1-style attribution first. P3, P2.
 
 #### R3 · Thin cables
 Done by P3, **on**: set O hanging 5 cm first STOP 30.1 → 35.1 m (held from 40.0 m), standing 5 cm cable first / held 59.8 /
-43.4 → 86.25 / 61.28 m on the node replica; set F cable sustained-median row 34.2 → 17.8 m is worse and open. P4 review
-not complete ([evidence](evidence/r3_h1_2026-10-19/README.md)). P4's PR #43 shipping review reports **B2**: fast
+43.4 → 86.25 / 61.28 m on the node replica ([initial evidence](evidence/r3_h1_2026-10-19/README.md)).
+**Set F aggregate concern resolved on 20.10:** the conditional median remains **34.2 →17.8 m**, but success coverage
+grows **2/6 →4/6**. The original-success cohort stays **19.0 /49.5 m**; two new successes enter at **16.6 /16.4 m**.
+Fresh R3-off/on replay covers all 30 fixed sequences (3,060 rows per side): no lost matched hit, nine added cable hits,
+no false-detection increase. Reporting now retains per-sequence evidence and prints paired cohorts beside the original
+scalar; all 208 historical non-timing gate metrics and every gating bit are unchanged
+([follow-up](evidence/r3_sustained_2026-10-20/README.md)). **Independent final R3 review is still open.**
+P4's PR #43 shipping review reports **B2**: fast
 confirmation can earn STOP before the ego veto has enough history on a carried-along thin target (synthetic onset difference);
 **B3**: tall-cable shortcut is inert on accumulated clusters (reviewer-only limitation). P3 verifies on H1 main and
 measures any fix; no clean final acceptance is claimed ([review][p4-shipping]). The target's correct STOP/advisory label
@@ -403,7 +412,8 @@ Verbatim in [`organizers/answers.md`](organizers/answers.md) §12; the order of 
   H1 gate/probe/full-suite and X3 receipts. Existing measurements were inspected, not re-run for this documentation edit.
 * Switch states were checked in `resense/config.py`, `configs/default.yaml` and the ROS YAML; release and CI state were
   queried live on GitHub. Freeze verification was re-run and fails against the old B4 seal, as expected before resealing.
-* All 71 local link occurrences resolve; the five pinned PR #43 document targets exist in the fetched commit. Personal
+* The initial reconciliation checked 71 local link occurrences; the R3 follow-up adds its verified evidence links.
+  The five pinned PR #43 document targets exist in the fetched commit. Personal
   Windows-path references in tests/scripts and the three tracked root photos still exist, so their clean-up stays open.
 * PR #43 was inspected at pinned head `972d19a`. Its review findings and N5 work are recorded as **reported/proposed**;
   neither the candidate nor its proposed fixes are credited to main. Current code still contains the reviewed cue,

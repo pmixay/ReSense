@@ -22,6 +22,18 @@ red. Figures are the team's, measured when a change landed (detector figures on 
 targeted suites pass; the full suite, the final gate, X3 and the whole Falcon recording on the final commit are pending
 ([`docs/BACKLOG.md`](docs/BACKLOG.md) "Current plan"). Not a release, not a J1 score, not a G3 run.
 
+### 20.10 — R3 sustained-range population diagnosis and reporting repair
+
+- Fresh R3-off/on Set F replay: **30 sequences /3,060 rows per side**, no lost matched hit,
+  nine added cable hits, no false-detection increase. The conditional median **34.2 ->17.8 m**
+  drops because sustained coverage grows **2/6 ->4/6**; the original-success cohort stays
+  **19.0 /49.5 m**, with two new successes at 16.6 /16.4 m. The aggregate concern is resolved.
+- Gate reports retain per-sequence evidence, success coverage and fixed-cohort diagnostics.
+  `scripts/set_f_comparison.py` independently compares raw paired runs and detects lost hits/successes.
+  The old scalar values, all 208 non-timing gate metrics and all gating bits are preserved;
+  detector/config source is unchanged. **51 affected tests pass.** P4's other R3 findings and
+  final acceptance/reseal remain open. [Evidence](docs/evidence/r3_sustained_2026-10-20/README.md).
+
 ### 20.10 — H1 partial improvement, overall OPEN
 
 - **Publish the retained positive collision core as a partial H1 improvement**, explicitly authorized by the user for

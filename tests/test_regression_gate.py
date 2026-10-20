@@ -380,6 +380,32 @@ def test_set_f_straight_detected_first_confirmation_and_false_detections():
     assert failing(base, with_set_f(result(), median=150.0, false=8)) == []
 
 
+def test_set_f_retains_sequence_evidence_without_changing_legacy_metrics(tmp_path, capsys):
+    raw = dict(sequences=[dict(kind='person', file0=f'file{i}', d0=220., lateral=0., refl=40.,
+        placement_mode='legacy', first=149.4,
+        rows=[dict(frame=f'file{i}_{j}', d=149.4-j, n=8, gt={'size': [0.5, 0.5, 1.75]},
+                   hit=True, fp_dets=[]) for j in range(5)]) for i in range(6)],
+        summary={'per_kind': {'person': dict(sequences=6, detected=6, first_detection_median=149.4,
+            sustained_median=149.4, false_detections=0, recall_by_bin={})}})
+    legacy = with_set_f(result(), median=149.4, false=0)
+    enriched = copy.deepcopy(legacy)
+    enriched['set_F_straight'] = gate.set_f_entry(raw)
+    assert gate.metrics(enriched) == gate.metrics(legacy)
+    summary = enriched['set_F_straight']['kinds']['person']
+    assert summary['sustained_sequences'] == 6 and len(summary['sequence_metrics']) == 6
+    b, c, out = (tmp_path / p for p in ('base.json', 'current.json', 'compared.json'))
+    b.write_text(json.dumps(enriched))
+    c.write_text(json.dumps(enriched))
+    assert gate.main(['--from-json', str(c), '--baseline', str(b), '--out', str(out)]) == 0
+    report = json.loads(out.read_text())['set_F_sequence_comparison']['person']
+    assert report['status'] == 'no_sequence_regression'
+    assert report['lost_hit_frames'] == 0
+    assert 'conditional median 149.4 m' in capsys.readouterr().out
+    b.write_text(json.dumps(legacy))
+    assert gate.main(['--from-json', str(c), '--baseline', str(b), '--out', str(out)]) == 0
+    assert json.loads(out.read_text())['set_F_sequence_comparison']['person']['status'] == 'not_comparable'
+
+
 def test_notes_on_runs_that_are_not_like_for_like():
     base = with_ride(result())
     new = with_ride(result())

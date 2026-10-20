@@ -1,0 +1,210 @@
+{
+  "measured-source/configs/default.yaml": {
+    "bytes": 53370,
+    "sha256": "a262e8bd32f2ad0cdd45926922675a985c5adf30807bd873182a86d452800d9a"
+  },
+  "measured-source/configs/experimental_cross_ring.yaml": {
+    "bytes": 419,
+    "sha256": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c"
+  },
+  "measured-source/configs/experimental_far_rail_rings.yaml": {
+    "bytes": 746,
+    "sha256": "addfc504f36a7cbc9156f8200a2dc865e38ea62eb8978c9358441486f04dbc77"
+  },
+  "measured-source/configs/experimental_fresh_stop_evidence.yaml": {
+    "bytes": 274,
+    "sha256": "2da969791562aeeda0fb180b83579f45a7f4871eb505b1129d3cfe83c2095eeb"
+  },
+  "measured-source/configs/experimental_low_local_support.yaml": {
+    "bytes": 385,
+    "sha256": "49e9058704f60c2bf2897bb2249fd6a97bc21e3df4ae73a06f6fb7131d54081b"
+  },
+  "measured-source/docs/extended_dataset_intake.json": {
+    "bytes": 97411,
+    "sha256": "05c1006de92d5331871da80999c27fadb2397981863b34b63b0d227dbe6d01f3"
+  },
+  "measured-source/native/resense_native.cpp": {
+    "bytes": 14635,
+    "sha256": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1"
+  },
+  "measured-source/resense/__init__.py": {
+    "bytes": 579,
+    "sha256": "0afadc11f9d78b09e83b15805b3b1cb3281e77b51013d74c837781df144bc27a"
+  },
+  "measured-source/resense/_native.py": {
+    "bytes": 14814,
+    "sha256": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58"
+  },
+  "measured-source/resense/_resense_native.so": {
+    "bytes": 29408,
+    "sha256": "67fa0887e5480e24ca67138ec5271969742917a5c5869d9ab4e634599d8c7394"
+  },
+  "measured-source/resense/accumulate.py": {
+    "bytes": 3674,
+    "sha256": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd"
+  },
+  "measured-source/resense/calibration.py": {
+    "bytes": 43647,
+    "sha256": "029243c62f541a206aeb5ec1fe457e9f25c4e5d7966c9e00561f6dc787293dfd"
+  },
+  "measured-source/resense/cli.py": {
+    "bytes": 25778,
+    "sha256": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f"
+  },
+  "measured-source/resense/clustering.py": {
+    "bytes": 73024,
+    "sha256": "cd905d05b30dbc0953f914bf6ada69a49d922e4cd371c5a2cd84b3267d3244c3"
+  },
+  "measured-source/resense/config.py": {
+    "bytes": 89041,
+    "sha256": "86e6c174ffd9659dfbe732e814e640ce449eb0de5bd707228abfa9aece098412"
+  },
+  "measured-source/resense/detector.py": {
+    "bytes": 74266,
+    "sha256": "836b773a48fd6a7b3dcedda57bec4367447014a71afa8f9f52d219677f216793"
+  },
+  "measured-source/resense/dust.py": {
+    "bytes": 5799,
+    "sha256": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9"
+  },
+  "measured-source/resense/dust_guard.py": {
+    "bytes": 13517,
+    "sha256": "0198978ca5931d4ba9032842d7cc420ed1ea618679b231b580c5cc4b786950f1"
+  },
+  "measured-source/resense/dust_health.py": {
+    "bytes": 5904,
+    "sha256": "2fc9c54f491f4f23479c70df058e48032c2afc961a2317f80d71b755a0a69ef0"
+  },
+  "measured-source/resense/egomotion.py": {
+    "bytes": 12039,
+    "sha256": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284"
+  },
+  "measured-source/resense/evidence.py": {
+    "bytes": 10741,
+    "sha256": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5"
+  },
+  "measured-source/resense/farline.py": {
+    "bytes": 13566,
+    "sha256": "a7edb0956f6544f658c1ea62cc5f24bf58a8cb1000ac8cf0854840705a45dfe0"
+  },
+  "measured-source/resense/farrails.py": {
+    "bytes": 12440,
+    "sha256": "5d936c3ea96e0a1849191cf04f9ffee6a69dd2f25a79fe73b4e7c35c62b9b14b"
+  },
+  "measured-source/resense/frame.py": {
+    "bytes": 3011,
+    "sha256": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9"
+  },
+  "measured-source/resense/gauge.py": {
+    "bytes": 13323,
+    "sha256": "54870e9998584f5d8fcf1d1d50e76fe8685e95aad40e2da7f371c600f354d16a"
+  },
+  "measured-source/resense/health.py": {
+    "bytes": 13770,
+    "sha256": "c1708e456b096cfb4d60333211697dec70cccc7fba584ba5bd0a7dcddc7d579f"
+  },
+  "measured-source/resense/io.py": {
+    "bytes": 5272,
+    "sha256": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34"
+  },
+  "measured-source/resense/lowobj.py": {
+    "bytes": 24343,
+    "sha256": "bd6cda1c95ec790cc6a6bbf35d32c9c502b4aa349f2928389c46e8015455284d"
+  },
+  "measured-source/resense/metrics.py": {
+    "bytes": 25928,
+    "sha256": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a"
+  },
+  "measured-source/resense/opinion.py": {
+    "bytes": 5707,
+    "sha256": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8"
+  },
+  "measured-source/resense/pointcloud.py": {
+    "bytes": 6860,
+    "sha256": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053"
+  },
+  "measured-source/resense/sensor.py": {
+    "bytes": 4401,
+    "sha256": "cfbc2684877faafc2b4b84a524021524f6fe8796d877851984a292524a6a5948"
+  },
+  "measured-source/resense/synthetic.py": {
+    "bytes": 23039,
+    "sha256": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747"
+  },
+  "measured-source/resense/track.py": {
+    "bytes": 91281,
+    "sha256": "e125696a41d8fbe443e5aebe41eabc02b6e75eb69af521aafc597ec5c11f259c"
+  },
+  "measured-source/resense/tracking.py": {
+    "bytes": 60703,
+    "sha256": "c0ce26c693ce41410411c2841e9786a525c0ae83451bd2c7a3b3b97be73b4ed2"
+  },
+  "measured-source/resense/viz.py": {
+    "bytes": 3164,
+    "sha256": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db"
+  },
+  "measured-source/ros2_ws/src/resense_ros/config/detector.yaml": {
+    "bytes": 53370,
+    "sha256": "a262e8bd32f2ad0cdd45926922675a985c5adf30807bd873182a86d452800d9a"
+  },
+  "measured-source/scripts/cache_io.py": {
+    "bytes": 9233,
+    "sha256": "6368aa168712a11e07562bbc71f39fffb373e60bbacec54ef7907a5080165793"
+  },
+  "measured-source/scripts/far_range_eval.py": {
+    "bytes": 26462,
+    "sha256": "c90c69c85acc24721d313098d142d1f6bdd9790789a63b8048a9d9e0c02bea77"
+  },
+  "raw/checks-isolated.xml": {
+    "bytes": 6756,
+    "sha256": "ee1263e5a87fb3d8c5012f054abaaf96e6cf10a9face361abb96c0f0f9a67102"
+  },
+  "raw/enriched-prior-gate.json": {
+    "bytes": 85199,
+    "sha256": "a75c7d89bd16f8e3ec52a8d2511ff37e36f0a7d706a1afe845d3b911fa1c0a89"
+  },
+  "raw/off.json": {
+    "bytes": 1817200,
+    "sha256": "f216600f96fff77c130d2298ad145fe0c2551153228b67b381ac0c97fa1f0d79"
+  },
+  "raw/off.log": {
+    "bytes": 2849,
+    "sha256": "95b561ff3c1345b842d32b7cc3d4c15b8bd40c821e97a0e71058cac77fd38f5e"
+  },
+  "raw/on.json": {
+    "bytes": 1817213,
+    "sha256": "c6023a6eaf5f539bab4aae6d31e2fcbfa793274b006f029469c524cbfdf551b3"
+  },
+  "raw/on.log": {
+    "bytes": 2869,
+    "sha256": "4657e3d0f07458519d149c7d318704a3d2bd2ed12aeaec5c9ddc1ed7d000b041"
+  },
+  "raw/r3-off.yaml": {
+    "bytes": 11456,
+    "sha256": "b6e77c80aea31d699a6ae94cdeefc8705ca80881e3a749a842d8b061e3cd2258"
+  },
+  "raw/regraded-prior-gate.log": {
+    "bytes": 7244,
+    "sha256": "dee4a0b01371344c2da2e4767b5fddafef7165b6849394b31dc0df63446bd948"
+  },
+  "raw/tests.xml": {
+    "bytes": 6756,
+    "sha256": "1b812e4528fa5d783f7e837cb9bcf31fc5decba86e4b752c336ee489662227b2"
+  },
+  "reporting-source/scripts/regression_gate.py": {
+    "bytes": 40845,
+    "sha256": "875e9945ebf90578e48dd26d00e47572abab0784bcbc2137ec631c36d4d35d60"
+  },
+  "reporting-source/scripts/set_f_comparison.py": {
+    "bytes": 7660,
+    "sha256": "8a8040c250f5439cf5d3c57be554f28d7264eeeb76c98cfdaa7d08247d3db362"
+  },
+  "reporting-source/tests/test_regression_gate.py": {
+    "bytes": 26739,
+    "sha256": "5a887f3217e77fa42662a83c1815bba9e48c3843357bfa8d01ddbf6facaf40e2"
+  },
+  "reporting-source/tests/test_set_f_comparison.py": {
+    "bytes": 4056,
+    "sha256": "e229465e1298fe56c07abda8580306b538ca17876e590f1b08d5a138de61ee49"
+  }
+}
