@@ -105,7 +105,7 @@ development is still active and there is no final source yet; the final source i
 23:59 MSK, and only then the reseal, P4's acceptance, the image and the tag of **v1.2.0**. `.github/workflows/release.yml`
 builds the runtime image from a pushed `v*` tag, loads the archive back, plays both smoke bags with no internet, runs the E2
 check and publishes the archive with its checksums. **CI works now**: all five jobs passed on `main` at `5d83c5b` (run #667)
-and `f56ad5e` (#669); run #680 on `8453458` (PR #47) failed in the webapp browser suite (see §4). Since the captain's instruction of 20.10 evening the push gate is `checks`, `changes`, `pytest`, `docker` and `offline-build` (the last two skipped for a push that touches nothing the Dockerfile copies); the web prototype's checks run on demand in `web-tests.yml`. 19.10: 0 of the last 100 runs
+and `f56ad5e` (#669); run #680 on `8453458` (PR #47) failed in the webapp browser suite (see §4). Since the captain's instruction of 20.10 evening the jobs are `checks`, `changes`, `pytest`, `webapp`, `docker` and `offline-build`; `docker` and `offline-build` run only for a push that touches something the Dockerfile copies, `webapp` (the web tests, kept) only for a push that touches the web prototype or what it uses, and a push of documents runs the first three (`scripts/ci_changes.py`). Pushes only, no pull-request CI. 19.10: 0 of the last 100 runs
 succeeded; the failure on `cefd4c4` before any step no longer reproduces; fallbacks: `scripts/release.sh`, `scripts/export_image.sh`. Whether an updated archive may be
 re-run is asked in O1 (sent, unanswered).
 

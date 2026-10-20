@@ -14,9 +14,11 @@
 > **CI re-checked 20.10 ~18:00 and ~19:05 MSK:** the billing block is gone; main runs
 > [#667](https://github.com/pmixay/ReSense/actions/runs/39432683938) (`5d83c5b`) and
 > [#669](https://github.com/pmixay/ReSense/actions/runs/39436711965) (`f56ad5e`) ran all five jobs to success.
-> **CI lightened 20.10 evening (captain):** the web prototype's checks (the `webapp` job and the Chromium dashboard tests) left the push
-> gate and run on demand in `web-tests.yml`; `docker` and `offline-build` are skipped for a push that touches nothing the Dockerfile
-> copies (`scripts/ci_image_inputs.py`). Pushed on the docs branch; `main` keeps the old workflow until that branch is merged.
+> **CI lightened 20.10 evening (captain; web tests kept, pushes only):** a `changes` job (`scripts/ci_changes.py`) skips `docker` and
+> `offline-build` for a push that touches nothing the Dockerfile copies, and `webapp` (all web tests) for a push that touches nothing
+> the web prototype uses; documents and evidence run `checks`, `changes` and `pytest`. The dashboard tests moved into `webapp` (one
+> Chromium install); the browser suite runs with reduced motion and patient timeouts. Pushed on the docs branch; `main` keeps the
+> old workflow until that branch is merged.
 > **Run #680** on `8453458` (PR #47, merged 18:33 MSK, 63 s after its branch run #679 started) **failed**: checks, pytest, docker and
 > offline-build succeeded; the webapp browser suite ended `22 failed, 53 passed` after 29 min (4 min in #669); the backend step passed
 > (179 tests). The branch run #679 failed too. The log tail shows one failure: `webapp/e2e/test_system.py:553`, after `page.go_back()`

@@ -56,13 +56,15 @@ and 11 changed files until the reseal; CI was red.)
 
 ### 20.10 — CI and image
 
-- **CI made lighter (20.10 evening, the captain's instruction: no web tests in the gate).** The web prototype's checks left the push
-  gate: the `webapp` job and the dashboard tests in Chromium of the `pytest` job (so the job installs no Playwright and no Chromium).
-  They run on demand in the new `web-tests.yml` (Actions, web-tests, Run workflow; the `browser` flag adds `web/demo` and `webapp/e2e`).
-  A new `changes` job (`scripts/ci_image_inputs.py`, `tests/test_ci_image_inputs.py`) skips `docker` and `offline-build` for a push that
-  touches nothing the Dockerfile copies; a new branch, an unfetchable commit and any error run them. The end-to-end suite itself got
-  patient defaults for slow software rendering (assertions 20 s, actions 60 s) and runs with `prefers-reduced-motion` unless a test
-  carries `full_motion` (tests only, no app change); on `main` it had failed 22 of 75 tests in run #680.
+- **CI made lighter, web tests kept (20.10 evening, the captain's instruction; pushes only, no pull-request CI).** A new `changes` job
+  (`scripts/ci_changes.py`, `tests/test_ci_changes.py`) lets a push skip what it cannot affect: `docker` and `offline-build` unless it
+  touches something the Dockerfile copies, and the `webapp` job unless it touches `web/`, `webapp/`, the detector package, `configs/`,
+  `labels/`, `scripts/` or the workflows (the web suites read no document's contents, guarded by a test). A push of documents or
+  evidence runs `checks`, `changes` and `pytest`. A new branch, an unfetchable commit and any error run everything. The dashboard tests
+  in Chromium moved from the `pytest` job into the `webapp` job, so Playwright and Chromium are installed once and only there. The
+  browser suite got patient defaults for software WebGL on a slow runner (assertions 20 s, actions 60 s) and runs with
+  `prefers-reduced-motion` unless a test carries `full_motion` (the seven tests of the door travel; tests only, no app change); on
+  `main` it had failed 22 of 75 tests in run #680.
 - CI runs again: all five jobs passed on `main` at `5d83c5b` and `f56ad5e`. Workflow changes: read-only token, job timeouts, Node 24
   for the web job, superseded runs cancelled except on `main` and `claude/*`, no artifact upload in the release workflow (the
   repository is out of artifact storage), lint relaxed for one-off evidence scripts. The Dockerfile copies the fixtures the in-image
