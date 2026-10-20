@@ -6,9 +6,7 @@
 > `90dea27d…5611`, [receipt](../extended_data_2026-10-17/README.md)) — development data, **not** the held-out G3 set (G3 was not touched).
 >
 > **Status:** the bag exists and is verified **offline**. **`ros2 bag play` on it was NOT run: UNVERIFIED** (no ROS 2 and no Docker
-> daemon in the session, [section 7](#7-ros-2-check-unverified)). The bag itself is **not in the repository** (1.97 GB); it is in the
-> session's scratchpad (`/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scratchpad/falcon_demo_bag/`, may be
-> gone when the session ends) and is rebuilt by one command in 4.4–4.7 minutes ([section 4](#4-how-to-regenerate-it)).
+> daemon in the session, [section 7](#7-ros-2-check-unverified)). The bag itself is **not in the repository** (1.97 GB, `*.db3` is git-ignored); the captain keeps a copy on Google Drive ([`falcon_demo_0.db3`](https://drive.google.com/file/d/1D9LdNcyu9QwgM6Wn738rOxvU-5PwyQyU/view?usp=drivesdk), 20.10 evening; [section 8](#8-where-the-bag-is-and-how-to-move-it)) and it is rebuilt by one command in 4.4–4.7 minutes ([section 4](#4-how-to-regenerate-it)). `bag/metadata.yaml` (967 B) is in this directory: put the downloaded `falcon_demo_0.db3` next to it.
 
 ## 1. What it is
 
@@ -185,9 +183,24 @@ Acceptance to record (PRESENTATION's "Falcon-бэг" paragraph): `ros2 bag info`
 from the start of playback; first line `profile=falcon_ros`; FAULT only on the first frame; record the first STOP and its distance (expect
 ~127 m near 23 s of bag time, i.e. ~26 s after the player starts at `--rate 1.0`; a different value is a finding, not necessarily a failure).
 
-## 8. Transfer to the demo machine (do not upload it anywhere)
+## 8. Where the bag is and how to move it
 
-The bag is 1.97 GB and is development data of the organizers; copy it directly, never to a cloud folder or the repository.
+The bag is 1.97 GB and is development data of the organizers. **Where it is (20.10 evening):** the captain's Google Drive,
+[`falcon_demo_0.db3`](https://drive.google.com/file/d/1D9LdNcyu9QwgM6Wn738rOxvU-5PwyQyU/view?usp=drivesdk) (1,971,884,032 B). It was streamed back from that link on 20.10 and hashed: sha256 `b2c4a8261692c35a4e1289e4a4a9cce656fb89a514ff24e792800ab804185735`,
+equal to `BAG_SHA256SUMS`. The Drive file was readable without a login at that time: whoever has the link can download it, and this
+repository is public; the owner can restrict the Drive sharing, and the checksum below stays the check.
+*Edit of 20.10 evening by P1's session: this section said "never to a cloud folder or the repository". That was the building agent's own
+caution (no organizers' rule was found in the repository); the captain decided to keep a Drive copy. Other copies: direct, as below.*
+The temporary anonymous upload that carried the file from the build session to the Drive (21:20 to about 21:55 MSK) was deleted after the
+check; the host's API answered `ok`, the removal itself could not be confirmed (its page is a script shell).
+
+To use the Drive copy: download it into `bag/` (next to `bag/metadata.yaml`), then check:
+
+```bash
+cd docs/evidence/falcon_demo_bag_2026-10-20/bag && sha256sum -c ../BAG_SHA256SUMS      # both files: OK
+```
+
+Direct copy between machines:
 
 ```bash
 # from the machine that holds it (LAN, ssh) — or copy the directory to a USB stick (ext4/exFAT) and carry it:
@@ -201,13 +214,14 @@ If the copy is lost, the command in section 4 rebuilds it (needs the internet an
 
 ## 9. Files
 
-Everything here is committed except the bag. Scripts take the evaluated tree from `RESENSE_REPO` and need numpy 1.26 / scipy 1.13 / scikit-learn 1.5 (the
+Everything here is committed except the bag (`bag/` holds only its `metadata.yaml`). Scripts take the evaluated tree from `RESENSE_REPO` and need numpy 1.26 / scipy 1.13 / scikit-learn 1.5 (the
 image's stack) and, for `rosbags_check.py`, `pip install rosbags==0.11.5`.
 
 | file | what |
 |---|---|
 | [`../../../scripts/make_falcon_demo_bag.py`](../../../scripts/make_falcon_demo_bag.py), [`../../../tests/test_make_falcon_demo_bag.py`](../../../tests/test_make_falcon_demo_bag.py) | the cutting script and its test |
 | `BAG_SHA256SUMS` | sha256 of the two bag files (run inside the bag directory) |
+| `bag/metadata.yaml` | the bag's metadata (967 B), copied from the build; the `.db3` goes next to it (section 8) |
 | `SHA256SUMS` | sha256 of every file in this directory but itself (`sha256sum -c SHA256SUMS` from here) |
 | `frames.tsv` | per frame: number, receive time (ns), header stamp, bytes, sha256 of the payload (the manifest of the bag) |
 | `build_receipt.json`, `out/build_receipt_first_build.json` | the two archive builds: window, counts (found 3205, recovered 3205, lost 0), bytes read, wall/CPU, file sizes and sha256 |
