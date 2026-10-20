@@ -1,0 +1,12 @@
+synthetic_switch_cloud_with_markers: frames 0..614, dust frames [481, 483, 611, 613], K extra returns per dust box in the dust frames only
+  K=0 guard off equals the delivered-bag final run in 615 of 615 frames
+  K=  0 guard off: returns added in the 4 injected frames 0; decisions there {'CAUTION': 3, 'GO': 1}; frames with a detection/warning at a box 0 [] []; first STOP at a box: None
+  K=  0 guard ON : returns added in the 4 injected frames 0; decisions there {'CAUTION': 3, 'GO': 1}; frames with a detection/warning at a box 0 [] []; first STOP at a box: None
+  K= 10 guard off: returns added in the 4 injected frames 80; decisions there {'CAUTION': 3, 'GO': 1}; frames with a detection/warning at a box 0 [] []; first STOP at a box: None
+  K= 10 guard ON : returns added in the 4 injected frames 80; decisions there {'CAUTION': 3, 'GO': 1}; frames with a detection/warning at a box 0 [] []; first STOP at a box: None
+  K= 30 guard off: returns added in the 4 injected frames 240; decisions there {'CAUTION': 3, 'GO': 1}; frames with a detection/warning at a box 0 [] []; first STOP at a box: None
+  K= 30 guard ON : returns added in the 4 injected frames 240; decisions there {'CAUTION': 3, 'GO': 1}; frames with a detection/warning at a box 0 [] []; first STOP at a box: None
+  K=100 guard off: returns added in the 4 injected frames 800; decisions there {'CAUTION': 3, 'GO': 1}; frames with a detection/warning at a box 0 [] []; first STOP at a box: None
+  K=100 guard ON : returns added in the 4 injected frames 800; decisions there {'CAUTION': 3, 'GO': 1}; frames with a detection/warning at a box 0 [] []; first STOP at a box: None
+  K=300 guard off: returns added in the 4 injected frames 2400; decisions there {'CAUTION': 3, 'GO': 1}; frames with a detection/warning at a box 0 [] []; first STOP at a box: None
+  K=300 guard ON : returns added in the 4 injected frames 2400; decisions there {'CAUTION': 3, 'GO': 1}; frames with a detection/warning at a box 0 [] []; first STOP at a box: None

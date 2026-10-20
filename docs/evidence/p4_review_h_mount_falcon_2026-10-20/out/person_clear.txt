@@ -1,0 +1,87 @@
+frame 4028: STOP; dets [(49.32, -0.1)]; 0 returns in the band; clear: detector 49.3, node conservative model on 48.2 / off 0.0
+frame 4029: STOP; dets [(49.15, -0.12)]; 0 returns in the band; clear: detector 49.1, node conservative model on 48.2 / off 0.0
+frame 4030: STOP; dets [(48.97, -0.14)]; 0 returns in the band; clear: detector 49.0, node conservative model on 48.2 / off 0.0
+frame 4031: STOP; dets [(47.74, -0.13)]; 0 returns in the band; clear: detector 47.7, node conservative model on 47.7 / off 0.0
+frame 4032: STOP; dets [(48.67, -0.16)]; 0 returns in the band; clear: detector 48.7, node conservative model on 48.2 / off 0.0
+frame 4033: STOP; dets [(48.62, -0.13)]; 0 returns in the band; clear: detector 48.6, node conservative model on 48.2 / off 0.0
+frame 4034: STOP; dets [(47.24, -0.11)]; 0 returns in the band; clear: detector 47.2, node conservative model on 47.2 / off 0.0
+frame 4035: STOP; dets [(48.34, -0.15)]; 0 returns in the band; clear: detector 48.3, node conservative model on 48.2 / off 0.0
+frame 4036: STOP; dets [(48.21, -0.15)]; 0 returns in the band; clear: detector 48.2, node conservative model on 48.2 / off 0.0
+frame 4037: STOP; dets [(46.85, -0.14)]; 0 returns in the band; clear: detector 46.8, node conservative model on 46.8 / off 0.0
+frame 4038: STOP; dets [(47.97, -0.14)]; 0 returns in the band; clear: detector 48.0, node conservative model on 48.0 / off 0.0
+frame 4039: STOP; dets [(47.62, -0.12)]; 0 returns in the band; clear: detector 47.6, node conservative model on 47.6 / off 0.0
+frame 4040: STOP; dets [(47.41, -0.16)]; 0 returns in the band; clear: detector 47.4, node conservative model on 47.4 / off 0.0
+frame 4370: STOP; dets [(5.78, -0.21)]; 961 returns at X 6.2..7.5 (p1..max), Y -0.09..+0.75, up to 1.62 m above the plane; clear: detector 5.8, node conservative model on 5.8 / off 0.0
+frame 4371: STOP; dets [(6.86, -0.31)]; 893 returns at X 6.1..7.4 (p1..max), Y -0.10..+0.77, up to 1.59 m above the plane; clear: detector 6.9, node conservative model on 6.9 / off 0.0
+frame 4372: STOP; dets [(6.73, -0.31)]; 905 returns at X 6.0..7.3 (p1..max), Y -0.10..+0.78, up to 1.59 m above the plane; clear: detector 6.7, node conservative model on 6.7 / off 0.0
+frame 4373: CAUTION; dets []; 953 returns at X 5.9..7.2 (p1..max), Y -0.10..+0.74, up to 1.60 m above the plane; clear: detector 6.6, node conservative model on 6.6 / off 0.0  OVERSTATES
+frame 4374: CAUTION; dets []; 968 returns at X 5.9..7.1 (p1..max), Y -0.11..+0.73, up to 1.61 m above the plane; clear: detector 6.5, node conservative model on 6.5 / off 0.0  OVERSTATES
+frame 4375: CAUTION; dets []; 930 returns at X 5.5..7.0 (p1..max), Y -0.11..+0.71, up to 1.59 m above the plane; clear: detector 21.0, node conservative model on 21.0 / off 0.0  OVERSTATES
+frame 4376: CAUTION; dets []; 906 returns at X 5.5..7.0 (p1..max), Y -0.12..+0.70, up to 1.55 m above the plane; clear: detector 6.4, node conservative model on 6.4 / off 0.0  OVERSTATES
+frame 4377: CAUTION; dets []; 925 returns at X 5.6..6.8 (p1..max), Y -0.14..+0.71, up to 1.56 m above the plane; clear: detector 6.3, node conservative model on 6.3 / off 0.0  OVERSTATES
+frame 4378: CAUTION; dets []; 973 returns at X 5.2..6.8 (p1..max), Y -0.15..+0.73, up to 1.59 m above the plane; clear: detector 6.2, node conservative model on 6.2 / off 0.0  OVERSTATES
+frame 4379: CAUTION; dets []; 1017 returns at X 5.1..6.6 (p1..max), Y -0.16..+0.76, up to 1.61 m above the plane; clear: detector 4.7, node conservative model on 4.7 / off 0.0
+frame 4380: STOP; dets [(5.97, -0.4)]; 1020 returns at X 5.0..6.5 (p1..max), Y -0.16..+0.80, up to 1.61 m above the plane; clear: detector 4.7, node conservative model on 4.7 / off 0.0
+frame 4381: STOP; dets [(5.85, -0.41)]; 992 returns at X 4.8..6.4 (p1..max), Y -0.16..+0.80, up to 1.57 m above the plane; clear: detector 4.6, node conservative model on 4.6 / off 0.0
+frame 4382: STOP; dets [(5.74, -0.41)]; 983 returns at X 4.6..6.3 (p1..max), Y -0.16..+0.84, up to 1.54 m above the plane; clear: detector 5.7, node conservative model on 5.7 / off 0.0
+frame 4383: CAUTION; dets []; 1011 returns at X 4.5..6.1 (p1..max), Y -0.14..+0.84, up to 1.55 m above the plane; clear: detector 5.6, node conservative model on 5.6 / off 0.0  OVERSTATES
+frame 4384: CAUTION; dets []; 1036 returns at X 4.4..6.0 (p1..max), Y -0.14..+0.80, up to 1.55 m above the plane; clear: detector 5.5, node conservative model on 5.5 / off 0.0  OVERSTATES
+frame 4385: CAUTION; dets []; 1092 returns at X 4.3..5.9 (p1..max), Y -0.14..+0.77, up to 1.58 m above the plane; clear: detector 21.0, node conservative model on 21.0 / off 0.0  OVERSTATES
+frame 4386: CAUTION; dets []; 1085 returns at X 4.3..5.8 (p1..max), Y -0.15..+0.72, up to 1.56 m above the plane; clear: detector 21.0, node conservative model on 21.0 / off 0.0  OVERSTATES
+frame 4387: CAUTION; dets []; 1056 returns at X 4.1..5.7 (p1..max), Y -0.17..+0.73, up to 1.55 m above the plane; clear: detector 9.5, node conservative model on 9.5 / off 0.0  OVERSTATES
+frame 4388: CAUTION; dets []; 1038 returns at X 4.1..5.6 (p1..max), Y -0.21..+0.71, up to 1.53 m above the plane; clear: detector 9.7, node conservative model on 9.7 / off 0.0  OVERSTATES
+frame 4389: CAUTION; dets []; 1082 returns at X 3.8..5.4 (p1..max), Y -0.21..+0.76, up to 1.56 m above the plane; clear: detector 9.6, node conservative model on 9.6 / off 0.0  OVERSTATES
+frame 4390: CAUTION; dets []; 1135 returns at X 3.7..5.3 (p1..max), Y -0.20..+0.79, up to 1.56 m above the plane; clear: detector 9.7, node conservative model on 9.7 / off 0.0  OVERSTATES
+frame 4391: CAUTION; dets []; 1159 returns at X 3.6..5.2 (p1..max), Y -0.19..+0.78, up to 1.58 m above the plane; clear: detector 9.5, node conservative model on 9.5 / off 0.0  OVERSTATES
+frame 4392: CAUTION; dets []; 1115 returns at X 3.5..5.0 (p1..max), Y -0.19..+0.77, up to 1.57 m above the plane; clear: detector 9.7, node conservative model on 9.7 / off 0.0  OVERSTATES
+frame 4393: CAUTION; dets []; 1030 returns at X 3.3..5.0 (p1..max), Y -0.19..+0.78, up to 1.55 m above the plane; clear: detector 9.4, node conservative model on 9.4 / off 0.0  OVERSTATES
+frame 4394: CAUTION; dets []; 1030 returns at X 3.3..4.8 (p1..max), Y -0.19..+0.85, up to 1.56 m above the plane; clear: detector 9.4, node conservative model on 9.4 / off 0.0  OVERSTATES
+frame 4395: CAUTION; dets []; 1072 returns at X 3.3..4.7 (p1..max), Y -0.17..+0.86, up to 1.58 m above the plane; clear: detector 9.2, node conservative model on 9.1 / off 0.0  OVERSTATES
+frame 4396: CAUTION; dets []; 1122 returns at X 3.0..4.5 (p1..max), Y -0.13..+0.85, up to 1.60 m above the plane; clear: detector 9.7, node conservative model on 9.7 / off 0.0  OVERSTATES
+frame 4397: CAUTION; dets []; 1090 returns at X 2.9..4.4 (p1..max), Y -0.07..+0.87, up to 1.60 m above the plane; clear: detector 9.7, node conservative model on 9.6 / off 0.0  OVERSTATES
+frame 4398: CAUTION; dets []; 1004 returns at X 3.5..4.3 (p1..max), Y -0.05..+0.89, up to 1.58 m above the plane; clear: detector 9.7, node conservative model on 9.6 / off 0.0  OVERSTATES
+frame 4399: CAUTION; dets []; 901 returns at X 3.8..4.2 (p1..max), Y -0.04..+0.73, up to 1.57 m above the plane; clear: detector 9.7, node conservative model on 9.6 / off 0.0  OVERSTATES
+frame 4400: CAUTION; dets []; 874 returns at X 3.7..4.1 (p1..max), Y -0.05..+0.73, up to 1.57 m above the plane; clear: detector 9.4, node conservative model on 9.3 / off 0.0  OVERSTATES
+frame 4401: CAUTION; dets []; 898 returns at X 3.6..4.0 (p1..max), Y -0.06..+0.72, up to 1.59 m above the plane; clear: detector 9.4, node conservative model on 9.3 / off 0.0  OVERSTATES
+frame 4402: CAUTION; dets []; 968 returns at X 2.5..3.9 (p1..max), Y -0.07..+0.79, up to 1.59 m above the plane; clear: detector 9.4, node conservative model on 9.4 / off 0.0  OVERSTATES
+frame 4403: CAUTION; dets []; 1094 returns at X 3.3..3.8 (p1..max), Y -0.14..+0.76, up to 1.60 m above the plane; clear: detector 9.4, node conservative model on 9.4 / off 0.0  OVERSTATES
+frame 4404: CAUTION; dets []; 1099 returns at X 3.2..3.7 (p1..max), Y -0.20..+0.72, up to 1.59 m above the plane; clear: detector 9.5, node conservative model on 9.5 / off 0.0  OVERSTATES
+frame 4405: CAUTION; dets []; 1016 returns at X 3.1..3.6 (p1..max), Y -0.20..+0.73, up to 1.57 m above the plane; clear: detector 37.6, node conservative model on 37.6 / off 0.0  OVERSTATES
+frame 4406: CAUTION; dets []; 957 returns at X 3.0..3.5 (p1..max), Y -0.18..+0.72, up to 1.57 m above the plane; clear: detector 9.6, node conservative model on 9.6 / off 0.0  OVERSTATES
+frame 4407: CAUTION; dets []; 964 returns at X 2.9..3.4 (p1..max), Y -0.17..+0.72, up to 1.58 m above the plane; clear: detector 37.6, node conservative model on 37.6 / off 0.0  OVERSTATES
+frame 4408: CAUTION; dets []; 961 returns at X 2.8..3.3 (p1..max), Y -0.11..+0.73, up to 1.60 m above the plane; clear: detector 32.0, node conservative model on 32.0 / off 0.0  OVERSTATES
+frame 4409: CAUTION; dets []; 868 returns at X 2.7..3.2 (p1..max), Y -0.11..+0.70, up to 1.60 m above the plane; clear: detector 26.4, node conservative model on 26.4 / off 0.0  OVERSTATES
+frame 4410: CAUTION; dets []; 756 returns at X 2.8..3.1 (p1..max), Y -0.02..+0.67, up to 1.57 m above the plane; clear: detector 3.0, node conservative model on 3.0 / off 0.0  OVERSTATES
+frame 4411: CAUTION; dets []; 671 returns at X 2.7..3.0 (p1..max), Y +0.01..+0.61, up to 1.56 m above the plane; clear: detector 20.4, node conservative model on 20.3 / off 0.0  OVERSTATES
+frame 4412: CAUTION; dets []; 623 returns at X 2.6..3.0 (p1..max), Y +0.03..+0.60, up to 1.55 m above the plane; clear: detector 18.5, node conservative model on 18.5 / off 0.0  OVERSTATES
+frame 4413: CAUTION; dets []; 531 returns at X 2.5..2.8 (p1..max), Y +0.04..+0.57, up to 1.54 m above the plane; clear: detector 16.6, node conservative model on 16.6 / off 0.0  OVERSTATES
+frame 4414: CAUTION; dets []; 205 returns at X 2.5..2.7 (p1..max), Y +0.03..+0.57, up to 1.54 m above the plane; clear: detector 40.0, node conservative model on 40.0 / off 0.0  OVERSTATES
+frame 4415: CAUTION; dets []; 88 returns in the band; clear: detector 40.0, node conservative model on 40.0 / off 0.0
+frame 4416: CAUTION; dets []; 11 returns in the band; clear: detector 40.0, node conservative model on 40.0 / off 0.0
+frame 4417: CAUTION; dets []; 0 returns in the band; clear: detector 40.0, node conservative model on 40.0 / off 0.0
+frame 4418: CAUTION; dets []; 0 returns in the band; clear: detector 40.0, node conservative model on 40.0 / off 0.0
+frame 4419: CAUTION; dets []; 0 returns in the band; clear: detector 80.0, node conservative model on 48.2 / off 0.0
+frame 4420: CAUTION; dets []; 0 returns in the band; clear: detector 40.0, node conservative model on 40.0 / off 0.0
+frame 4421: CAUTION; dets []; 0 returns in the band; clear: detector 40.0, node conservative model on 40.0 / off 0.0
+frame 4422: CAUTION; dets []; 0 returns in the band; clear: detector 40.0, node conservative model on 40.0 / off 0.0
+frame 4423: CAUTION; dets []; 0 returns in the band; clear: detector 40.0, node conservative model on 40.0 / off 0.0
+frame 4424: CAUTION; dets []; 0 returns in the band; clear: detector 40.0, node conservative model on 40.0 / off 0.0
+frame 4425: CAUTION; dets []; 0 returns in the band; clear: detector 68.7, node conservative model on 48.2 / off 0.0
+frame 4426: CAUTION; dets []; 0 returns in the band; clear: detector 123.8, node conservative model on 48.2 / off 0.0
+frame 4427: CAUTION; dets []; 0 returns in the band; clear: detector 156.3, node conservative model on 48.2 / off 0.0
+frame 4428: CAUTION; dets []; 0 returns in the band; clear: detector 157.9, node conservative model on 48.2 / off 0.0
+frame 4429: CAUTION; dets []; 0 returns in the band; clear: detector 123.0, node conservative model on 48.2 / off 0.0
+frame 4430: CAUTION; dets []; 0 returns in the band; clear: detector 127.0, node conservative model on 48.2 / off 0.0
+frame 4431: CAUTION; dets []; 0 returns in the band; clear: detector 123.0, node conservative model on 48.2 / off 0.0
+frame 4432: CAUTION; dets []; 0 returns in the band; clear: detector 123.0, node conservative model on 48.2 / off 0.0
+frame 4433: CAUTION; dets []; 0 returns in the band; clear: detector 102.0, node conservative model on 48.2 / off 0.0
+frame 4434: CAUTION; dets []; 0 returns in the band; clear: detector 115.1, node conservative model on 48.2 / off 0.0
+frame 4435: CAUTION; dets []; 0 returns in the band; clear: detector 102.0, node conservative model on 48.2 / off 0.0
+frame 4436: CAUTION; dets []; 0 returns in the band; clear: detector 115.0, node conservative model on 48.2 / off 0.0
+frame 4437: CAUTION; dets []; 0 returns in the band; clear: detector 102.0, node conservative model on 48.2 / off 0.0
+frame 4438: CAUTION; dets []; 0 returns in the band; clear: detector 115.1, node conservative model on 48.2 / off 0.0
+frame 4439: CAUTION; dets []; 0 returns in the band; clear: detector 107.0, node conservative model on 48.2 / off 0.0
+frame 4440: CAUTION; dets []; 0 returns in the band; clear: detector 159.0, node conservative model on 48.2 / off 0.0
+frame 4441: CAUTION; dets []; 0 returns in the band; clear: detector 102.0, node conservative model on 48.2 / off 0.0
+frame 4442: CAUTION; dets []; 0 returns in the band; clear: detector 123.0, node conservative model on 48.2 / off 0.0
+frames that overstate (not STOP, model-on clear beyond the nearest return on the track): 38 [4373, 4374, 4375, 4376, 4377, 4378, 4383, 4384, 4385, 4386, 4387, 4388, 4389, 4390, 4391, 4392, 4393, 4394, 4395, 4396, 4397, 4398, 4399, 4400, 4401, 4402, 4403, 4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411, 4412, 4413, 4414]

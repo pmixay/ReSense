@@ -1,0 +1,1 @@
+X3 H'-off vs shipped: 401 rows differ outside timing; 0 of them in anything but the latency health level/message

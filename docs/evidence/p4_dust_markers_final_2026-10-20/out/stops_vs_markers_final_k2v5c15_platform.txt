@@ -1,0 +1,5 @@
+STOP frames 187, STOP detections 187: matched to an object box 187, to a dust box 0, to nothing 0
+  dust frame {'frame': 21, 'decision': 'GO', 'dust_boxes': [(0, 3.47, 1.48), (1, 4.37, 1.75)], 'dets': [], 'warns': []}
+  dust frame {'frame': 27, 'decision': 'GO', 'dust_boxes': [(6, 4.36, 1.4), (7, 6.07, 1.77)], 'dets': [], 'warns': []}
+  dust frame {'frame': 35, 'decision': 'CAUTION', 'dust_boxes': [(12, 4.24, -0.38), (13, 4.94, 0.17)], 'dets': [], 'warns': [(1.75, 1.39)]}
+  dust frame {'frame': 36, 'decision': 'GO', 'dust_boxes': [(13, 3.9, 0.17)], 'dets': [], 'warns': []}

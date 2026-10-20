@@ -1,0 +1,4 @@
+# final f56ad5e vs the committed 8c2bf51 K2-off records (k2_v5c_2026-10-20/runs/data_8c2bf51/markers/off_<bag>)
+platform  386 frames: IDENT
+switch    736 frames: IDENT
+tunnels   545 frames: IDENT

@@ -1,0 +1,8 @@
+start 14:16:22
+gate h1off exit 0 14:27:36
+gate r3off exit 0 14:27:43
+x3 h1off exit 0 14:44:15
+x3 r3off exit 1 14:44:22
+gate default exit 0 14:54:01
+x3 default exit 0 15:00:36
+RUNS_DONE 15:00:36

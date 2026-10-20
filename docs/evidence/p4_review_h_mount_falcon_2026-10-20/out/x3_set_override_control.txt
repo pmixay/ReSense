@@ -1,0 +1,9 @@
+x3_set.py override check on doubleT_obstacle/nominal (201 rows), shipped raw record: /home/user/out/x3/x3_l16.raw/doubleT_obstacle/nominal/probe.jsonl
+worker logs:
+x3_set overrides {"cluster.mount_cross_tol": 0} effective {"cluster.mount_cross_tol": 0}
+x3_set overrides {"gauge.range_max": 40} effective {"gauge.range_max": 40}
+
+H' off (cluster.mount_cross_tol=0):
+SUMMARY rows 201; differ in decision/detections/warnings 0; differ only in other non-timing fields 4
+positive control, an override known to change results (gauge.range_max=40):
+SUMMARY rows 201; differ in decision/detections/warnings 193; differ only in other non-timing fields 8

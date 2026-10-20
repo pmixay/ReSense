@@ -1,0 +1,12 @@
+synthetic_platform_cloud_with_markers: frames 0..42, dust frames [21, 27, 35, 36], persisting object at the boxes of the first frame of each burst, frames 15-41
+  K=0 guard off equals the delivered-bag final run in 43 of 43 frames
+  K=  0 guard off: returns added in the 27 injected frames 0; decisions there {'GO': 25, 'CAUTION': 2}; frames with a detection/warning at a box 0 [] []; first STOP at a box: None
+  K=  0 guard ON : returns added in the 27 injected frames 0; decisions there {'GO': 25, 'CAUTION': 2}; frames with a detection/warning at a box 0 [] []; first STOP at a box: None
+  K= 10 guard off: returns added in the 27 injected frames 780; decisions there {'GO': 19, 'STOP': 8}; frames with a detection/warning at a box 8 [34, 35, 36, 37, 38, 39, 40, 41] ['det']; first STOP at a box: 34
+  K= 10 guard ON : returns added in the 27 injected frames 780; decisions there {'GO': 19, 'STOP': 8}; frames with a detection/warning at a box 8 [34, 35, 36, 37, 38, 39, 40, 41] ['det']; first STOP at a box: 34
+  K= 30 guard off: returns added in the 27 injected frames 2340; decisions there {'GO': 13, 'CAUTION': 6, 'STOP': 8}; frames with a detection/warning at a box 14 [28, 29, 30, 31, 32, 33, 34, 35, 36, 37] ['det', 'warn']; first STOP at a box: 34
+  K= 30 guard ON : returns added in the 27 injected frames 2340; decisions there {'GO': 13, 'CAUTION': 6, 'STOP': 8}; frames with a detection/warning at a box 14 [28, 29, 30, 31, 32, 33, 34, 35, 36, 37] ['det', 'warn']; first STOP at a box: 34
+  K=100 guard off: returns added in the 27 injected frames 7800; decisions there {'GO': 11, 'CAUTION': 8, 'STOP': 8}; frames with a detection/warning at a box 16 [26, 27, 28, 29, 30, 31, 32, 33, 34, 35] ['det', 'warn']; first STOP at a box: 34
+  K=100 guard ON : returns added in the 27 injected frames 7800; decisions there {'GO': 11, 'CAUTION': 8, 'STOP': 8}; frames with a detection/warning at a box 16 [26, 27, 28, 29, 30, 31, 32, 33, 34, 35] ['det', 'warn']; first STOP at a box: 34
+  K=300 guard off: returns added in the 27 injected frames 23400; decisions there {'GO': 11, 'CAUTION': 8, 'STOP': 8}; frames with a detection/warning at a box 16 [26, 27, 28, 29, 30, 31, 32, 33, 34, 35] ['det', 'warn']; first STOP at a box: 34
+  K=300 guard ON : returns added in the 27 injected frames 23400; decisions there {'GO': 11, 'CAUTION': 8, 'STOP': 8}; frames with a detection/warning at a box 16 [26, 27, 28, 29, 30, 31, 32, 33, 34, 35] ['det', 'warn']; first STOP at a box: 34

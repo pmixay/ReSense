@@ -1,0 +1,2 @@
+person   hits lost 0 added 0 | visibility same True distances same True | held90 off 6/6 median 157.1 -> on 6/6 median 157.1
+cable    hits lost 9 added 0 | visibility same True distances same True | held90 off 4/6 median 17.8 -> on 2/6 median 34.2

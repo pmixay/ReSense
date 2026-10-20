@@ -1,0 +1,41 @@
+yaml vs class defaults: [('tracking.cable_confirm_time_s', 0.3, 0.3), ('tracking.hanging_confirm_time_s', 0.2, 0.2), ('tracking.hanging_confirm_hits', 2, 2), ('tracking.confirm_hits', 3, 3), ('tracking.confirm_time_s', 0.5, 0.5), ('tracking.ego_veto_min_speed', 4.0, 4.0), ('tracking.ego_veto_min_distance', 25.0, 25.0)]
+carried 37.0 m tall R3 on: STOP [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+    frame 0 x 37.0 - warn [] (hits, cable_kind, cable_hits) [(1, 1, 1)] veto [False]
+    frame 1 x 37.0 - warn [] (hits, cable_kind, cable_hits) [(2, 1, 2)] veto [False]
+    frame 2 x 37.0 STOP warn [] (hits, cable_kind, cable_hits) [(3, 1, 3)] veto [False]
+    frame 3 x 37.0 STOP warn [] (hits, cable_kind, cable_hits) [(4, 1, 4)] veto [True]
+    frame 4 x 37.0 STOP warn [] (hits, cable_kind, cable_hits) [(5, 1, 5)] veto [True]
+    frame 5 x 37.0 STOP warn [] (hits, cable_kind, cable_hits) [(6, 1, 6)] veto [True]
+carried 37.0 m tall R3 off: STOP []
+    frame 0 x 37.0 - warn [] (hits, cable_kind, cable_hits) [(1, 0, 0)] veto [False]
+    frame 1 x 37.0 - warn [] (hits, cable_kind, cable_hits) [(2, 0, 0)] veto [False]
+    frame 2 x 37.0 - warn [] (hits, cable_kind, cable_hits) [(3, 0, 0)] veto [False]
+    frame 3 x 37.0 - warn [] (hits, cable_kind, cable_hits) [(4, 0, 0)] veto [True]
+    frame 4 x 37.0 - warn [''] (hits, cable_kind, cable_hits) [(5, 0, 0)] veto [True]
+    frame 5 x 37.0 - warn [''] (hits, cable_kind, cable_hits) [(6, 0, 0)] veto [True]
+carried 37.0 m hanging R3 on: STOP [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+    frame 0 x 37.0 - warn [] (hits, cable_kind, cable_hits) [(1, 2, 1)] veto [False]
+    frame 1 x 37.0 STOP warn [] (hits, cable_kind, cable_hits) [(2, 2, 2)] veto [False]
+    frame 2 x 37.0 STOP warn [] (hits, cable_kind, cable_hits) [(3, 2, 3)] veto [False]
+    frame 3 x 37.0 STOP warn [] (hits, cable_kind, cable_hits) [(4, 2, 4)] veto [True]
+    frame 4 x 37.0 STOP warn [] (hits, cable_kind, cable_hits) [(5, 2, 5)] veto [True]
+    frame 5 x 37.0 STOP warn [] (hits, cable_kind, cable_hits) [(6, 2, 6)] veto [True]
+carried 37.0 m hanging R3 off: STOP []
+    frame 0 x 37.0 - warn [] (hits, cable_kind, cable_hits) [(1, 0, 0)] veto [False]
+    frame 1 x 37.0 - warn [] (hits, cable_kind, cable_hits) [(2, 0, 0)] veto [False]
+    frame 2 x 37.0 - warn [] (hits, cable_kind, cable_hits) [(3, 0, 0)] veto [False]
+    frame 3 x 37.0 - warn [] (hits, cable_kind, cable_hits) [(4, 0, 0)] veto [True]
+    frame 4 x 37.0 - warn [''] (hits, cable_kind, cable_hits) [(5, 0, 0)] veto [True]
+    frame 5 x 37.0 - warn [''] (hits, cable_kind, cable_hits) [(6, 0, 0)] veto [True]
+control approached from 47.0 m tall R3 on: STOP [(4, 41.0), (5, 39.5), (6, 38.0)]... n=10
+control approached from 47.0 m tall R3 off: STOP [(4, 41.0), (5, 39.5), (6, 38.0)]... n=10
+control approached from 47.0 m hanging R3 on: STOP [(1, 45.5), (7, 36.5), (8, 35.0)]... n=7
+control approached from 47.0 m hanging R3 off: STOP [(7, 36.5), (8, 35.0), (9, 33.5)]... n=6
+carried 30.0 m tall R3 on: STOP [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+carried 30.0 m tall R3 off: STOP [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+carried 30.0 m hanging R3 on: STOP [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+carried 30.0 m hanging R3 off: STOP []
+control approached from 40.0 m tall R3 on: STOP [(3, 35.5), (4, 34.0), (5, 32.5)]... n=11
+control approached from 40.0 m tall R3 off: STOP [(7, 29.5), (8, 28.0), (9, 26.5)]... n=8
+control approached from 40.0 m hanging R3 on: STOP [(2, 37.0), (3, 35.5), (4, 34.0)]... n=12
+control approached from 40.0 m hanging R3 off: STOP [(7, 29.5), (8, 28.0), (9, 26.5)]... n=8

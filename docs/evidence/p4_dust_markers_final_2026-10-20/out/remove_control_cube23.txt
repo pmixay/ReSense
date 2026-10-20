@@ -1,0 +1,6 @@
+# positive control of remove_boxes.py: the returns inside marker 23's box (platform small cube right) deleted in frames 100-140
+returns removed 1266 in 41 frames
+frames whose decision differs (frame, delivered, removed): 21
+[(101, 'CAUTION', 'GO'), (102, 'CAUTION', 'GO'), (103, 'CAUTION', 'GO'), (104, 'CAUTION', 'GO'), (105, 'CAUTION', 'GO'), (106, 'STOP', 'GO'), (107, 'STOP', 'GO'), (108, 'STOP', 'GO'), (109, 'STOP', 'GO'), (110, 'STOP', 'GO'), (111, 'STOP', 'GO'), (112, 'STOP', 'CAUTION'), (113, 'STOP', 'CAUTION'), (114, 'STOP', 'CAUTION'), (115, 'STOP', 'CAUTION'), (116, 'STOP', 'CAUTION'), (117, 'STOP', 'CAUTION'), (118, 'STOP', 'CAUTION'), (142, 'STOP', 'CAUTION'), (143, 'STOP', 'CAUTION'), (144, 'STOP', 'CAUTION')]
+delivered STOP frames within 100-140: [106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118]
+with the cube's returns removed, STOP frames within 100-140: []

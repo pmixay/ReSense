@@ -1,0 +1,18 @@
+trace records 134 | tracks with cable_kind or q differs, per job:
+  ('cable', 'new_data_140_0000.npy.zst') 23 frames; q differs in 0
+  ('cable', 'new_data_168_0000.npy.zst') 10 frames; q differs in 2
+  ('cable', 'new_data_172_0000.npy.zst') 25 frames; q differs in 2
+  ('cable', 'new_data_46_0000.npy.zst') 18 frames; q differs in 0
+  ('cable', 'new_data_68_0000.npy.zst') 24 frames; q differs in 3
+  ('cable', 'new_data_98_0000.npy.zst') 34 frames; q differs in 2
+
+added hits (R3 off -> on): 9
+ new_data_69_0035 d 47.3 n 22: track 25 hits 3 reported True cluster -/gauge/- n_raw 18/pts 18 R3 kind 1 cable_hits 3 span 0.301 q_on 1 q_off 0
+ new_data_69_0036 d 45.3 n 23: track 25 hits 4 reported True cluster -/gauge/- n_raw 19/pts 19 R3 kind 1 cable_hits 4 span 0.4 q_on 1 q_off 0
+ new_data_69_0037 d 43.4 n 23: track 25 hits 5 reported True cluster -/gauge/- n_raw 19/pts 19 R3 kind 1 cable_hits 5 span 0.495 q_on 1 q_off 0
+ new_data_99_0050 d 16.6 n 38: track 43 hits 3 reported True cluster -/gauge/- n_raw 29/pts 29 R3 kind 1 cable_hits 3 span 0.301 q_on 1 q_off 0
+ new_data_100_0000 d 14.6 n 41: track 43 hits 4 reported True cluster -/gauge/- n_raw 30/pts 30 R3 kind 1 cable_hits 4 span 0.402 q_on 1 q_off 0
+ new_data_169_0022 d 16.4 n 39: track 27 hits 4 reported True cluster -/gauge/- n_raw 28/pts 28 R3 kind 1 cable_hits 4 span 0.391 q_on 1 q_off 0
+ new_data_169_0023 d 14.5 n 43: track 27 hits 5 reported True cluster -/gauge/- n_raw 31/pts 31 R3 kind 1 cable_hits 5 span 0.488 q_on 1 q_off 0
+ new_data_173_0027 d 73.9 n 17: track 21 hits 4 reported True cluster -/gauge/- n_raw 10/pts 10 R3 kind 1 cable_hits 4 span 0.395 q_on 1 q_off 0
+ new_data_173_0038 d 53.7 n 21: track 22 hits 4 reported True cluster -/gauge/- n_raw 17/pts 17 R3 kind 1 cable_hits 4 span 0.4 q_on 1 q_off 0

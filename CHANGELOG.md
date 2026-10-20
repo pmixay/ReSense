@@ -20,11 +20,33 @@ dates from 25.09. **The published release is v1.0.0 only.** 1.1.0 (sealed 16.10)
 **PASSES** (40 files, R3 integrity reseal on the measured `0a472d6`; it is an integrity seal, not an acceptance). CI on `main` was
 green at `5d83c5b` (run #667) and `f56ad5e` (#669), all five jobs; run #680 on `8453458` (PR #47) failed in the web job's browser
 suite (22 of 75 end-to-end tests; four jobs green), so `main` is red since the UI merge.
-PRs #43, #44, #45 and #47 are merged, #46 (P4's review of H′ and the Falcon clear-distance model) is open. **Not released:**
+PRs #43–#49 are merged (#46, #48, #49 are P4's reviews of H′ and the Falcon clear-distance model, of R3 and H1, and the dust and marked-bag run). **Not released:**
 release, tag and demo image wait for a final source, the last commit before the code stop 20.10 23:59 MSK (captain, 20.10); then
 the reseal, P4's independent acceptance of the final bundle, the image and the tag. Not a J1 score, not a G3 run
 ([`docs/BACKLOG.md`](docs/BACKLOG.md) "Current plan"). (State of 19.10 evening, kept for the record: `verify` failed with 2 added
 and 11 changed files until the reseal; CI was red.)
+
+### 20.10 — F1a completion: the rail head's own top surface as the reference
+
+- The B1 repair's ride cost is **removed**. The frame's rail returns are bimodal: the lower mode is the rail
+  *web*, the upper mode the head's *top surface*; on the ride both rails read both modes synchronously, so the
+  model's rail-head plane sits about 0.1 m below the real head top. The F1a reference was the **median** of the
+  band (the web) while the repair's uncapped top reads the head's top, so the comparison was between two different
+  features and the head's own top was reported as an object's body. The completion reads the **same feature** on
+  both sides: the head's top surface in the candidate's own lateral band, from low-free points only, supported by
+  at least two distinct returns, on the same height window the top uses.
+- Chunked ride gate against current main: alarm events **23 -> 18**, STOP episodes **26 -> 24**, alarm frames
+  **111 -> 102** — exactly the pre-repair values. **9 STOP frames removed, none added.** Every set O object is
+  unchanged (`long_low_on_rails` 52 frames / 87.2 m, `small_on_rail` 23 / 42.7 m, `thin_hanging` 18 / 35.1 m), the
+  labelled `doubleT_obstacle` hits are unchanged, the other five recordings are identical except
+  `doubleT_platform`'s 2 advisory frames, the 32 physical scenes (raised rails, box tops, empty controls) show 0
+  differing rows, the whole Falcon **4,443 rows are field-identical** and X3 passes **0 of 260 comparisons
+  failed** over 40 cases. **363 affected tests pass**; the strict gate passes without waivers.
+- The new rule can only reject a cluster the **pre-repair** rule rejected, so its rejection set is a subset of the
+  pre-repair rule's, which on the recordings held no real object (T4's independent visual exposure). 13 of P4's 98
+  flipped clusters stay unexplained — a head whose top no ring crosses in the window — and the rule then fails
+  open. Author evidence on committed source: not independent P4 acceptance and not a release.
+  [Evidence](docs/evidence/f1a_completion_2026-10-20/README.md).
 
 ### 20.10 — R3 B2/B3 completion
 
@@ -95,7 +117,7 @@ and 11 changed files until the reseal; CI was red.)
   X3 40 cases / 29,765 rows with identical STOP rows.
 - **Cost against starting main on the ride:** alarm events **18 → 23**, STOP episodes **24 → 26**. P4's acceptance run (PR #45)
   reproduces both numbers and traces all 16 changed decisions to rail-head fragments and tracker chains through them. The
-  trade-off was **accepted on 20.10** (delegated by the captain; the repaired ride is still better than the registered baseline: 27 → 23 events, 30 → 26 episodes, 126 → 111 alarm frames). [Evidence](docs/evidence/f1a_b1_2026-10-20/README.md),
+  trade-off was **accepted on 20.10** (delegated by the captain; the repaired ride was still better than the registered baseline: 27 → 23 events, 30 → 26 episodes, 126 → 111 alarm frames); P3's completion below then removed the cost. [Evidence](docs/evidence/f1a_b1_2026-10-20/README.md),
   [P4's acceptance](docs/evidence/f1a_acceptance_2026-10-20/README.md).
 
 ### 20.10 — R3 sustained-range population diagnosis and reporting repair

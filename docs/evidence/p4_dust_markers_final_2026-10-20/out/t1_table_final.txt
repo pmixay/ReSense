@@ -1,0 +1,15 @@
+platform: 10 frames, returns/frame 175564-184230
+  share z>0 0.2911-0.2984   share x<0 0.0000-0.0000   sample pos min (x,y,z) (1.000, 0.479, 0.280)   1-sided max 1.0000
+  directional_axes cue per frame: ['+X']   calibrator's own calls: [(0, '+X', '+Z')]   locked forward: ['+X']
+  orientation_confirmed first at frame 0; at frame 0: True, at frame 9: True; status ['pending']; mapping ['configured']; conflict frames 0; messages ['']
+  probed vs plain run: identical (10 rows); decisions ['GO']
+switch: 10 frames, returns/frame 158971-160679
+  share z>0 0.3082-0.3148   share x<0 0.0000-0.0000   sample pos min (x,y,z) (1.000, 0.457, 0.305)   1-sided max 1.0000
+  directional_axes cue per frame: ['+X']   calibrator's own calls: [(0, '+X', '+Z')]   locked forward: ['+X']
+  orientation_confirmed first at frame 0; at frame 0: True, at frame 9: True; status ['pending']; mapping ['configured']; conflict frames 0; messages ['']
+  probed vs plain run: identical (10 rows); decisions ['CAUTION', 'GO', 'STOP']
+tunnels: 10 frames, returns/frame 188716-189930
+  share z>0 0.2979-0.3000   share x<0 0.0000-0.0000   sample pos min (x,y,z) (1.000, 0.494, 0.290)   1-sided max 1.0000
+  directional_axes cue per frame: ['+X']   calibrator's own calls: [(0, '+X', '+Z')]   locked forward: ['+X']
+  orientation_confirmed first at frame 0; at frame 0: True, at frame 9: True; status ['pending']; mapping ['configured']; conflict frames 0; messages ['']
+  probed vs plain run: identical (10 rows); decisions ['GO']

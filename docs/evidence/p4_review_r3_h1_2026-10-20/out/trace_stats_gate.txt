@@ -1,0 +1,19 @@
+cloud_with_fake_obj                      frames  1510 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames   15, q differs 3
+      R3 qualifies differ: row 786 track 339 d 35.08 hits 2 cable_kind 2 STOP row True
+      R3 qualifies differ: row 787 track 339 d 33.43 hits 3 cable_kind 2 STOP row True
+      R3 qualifies differ: row 788 track 339 d 31.77 hits 4 cable_kind 2 STOP row True
+doubleT_obstacle                         frames   201 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames    0, q differs 0
+doubleT_platform                         frames   345 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames    0, q differs 0
+new_data_0                               frames  1409 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames    0, q differs 0
+new_data_1                               frames  1409 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames    1, q differs 0
+new_data_2                               frames  1409 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames    0, q differs 0
+new_data_3                               frames  1409 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames    2, q differs 0
+new_data_4                               frames  1409 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames    0, q differs 0
+new_data_5                               frames  1409 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames    1, q differs 0
+new_data_6                               frames  1409 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames    0, q differs 0
+new_data_7                               frames  1408 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames    0, q differs 0
+roundT_doubleT                           frames   252 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames    0, q differs 0
+roundT_pressureGate_roundT               frames   268 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames    0, q differs 0
+roundT_squareT_pressureGate_squareT      frames   545 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames    0, q differs 0
+squareT_platform_squareT_switch          frames   877 | H1: core frames    0, core track-frames    0, hold differs   0 | R3: armed track-frames    0, q differs 0
+TOTAL {"frames": 15269, "core_frames": 0, "core_track_frames": 0, "hold_differs": 0, "cable_armed_track_frames": 19, "r3_q_differs": 3, "r3_q_differs_on_stop_row": 3}

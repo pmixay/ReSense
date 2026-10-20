@@ -1,0 +1,33 @@
+# decision differences of perturbed replays (a few returns deleted) vs the delivered-bag run of the same configuration
+# nodust = the organizers' dust returns deleted (box + 5 cm); rnd1-4 = the same number of random returns 3-8 m ahead deleted in the same frames
+# columns per run: frames whose decision differs; max |track_center difference| (m); background-STOP frames of the 12 that stay STOP
+K2 off        platform  nodust    returns removed  31  decision diffs   0 []  max|dcenter| 0.054  background STOP kept -
+K2 off        platform  rnd1      returns removed  31  decision diffs   2 [34, 35]  max|dcenter| 0.058  background STOP kept -
+K2 off        platform  rnd2      returns removed  31  decision diffs   0 []  max|dcenter| 0.000  background STOP kept -
+K2 off        platform  rnd3      returns removed  31  decision diffs   0 []  max|dcenter| 0.060  background STOP kept -
+K2 off        platform  rnd4      returns removed  31  decision diffs   0 []  max|dcenter| 0.000  background STOP kept -
+K2 off        switch    nodust    returns removed  33  decision diffs   0 []  max|dcenter| 0.000  background STOP kept 8/8 (delivered 8)
+K2 off        switch    rnd1      returns removed  33  decision diffs   0 []  max|dcenter| 0.000  background STOP kept 8/8 (delivered 8)
+K2 off        switch    rnd2      returns removed  33  decision diffs  13 [518, 519, 526, 527, 528, 549, 609, 686, 687, 720]  max|dcenter| 0.025  background STOP kept 8/8 (delivered 8)
+K2 off        switch    rnd3      returns removed  33  decision diffs   0 []  max|dcenter| 0.000  background STOP kept 8/8 (delivered 8)
+K2 off        switch    rnd4      returns removed  33  decision diffs   0 []  max|dcenter| 0.000  background STOP kept 8/8 (delivered 8)
+K2 off        tunnels   nodust    returns removed  74  decision diffs  18 [147, 148, 149, 168, 173, 180, 199, 200, 231, 232]  max|dcenter| 0.486  background STOP kept 1/4 (delivered 4)
+K2 off        tunnels   rnd1      returns removed  74  decision diffs  31 [92, 93, 94, 95, 111, 112, 129, 130, 147, 148]  max|dcenter| 0.485  background STOP kept 0/4 (delivered 4)
+K2 off        tunnels   rnd2      returns removed  74  decision diffs  24 [111, 112, 147, 148, 149, 168, 169, 170, 171, 172]  max|dcenter| 0.485  background STOP kept 1/4 (delivered 4)
+K2 off        tunnels   rnd3      returns removed  74  decision diffs   9 [180, 187, 199, 200, 231, 232, 315, 354, 367]  max|dcenter| 0.471  background STOP kept 3/4 (delivered 4)
+K2 off        tunnels   rnd4      returns removed  74  decision diffs   8 [199, 200, 231, 232, 315, 367, 369, 391]  max|dcenter| 0.485  background STOP kept 3/4 (delivered 4)
+K2 variant B  platform  Bnodust   returns removed  31  decision diffs   0 []  max|dcenter| 0.063  background STOP kept -
+K2 variant B  platform  Brnd1     returns removed  31  decision diffs   2 [34, 35]  max|dcenter| 0.074  background STOP kept -
+K2 variant B  platform  Brnd2     returns removed  31  decision diffs   0 []  max|dcenter| 0.000  background STOP kept -
+K2 variant B  platform  Brnd3     returns removed  31  decision diffs   1 [104]  max|dcenter| 0.065  background STOP kept -
+K2 variant B  platform  Brnd4     returns removed  31  decision diffs   0 []  max|dcenter| 0.000  background STOP kept -
+K2 variant B  switch    Bnodust   returns removed  33  decision diffs   0 []  max|dcenter| 0.000  background STOP kept 0/8 (delivered 0)
+K2 variant B  switch    Brnd1     returns removed  33  decision diffs   0 []  max|dcenter| 0.000  background STOP kept 0/8 (delivered 0)
+K2 variant B  switch    Brnd2     returns removed  33  decision diffs  16 [521, 522, 523, 526, 529, 535, 546, 547, 548, 609]  max|dcenter| 0.053  background STOP kept 0/8 (delivered 0)
+K2 variant B  switch    Brnd3     returns removed  33  decision diffs   0 []  max|dcenter| 0.000  background STOP kept 0/8 (delivered 0)
+K2 variant B  switch    Brnd4     returns removed  33  decision diffs   0 []  max|dcenter| 0.000  background STOP kept 0/8 (delivered 0)
+K2 variant B  tunnels   Bnodust   returns removed  74  decision diffs  19 [158, 194, 195, 196, 231, 232, 262, 263, 264, 279]  max|dcenter| 0.486  background STOP kept 0/4 (delivered 0)
+K2 variant B  tunnels   Brnd1     returns removed  74  decision diffs  37 [81, 82, 83, 85, 86, 91, 92, 93, 103, 111]  max|dcenter| 0.485  background STOP kept 0/4 (delivered 0)
+K2 variant B  tunnels   Brnd2     returns removed  74  decision diffs  43 [102, 103, 145, 149, 150, 151, 152, 153, 154, 155]  max|dcenter| 0.485  background STOP kept 0/4 (delivered 0)
+K2 variant B  tunnels   Brnd3     returns removed  74  decision diffs  27 [185, 194, 231, 232, 267, 268, 269, 270, 271, 274]  max|dcenter| 0.471  background STOP kept 0/4 (delivered 0)
+K2 variant B  tunnels   Brnd4     returns removed  74  decision diffs  26 [231, 232, 261, 262, 263, 264, 279, 306, 320, 321]  max|dcenter| 0.485  background STOP kept 0/4 (delivered 0)

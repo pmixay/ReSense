@@ -1,0 +1,8 @@
+{"frame": 481, "id": 2, "fwd": 4.07, "lat": -0.62, "up": 0.16, "pts_in_box": 1, "pts_within_0.3m": 1}
+{"frame": 481, "id": 3, "fwd": 5.47, "lat": 0.3, "up": 0.39, "pts_in_box": 3, "pts_within_0.3m": 3}
+{"frame": 483, "id": 5, "fwd": 4.82, "lat": 1.51, "up": 0.31, "pts_in_box": 2, "pts_within_0.3m": 2}
+{"frame": 611, "id": 7, "fwd": 3.39, "lat": 1.42, "up": 0.32, "pts_in_box": 3, "pts_within_0.3m": 3}
+{"frame": 611, "id": 8, "fwd": 4.49, "lat": -0.26, "up": 0.57, "pts_in_box": 4, "pts_within_0.3m": 4}
+{"frame": 611, "id": 9, "fwd": 5.69, "lat": -1.46, "up": 0.17, "pts_in_box": 10, "pts_within_0.3m": 10}
+{"frame": 613, "id": 10, "fwd": 4.89, "lat": -1.68, "up": 0.45, "pts_in_box": 5, "pts_within_0.3m": 5}
+{"frame": 613, "id": 11, "fwd": 6.89, "lat": 0.64, "up": 0.23, "pts_in_box": 5, "pts_within_0.3m": 5}
