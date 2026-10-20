@@ -6,10 +6,13 @@
 > [`archive/BACKLOG_history_2026-10-19.md`](archive/BACKLOG_history_2026-10-19.md): this file as it stood before the
 > clean-up of 19.10, word for word, with the full text (cause, tasks, acceptance check) of every card.
 > **Audience:** P1 (to distribute the work), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-10-20: main `5d83c5b` integrated with R3 repair `0a472d6` at `47b220c`,
-> [`DECISIONS.md`](DECISIONS.md) rows 35–45; fresh paired R3 Set F investigation on `69cf4b8`;
+> **Last verified:** 2026-10-20: main `f56ad5e` (main `5d83c5b` integrated with R3 repair `0a472d6` at `47b220c`, then the
+> integrity seal), [`DECISIONS.md`](DECISIONS.md) rows 35–45; fresh paired R3 Set F investigation on `69cf4b8`;
 > committed integration/H1 evidence and merged PR #45. `python3 scripts/detector_freeze.py verify` **PASS**:
-> R3 integrity reseal uses the strict full gate and40 frozen files; independent final-bundle acceptance and release remain open.
+> R3 integrity reseal uses the strict full gate and 40 frozen files; independent final-bundle acceptance and release remain open.
+> **CI re-checked 20.10 ~18:00 MSK:** the billing block is gone; main runs
+> [#667](https://github.com/pmixay/ReSense/actions/runs/39432683938) (`5d83c5b`) and
+> [#669](https://github.com/pmixay/ReSense/actions/runs/39436711965) (`f56ad5e`) ran all five jobs to success.
 > **Status:** current. "Current plan" below replaces every dated target: **P0** before the code stop, **P1** before the pitch,
 > **P2** after 23.10. Section numbers of the old file are kept where other documents cite them (§1, §3, §4, §6, §9);
 > §2, §5, §7, §8, §9d and §9e are in the archive.
@@ -56,9 +59,9 @@ Pinned reports: [shipping review][p4-shipping], [integration review][p4-integrat
 
 | prio | work | state / depends on |
 |---|---|---|
-| P0 | Repair CI account billing / spending limit: main run [39382006663](https://github.com/pmixay/ReSense/actions/runs/39382006663) on `cefd4c4` failed before any step; GitHub's annotation confirms billing/limit | blocks E1 and a hosted check of the release; verified 20.10 |
+| done | CI account billing / spending limit: no longer reproduces. Main runs [#667](https://github.com/pmixay/ReSense/actions/runs/39432683938) on `5d83c5b` and [#669](https://github.com/pmixay/ReSense/actions/runs/39436711965) on `f56ad5e` ran checks, offline-build, docker, pytest and webapp to success (pytest step "no test may have been skipped" passed); the earlier red main run #660 failed at the frozen-source step (old seal), not on billing | E1's CI prerequisite is met; the first blocked run was `cefd4c4` ([39382006663](https://github.com/pmixay/ReSense/actions/runs/39382006663)); re-checked 20.10 ~18:00 MSK |
 | done (integrity) | Reseal the integrated R3 source with the full strict gate |40 frozen files; gate/X3/Falcon retained; independent P4 bundle acceptance is still P0 ([record](evidence/r3_completion_2026-10-20/README.md)) |
-| P1 | E1: tag and release 1.2.0, verify the archive | needs CI and the reseal |
+| P1 | E1: tag and release 1.2.0, verify the archive | CI runs now; waits for the final source after the code stop, its reseal and P4's acceptance (development is still open, so no tag or image yet) |
 | P1 | Final numbers into the deck and speech; two rehearsals with P2, P3, P4 | needs the reseal |
 | P1 | S5: bench of the final image on the available hardware (2–4 cores accepted) | needs an image |
 | P1 | Read the 29.09 safety review yourself ([`CAPTAIN.md`](CAPTAIN.md) §3 item 8) | — |
@@ -143,7 +146,7 @@ point estimates and the former dates of every row are in the archive.
 
 | id | item | state | prio |
 |---|---|---|---|
-| CI | repair CI (account billing) | checked main run on `cefd4c4` fails before steps with billing/spending-limit annotation; blocks E1 | P0 |
+| CI | repair CI (account billing) | **done**: main runs execute every job and pass (#667 on `5d83c5b`, #669 on `f56ad5e`, checked 20.10 ~18:00 MSK); the billing failure seen on `cefd4c4` no longer reproduces | done |
 | reseal | reseal 1.2.0 after the last code change | R3 integrity seal on40 files and strict full gate; final independent bundle acceptance remains P0 | integrity delivered; P0 review |
 | L16/S3 | ring-free orientation + bounded orientation search | **on; A1 repair/T1 delivered**, paired recordings/gate/X3 pass; F1a-main merge verified on gate/X3/Falcon +489 tests; general unsupported mounts and final-bundle review remain separate ([record][l16-open-air]) | delivered; P0 bundle review |
 | R3 | thin cables | **on; author completion delivered**: B2 correct STOP label and order-independent moving-cable confirmation, B3 current-frame support in accumulation; first/held E6 86.25/61.28 m, hanging48.19 m float32 (35.1 m compact); gate/X3/Falcon unchanged,448 affected tests pass | delivered; P0 bundle review |
@@ -155,7 +158,7 @@ point estimates and the former dates of every row are in the archive.
 | N5 | labels of the new synthetic bags | initial labels done; organizer markers independently checked; merged PR #43 supplement adds cube/flags 12 rows; final scoring pending | P1 |
 | J1 | re-judge the final seal | retarget [`RELEASE_DAY.md`](evidence/rejudge_2026-10-16/RELEASE_DAY.md) from 1.1.0; needs the reseal | P1 |
 | G3 | held-out run by a fresh agent | spec registered, no run; on the final 1.2.0 seal | P1 |
-| E1 | tag and release 1.2.0 (1.1.0 is not released) | needs CI, the reseal and the final image | P1 |
+| E1 | tag and release 1.2.0 (1.1.0 is not released) | CI works now; needs the final source and its reseal, P4's acceptance and the final image | P1 |
 | S5 | bench of the final image | 2–4 cores accepted; needs an image | P1 |
 | PT1 / PT2 | pitch content; live demo and two rehearsals | deck text updated 19.10; rehearsals **planned** 20.10 and 22.10, no completion receipt in reviewed records; visuals/final numbers after reseal | P1 |
 | D1 | stale statements in the docs | 19.10 clean-up and 20.10 backlog reconciliation; final numbers after reseal/J1 | P1 |
@@ -185,7 +188,7 @@ One short entry per open card; the full text (evidence, cause, tasks, acceptance
 * **O1** (pitch format; whether an updated version counts): sent; answered in part on 19.10 ([`answers.md`](organizers/answers.md)
   §12, [`QUESTIONS.md`](QUESTIONS.md)). Open: the filter (Q3), bag playback (Q5) and O1 itself; P1 sends the Falcon results
   and the 1.2.0 status if updates are allowed.
-* **E1** tag and release **1.2.0**: needs a working CI, the reseal and the final image. P4 accepted the merged B4 source
+* **E1** tag and release **1.2.0**: CI works now (main #667, #669 green); needs the final source and its reseal, P4's acceptance and the final image. P4 accepted the merged B4 source
   `0779db7` on 19.10 ([review](evidence/p4_review_b4_merged_2026-10-19/README.md)); that is no release. Done when
   `scripts/verify_release.sh v1.2.0` exits 0 from a logged-out machine and `detector_freeze.py verify` passes on the tag.
 * **E2** offline rebuild from the release archive: local PASS ([evidence](evidence/offline_rebuild_2026-10-15/README.md));
@@ -392,8 +395,8 @@ Owner P1. Reconciled on 20.10 against decisions 35–45, current source/configur
 ### 9a. Decisions (19–20.10; [`DECISIONS.md`](DECISIONS.md) rows 35–45)
 
 * **1.1.0 will not be released.** Development continues on **1.2.0**; the next release, J1 and the G3 run use the **final
-  1.2.0 seal**, the J1 pin to 1.1.0 is dropped (row 35). GitHub still publishes only **v1.0.0**; main's 20.10 CI is blocked
-  before steps by billing/spending limit.
+  1.2.0 seal**, the J1 pin to 1.1.0 is dropped (row 35). GitHub still publishes only **v1.0.0**; main's CI was blocked
+  before steps by a billing/spending limit on `cefd4c4`, which no longer reproduces (runs #667 and #669 green, 20.10 ~18:00 MSK).
 * **The questions to the organizers were sent and were partly answered on 19.10** ([`answers.md`](organizers/answers.md)
   §12, §9f below); open: the filter (Q3), bag playback (Q5), O1.
 * **The four agent lanes** (K1/K2, F1, Falcon long range, N3) are merged with `main` (L16/S3, R3) into the integration
