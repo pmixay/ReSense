@@ -84,3 +84,46 @@ condition before further measurement: **both side heights separately** must
 support the footprint top within the existing 0.05 m margin. Use the lower
 side height, never an interpolated height above it. This deliberately fails
 open on a steep grade or one-sided head observations. Keep targeted-A XML.
+
+### Measured variant B and the raw-state reading of the rail head
+
+Variant B (both side heights, lower one) passed the strict gate: ride alarm
+events 23 -> 20, STOP episodes 26 -> 25, alarm frames 111 -> 108 against
+current main; every other recording and every set O object identical; the
+gate passed with no waiver. It recovers 77 of the 98 archived flips. The
+residual cost against the pre-repair rule is +2 events and +1 episode.
+
+The raw frames explain what the rule compares. On the ride **both** rails
+read bimodally and synchronously: the lower mode (0.05-0.11 m) is the rail
+web, the upper mode (0.18-0.23 m) is the head's top surface. The model's
+rail-head plane therefore sits about 0.1 m below the real head top on this
+stretch. The F1a reference is the **median** of the band, so it reads the web;
+the B1 repair's uncapped top reads the head's top. The comparison was
+apples to oranges, and the repaired rule reported the head's own top as an
+object's body. The variant-B surface is likewise a web reading.
+
+The reference must read the **same feature** the top reads. Amendment before
+the second production edit: the independent surface is the head's **top
+surface** in the candidate's own lateral band - the highest low-free return
+in the band, not a median - with these conditions, all parameter-free:
+
+* the candidate is narrow and its lateral interval reaches an expected rail
+  line (the existing ``rail_start_max_width`` / ``rail_start_lateral``
+  geometry of ``mark_rail_line``);
+* the band's height window is the same one the top uses (``foot_max_top``),
+  so both sides of the comparison describe the same surface;
+* both along-track sides must carry at least one low-free band return, so a
+  one-off structure cannot define the surface;
+* the surface must be seen by **at least two distinct returns** within
+  ``rail_start_margin`` of it (the cloud holds every return twice, so the
+  support is counted on distinct ``(x, dy)``); a single stray return fails
+  open;
+* the candidate's uncapped top must not rise above that surface by more than
+  ``rail_start_margin`` (the existing 0.05 m, half the organizers' 0.10 m
+  object).
+
+The eligibility gate is unchanged: only a cluster the **pre-repair** F1a rule
+rejected (capped top below the original median reference) can be rejected
+this way. The new rejection set is therefore a subset of the pre-repair
+rule's, which on the recordings contained no real object (T4's independent
+visual exposure). Keep the variant-B XML and gate report.
