@@ -17,8 +17,8 @@ def ride(report):
 
 
 def main():
-    cand = load(HERE / 'gate-b-candidate.json')
-    ref = load(HERE / 'gate-b-reference.json')
+    cand = load(HERE / 'gate-c-candidate.json')
+    ref = load(HERE / 'gate-c-reference.json')
     print('candidate gate passed', cand['gate']['passed'], 'allow', cand['gate']['allow'],
           'worse', cand['gate']['worse_gated'], 'missing', cand['gate']['missing_gated'])
     print('reference gate passed', ref['gate']['passed'])

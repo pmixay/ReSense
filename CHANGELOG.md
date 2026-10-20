@@ -22,6 +22,28 @@ red. Figures are the team's, measured when a change landed (detector figures on 
 targeted suites pass; the full suite, the final gate, X3 and the whole Falcon recording on the final commit are pending
 ([`docs/BACKLOG.md`](docs/BACKLOG.md) "Current plan"). Not a release, not a J1 score, not a G3 run.
 
+### 20.10 — F1a completion: the rail head's own top surface as the reference
+
+- The B1 repair's ride cost is **removed**. The frame's rail returns are bimodal: the lower mode is the rail
+  *web*, the upper mode the head's *top surface*; on the ride both rails read both modes synchronously, so the
+  model's rail-head plane sits about 0.1 m below the real head top. The F1a reference was the **median** of the
+  band (the web) while the repair's uncapped top reads the head's top, so the comparison was between two different
+  features and the head's own top was reported as an object's body. The completion reads the **same feature** on
+  both sides: the head's top surface in the candidate's own lateral band, from low-free points only, supported by
+  at least two distinct returns, on the same height window the top uses.
+- Chunked ride gate against current main: alarm events **23 -> 18**, STOP episodes **26 -> 24**, alarm frames
+  **111 -> 102** — exactly the pre-repair values. **9 STOP frames removed, none added.** Every set O object is
+  unchanged (`long_low_on_rails` 52 frames / 87.2 m, `small_on_rail` 23 / 42.7 m, `thin_hanging` 18 / 35.1 m), the
+  labelled `doubleT_obstacle` hits are unchanged, the other five recordings are identical except
+  `doubleT_platform`'s 2 advisory frames, the 32 physical scenes (raised rails, box tops, empty controls) show 0
+  differing rows, the whole Falcon **4,443 rows are field-identical** and X3 passes **0 of 260 comparisons
+  failed** over 40 cases. **363 affected tests pass**; the strict gate passes without waivers.
+- The new rule can only reject a cluster the **pre-repair** rule rejected, so its rejection set is a subset of the
+  pre-repair rule's, which on the recordings held no real object (T4's independent visual exposure). 13 of P4's 98
+  flipped clusters stay unexplained — a head whose top no ring crosses in the window — and the rule then fails
+  open. Author evidence on committed source: not independent P4 acceptance and not a release.
+  [Evidence](docs/evidence/f1a_completion_2026-10-20/README.md).
+
 ### 20.10 — R3 B2/B3 completion
 
 - Accumulated cable clusters can confirm from current-frame footprint, height and distinct
