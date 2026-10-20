@@ -191,7 +191,7 @@ equal to `BAG_SHA256SUMS`. The Drive file was readable without a login at that t
 repository is public; the owner can restrict the Drive sharing, and the checksum below stays the check.
 *Edit of 20.10 evening by P1's session: this section said "never to a cloud folder or the repository". That was the building agent's own
 caution (no organizers' rule was found in the repository); the captain decided to keep a Drive copy. Other copies: direct, as below.*
-The temporary anonymous upload that carried the file from the build session to the Drive (21:20 to about 21:55 MSK) was deleted after the
+The temporary anonymous upload that carried the file from the build session to the Drive (finished 21:20 MSK, deleted before 21:42 MSK) was deleted after the
 check; the host's API answered `ok`, the removal itself could not be confirmed (its page is a script shell).
 
 To use the Drive copy: download it into `bag/` (next to `bag/metadata.yaml`), then check:
