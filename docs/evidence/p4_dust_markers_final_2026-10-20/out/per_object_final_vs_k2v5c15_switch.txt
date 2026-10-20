@@ -1,0 +1,12 @@
+  id frames | A det A stop A warn A 1st stop m | B det B stop B warn B 1st stop m
+   0    102 |    35     35      9         51.4 |    37     37      0         54.0
+      STOP lost in B: []
+      STOP gained in B: [316, 317]
+   1    139 |    42     42      6         69.1 |    42     42      6         69.1
+  12    255 |    11     11    100        110.6 |    21     21     84        110.6
+      STOP lost in B: []
+      STOP gained in B: [173, 174, 175, 176, 177, 178, 202, 203, 204, 205]
+  13     51 |     4      4      0         23.5 |     9      9      6         26.5
+      STOP lost in B: []
+      STOP gained in B: [538, 539, 546, 547, 548]
+  14    140 |    41     41     30        104.0 |    41     41     30        104.0

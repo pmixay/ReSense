@@ -18,7 +18,7 @@ export const DECISION_LABEL: Record<Decision, string> = {
   FAULT: 'ошибка',
 };
 
-/** Upper-case labels for decision chips and beacons (Benzin). */
+/** Upper-case labels for decision chips and beacons. */
 export const DECISION_CHIP_LABEL: Record<Decision, string> = {
   GO: 'GO',
   CAUTION: 'ВНИМАНИЕ',
@@ -28,24 +28,24 @@ export const DECISION_CHIP_LABEL: Record<Decision, string> = {
 
 /** Fill colours (strips, lamps). STOP is always drawn with the white 45° hatch on top. */
 export const DECISION_COLOR: Record<Decision, string> = {
-  GO: '#12A150',
-  CAUTION: '#FFB300',
-  STOP: '#D0001B',
-  FAULT: '#5B4E9C',
+  GO: '#009F68',
+  CAUTION: '#FFB000',
+  STOP: '#D10C31',
+  FAULT: '#7739C8',
 };
 
 /** Background under text (GO uses the deeper green so white text has contrast). */
 export const DECISION_BG: Record<Decision, string> = {
-  GO: '#0B7A3B',
-  CAUTION: '#FFB300',
-  STOP: '#D0001B',
-  FAULT: '#5B4E9C',
+  GO: '#007D4B',
+  CAUTION: '#FFB000',
+  STOP: '#D10C31',
+  FAULT: '#7739C8',
 };
 
 /** Text colour on DECISION_BG: ink on amber, white otherwise. */
 export const DECISION_INK: Record<Decision, string> = {
   GO: '#FFFFFF',
-  CAUTION: '#16151A',
+  CAUTION: '#111827',
   STOP: '#FFFFFF',
   FAULT: '#FFFFFF',
 };

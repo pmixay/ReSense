@@ -1,0 +1,17 @@
+gate on current main f56ad5e with H' off (--set cluster.mount_cross_tol=0, exit 0, no --allow) against the shipped cc6226e gate rows (H' on)
+config.yaml: cc6226e mount_cross_tol: 0.5; main H' off mount_cross_tol: 0
+--- cmp_frames.py
+{"files": 15, "rows": 15269, "rows_different": 0, "rows_latency_level_only": 702, "first_differences": [], "setF_straight_equal": false}
+--- list_diff.py
+SUMMARY rows 15269; differ in decision/detections/warnings 0; differ only in other non-timing fields 0
+--- gate JSON
+config.set                                                                     []  ['cluster.mount_cross_tol=0']
+config.sha256                                                debeb58455f0a24deec885864a02d91c70d7eb7a  3b5cd57dc25f13500a2b98f5b988dc93cd2274a3
+recordings.doubleT_obstacle.health.ok                                         167                   201
+recordings.doubleT_obstacle.health.warn                                        34                     0
+recordings.doubleT_platform.health.ok                                         319                   322
+recordings.doubleT_platform.health.warn                                        26                    23
+ride.health.ok                                                              10580                 11041
+ride.health.warn                                                              691                   230
+run.jobs                                                                        3                     4
+gate passed True worse [] better 8 commit f56ad5e6 []

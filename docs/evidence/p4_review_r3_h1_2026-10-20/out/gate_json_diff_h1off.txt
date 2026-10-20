@@ -1,0 +1,9 @@
+config.set                                                                     []  ['cluster.column_core_margin=0']
+config.sha256                                                debeb58455f0a24deec885864a02d91c70d7eb7a  6bb8ceec23fbb5948004976c928237eccca34df1
+recordings.doubleT_obstacle.health.ok                                         167                   201
+recordings.doubleT_obstacle.health.warn                                        34                     0
+recordings.doubleT_platform.health.ok                                         319                   322
+recordings.doubleT_platform.health.warn                                        26                    23
+ride.health.ok                                                              10580                 10879
+ride.health.warn                                                              691                   392
+run.jobs                                                                        3                     2

@@ -1,0 +1,24 @@
+dust frames (4): [21, 27, 35, 36]; dust boxes in them: 7
+
+== /tmp/claude-0/-home-user-ReSense/fb93d84d-3156-5b5d-9ddf-809db858cc32/scratchpad/runs/dust_platform.jsonl
+   STOP 0, CAUTION 1 of 4 dust frames; detections at a dust box: tight 0 coarse 0; warnings at a dust box: tight 0 coarse 0
+  frame  21 GO      clear 165.3 nearest None level ok dets 0 warns 0 msgs []
+      box  0 at fwd  3.49 lat  1.48 up  0.30; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      box  1 at fwd  4.39 lat  1.75 up  0.48; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      decisions i-3..i+3 (warning distances): 18:GO  19:GO  20:GO  21:GO  22:GO  23:GO  24:GO
+  frame  27 GO      clear 139.8 nearest None level ok dets 0 warns 0 msgs []
+      box  6 at fwd  4.38 lat  1.40 up  0.52; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      box  7 at fwd  6.08 lat  1.77 up  0.28; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      decisions i-3..i+3 (warning distances): 24:GO  25:GO  26:GO  27:GO  28:GO  29:GO  30:GO
+  frame  35 CAUTION clear 144.7 nearest None level ok dets 0 warns 1 msgs []
+      box 12 at fwd  4.26 lat -0.38 up  0.18; closest det/warn (kind, d, |dfwd|, |dlat|, reason): [('warn', 1.8, 2.46, 1.74, '')]
+      box 13 at fwd  4.96 lat  0.17 up  0.35; closest det/warn (kind, d, |dfwd|, |dlat|, reason): [('warn', 1.8, 3.16, 1.19, '')]
+      decisions i-3..i+3 (warning distances): 32:GO  33:GO  34:CAUT[3.2]  35:CAUT[1.75]  36:GO  37:GO  38:GO
+      warn d=1.75 c=[1.8, 1.36, -0.87] size=[0.12, 0.02, 0.14] reason='': marker object(s) none
+  frame  36 GO      clear 148.3 nearest None level ok dets 0 warns 0 msgs []
+      box 13 at fwd  3.92 lat  0.17 up  0.35; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      decisions i-3..i+3 (warning distances): 33:GO  34:CAUT[3.2]  35:CAUT[1.75]  36:GO  37:GO  38:GO  39:GO
+
+control 1 (detection on every dust box): tight 7/7, coarse 7/7
+control 3 (detection 20 m beyond every dust box): tight 0/7, coarse 0/7 (must be 0)
+control 2 (run's STOP frames with a known object in range that the coarse rule matches): 185/185

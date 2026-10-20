@@ -1,0 +1,62 @@
+## 1. identity: hooked shipped replica vs committed shipped run
+frames 4443 / committed 4443; stream found 4443 kept 4443 lost 0; bytes 20281548800
+non-timing fields differ: 0 rows; .x.jsonl lines equal: 4443 of 4443
+replica calls into the clear-distance model during process: {'small_target_limit': 0, 'candidate_ranges': 0, 'falcon_expected_points': 0} (positive control, the node path with the counters up: {'small_target_limit': 1, 'candidate_ranges': 1, 'falcon_expected_points': 49})
+
+## 2. H′ off vs shipped: frames with a different decision, detections or warnings
+8 frames: [4394, 4395, 4396, 4397, 4398, 4399, 4400, 4401]; transitions shipped->off {'CAUTION->STOP': 8}; other non-timing only: 0 []
+STOP frames shipped 1364, off 1372; STOP only with H′ on: []; STOP only with H′ off: [4394, 4395, 4396, 4397, 4398, 4399, 4400, 4401]
+
+## 3. what H′ did (shipped replica, read-only hook)
+calls 4443 in 4443 frames; with a final mount 4251 frames (first 192); mount status counts {'pending': 192, 'ok': 4251}
+clusters looked at 265; model/mount disagreement over the threshold 31 in frames [4371, 4376, 4377, 4378, 4379, 4380, 4381, 4383, 4387, 4388, 4389, 4390, 4391, 4392, 4393, 4394, 4395, 4396, 4397, 4398, 4410]; made advisory 20 in frames [4383, 4387, 4388, 4389, 4390, 4391, 4392, 4393, 4394, 4395, 4396, 4397, 4398]
+   frame 4371: d 6.859 lat -0.308  n 86 rail_z -0.647 plane -1.772 |diff| 1.124 > thr 0.843; heights above the plane 1.286..1.585 (top 3.0); above the model rail head 0.124..0.46; demoted False
+   frame 4376: d 6.428 lat -0.375 low n 29 rail_z -0.371 plane -1.772 |diff| 1.401 > thr 0.821; heights above the plane 1.444..1.527 (top 3.0); above the model rail head 0.031..0.12; demoted False
+   frame 4377: d 6.308 lat -0.376  n 33 rail_z -0.472 plane -1.772 |diff| 1.3 > thr 0.815; heights above the plane 1.446..1.556 (top 3.0); above the model rail head 0.12..0.256; demoted False
+   frame 4378: d 6.213 lat -0.394  n 50 rail_z -0.519 plane -1.772 |diff| 1.253 > thr 0.811; heights above the plane 1.396..1.587 (top 3.0); above the model rail head 0.121..0.327; demoted False
+   frame 4379: d 4.747 lat 0.211  n 13 rail_z -0.797 plane -1.772 |diff| 0.975 > thr 0.737; heights above the plane 1.211..1.345 (top 3.0); above the model rail head 0.127..0.37; demoted False
+   frame 4379: d 6.089 lat -0.393  n 65 rail_z -0.545 plane -1.772 |diff| 1.227 > thr 0.804; heights above the plane 1.381..1.608 (top 3.0); above the model rail head 0.126..0.377; demoted False
+   frame 4380: d 4.722 lat 0.228  n 15 rail_z -0.795 plane -1.772 |diff| 0.977 > thr 0.736; heights above the plane 1.212..1.371 (top 3.0); above the model rail head 0.126..0.394; demoted False
+   frame 4380: d 5.971 lat -0.4  n 72 rail_z -0.567 plane -1.772 |diff| 1.205 > thr 0.799; heights above the plane 1.358..1.605 (top 3.0); above the model rail head 0.12..0.394; demoted False
+   frame 4381: d 4.613 lat 0.24  n 13 rail_z -0.799 plane -1.772 |diff| 0.973 > thr 0.731; heights above the plane 1.204..1.344 (top 3.0); above the model rail head 0.145..0.371; demoted False
+   frame 4381: d 5.85 lat -0.408  n 67 rail_z -0.587 plane -1.772 |diff| 1.184 > thr 0.792; heights above the plane 1.341..1.571 (top 3.0); above the model rail head 0.122..0.387; demoted False
+   frame 4383: d 9.701 lat 0.004  n 793 rail_z 2.134 plane -1.772 |diff| 3.905 > thr 0.985; heights above the plane 4.159..4.309 (top 3.0); above the model rail head 0.12..0.398; demoted True
+   frame 4387: d 9.459 lat 0.03  n 548 rail_z 2.194 plane -1.772 |diff| 3.966 > thr 0.973; heights above the plane 4.147..4.307 (top 3.0); above the model rail head 0.12..0.327; demoted True
+   frame 4388: d 9.724 lat -0.009  n 143 rail_z 2.206 plane -1.772 |diff| 3.978 > thr 0.986; heights above the plane 4.191..4.308 (top 3.0); above the model rail head 0.193..0.331; demoted True
+   frame 4388: d 11.184 lat 0.046  n 407 rail_z 2.271 plane -1.772 |diff| 4.042 > thr 1.059; heights above the plane 4.193..4.309 (top 3.0); above the model rail head 0.12..0.258; demoted True
+   frame 4389: d 9.551 lat 0.028  n 533 rail_z 2.199 plane -1.772 |diff| 3.97 > thr 0.978; heights above the plane 4.175..4.309 (top 3.0); above the model rail head 0.121..0.329; demoted True
+   frame 4390: d 9.676 lat -0.008  n 142 rail_z 2.204 plane -1.772 |diff| 3.976 > thr 0.984; heights above the plane 4.177..4.309 (top 3.0); above the model rail head 0.184..0.332; demoted True
+   frame 4390: d 11.12 lat 0.064  n 388 rail_z 2.268 plane -1.772 |diff| 4.039 > thr 1.056; heights above the plane 4.185..4.31 (top 3.0); above the model rail head 0.12..0.26; demoted True
+   frame 4391: d 9.537 lat 0.03  n 553 rail_z 2.198 plane -1.772 |diff| 3.97 > thr 0.977; heights above the plane 4.145..4.308 (top 3.0); above the model rail head 0.12..0.327; demoted True
+   frame 4392: d 9.72 lat -0.004  n 149 rail_z 2.206 plane -1.772 |diff| 3.978 > thr 0.986; heights above the plane 4.214..4.31 (top 3.0); above the model rail head 0.218..0.333; demoted True
+   frame 4392: d 11.193 lat 0.055  n 392 rail_z 2.271 plane -1.772 |diff| 4.043 > thr 1.06; heights above the plane 4.208..4.309 (top 3.0); above the model rail head 0.12..0.258; demoted True
+   frame 4393: d 9.43 lat -0.006  n 150 rail_z 2.193 plane -1.772 |diff| 3.965 > thr 0.972; heights above the plane 4.14..4.305 (top 3.0); above the model rail head 0.145..0.327; demoted True
+   frame 4393: d 11.223 lat 0.043  n 386 rail_z 2.272 plane -1.772 |diff| 4.044 > thr 1.061; heights above the plane 4.163..4.308 (top 3.0); above the model rail head 0.121..0.257; demoted True
+   frame 4394: d 9.415 lat -0.001  n 140 rail_z 2.193 plane -1.772 |diff| 3.964 > thr 0.971; heights above the plane 4.14..4.309 (top 3.0); above the model rail head 0.145..0.331; demoted True
+   frame 4394: d 11.125 lat 0.061  n 411 rail_z 2.268 plane -1.772 |diff| 4.04 > thr 1.056; heights above the plane 4.164..4.312 (top 3.0); above the model rail head 0.12..0.261; demoted True
+   frame 4395: d 9.708 lat 0.025  n 543 rail_z 2.205 plane -1.772 |diff| 3.977 > thr 0.985; heights above the plane 4.174..4.31 (top 3.0); above the model rail head 0.12..0.329; demoted True
+   frame 4396: d 9.732 lat -0.007  n 144 rail_z 2.206 plane -1.772 |diff| 3.978 > thr 0.987; heights above the plane 4.178..4.309 (top 3.0); above the model rail head 0.185..0.332; demoted True
+   frame 4396: d 11.125 lat 0.056  n 397 rail_z 2.268 plane -1.772 |diff| 4.04 > thr 1.056; heights above the plane 4.186..4.308 (top 3.0); above the model rail head 0.12..0.258; demoted True
+   frame 4397: d 9.691 lat 0.028  n 547 rail_z 2.205 plane -1.772 |diff| 3.976 > thr 0.985; heights above the plane 4.154..4.309 (top 3.0); above the model rail head 0.12..0.328; demoted True
+   frame 4398: d 9.676 lat -0.007  n 145 rail_z 2.204 plane -1.772 |diff| 3.976 > thr 0.984; heights above the plane 4.18..4.312 (top 3.0); above the model rail head 0.186..0.334; demoted True
+   frame 4398: d 11.203 lat 0.058  n 387 rail_z 2.271 plane -1.772 |diff| 4.043 > thr 1.06; heights above the plane 4.187..4.311 (top 3.0); above the model rail head 0.12..0.261; demoted True
+   frame 4410: d 3.001 lat -0.138  n 15 rail_z -0.691 plane -1.772 |diff| 1.081 > thr 0.65; heights above the plane 1.203..1.493 (top 3.0); above the model rail head 0.121..0.412; demoted False
+
+## 4. attribution of every differing frame
+frame 4394: shipped CAUTION -> off STOP; H′ made advisory here: [(9.415, -0.001), (11.125, 0.061)]; off STOP detections (d, lat, = an H′ cluster): [(9.42, -0.0, True)]; off reporting tracks (id, hits, kind, d, lat, top, hmin): [(1105, 5, '', 9.42, -0.001, 0.331, 0.145)]; shipped tracks: [(1105, 'warning', 'height_conflict', 'height_conflict', 9.42)]
+frame 4395: shipped CAUTION -> off STOP; H′ made advisory here: [(9.708, 0.025)]; off STOP detections (d, lat, = an H′ cluster): [(9.16, -0.0, False)]; off reporting tracks (id, hits, kind, d, lat, top, hmin): [(1105, 5, '', 9.42, -0.001, 0.331, 0.145)]; shipped tracks: [(1105, 'warning', 'height_conflict', 'height_conflict', 9.42)]
+frame 4396: shipped CAUTION -> off STOP; H′ made advisory here: [(9.732, -0.007), (11.125, 0.056)]; off STOP detections (d, lat, = an H′ cluster): [(9.73, -0.01, True), (11.12, 0.06, True)]; off reporting tracks (id, hits, kind, d, lat, top, hmin): [(1105, 6, '', 9.73, -0.007, 0.332, 0.185), (1106, 5, '', 11.12, 0.056, 0.258, 0.12)]; shipped tracks: [(1105, 'warning', 'height_conflict', 'height_conflict', 9.73), (1106, 'warning', 'height_conflict', 'height_conflict', 11.12)]
+frame 4397: shipped CAUTION -> off STOP; H′ made advisory here: [(9.691, 0.028)]; off STOP detections (d, lat, = an H′ cluster): [(9.69, 0.03, True), (9.73, -0.01, True)]; off reporting tracks (id, hits, kind, d, lat, top, hmin): [(1106, 6, '', 9.69, 0.028, 0.328, 0.12), (1105, 6, '', 9.73, -0.007, 0.332, 0.185)]; shipped tracks: [(1106, 'warning', 'height_conflict', 'height_conflict', 9.69), (1105, 'warning', 'height_conflict', 'height_conflict', 9.73)]
+frame 4398: shipped CAUTION -> off STOP; H′ made advisory here: [(9.676, -0.007), (11.203, 0.058)]; off STOP detections (d, lat, = an H′ cluster): [(9.68, -0.01, True), (11.2, 0.06, True)]; off reporting tracks (id, hits, kind, d, lat, top, hmin): [(1105, 7, '', 9.68, -0.007, 0.334, 0.186), (1106, 7, '', 11.2, 0.058, 0.261, 0.12)]; shipped tracks: [(1105, 'warning', 'height_conflict', 'height_conflict', 9.68), (1106, 'warning', 'height_conflict', 'height_conflict', 11.2)]
+frame 4399: shipped CAUTION -> off STOP; H′ made advisory here: []; off STOP detections (d, lat, = an H′ cluster): [(9.68, -0.01, False), (11.41, 0.06, False)]; off reporting tracks (id, hits, kind, d, lat, top, hmin): [(1105, 7, '', 9.68, -0.007, 0.334, 0.186), (1106, 7, '', 11.2, 0.058, 0.261, 0.12)]; shipped tracks: [(1105, 'warning', 'height_conflict', 'height_conflict', 9.68), (1106, 'warning', 'height_conflict', 'height_conflict', 11.2)]
+frame 4400: shipped CAUTION -> off STOP; H′ made advisory here: []; off STOP detections (d, lat, = an H′ cluster): [(9.39, -0.0, False)]; off reporting tracks (id, hits, kind, d, lat, top, hmin): [(1105, 8, '', 9.39, -0.004, 2.208, 2.091)]; shipped tracks: [(1105, 'warning', 'elevated', 'elevated', 9.39)]
+frame 4401: shipped CAUTION -> off STOP; H′ made advisory here: []; off STOP detections (d, lat, = an H′ cluster): [(9.39, -0.0, False)]; off reporting tracks (id, hits, kind, d, lat, top, hmin): [(1105, 8, '', 9.39, -0.004, 2.208, 2.091)]; shipped tracks: [(1105, 'warning', 'elevated', 'elevated', 9.39)]
+
+## 5. the clear-distance model in the node's non-legacy path
+frames whose decision differs between the detector record and any variant: 0 []
+conservative: clear differs (model on vs off) in 4442 frames; model off: clear > 0 in 0 frames; model on: max 48.2, frames at 48.2 4053, clear > 0 in 4442, by decision {'GO': 8, 'CAUTION': 3070, 'STOP': 1364}; max monitored_small 48.2
+   frames where the model-on clear distance reaches beyond a reported detection or warning: 145 [(4038, 'STOP', 48.0, 47.97), (4041, 'STOP', 47.6, 47.56), (4044, 'STOP', 46.0, 45.99), (4045, 'STOP', 47.1, 47.08), (4046, 'STOP', 47.0, 46.95), (4049, 'STOP', 46.6, 46.56), (4050, 'STOP', 46.5, 46.47), (4051, 'STOP', 46.4, 46.35), (4053, 'STOP', 45.9, 45.88), (4055, 'STOP', 44.6, 44.59)]
+   (the detector's own clear distance beyond a detection or warning: 2927 [(6, 152.5, 115.01), (7, 154.6, 105.56), (9, 152.9, 105.55), (10, 123.0, 105.59), (11, 107.0, 105.57), (12, 111.0, 105.57), (13, 152.5, 105.48), (14, 127.0, 105.47), (16, 123.4, 105.57), (17, 146.4, 105.55)])
+small_candidate: clear differs (model on vs off) in 4442 frames; model off: clear > 0 in 0 frames; model on: max 48.2, frames at 48.2 4053, clear > 0 in 4442, by decision {'GO': 8, 'CAUTION': 3070, 'STOP': 1364}; max monitored_small 48.2
+   frames where the model-on clear distance reaches beyond a reported detection or warning: 145 [(4038, 'STOP', 48.0, 47.97), (4041, 'STOP', 47.6, 47.56), (4044, 'STOP', 46.0, 45.99), (4045, 'STOP', 47.1, 47.08), (4046, 'STOP', 47.0, 46.95), (4049, 'STOP', 46.6, 46.56), (4050, 'STOP', 46.5, 46.47), (4051, 'STOP', 46.4, 46.35), (4053, 'STOP', 45.9, 45.88), (4055, 'STOP', 44.6, 44.59)]
+   (the detector's own clear distance beyond a detection or warning: 2927 [(6, 152.5, 115.01), (7, 154.6, 105.56), (9, 152.9, 105.55), (10, 123.0, 105.59), (11, 107.0, 105.57), (12, 111.0, 105.57), (13, 152.5, 105.48), (14, 127.0, 105.47), (16, 123.4, 105.57), (17, 146.4, 105.55)])

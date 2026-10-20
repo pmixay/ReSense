@@ -1,0 +1,1 @@
+set F straight: cc6226e shipped vs main f56ad5e H' off; leaves 65121 65121 differing 931 {'config_sha256': 1, 'gt_vehicle_y_m': 929} max |gt diff| 7.3e-09 m other: ['summary.wall_s']

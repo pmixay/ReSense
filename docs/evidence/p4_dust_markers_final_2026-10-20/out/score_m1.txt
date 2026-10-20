@@ -1,0 +1,68 @@
+
+=== final_off vs reference /tmp/claude-0/-home-user-ReSense/fb93d84d-3156-5b5d-9ddf-809db858cc32/scratchpad/ref/off8c
+bag        id object                         frames | STOP ref STOP cand | first ref m first cand m | warn ref warn cand | verdict
+platform   15 person (8 parts, id 15-22)        264 |      147       147 |        44.0         44.0 |      117       117 | equal
+platform   23 small cube right                  175 |       38        38 |        86.8         86.8 |       40        40 | equal
+platform   24 small cube left                   188 |        0         0 |         nan          nan |       28        28 | equal
+switch      0 small cube on the left rail       102 |       35        35 |        51.4         51.4 |        9         9 | equal
+switch      1 hanging inclined cable            139 |       42        42 |        69.1         69.1 |        6         6 | equal
+switch     12 small cube right (first)          255 |       11        11 |       110.6        110.6 |      100       100 | equal
+switch     13 small cube left                    51 |        4         4 |        23.5         23.5 |        0         0 | equal
+switch     14 small cube right (last)           140 |       41        41 |       104.0        104.0 |       30        30 | equal
+tunnels     0 big cube 2x2x2 m                  102 |       52        52 |        96.8         96.8 |       13        13 | equal
+tunnels     1 beam across the rails              50 |       37        37 |        70.4         70.4 |        0         0 | equal
+tunnels    18 small cube left (first)            34 |        0         0 |         nan          nan |        0         0 | equal
+tunnels    19 small cube right                  101 |       29        29 |        55.0         55.0 |        0         0 | equal
+tunnels    20 small cube left (last)             49 |        0         0 |         nan          nan |        6         6 | equal
+M-1 PASS for final_off
+
+=== final_k2B vs reference /tmp/claude-0/-home-user-ReSense/fb93d84d-3156-5b5d-9ddf-809db858cc32/scratchpad/ref/off8c
+bag        id object                         frames | STOP ref STOP cand | first ref m first cand m | warn ref warn cand | verdict
+platform   15 person (8 parts, id 15-22)        264 |      147       147 |        44.0         44.0 |      117       117 | equal
+platform   23 small cube right                  175 |       38        40 |        86.8         89.5 |       40        47 | better
+platform   24 small cube left                   188 |        0         0 |         nan          nan |       28        27 | equal
+switch      0 small cube on the left rail       102 |       35        37 |        51.4         54.0 |        9         0 | better
+switch      1 hanging inclined cable            139 |       42        42 |        69.1         69.1 |        6         6 | equal
+switch     12 small cube right (first)          255 |       11        21 |       110.6        110.6 |      100        84 | better
+switch     13 small cube left                    51 |        4         9 |        23.5         26.5 |        0         6 | better
+switch     14 small cube right (last)           140 |       41        41 |       104.0        104.0 |       30        30 | equal
+tunnels     0 big cube 2x2x2 m                  102 |       52        55 |        96.8        100.4 |       13        18 | better
+tunnels     1 beam across the rails              50 |       37        37 |        70.4         70.4 |        0         0 | equal
+tunnels    18 small cube left (first)            34 |        0         0 |         nan          nan |        0         0 | equal
+tunnels    19 small cube right                  101 |       29        13 |        55.0         27.6 |        0         1 | WORSE  (STOP lost in frames [259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 279])
+tunnels    20 small cube left (last)             49 |        0         0 |         nan          nan |        6         6 | equal
+M-1 FAIL: tunnels id 19 for final_k2B
+
+=== final_k2v5c15 vs reference /tmp/claude-0/-home-user-ReSense/fb93d84d-3156-5b5d-9ddf-809db858cc32/scratchpad/ref/off8c
+bag        id object                         frames | STOP ref STOP cand | first ref m first cand m | warn ref warn cand | verdict
+platform   15 person (8 parts, id 15-22)        264 |      147       147 |        44.0         44.0 |      117       117 | equal
+platform   23 small cube right                  175 |       38        40 |        86.8         89.5 |       40        47 | better
+platform   24 small cube left                   188 |        0         0 |         nan          nan |       28        27 | equal
+switch      0 small cube on the left rail       102 |       35        37 |        51.4         54.0 |        9         0 | better
+switch      1 hanging inclined cable            139 |       42        42 |        69.1         69.1 |        6         6 | equal
+switch     12 small cube right (first)          255 |       11        21 |       110.6        110.6 |      100        84 | better
+switch     13 small cube left                    51 |        4         9 |        23.5         26.5 |        0         6 | better
+switch     14 small cube right (last)           140 |       41        41 |       104.0        104.0 |       30        30 | equal
+tunnels     0 big cube 2x2x2 m                  102 |       52        55 |        96.8        100.4 |       13        18 | better
+tunnels     1 beam across the rails              50 |       37        37 |        70.4         70.4 |        0         0 | equal
+tunnels    18 small cube left (first)            34 |        0         0 |         nan          nan |        0         0 | equal
+tunnels    19 small cube right                  101 |       29        13 |        55.0         27.6 |        0         1 | WORSE  (STOP lost in frames [259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 279])
+tunnels    20 small cube left (last)             49 |        0         0 |         nan          nan |        6         6 | equal
+M-1 FAIL: tunnels id 19 for final_k2v5c15
+
+=== control_8c2bf51_v5c30 vs reference /tmp/claude-0/-home-user-ReSense/fb93d84d-3156-5b5d-9ddf-809db858cc32/scratchpad/ref/off8c
+bag        id object                         frames | STOP ref STOP cand | first ref m first cand m | warn ref warn cand | verdict
+platform   15 person (8 parts, id 15-22)        264 |      147       147 |        44.0         44.0 |      117       117 | equal
+platform   23 small cube right                  175 |       38        31 |        86.8         76.4 |       40        56 | WORSE  (STOP lost in frames [106, 107, 108, 109, 110, 111, 112])
+platform   24 small cube left                   188 |        0         0 |         nan          nan |       28        27 | equal
+switch      0 small cube on the left rail       102 |       35        37 |        51.4         54.0 |        9         0 | better
+switch      1 hanging inclined cable            139 |       42        42 |        69.1         69.1 |        6         6 | equal
+switch     12 small cube right (first)          255 |       11        21 |       110.6        110.6 |      100        84 | better
+switch     13 small cube left                    51 |        4         9 |        23.5         26.5 |        0         6 | better
+switch     14 small cube right (last)           140 |       41        41 |       104.0        104.0 |       30        30 | equal
+tunnels     0 big cube 2x2x2 m                  102 |       52        55 |        96.8        100.4 |       13        18 | better
+tunnels     1 beam across the rails              50 |       37        37 |        70.4         70.4 |        0         0 | equal
+tunnels    18 small cube left (first)            34 |        0         0 |         nan          nan |        0         0 | equal
+tunnels    19 small cube right                  101 |       29        13 |        55.0         27.6 |        0         1 | WORSE  (STOP lost in frames [259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 279])
+tunnels    20 small cube left (last)             49 |        0         0 |         nan          nan |        6         6 | equal
+M-1 FAIL: platform id 23, tunnels id 19 for control_8c2bf51_v5c30

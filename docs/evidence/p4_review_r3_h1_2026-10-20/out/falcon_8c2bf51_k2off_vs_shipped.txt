@@ -1,0 +1,5 @@
+rows 4443 vs 4443
+differ (non-timing) 0; latency-level only 0; differ in decision/dets/warns 0
+frames differing (non-timing): []
+STOP rows 1364 -> 1364; lost []; added []
+x rows: not available on both sides

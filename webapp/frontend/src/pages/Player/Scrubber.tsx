@@ -1,4 +1,4 @@
-// The scrubber at the foot of the console: play / pause, frame steps, previous / next event, the
+// Workspace timeline and transport: play / pause, frame steps, previous / next event, the
 // frame counter, the decision strip with event pins and a draggable playhead, speeds and loop.
 import { memo } from 'react';
 import { DecisionStrip, IconButton, type StripMarker } from '../../components';
@@ -63,8 +63,8 @@ const Lane = memo(function Lane({
     >
       <DecisionStrip
         decisions={decisions}
-        height={24}
-        radius={12}
+        height={16}
+        radius={8}
         markers={markers}
         playhead={pos}
         onSeek={onSeek}
@@ -78,11 +78,12 @@ const Lane = memo(function Lane({
 
 export function Scrubber(p: ScrubberProps) {
   return (
-    <div className={styles.scrub}>
+    <section className={styles.scrub} aria-label="Воспроизведение">
       <IconButton
         icon={p.playing ? 'pause' : 'play'}
         label={p.playing ? 'Пауза (пробел)' : 'Воспроизвести (пробел)'}
-        variant="dark"
+        variant="red"
+        size="lg"
         className={styles.pbtn}
         onClick={p.onToggle}
         tooltip
@@ -112,6 +113,6 @@ export function Scrubber(p: ScrubberProps) {
         ))}
       </div>
       <IconButton icon="loop" label="Повтор по кругу" variant="well" className={`${styles.sbtn} ${styles.solo}`} active={p.loop} onClick={p.onLoop} tooltip tooltipPlacement="top-end" />
-    </div>
+    </section>
   );
 }

@@ -1,0 +1,155 @@
+{
+ "dust_frames": [
+  21,
+  27,
+  35,
+  36
+ ],
+ "boxes": 7,
+ "runs": {
+  "/tmp/claude-0/-home-user-ReSense/fb93d84d-3156-5b5d-9ddf-809db858cc32/scratchpad/runs/final_platform.jsonl": {
+   "frames": {
+    "21": {
+     "decision": "GO",
+     "clear": 165.3,
+     "nearest": null,
+     "level": "ok",
+     "msgs": [],
+     "n_dets": 0,
+     "n_warns": 0,
+     "boxes": [
+      {
+       "id": 0,
+       "fwd": 3.49,
+       "lat": 1.48,
+       "up": 0.3,
+       "closest": []
+      },
+      {
+       "id": 1,
+       "fwd": 4.39,
+       "lat": 1.75,
+       "up": 0.48,
+       "closest": []
+      }
+     ],
+     "hits": [],
+     "explained": []
+    },
+    "27": {
+     "decision": "GO",
+     "clear": 139.8,
+     "nearest": null,
+     "level": "ok",
+     "msgs": [],
+     "n_dets": 0,
+     "n_warns": 0,
+     "boxes": [
+      {
+       "id": 6,
+       "fwd": 4.38,
+       "lat": 1.4,
+       "up": 0.52,
+       "closest": []
+      },
+      {
+       "id": 7,
+       "fwd": 6.08,
+       "lat": 1.77,
+       "up": 0.28,
+       "closest": []
+      }
+     ],
+     "hits": [],
+     "explained": []
+    },
+    "35": {
+     "decision": "CAUTION",
+     "clear": 144.7,
+     "nearest": null,
+     "level": "ok",
+     "msgs": [],
+     "n_dets": 0,
+     "n_warns": 1,
+     "boxes": [
+      {
+       "id": 12,
+       "fwd": 4.26,
+       "lat": -0.38,
+       "up": 0.18,
+       "closest": [
+        [
+         "warn",
+         1.8,
+         2.46,
+         1.74,
+         ""
+        ]
+       ]
+      },
+      {
+       "id": 13,
+       "fwd": 4.96,
+       "lat": 0.17,
+       "up": 0.35,
+       "closest": [
+        [
+         "warn",
+         1.8,
+         3.16,
+         1.19,
+         ""
+        ]
+       ]
+      }
+     ],
+     "hits": [],
+     "explained": [
+      {
+       "kind": "warn",
+       "d": 1.75,
+       "c": [
+        1.8,
+        1.36,
+        -0.87
+       ],
+       "size": [
+        0.12,
+        0.02,
+        0.14
+       ],
+       "reason": "",
+       "marker_ids": []
+      }
+     ]
+    },
+    "36": {
+     "decision": "GO",
+     "clear": 148.3,
+     "nearest": null,
+     "level": "ok",
+     "msgs": [],
+     "n_dets": 0,
+     "n_warns": 0,
+     "boxes": [
+      {
+       "id": 13,
+       "fwd": 3.92,
+       "lat": 0.17,
+       "up": 0.35,
+       "closest": []
+      }
+     ],
+     "hits": [],
+     "explained": []
+    }
+   },
+   "n_stop": 0,
+   "n_caution": 1,
+   "n_det_tight": 0,
+   "n_warn_tight": 0,
+   "n_det_coarse": 0,
+   "n_warn_coarse": 0
+  }
+ }
+}

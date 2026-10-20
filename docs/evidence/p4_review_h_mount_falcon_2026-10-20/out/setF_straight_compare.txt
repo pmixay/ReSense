@@ -1,0 +1,5 @@
+set F straight: shipped gate vs H' off gate (setF_straight.json), leaves 65121 65121
+differing leaves 931 {'config_sha256 (the override changes the config file)': 1, 'gt_vehicle_y_m (ground truth from ICP odometry)': 929} largest |difference| in gt_vehicle_y_m: 7.34e-09 m
+differing leaves of any other kind: 1 ['summary.wall_s']
+sequences 30 30
+row fields that differ anywhere: ['gt_vehicle_y_m']

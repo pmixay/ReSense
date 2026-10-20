@@ -1,0 +1,477 @@
+source: new_data.zst 17078961996 bytes sha256=8124b627a8a70516a4023db522849f1cadae711e7b152b0f701535a69dab99ec
+full cache manifest absent; resuming only individually validated splits
+cached split 030: 51 frames, 25.4 MB; 1 new / 0 reused; 10 s
+cached split 058: 51 frames, 19.8 MB; 2 new / 0 reused; 14 s
+cached split 200: 51 frames, 24.8 MB; 3 new / 0 reused; 27 s
+cached split 084: 51 frames, 18.9 MB; 4 new / 0 reused; 30 s
+cached split 017: 51 frames, 24.3 MB; 5 new / 0 reused; 34 s
+cached split 073: 51 frames, 25.6 MB; 6 new / 0 reused; 38 s
+cached split 122: 51 frames, 20.3 MB; 7 new / 0 reused; 41 s
+cached split 139: 51 frames, 27.3 MB; 8 new / 0 reused; 46 s
+cached split 070: 51 frames, 24.8 MB; 9 new / 0 reused; 51 s
+cached split 133: 51 frames, 26.9 MB; 10 new / 0 reused; 56 s
+cached split 046: 51 frames, 25.4 MB; 11 new / 0 reused; 60 s
+cached split 215: 51 frames, 23.7 MB; 12 new / 0 reused; 65 s
+cached split 093: 51 frames, 25.9 MB; 13 new / 0 reused; 71 s
+cached split 077: 51 frames, 26.0 MB; 14 new / 0 reused; 76 s
+cached split 059: 51 frames, 19.8 MB; 15 new / 0 reused; 80 s
+cached split 143: 51 frames, 26.4 MB; 16 new / 0 reused; 84 s
+cached split 054: 51 frames, 18.4 MB; 17 new / 0 reused; 87 s
+cached split 211: 51 frames, 23.5 MB; 18 new / 0 reused; 91 s
+cached split 148: 51 frames, 17.9 MB; 19 new / 0 reused; 95 s
+cached split 050: 51 frames, 25.3 MB; 20 new / 0 reused; 100 s
+cached split 013: 51 frames, 23.9 MB; 21 new / 0 reused; 104 s
+cached split 101: 51 frames, 26.2 MB; 22 new / 0 reused; 109 s
+cached split 090: 51 frames, 18.7 MB; 23 new / 0 reused; 114 s
+cached split 066: 51 frames, 27.5 MB; 24 new / 0 reused; 119 s
+cached split 064: 51 frames, 27.2 MB; 25 new / 0 reused; 124 s
+cached split 055: 51 frames, 18.6 MB; 26 new / 0 reused; 128 s
+cached split 113: 51 frames, 19.4 MB; 27 new / 0 reused; 132 s
+cached split 194: 51 frames, 24.5 MB; 28 new / 0 reused; 138 s
+cached split 168: 51 frames, 23.8 MB; 29 new / 0 reused; 144 s
+cached split 189: 51 frames, 21.2 MB; 30 new / 0 reused; 150 s
+cached split 047: 51 frames, 25.3 MB; 31 new / 0 reused; 159 s
+cached split 184: 51 frames, 18.9 MB; 32 new / 0 reused; 163 s
+cached split 192: 51 frames, 26.3 MB; 33 new / 0 reused; 167 s
+cached split 146: 51 frames, 18.5 MB; 34 new / 0 reused; 171 s
+cached split 083: 51 frames, 18.4 MB; 35 new / 0 reused; 180 s
+cached split 081: 51 frames, 21.6 MB; 36 new / 0 reused; 183 s
+cached split 118: 51 frames, 20.9 MB; 37 new / 0 reused; 188 s
+cached split 092: 51 frames, 27.2 MB; 38 new / 0 reused; 193 s
+cached split 187: 51 frames, 20.0 MB; 39 new / 0 reused; 196 s
+cached split 120: 51 frames, 21.0 MB; 40 new / 0 reused; 200 s
+cached split 015: 51 frames, 24.4 MB; 41 new / 0 reused; 206 s
+cached split 209: 51 frames, 24.0 MB; 42 new / 0 reused; 212 s
+cached split 205: 51 frames, 24.1 MB; 43 new / 0 reused; 217 s
+cached split 071: 51 frames, 24.9 MB; 44 new / 0 reused; 222 s
+cached split 019: 51 frames, 23.9 MB; 45 new / 0 reused; 228 s
+cached split 173: 51 frames, 23.8 MB; 46 new / 0 reused; 234 s
+cached split 207: 51 frames, 24.3 MB; 47 new / 0 reused; 240 s
+cached split 111: 51 frames, 25.6 MB; 48 new / 0 reused; 245 s
+cached split 025: 51 frames, 26.3 MB; 49 new / 0 reused; 251 s
+cached split 151: 51 frames, 18.0 MB; 50 new / 0 reused; 255 s
+cached split 079: 51 frames, 26.4 MB; 51 new / 0 reused; 261 s
+cached split 178: 51 frames, 23.6 MB; 52 new / 0 reused; 268 s
+cached split 195: 51 frames, 24.2 MB; 53 new / 0 reused; 272 s
+cached split 117: 51 frames, 20.9 MB; 54 new / 0 reused; 275 s
+cached split 171: 51 frames, 22.8 MB; 55 new / 0 reused; 285 s
+cached split 012: 51 frames, 23.7 MB; 56 new / 0 reused; 295 s
+cached split 080: 51 frames, 26.7 MB; 57 new / 0 reused; 300 s
+cached split 134: 51 frames, 26.9 MB; 58 new / 0 reused; 305 s
+cached split 067: 51 frames, 28.0 MB; 59 new / 0 reused; 311 s
+cached split 175: 51 frames, 24.5 MB; 60 new / 0 reused; 316 s
+cached split 138: 51 frames, 27.5 MB; 61 new / 0 reused; 323 s
+cached split 006: 51 frames, 23.4 MB; 62 new / 0 reused; 327 s
+cached split 027: 51 frames, 25.5 MB; 63 new / 0 reused; 332 s
+cached split 126: 51 frames, 21.1 MB; 64 new / 0 reused; 337 s
+cached split 210: 51 frames, 23.4 MB; 65 new / 0 reused; 344 s
+cached split 159: 51 frames, 23.8 MB; 66 new / 0 reused; 348 s
+cached split 196: 51 frames, 24.2 MB; 67 new / 0 reused; 353 s
+cached split 176: 51 frames, 24.1 MB; 68 new / 0 reused; 358 s
+cached split 091: 51 frames, 25.9 MB; 69 new / 0 reused; 363 s
+cached split 007: 51 frames, 23.3 MB; 70 new / 0 reused; 368 s
+cached split 112: 51 frames, 19.7 MB; 71 new / 0 reused; 373 s
+cached split 096: 51 frames, 25.4 MB; 72 new / 0 reused; 381 s
+cached split 121: 51 frames, 20.5 MB; 73 new / 0 reused; 386 s
+cached split 145: 51 frames, 18.3 MB; 74 new / 0 reused; 391 s
+cached split 002: 51 frames, 26.3 MB; 75 new / 0 reused; 399 s
+cached split 185: 51 frames, 18.6 MB; 76 new / 0 reused; 405 s
+cached split 174: 51 frames, 23.9 MB; 77 new / 0 reused; 409 s
+cached split 183: 51 frames, 23.8 MB; 78 new / 0 reused; 414 s
+cached split 150: 51 frames, 18.0 MB; 79 new / 0 reused; 418 s
+cached split 037: 51 frames, 24.5 MB; 80 new / 0 reused; 429 s
+cached split 136: 51 frames, 25.3 MB; 81 new / 0 reused; 435 s
+cached split 062: 51 frames, 27.7 MB; 82 new / 0 reused; 453 s
+cached split 198: 51 frames, 24.1 MB; 83 new / 0 reused; 460 s
+cached split 155: 51 frames, 24.6 MB; 84 new / 0 reused; 464 s
+cached split 105: 51 frames, 26.6 MB; 85 new / 0 reused; 471 s
+cached split 003: 51 frames, 23.5 MB; 86 new / 0 reused; 476 s
+cached split 204: 51 frames, 23.5 MB; 87 new / 0 reused; 482 s
+cached split 035: 51 frames, 25.7 MB; 88 new / 0 reused; 488 s
+cached split 108: 51 frames, 27.0 MB; 89 new / 0 reused; 495 s
+cached split 026: 51 frames, 25.3 MB; 90 new / 0 reused; 506 s
+cached split 129: 51 frames, 26.9 MB; 91 new / 0 reused; 515 s
+cached split 001: 51 frames, 25.8 MB; 92 new / 0 reused; 520 s
+cached split 082: 51 frames, 18.3 MB; 93 new / 0 reused; 524 s
+cached split 142: 51 frames, 26.1 MB; 94 new / 0 reused; 538 s
+cached split 052: 51 frames, 20.8 MB; 95 new / 0 reused; 543 s
+cached split 038: 51 frames, 25.6 MB; 96 new / 0 reused; 551 s
+cached split 202: 51 frames, 24.2 MB; 97 new / 0 reused; 556 s
+cached split 208: 51 frames, 23.6 MB; 98 new / 0 reused; 562 s
+cached split 045: 51 frames, 25.8 MB; 99 new / 0 reused; 567 s
+cached split 130: 51 frames, 26.9 MB; 100 new / 0 reused; 573 s
+cached split 109: 51 frames, 27.2 MB; 101 new / 0 reused; 578 s
+cached split 057: 51 frames, 19.9 MB; 102 new / 0 reused; 583 s
+cached split 039: 51 frames, 25.8 MB; 103 new / 0 reused; 588 s
+cached split 182: 51 frames, 23.4 MB; 104 new / 0 reused; 599 s
+cached split 161: 51 frames, 23.7 MB; 105 new / 0 reused; 605 s
+cached split 094: 51 frames, 25.1 MB; 106 new / 0 reused; 609 s
+cached split 008: 51 frames, 23.8 MB; 107 new / 0 reused; 614 s
+cached split 060: 51 frames, 18.7 MB; 108 new / 0 reused; 619 s
+cached split 166: 51 frames, 24.3 MB; 109 new / 0 reused; 624 s
+cached split 164: 51 frames, 23.8 MB; 110 new / 0 reused; 630 s
+cached split 180: 51 frames, 23.7 MB; 111 new / 0 reused; 637 s
+cached split 018: 51 frames, 24.0 MB; 112 new / 0 reused; 642 s
+cached split 069: 51 frames, 25.1 MB; 113 new / 0 reused; 647 s
+cached split 163: 51 frames, 23.9 MB; 114 new / 0 reused; 652 s
+cached split 086: 51 frames, 20.2 MB; 115 new / 0 reused; 655 s
+cached split 170: 51 frames, 23.5 MB; 116 new / 0 reused; 660 s
+cached split 188: 51 frames, 21.2 MB; 117 new / 0 reused; 664 s
+cached split 119: 51 frames, 21.0 MB; 118 new / 0 reused; 669 s
+cached split 100: 51 frames, 25.7 MB; 119 new / 0 reused; 682 s
+cached split 048: 51 frames, 25.5 MB; 120 new / 0 reused; 687 s
+cached split 172: 51 frames, 23.7 MB; 121 new / 0 reused; 694 s
+cached split 099: 51 frames, 25.3 MB; 122 new / 0 reused; 705 s
+cached split 022: 51 frames, 26.0 MB; 123 new / 0 reused; 715 s
+cached split 154: 51 frames, 23.9 MB; 124 new / 0 reused; 719 s
+cached split 011: 51 frames, 24.3 MB; 125 new / 0 reused; 723 s
+cached split 085: 51 frames, 19.6 MB; 126 new / 0 reused; 727 s
+cached split 020: 51 frames, 24.2 MB; 127 new / 0 reused; 734 s
+cached split 165: 51 frames, 24.1 MB; 128 new / 0 reused; 748 s
+cached split 004: 51 frames, 23.7 MB; 129 new / 0 reused; 753 s
+cached split 162: 51 frames, 23.8 MB; 130 new / 0 reused; 757 s
+cached split 131: 51 frames, 26.7 MB; 131 new / 0 reused; 761 s
+cached split 044: 51 frames, 26.0 MB; 132 new / 0 reused; 765 s
+cached split 089: 51 frames, 20.0 MB; 133 new / 0 reused; 776 s
+cached split 110: 51 frames, 25.4 MB; 134 new / 0 reused; 782 s
+cached split 140: 51 frames, 26.9 MB; 135 new / 0 reused; 787 s
+cached split 063: 51 frames, 30.0 MB; 136 new / 0 reused; 791 s
+cached split 102: 51 frames, 26.9 MB; 137 new / 0 reused; 795 s
+cached split 000: 51 frames, 22.9 MB; 138 new / 0 reused; 799 s
+cached split 078: 51 frames, 25.7 MB; 139 new / 0 reused; 803 s
+cached split 217: 51 frames, 23.7 MB; 140 new / 0 reused; 807 s
+cached split 203: 51 frames, 23.9 MB; 141 new / 0 reused; 813 s
+cached split 197: 51 frames, 24.1 MB; 142 new / 0 reused; 818 s
+cached split 144: 51 frames, 19.5 MB; 143 new / 0 reused; 822 s
+cached split 061: 51 frames, 21.6 MB; 144 new / 0 reused; 826 s
+cached split 190: 51 frames, 21.2 MB; 145 new / 0 reused; 836 s
+cached split 034: 51 frames, 25.7 MB; 146 new / 0 reused; 841 s
+cached split 107: 51 frames, 26.1 MB; 147 new / 0 reused; 845 s
+cached split 098: 51 frames, 25.5 MB; 148 new / 0 reused; 849 s
+cached split 193: 51 frames, 25.7 MB; 149 new / 0 reused; 853 s
+cached split 169: 51 frames, 24.0 MB; 150 new / 0 reused; 857 s
+cached split 213: 51 frames, 23.5 MB; 151 new / 0 reused; 862 s
+cached split 040: 51 frames, 25.7 MB; 152 new / 0 reused; 867 s
+cached split 095: 51 frames, 25.4 MB; 153 new / 0 reused; 871 s
+cached split 097: 51 frames, 25.4 MB; 154 new / 0 reused; 874 s
+cached split 014: 51 frames, 24.3 MB; 155 new / 0 reused; 884 s
+cached split 103: 51 frames, 27.0 MB; 156 new / 0 reused; 892 s
+cached split 216: 51 frames, 23.3 MB; 157 new / 0 reused; 897 s
+cached split 199: 51 frames, 24.1 MB; 158 new / 0 reused; 901 s
+cached split 021: 51 frames, 25.4 MB; 159 new / 0 reused; 905 s
+cached split 220: 51 frames, 22.8 MB; 160 new / 0 reused; 909 s
+cached split 049: 51 frames, 25.3 MB; 161 new / 0 reused; 913 s
+cached split 152: 51 frames, 17.7 MB; 162 new / 0 reused; 917 s
+cached split 181: 51 frames, 23.5 MB; 163 new / 0 reused; 927 s
+cached split 160: 51 frames, 25.0 MB; 164 new / 0 reused; 937 s
+cached split 009: 51 frames, 25.1 MB; 165 new / 0 reused; 941 s
+cached split 028: 51 frames, 25.1 MB; 166 new / 0 reused; 947 s
+cached split 115: 51 frames, 19.7 MB; 167 new / 0 reused; 954 s
+cached split 042: 51 frames, 25.7 MB; 168 new / 0 reused; 958 s
+cached split 219: 51 frames, 23.0 MB; 169 new / 0 reused; 962 s
+cached split 124: 51 frames, 20.2 MB; 170 new / 0 reused; 966 s
+cached split 218: 51 frames, 23.3 MB; 171 new / 0 reused; 970 s
+cached split 114: 51 frames, 18.9 MB; 172 new / 0 reused; 974 s
+cached split 153: 51 frames, 18.2 MB; 173 new / 0 reused; 978 s
+cached split 127: 51 frames, 26.4 MB; 174 new / 0 reused; 982 s
+cached split 106: 51 frames, 25.9 MB; 175 new / 0 reused; 986 s
+cached split 167: 51 frames, 23.9 MB; 176 new / 0 reused; 990 s
+cached split 029: 51 frames, 25.6 MB; 177 new / 0 reused; 994 s
+cached split 051: 51 frames, 24.2 MB; 178 new / 0 reused; 998 s
+cached split 041: 51 frames, 25.5 MB; 179 new / 0 reused; 1005 s
+cached split 023: 51 frames, 27.4 MB; 180 new / 0 reused; 1012 s
+cached split 053: 51 frames, 18.9 MB; 181 new / 0 reused; 1017 s
+cached split 177: 51 frames, 23.9 MB; 182 new / 0 reused; 1022 s
+cached split 074: 51 frames, 25.9 MB; 183 new / 0 reused; 1027 s
+cached split 056: 51 frames, 18.9 MB; 184 new / 0 reused; 1031 s
+cached split 031: 51 frames, 25.2 MB; 185 new / 0 reused; 1035 s
+cached split 135: 51 frames, 26.6 MB; 186 new / 0 reused; 1038 s
+cached split 125: 51 frames, 20.9 MB; 187 new / 0 reused; 1042 s
+cached split 132: 51 frames, 26.7 MB; 188 new / 0 reused; 1048 s
+cached split 179: 51 frames, 23.6 MB; 189 new / 0 reused; 1054 s
+cached split 201: 51 frames, 24.5 MB; 190 new / 0 reused; 1058 s
+cached split 212: 51 frames, 23.7 MB; 191 new / 0 reused; 1062 s
+cached split 214: 51 frames, 23.4 MB; 192 new / 0 reused; 1066 s
+cached split 186: 51 frames, 18.3 MB; 193 new / 0 reused; 1070 s
+cached split 068: 51 frames, 25.7 MB; 194 new / 0 reused; 1074 s
+cached split 206: 51 frames, 25.6 MB; 195 new / 0 reused; 1080 s
+cached split 076: 51 frames, 25.8 MB; 196 new / 0 reused; 1088 s
+cached split 149: 51 frames, 18.0 MB; 197 new / 0 reused; 1097 s
+cached split 016: 51 frames, 24.3 MB; 198 new / 0 reused; 1105 s
+cached split 147: 51 frames, 18.4 MB; 199 new / 0 reused; 1110 s
+cached split 032: 51 frames, 25.5 MB; 200 new / 0 reused; 1113 s
+cached split 072: 51 frames, 25.4 MB; 201 new / 0 reused; 1117 s
+cached split 156: 51 frames, 23.9 MB; 202 new / 0 reused; 1121 s
+cached split 033: 51 frames, 25.7 MB; 203 new / 0 reused; 1125 s
+cached split 088: 51 frames, 20.1 MB; 204 new / 0 reused; 1129 s
+cached split 116: 51 frames, 20.9 MB; 205 new / 0 reused; 1134 s
+cached split 191: 51 frames, 24.3 MB; 206 new / 0 reused; 1146 s
+cached split 024: 51 frames, 26.3 MB; 207 new / 0 reused; 1154 s
+cached split 158: 51 frames, 23.6 MB; 208 new / 0 reused; 1158 s
+cached split 141: 51 frames, 26.7 MB; 209 new / 0 reused; 1169 s
+cached split 005: 51 frames, 24.0 MB; 210 new / 0 reused; 1176 s
+cached split 036: 51 frames, 24.7 MB; 211 new / 0 reused; 1193 s
+cached split 104: 51 frames, 26.8 MB; 212 new / 0 reused; 1198 s
+cached split 123: 51 frames, 20.2 MB; 213 new / 0 reused; 1202 s
+cached split 043: 51 frames, 25.8 MB; 214 new / 0 reused; 1207 s
+cached split 087: 51 frames, 20.2 MB; 215 new / 0 reused; 1211 s
+cached split 010: 51 frames, 24.8 MB; 216 new / 0 reused; 1222 s
+cached split 128: 51 frames, 26.9 MB; 217 new / 0 reused; 1226 s
+cached split 065: 51 frames, 26.3 MB; 218 new / 0 reused; 1231 s
+cached split 075: 51 frames, 25.8 MB; 219 new / 0 reused; 1234 s
+cached split 137: 51 frames, 27.2 MB; 220 new / 0 reused; 1239 s
+cached split 157: 51 frames, 23.6 MB; 221 new / 0 reused; 1243 s
+{
+  "schema": "resense-extended-ride-intake-v1",
+  "status": "complete",
+  "source_url": "https://disk.yandex.ru/d/N8IUpAyd7jyvow",
+  "source_member": "new_data.zst",
+  "source_modified": "2026-09-17T12:51:29+00:00",
+  "archive_bytes": 17078961996,
+  "archive_size_published": 17078961996,
+  "archive_size_verified": true,
+  "archive_checksum_published": true,
+  "archive_sha256_published": "8124b627a8a70516a4023db522849f1cadae711e7b152b0f701535a69dab99ec",
+  "archive_sha256_actual": "8124b627a8a70516a4023db522849f1cadae711e7b152b0f701535a69dab99ec",
+  "archive_sha256_verified": true,
+  "metadata_sha256": "7118a5a216d252e8b0ec6e7174e255e06b590164285649f950d8839ebfa9d91f",
+  "cache_location": "/home/user/data/cache/new_data",
+  "encoding": "compact16 NPY, each frame independently zstd level 3 (.npy.zst)",
+  "cache_splits": 221,
+  "cache_frames": 11271,
+  "cache_bytes": 5258708521,
+  "timestamp_coverage": {
+    "first_frame": "new_data_0_0000",
+    "first_stamp": 1789642926.1610787,
+    "last_frame": "new_data_220_0050",
+    "last_stamp": 1789644126.0445478,
+    "duration_s": 1199.8834691047668,
+    "max_interval_s": 7.09865140914917,
+    "intervals_over_0_15_s": 55
+  },
+  "written_splits_this_run": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    137,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146,
+    147,
+    148,
+    149,
+    150,
+    151,
+    152,
+    153,
+    154,
+    155,
+    156,
+    157,
+    158,
+    159,
+    160,
+    161,
+    162,
+    163,
+    164,
+    165,
+    166,
+    167,
+    168,
+    169,
+    170,
+    171,
+    172,
+    173,
+    174,
+    175,
+    176,
+    177,
+    178,
+    179,
+    180,
+    181,
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    188,
+    189,
+    190,
+    191,
+    192,
+    193,
+    194,
+    195,
+    196,
+    197,
+    198,
+    199,
+    200,
+    201,
+    202,
+    203,
+    204,
+    205,
+    206,
+    207,
+    208,
+    209,
+    210,
+    211,
+    212,
+    213,
+    214,
+    215,
+    216,
+    217,
+    218,
+    219,
+    220
+  ],
+  "reused_splits_this_run": [],
+  "elapsed_s": 1243.2
+}

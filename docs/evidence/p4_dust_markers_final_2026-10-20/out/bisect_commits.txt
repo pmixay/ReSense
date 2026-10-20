@@ -1,0 +1,38 @@
+# bisect: the same runner and clouds, the detector source of each commit, vs the 1.1.0 records
+## 3b7d7aa
+platform  386 frames: IDENT
+switch    736 frames: IDENT
+tunnels   545 frames: IDENT
+## 0f02b28
+platform  386 frames: clear[316](1)
+switch    736 frames: IDENT
+tunnels   545 frames: clear[45, 52, 291](3)
+## cefd4c4
+platform  386 frames: clear[316](1)
+switch    736 frames: IDENT
+tunnels   545 frames: clear[45, 52, 291](3)
+## 8c2bf51
+platform  386 frames: clear[316](1)
+switch    736 frames: IDENT
+tunnels   545 frames: clear[45, 52, 291](3)
+## 060bde7
+platform  386 frames: clear[316](1)
+switch    736 frames: IDENT
+tunnels   545 frames: clear[45, 52, 291](3)
+## cc6226e
+platform  386 frames: clear[316](1)
+switch    736 frames: IDENT
+tunnels   545 frames: clear[45, 52, 291](3)
+## 0a472d6
+platform  386 frames: clear[316](1)
+switch    736 frames: IDENT
+tunnels   545 frames: clear[45, 52, 291](3)
+## f56ad5e (final)
+platform  386 frames: clear[316](1)
+switch    736 frames: IDENT
+tunnels   545 frames: clear[45, 52, 291](3)
+
+# final f56ad5e vs 0a472d6 (R3 head)
+platform  386 frames: IDENT
+switch    736 frames: IDENT
+tunnels   545 frames: IDENT

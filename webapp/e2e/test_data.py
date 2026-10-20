@@ -11,7 +11,7 @@ import re
 import shutil
 
 import pytest
-from e2e_helpers import real_errors, wait_until
+from e2e_helpers import Held, api_route, real_errors, wait_until
 
 pw = pytest.importorskip("playwright.sync_api")
 expect = pw.expect
@@ -183,6 +183,8 @@ def test_upload_files_labels_and_process(app, backend, tmp_path):
     cdp.send("Network.enable")
     cdp.send("Network.emulateNetworkConditions",
              {"offline": False, "latency": 0, "downloadThroughput": -1, "uploadThroughput": 2 * 1024 * 1024})
+    # Let real bytes arrive, but keep the upload active across slow navigation.
+    remaining_chunks = Held(page, api_route(app.base, r"/uploads/[^/]+/chunked/(?:[2-9]|\d{2,})\?"))
     files.set_input_files(str(big))
     expect(page.get_by_text("big_ride")).to_be_visible()
     expect(page.get_by_text(re.compile(r"из\s24\sМБ"))).to_be_visible()
@@ -191,8 +193,9 @@ def test_upload_files_labels_and_process(app, backend, tmp_path):
     nav(page, "/")
     expect(page.get_by_role("link", name=re.compile("загружаем big_ride"))).to_be_visible()
     page.go_back()
-    expect(page.get_by_text(re.compile(r"из\s24\sМБ"))).to_be_visible()
+    expect(page.locator('main').get_by_text(re.compile(r"из\s24\sМБ"))).to_be_visible()
     page.get_by_role("button", name="Отменить загрузку").click()
+    remaining_chunks.release()
     expect(page.get_by_text("big_ride")).to_have_count(0)
     cdp.send("Network.emulateNetworkConditions",
              {"offline": False, "latency": 0, "downloadThroughput": -1, "uploadThroughput": -1})
@@ -305,7 +308,7 @@ def test_demo_source_survives_navigation(app, backend):
     expect(page).to_have_url(re.compile(r"/queue$"))
     page.go_back()
     expect(page).to_have_url(re.compile(r"/upload\?source=demo"))
-    expect(page.get_by_text("проверено")).to_be_visible(timeout=LONG)
+    expect(page.locator('main').get_by_text("проверено")).to_be_visible(timeout=LONG)
     rec = next(r for r in api.get("/recordings") if r["name"] == "demo_crossing")
     assert rec["duration_s"] < 6 and rec["labels"]["available"]
     expect(page).to_have_url(re.compile(rf"rec={rec['id']}"))

@@ -59,7 +59,7 @@ the functional green and yellow keep safety decisions distinct. The design uses 
 white panels and dark text. On 16:9 desktop screens, the status and cab view fit in one viewport.
 The top view and timeline share a second tab; source controls and detailed metrics open in the
 scrollable side list. The red header hides during page scrolling and returns when scrolling up.
-On phones, the panels stack and the plots redraw at their displayed width. Two modes use the same widgets:
+The interface uses a desktop-only layout with a 1280px minimum width. Two modes use the same widgets:
 
 * **Live**: enter the rosbridge URL (`ws://<host>:9090`, from
   `ros2 launch rosbridge_server rosbridge_websocket_launch.xml` on the machine running the
@@ -358,4 +358,4 @@ Malformed frame keys or obstacle lists are rejected rather than marked clear. Ex
 with the footprint. Label text containing quotes or angle brackets round-trips as plain text.
 Metadata keys and extra obstacle fields (including evaluator `name` and `speed_mps`) are retained.
 Imported `bbox` rows are converted to editable distance/lateral/size; exported edited geometry
-supersedes the original bbox. The table scrolls on phones and frame rows are keyboard-selectable.
+supersedes the original bbox. Frame rows are keyboard-selectable.

@@ -3,13 +3,18 @@
 A web stand for the ReSense LiDAR obstacle detector of a driverless metro train (ЛЦТ 2026, кейс 05,
 Московский метрополитен). Upload a ride (rosbag2, `.mcap`, `.npy/.npz`, a results `.jsonl`) or make
 a synthetic demo, run the **sealed** detector on it, and inspect every frame: decisions
-СВОБОДНО / ВНИМАНИЕ / СТОП / ОШИБКА, distances, latency, the score against labels, a 3D player
+GO («Препятствие не обнаружено») / ВНИМАНИЕ / СТОП / ОШИБКА, distances, latency, the score against labels, a 3D player
 from the cab, comparisons of runs and presets, and a live view of the ROS 2 node. Russian UI,
 design «Линия» ([`design/mockup/`](design/mockup/README.md)).
 
 ## Run it
 
-**Live: [resense.arbuz.lol](https://resense.arbuz.lol/)** — a deployed instance, nothing to install. Your own instance:
+**Live preview of `ui-improvement`: [resense.amdm.life](https://resense.amdm.life/).**
+After changes on this server, run `scripts/deploy_webapp.sh` to update it. Deployment
+and service details are in [`../deploy/README.md`](../deploy/README.md); the live
+`/deployment.json` endpoint identifies the deployed commit.
+
+Your own instance:
 
 ```bash
 scripts/run_webapp.sh              # http://localhost:8080 — builds the frontend if needed, one port
@@ -36,7 +41,7 @@ Data lives in `webapp/data/` (`RESENSE_WEB_DATA`); «Папка на серве�
 | `/queue` | Очередь | the running job (stage, %, frames/s, ETA), waiting and finished jobs, logs, cancel / retry |
 | `/runs` | Прогоны | every run with its decision strip and verdict; search, filters, rename, delete, pick for compare |
 | `/runs/:id` | Прогон | one run: KPIs, decisions per frame against labels, distance chart, events, 3D preview, downloads |
-| `/player`, `/player/:id` | Плеер | fullscreen 3D cab: point cloud, envelope, objects, HUD tiles, scrubber with events, keyboard |
+| `/player`, `/player/:id` | Плеер | full-width modeled 3D display under the shared navigation; camera/scenario controls, telemetry and timeline in responsive page flow |
 | `/compare?runs=a,b` | Сравнение | 2–4 runs side by side: KPI table with the best values, aligned strips, distances, preset diff |
 | `/live` | Прямой эфир | the ROS 2 node through rosbridge, or a replay of a run over the WebSocket, as the driver sees it |
 | `/presets` | Параметры | the sealed «Стандарт 1.0» and user presets of the detector's tunable parameters |

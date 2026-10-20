@@ -533,14 +533,14 @@ combined and their safety review, +28 the STOP keep and its cap, +3 P4's sustain
   `doubleT_obstacle` and set F detections unchanged. +4 tests.
   [`p3_rail_shadow_2026-09-25.json`](../evidence/results/p3_rail_shadow_2026-09-25.json),
   [EXPERIMENTS §1h](EXPERIMENTS_log_2026-09.md).
-- **Dashboard shortcuts after a click, phone gutter (25.09, review of PR #12):** since `46a04bb`
+- **Dashboard shortcuts after a click (25.09, review of PR #12):** since `46a04bb`
   the page's key handler ignored every key while a button or link had the focus, so after a
   click on «Демо» or ▶ the arrow keys did nothing, and on a view tab Space did nothing, until a
   click on empty space. Now
   only text entry (`input`, `select`, `textarea`, contenteditable, `role=textbox`) keeps every
   key; a focused button or link keeps only Space (its own click, so play/pause never fires
   twice); a view tab leaves Space to play/pause and keeps its own ←/→ (they switch the view, not
-  the frame). At phone width the page gutter is 16 px like the header (was 14 px).
+  the frame).
   `web/README.md`: roslib is bundled (it still said CDN), the report button is «Скачать отчёт».
   Web tests 11 → 13.
 - **Correction of the "stock Fast DDS" host-console finding (25.09 evening):** the second team

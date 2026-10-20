@@ -110,9 +110,9 @@ export class CloudCache<T> {
     return 'idle';
   }
 
-  /** The error message of a recent failure of this position (null otherwise). */
+  /** Keep the failure visible until success; retry cooldown only controls requests. */
   error(pos: number): string | null {
-    return this.failedRecently(pos) ? (this.failed.get(pos)?.message ?? null) : null;
+    return this.failed.get(pos)?.message ?? null;
   }
 
   private failedRecently(pos: number): boolean {

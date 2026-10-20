@@ -1,0 +1,502 @@
+{
+  "capturedAt": "2026-10-19T16:11:59.321552+00:00",
+  "base": "http://127.0.0.1:4181",
+  "frontendSourceSha256": "0b7e3ba1a4c2448ec4455c28b55aa77816ef2936f8bbb998138b1ab44f128bdc",
+  "journeys": [
+    {
+      "viewport": [
+        1280,
+        720
+      ],
+      "from": "/runs",
+      "to": "/upload",
+      "direction": "left",
+      "via": [
+        "queue"
+      ],
+      "frames": [
+        {
+          "file": "runs-to-upload-queue-1280.png",
+          "station": "queue",
+          "animationTime": 258.54949951171875,
+          "bitmap": {
+            "width": 640,
+            "height": 360,
+            "pixel": [
+              239,
+              242,
+              246,
+              255
+            ]
+          }
+        }
+      ],
+      "animatedProperties": [
+        {
+          "id": "section-travel",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "transform",
+            "computedOffset"
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "opacity",
+            "computedOffset"
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "opacity",
+            "computedOffset"
+          ]
+        }
+      ],
+      "endpoints": {
+        "x": 0,
+        "sharp": "1"
+      },
+      "cleanup": true
+    },
+    {
+      "viewport": [
+        1366,
+        768
+      ],
+      "from": "/runs",
+      "to": "/upload",
+      "direction": "left",
+      "via": [
+        "queue"
+      ],
+      "frames": [
+        {
+          "file": "runs-to-upload-queue-1366.png",
+          "station": "queue",
+          "animationTime": 258.54949951171875,
+          "bitmap": {
+            "width": 640,
+            "height": 360,
+            "pixel": [
+              240,
+              243,
+              246,
+              255
+            ]
+          }
+        }
+      ],
+      "animatedProperties": [
+        {
+          "id": "section-travel",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "transform",
+            "computedOffset"
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "opacity",
+            "computedOffset"
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "opacity",
+            "computedOffset"
+          ]
+        }
+      ],
+      "endpoints": {
+        "x": 0,
+        "sharp": "1"
+      },
+      "cleanup": true
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "from": "/runs",
+      "to": "/upload",
+      "direction": "left",
+      "via": [
+        "queue"
+      ],
+      "frames": [
+        {
+          "file": "runs-to-upload-queue-1440.png",
+          "station": "queue",
+          "animationTime": 258.54949951171875,
+          "bitmap": {
+            "width": 640,
+            "height": 400,
+            "pixel": [
+              237,
+              240,
+              243,
+              255
+            ]
+          }
+        }
+      ],
+      "animatedProperties": [
+        {
+          "id": "section-travel",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "transform",
+            "computedOffset"
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "opacity",
+            "computedOffset"
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "opacity",
+            "computedOffset"
+          ]
+        }
+      ],
+      "endpoints": {
+        "x": 0,
+        "sharp": "1"
+      },
+      "cleanup": true
+    },
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "from": "/runs",
+      "to": "/upload",
+      "direction": "left",
+      "via": [
+        "queue"
+      ],
+      "frames": [
+        {
+          "file": "runs-to-upload-queue-1920.png",
+          "station": "queue",
+          "animationTime": 258.54949951171875,
+          "bitmap": {
+            "width": 640,
+            "height": 360,
+            "pixel": [
+              232,
+              235,
+              239,
+              255
+            ]
+          }
+        }
+      ],
+      "animatedProperties": [
+        {
+          "id": "section-travel",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "transform",
+            "computedOffset"
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "opacity",
+            "computedOffset"
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "opacity",
+            "computedOffset"
+          ]
+        }
+      ],
+      "endpoints": {
+        "x": 0,
+        "sharp": "1"
+      },
+      "cleanup": true
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "from": "/queue",
+      "to": "/player",
+      "direction": "right",
+      "via": [
+        "runs"
+      ],
+      "frames": [
+        {
+          "file": "queue-to-player-runs-1440.png",
+          "station": "runs",
+          "animationTime": 258.54949951171875,
+          "bitmap": {
+            "width": 640,
+            "height": 400,
+            "pixel": [
+              237,
+              238,
+              240,
+              255
+            ]
+          }
+        }
+      ],
+      "animatedProperties": [
+        {
+          "id": "section-travel",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "transform",
+            "computedOffset"
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "opacity",
+            "computedOffset"
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "opacity",
+            "computedOffset"
+          ]
+        }
+      ],
+      "endpoints": {
+        "x": 0,
+        "sharp": "1"
+      },
+      "cleanup": true
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "from": "/player",
+      "to": "/queue",
+      "direction": "left",
+      "via": [
+        "runs"
+      ],
+      "frames": [
+        {
+          "file": "player-to-queue-runs-1440.png",
+          "station": "runs",
+          "animationTime": 258.54949951171875,
+          "bitmap": {
+            "width": 640,
+            "height": 400,
+            "pixel": [
+              237,
+              238,
+              240,
+              255
+            ]
+          }
+        }
+      ],
+      "animatedProperties": [
+        {
+          "id": "section-travel",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "transform",
+            "computedOffset"
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "opacity",
+            "computedOffset"
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "opacity",
+            "computedOffset"
+          ]
+        }
+      ],
+      "endpoints": {
+        "x": 0,
+        "sharp": "1"
+      },
+      "cleanup": true
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "from": "/upload",
+      "to": "/compare",
+      "direction": "right",
+      "via": [
+        "queue",
+        "runs",
+        "player"
+      ],
+      "frames": [
+        {
+          "file": "upload-to-compare-queue-1440.png",
+          "station": "queue",
+          "animationTime": 246.60663604736328,
+          "bitmap": {
+            "width": 640,
+            "height": 400,
+            "pixel": [
+              237,
+              240,
+              243,
+              255
+            ]
+          }
+        },
+        {
+          "file": "upload-to-compare-runs-1440.png",
+          "station": "runs",
+          "animationTime": 355.5055618286133,
+          "bitmap": {
+            "width": 640,
+            "height": 400,
+            "pixel": [
+              237,
+              238,
+              240,
+              255
+            ]
+          }
+        },
+        {
+          "file": "upload-to-compare-player-1440.png",
+          "station": "player",
+          "animationTime": 507.7047348022461,
+          "bitmap": {
+            "width": 640,
+            "height": 400,
+            "pixel": [
+              171,
+              179,
+              177,
+              255
+            ]
+          }
+        }
+      ],
+      "animatedProperties": [
+        {
+          "id": "section-travel",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "transform",
+            "computedOffset"
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "opacity",
+            "computedOffset"
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "properties": [
+            "offset",
+            "easing",
+            "composite",
+            "opacity",
+            "computedOffset"
+          ]
+        }
+      ],
+      "endpoints": {
+        "x": 0,
+        "sharp": "1"
+      },
+      "cleanup": true
+    }
+  ],
+  "errors": []
+}

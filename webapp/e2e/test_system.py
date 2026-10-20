@@ -148,7 +148,7 @@ def test_c1_reasons_are_readable_and_cleared_on_transition(app):
         reason = b.get_by_text("Предупреждение об объекте · Снижена достоверность данных · Причина: <b>unknown</b>", exact=True)
         expect(reason).to_be_visible()
         assert reason.locator("b").count() == 0
-        for width, height in ((1280, 720), (1920, 1080), (390, 844)):
+        for width, height in ((1280, 720), (1920, 1080), (1440, 900)):
             page.set_viewport_size({"width": width, "height": height})
             expect(reason).to_be_visible()
             rb, cb = reason.bounding_box(), b.bounding_box()
@@ -221,7 +221,8 @@ def test_fresh_stand_empty_states(app, backend):
     system = backend.api.get("/system")
     app.goto("/about")
     expect(chips(page)).to_contain_text(f"детектор v{system['detector_version']}")
-    stand = card(page, "Как проверить — веб")
+    stand = page.locator('[data-about-detail="web"]')
+    stand.locator('summary').click()
     expect(stand.get_by_text(f"v{system['detector_version']}", exact=True)).to_be_visible()
     expect(stand.get_by_text(f"v{system['version']}", exact=True)).to_be_visible()
     assert real_errors(app.errors) == []
@@ -287,6 +288,14 @@ def test_live_simulation_transport(app, seeded):
     # speed and loop, then to the end: the record ends and «Запустить» comes back
     page.get_by_role("radio", name="10×").click()
     expect(page.get_by_role("radio", name="10×")).to_have_attribute("aria-checked", "true")
+    # Delay browser startup handling longer than this short run at 10x. The
+    # reconnect must be paused on the server before onopen can send commands.
+    page.evaluate('''() => {
+        const open = Object.getOwnPropertyDescriptor(WebSocket.prototype, 'onopen');
+        Object.defineProperty(WebSocket.prototype, 'onopen', {...open, set(handler) {
+            open.set.call(this, event => setTimeout(() => handler.call(this, event), 1000));
+        }});
+    }''')
     page.get_by_role("button", name="По кругу: вкл.").click()  # loop is a socket parameter: it reconnects, still paused
     expect(page.get_by_role("button", name="По кругу: выкл.")).to_have_attribute("aria-pressed", "false")
     expect(chips(page)).to_have_text("пауза")
@@ -595,40 +604,46 @@ def test_presets_errors_and_deep_link(app, backend, seeded):
 
 
 def test_about_page(app, backend):
-    """The pipeline with a «?» per station, the four decisions with their rule, the six results
-    with their caveat, the commands copied exactly, the documentation links, the team, the stand
-    from /api/system (and when the backend is gone), the demo call to action and back."""
+    """A quiet overview with complete reference disclosures, copy, links and backend recovery."""
     page, base = app.page, app.base
     page.context.grant_permissions(["clipboard-read", "clipboard-write"])
     app.goto("/about")
     stations = page.get_by_role("list", name="Обработка кадра").get_by_role("listitem")
     expect(stations).to_have_count(7)
-    for s in ("декодирование", "калибровка", "модель пути", "габарит", "кластеризация", "трекинг", "решение"):
-        expect(page.get_by_role("button", name=f"Этап «{s}»")).to_be_visible()
-    page.get_by_role("button", name="Этап «габарит»").hover()
-    expect(page.get_by_role("tooltip").filter(has_text="1,05 м в каждую сторону")).to_be_visible()
+    expect(stations).to_have_text(["декодирование", "калибровка", "модель пути", "габарит", "кластеризация", "трекинг", "решение"])
+    expect(page.locator('main [data-about-detail][open]')).to_have_count(0)
+    pipeline = page.locator('[data-about-detail="pipeline"]')
+    pipeline.locator('summary').focus()
+    page.keyboard.press('Enter')
+    expect(pipeline).to_have_attribute('open', '')
+    expect(pipeline).to_contain_text('1,05 м в каждую сторону')
+    page.keyboard.press('Enter')
+    expect(pipeline).not_to_have_attribute('open', '')
 
     decisions = page.get_by_role("list", name="Решения").get_by_role("listitem")
-    expect(decisions).to_have_text([re.compile(rf"^{d}\?$") for d in ("Препятствие не обнаружено", "ВНИМАНИЕ", "СТОП", "ОШИБКА")])
-    page.get_by_role("button", name="Когда СТОП").hover()
-    expect(page.get_by_role("tooltip").filter(has_text="подтверждённое препятствие в габарите 2,1 × 3,0 м")).to_be_visible()
+    expect(decisions).to_have_count(4)
+    expect(decisions.nth(0)).to_contain_text('Препятствие не обнаружено')
+    expect(decisions.nth(2)).to_contain_text('подтверждённое препятствие в габарите 2,1 × 3,0 м')
+    expect(decisions.get_by_role('button')).to_have_count(0)
 
     results = page.get_by_role("list", name="Результаты в выборке").get_by_role("listitem")
+    page.locator('[data-about-detail="results"] > summary').click()
     expect(results).to_have_count(6)
     for value in ("55,5–56,6", "2,3", "8 из 8", "81", "10", "≈ 210"):
         expect(results.filter(has_text=value).first).to_be_visible()
-    results.filter(has_text="Ложные СТОП").get_by_role("button").hover()
-    expect(page.get_by_role("tooltip").filter(has_text="20-минутная поездка")).to_be_visible()
+    expect(results.filter(has_text="Ложные СТОП")).to_contain_text('20-минутная поездка')
 
     # copy: the exact command lands on the clipboard, the button confirms
-    ros = card(page, "Как проверить — ROS 2")
-    expect(ros.locator("code")).to_have_count(5)
-    ros.get_by_role("button", name="Скопировать").nth(1).click()
+    ros = page.locator('[data-about-detail="ros"]')
+    ros.locator('summary').click()
+    expect(ros.get_by_role('button', name='Скопировать')).to_have_count(6)
+    ros.get_by_role("button", name="Скопировать").nth(2).click()
     expect(ros.get_by_role("button", name="Скопировано")).to_be_visible()
     assert page.evaluate("navigator.clipboard.readText()") == "docker run --rm -it --net=host --ipc=host resense"
-    web = card(page, "Как проверить — веб")
-    expect(web.locator("code")).to_have_text("scripts/run_webapp.sh")
-    expect(web.get_by_role("link", name="localhost:8080")).to_have_attribute("href", "http://localhost:8080")
+    web = page.locator('[data-about-detail="web"]')
+    web.locator('summary').click()
+    expect(web.locator("code").filter(has_text='scripts/run_webapp.sh')).to_have_count(1)
+    expect(web.get_by_role("link", name="Открыть localhost:8080")).to_have_attribute("href", "http://localhost:8080")
 
     links = page.get_by_role("list", name="Ссылки на документацию").get_by_role("link")
     expect(links).to_have_count(5)
@@ -638,6 +653,7 @@ def test_about_page(app, backend):
     expect(links.filter(has_text="Прежний дашборд")).to_have_attribute("href", re.compile(r"/web$"))
     for i in range(5):
         expect(links.nth(i)).to_have_attribute("target", "_blank")
+    page.locator('[data-about-detail="team"] > summary').click()
     expect(page.get_by_role("list", name="Роли в команде").get_by_role("listitem")).to_have_count(4)
 
     features = backend.api.get("/system")["features"]
@@ -646,14 +662,58 @@ def test_about_page(app, backend):
 
     page.get_by_role("link", name="Попробовать на демо").click()
     expect(page).to_have_url(re.compile(r"/upload\?source=demo$"))
+    expect(page.locator('[data-train-doors]')).to_be_hidden(timeout=20000)
     page.go_back()
-    expect(page).to_have_url(re.compile(r"/about$"))
+    expect(page).to_have_url(re.compile(r"/about$"), timeout=20000)
+    expect(page.locator('[data-train-doors]')).to_be_hidden(timeout=20000)
 
     # the backend goes away: the stand says so, the rest of the page stays
     offline = api_route(base, r"/system$")
     page.route(offline, lambda r: r.abort())
     app.goto("/about")
+    web.locator('summary').click()
     expect(web.get_by_role("alert")).to_contain_text("Нет связи с бэкендом")
+    page.locator('[data-about-detail="results"] > summary').click()
     expect(results).to_have_count(6)
     page.unroute(offline)
     assert real_errors(app.errors, patterns=(r"net::ERR_FAILED",)) == []
+
+
+@pytest.mark.parametrize('width,height', [(1280, 720), (1366, 768), (1440, 900), (1920, 1080)])
+def test_about_readable_desktop_disclosures(app, width, height):
+    page = app.page
+    page.set_viewport_size({'width': width, 'height': height})
+    app.goto('/about')
+    expect(page.get_by_role('heading', name='О системе', exact=True)).to_be_visible()
+    page.evaluate('document.fonts.ready')
+    expect(page.locator('main svg:visible')).to_have_count(0)
+    expect(page.locator('[data-about-detail][open]')).to_have_count(0)
+    # Full decision explanations are visible; nothing is replaced by ellipsis or a tooltip.
+    for item in page.get_by_role('list', name='Решения').get_by_role('listitem').all():
+        expect(item).to_be_visible()
+        assert item.evaluate('e=>e.scrollWidth<=e.clientWidth+1')
+    for key in ('pipeline', 'results', 'ros', 'web', 'team'):
+        details = page.locator(f'[data-about-detail="{key}"]')
+        summary = details.locator(':scope > summary')
+        summary.scroll_into_view_if_needed()
+        summary.focus()
+        page.keyboard.press('Enter')
+        expect(details).to_have_attribute('open', '')
+    # Opening reference content grows the main page; panels do not impose tiny nested scroll areas.
+    bad = page.locator('[data-about-workspace]').evaluate('''root=>[...root.querySelectorAll('*')].filter(e=>{
+        if(!e.getClientRects().length)return false;
+        const s=getComputedStyle(e);
+        return e.scrollWidth>e.clientWidth+2 || (['hidden','clip','auto','scroll'].includes(s.overflowY)&&e.scrollHeight>e.clientHeight+2);
+    }).map(e=>({tag:e.tagName,className:e.className,text:e.textContent.slice(0,70)}))''')
+    assert bad == [], bad
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
+    # Disclosures are reversible by keyboard, and documentation remains reachable at the bottom.
+    for key in ('pipeline', 'results', 'ros', 'web', 'team'):
+        details = page.locator(f'[data-about-detail="{key}"]')
+        details.locator(':scope > summary').focus()
+        page.keyboard.press('Enter')
+        expect(details).not_to_have_attribute('open', '')
+    docs = page.get_by_role('list', name='Ссылки на документацию')
+    docs.scroll_into_view_if_needed()
+    expect(docs).to_be_visible()
+    assert real_errors(app.errors) == []
