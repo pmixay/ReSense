@@ -24,6 +24,10 @@
    axis there (inferred from the cap: the trace has no axis at the cube for B). K2 v5c acts only beyond the reach cap
    and does not change this.
 
+> **Superseded in part (20.10, data run):** items 3 and 4 measured the cube's offset from 1.1.0's axis. Against the
+> rails it is 1.165 m (inner face 0.92 m, only 0.05–0.08 m inside the strict envelope), and B's axis at the cube is
+> nearer the true axis than 1.1.0's: see [`../k2_v5c_2026-10-20/README.md`](../k2_v5c_2026-10-20/README.md) §7.
+
 ## Per marked object (A = 1.1.0 committed runs, B = K2 variant B `c9e8daa`)
 
 [`scripts/per_object.py`](scripts/per_object.py), full output in [`out/per_object_v110_vs_k2B.txt`](out/per_object_v110_vs_k2B.txt).

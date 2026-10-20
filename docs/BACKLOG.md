@@ -25,10 +25,15 @@ H1 is still **OPEN**
 ([publication](evidence/h1_partial_integration_2026-10-20/README.md)). The former integration branch
 `claude/optimistic-mccarthy-z5nmwd` has already landed through PR #42.
 
-**PR #43 merged** at `8c2bf51` on 20.10 (08:47:54 UTC): head `972d19a` supplies the off-by-default
-K2 v5c candidate, P4 reviews and N5 supplement. Merge does not accept or switch on K2.
-P4's findings concern pre-H1 source `4cf8e27`. L16 A1 was reproduced on current main and repaired;
-the other findings remain subject to their own current-source verification.
+**PR #43 merged 20.10** ([PR #43](https://github.com/pmixay/ReSense/pull/43), squash `8c2bf51`): main now also carries
+the off-by-default K2 v5c switch (`track.axis_joint_reach_dual`, 0 = off; code in `resense/track.py`,
+`resense/detector.py`, `resense/config.py` and both YAMLs), P4's reviews, the N5 supplement and the data handoff.
+Merging accepts nothing: v5c stays off and unmeasured on data, and the review findings stay reported/proposed. With every
+K2 switch off, `8c2bf51` equals `a5b0ede` on 180 synthetic frames; the per-frame identity on the recordings (row ID) is
+pending. P4 re-ran A1, B1 and B2 on `8c2bf51` (H1 on): identical results, so H1 does not change them. Later, F1a's
+author repair was published as `f07f4b8` and merged with PR #43 at `060bde7`; its measured ride cost and independent
+acceptance remain open ([record](evidence/f1a_b1_2026-10-20/README.md)). Real-data exposure T1/T4 remains open.
+P4's findings concern pre-H1 source `4cf8e27`. L16 A1 was reproduced on current main and repaired (`4bf62f3`); the other findings remain subject to their own current-source verification.
 Pinned reports: [shipping review][p4-shipping], [integration review][p4-integration], [N5][p4-n5], [data handoff][p4-handoff].
 
 ### Current detector switches (decisions 41, 44–45; checked against class defaults and both YAMLs)
@@ -98,8 +103,8 @@ Pinned reports: [shipping review][p4-shipping], [integration review][p4-integrat
 |---|---|---|
 | done (T1 measurement) | Measure real-start exposure to L16/S3's open-air FAULT | first10 raw frames of all12 starts independently decoded: 0/120 A1 exposure, minimum above-sensor share 28.2693%; known analytic A1 detected as positive control ([record][l16-open-air]) |
 | P0 (T4) | Measure F1a capped-top exposure and hand findings to P3 | registered in [data handoff][p4-handoff]; remains separate from completed L16 T1 |
-| **P0 (K2/K1)** | **Keep both off.** K2 v5c revision 1 is proposed in PR #43; registered gate/X3/Falcon/standing-person/marked-bag rows are not run. Resolve both the corrected Falcon loss and the in-gauge tunnels cube loss, set O `small_center`, K1 false STOPs and the review items. P3 or a fresh agent reviews P4's candidate; captain decides switch-on | [existing package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md), [v5c][p4-k2], T2/T3 in [handoff][p4-handoff] |
-| P0 | Complete acceptance of what ships on, including **H1**: resolve reported L16/S3, R3 and F1a findings, verify fixes on recordings and review combined source | pre-H1 synthetic shipping review available in PR #43; **not clean acceptance**, reseal still blocked ([review][p4-shipping]) |
+| **P0 (K2/K1)** | **Keep both off.** K2 v5c revision 1 is in main, off (PR #43 merged); registered gate/X3/Falcon/standing-person/marked-bag rows are not run. Resolve both the corrected Falcon loss and the in-gauge tunnels cube loss, set O `small_center`, K1 false STOPs and the review items. P3 or a fresh agent reviews P4's candidate; captain decides switch-on | [existing package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md), [v5c][p4-k2], T2/T3 in [handoff][p4-handoff] |
+| P0 | Complete acceptance of what ships on, including **H1**: resolve reported L16/S3, R3 and F1a findings, verify fixes on recordings and review combined source | pre-H1 synthetic shipping review in main (PR #43); its A1/B1/B2 re-run on H1 main `8c2bf51` gave identical results before the A1 repair; **not clean acceptance**, reseal still blocked ([review][p4-shipping]) |
 | P0 | Finish independent integration verification from raw outputs of the exact combined source | historical review done where committed files allow; some old per-frame outputs missing. New H1 raw archives exist, independent review pending ([review][p4-integration], [current record](evidence/h1_partial_integration_2026-10-20/README.md)) |
 | P1 | On the final seal: J1 (retarget [`RELEASE_DAY.md`](evidence/rejudge_2026-10-16/RELEASE_DAY.md) from 1.1.0) and the G3 held-out run by a fresh agent | needs the reseal |
 | P1 | N5: review the merged marker supplement, then re-score final 1.2.0 | PR #43 adds 34 missing-cube rows and flags 12 unmatched rows; merged, final H1/reseal scoring pending ([supplement][p4-n5]) |
@@ -230,8 +235,8 @@ final 1.2.0 seal (old 1.1.0 identities are not current); Docker steps wait for t
 Done 17.10 ([labels](evidence/n5_labels_2026-10-17/README.md)); on 19.10 checked against the organizers' markers
 ([evidence](evidence/synth_markers_2026-10-19/README.md)): 1,672 of 1,684 rows match, 12 sparse rows do not, one object is
 missing (first small cube of `synthetic_tunnels`, marker id 18, frames 4–60). Main still needs the supplement and scoring
-against markers. **20.10 update:** PR #43 contains a non-destructive supplement with 34 cropped
-cube rows and the 12 flagged rows, plus per-object scoring of historical runs; review/integration into main and scoring
+against markers. **20.10 update:** PR #43 (merged) adds a non-destructive supplement with 34 cropped
+cube rows and the 12 flagged rows, plus per-object scoring of historical runs; review and scoring
 of the H1/final source are pending ([supplement][p4-n5]). Independent intake also verifies all 1,667 cloud messages
 byte for byte against the old archive; marker boxes give obstacle support, not surveyed rail-axis truth
 ([intake](evidence/organizer_markers_2026-10-19/README.md)).
@@ -267,7 +272,7 @@ Joint axis fit is **off** (`track.axis_joint_fit=false`), decision 44. Historica
 person range; variant B also loses set O `small_center` and the marked in-gauge tunnels cube. P4's PR #43 corrects the
 old axis-dependent Falcon matching: first person STOP **122.27 m**, 37 person frames without STOP, instead of the
 original 112.97 m /158-frame-loss report. That correction does **not** validate switch-on. Its K2 v5c revision 1 is
-off by default and not in main; registered real-data rows (including the cube, which v5c does not repair) remain pending.
+off by default (in main since PR #43); registered real-data rows (including the cube, which v5c does not repair) remain pending.
 P4 authors; P3/fresh agent reviews; captain decides ([v5c][p4-k2], [N5][p4-n5], T2/T3 in [handoff][p4-handoff]).
 
 #### R1 · R2 · Small and sparse far objects
@@ -387,7 +392,7 @@ Owner P1. Reconciled on 20.10 against decisions 35–45, current source/configur
   (rows 41, 44–45; table in "Current plan").
 * **H1 partial improvement published in main** (row 45): A-axis 82 →114/177, 63 misses remain. H1/High stays OPEN;
   independent far-axis truth and final review are not obtained. Full combined gate, X3 and Falcon checks are complete
-  ([record](evidence/h1_partial_integration_2026-10-20/README.md)). PR #43 is separate, unmerged candidate/review work.
+  ([record](evidence/h1_partial_integration_2026-10-20/README.md)). PR #43 (merged 20.10, `8c2bf51`) adds the off-by-default v5c switch and P4 review work; nothing in it is accepted.
 * **Code stop 20.10 23:59 MSK**, priorities instead of dates (row 42). The detector seal currently fails `verify`; the
   combined reseal is pending (P1 + P4).
 

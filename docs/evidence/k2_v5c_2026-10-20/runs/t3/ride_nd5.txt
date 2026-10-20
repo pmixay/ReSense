@@ -1,0 +1,12 @@
+new_data_5: replayed 825 frames; rows differing from the gate work (beyond timing/latency): off 0, K2 0
+ row   d     window     nL  nR gauge  | off-mid  K2-mid | det from: true   off    K2  | K2 strict det within 2 m
+ 814  47.6  rails not measurable | det from: off +1.17 K2 +1.49 | False
+ 815  47.0  rails not measurable | det from: off +1.16 K2 +1.48 | False
+ 816  46.3  rails not measurable | det from: off +1.19 K2 +1.43 | False
+ 817  47.5  rails not measurable | det from: off +1.19 K2 +1.48 | False
+ 818  46.9  rails not measurable | det from: off +1.22 K2 +1.50 | False
+ 819  46.3  rails not measurable | det from: off +1.22 K2 +1.48 | False
+ 820  43.2  rails not measurable | det from: off +1.20 K2 +1.46 | False
+ 821  42.4  rails not measurable | det from: off +1.20 K2 +1.46 | False
+ 823  40.8   20-  44   56   9 1.857?| +0.46  +0.27  | +1.67  +1.21 +1.39 | False
+ 824  40.1   19-  43   54   9 1.706?| +0.26  +0.12  | +1.52  +1.26 +1.40 | False

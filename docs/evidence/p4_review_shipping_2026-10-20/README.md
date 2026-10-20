@@ -19,6 +19,31 @@
 
 Each confirmed finding has a proposed minimal fix for P3 below. None is measured on the recordings.
 
+**Historical `main` re-check (20.10 after H1 and PR #43 were merged, `8c2bf51`, H1's `column_core_margin` 0.02 on; the
+detector imported from that worktree):** the same commands as in "Reproduce" give the same results. A1: the cue is
+(0, 0, −1) at 0.2 % and 1 % above and none at 3 % and 10 %; FAULT in 450 / 450 frames in open air, GO in 450 / 450 in
+the tunnel. B1: every row is the same, 8 STOP frames → 0 with the rails 0.18 / 0.20 m high, the flat-track control
+equal. B2: at 37 m, STOP frames 2–17 (tall) and 1–17 (hanging) with R3, none without; the 30 m rows as tabulated.
+H1 does not change these findings; their exposure on the recordings is still unmeasured.
+
+**Later author repair:** main now includes `f07f4b8` (combined with PR #43 at `060bde7`), addressing both F1a B1
+mechanisms. The author records recovered physical-box STOPs, seal-gate PASS, unchanged Falcon/Set F and an explicit
+ride regression against starting main (events 18 →23, episodes 24 →26). These results do not change the historical
+P4 finding or constitute independent re-review. See [author evidence](../f1a_b1_2026-10-20/README.md) and
+[publication check](../f1a_b1_2026-10-20/PUBLICATION.md); independent B1 acceptance remains pending.
+
+**P4 synthetic re-check of that repair (20.10, `99dab01` against `8c2bf51`, P4's own scenes, not the author's):**
+- In [`f1a_ab.py`](scripts/f1a_ab.py), the 9 rows that went 8 STOP frames → 0 with F1a on now keep all 8, and every
+  other row is unchanged. The same script on `8c2bf51` still gives 0, which is the positive control.
+- [`f1a_low_ctrl.py`](scripts/f1a_low_ctrl.py) is the rejection control: the same box with its top −0.02…+0.10 m from
+  the true rail heads. With the rails 0.18 m high, F1a still removes the false STOP of a box at rail height (top
+  −0.02…+0.02 m, 8 → 0 on both commits). A box 0.05–0.10 m above the rails now keeps its 8 STOP frames, exactly as
+  on level track, where both commits STOP on it; `8c2bf51` removed them, which is the same B1 miss below the range
+  first tested.
+
+So in these scenes the repaired F1a treats raised rails as level track does. The ride cost (events 18 → 23) needs the
+recordings and the captain's disposition; it is not checked here, and this is not B1 acceptance.
+
 ## A. L16/S3 calibration and the Falcon range model
 
 ### A1. A correct full-revolution Pandar that starts in open air is FAULT for the whole run (confirmed)
@@ -160,6 +185,7 @@ python -I $S/cue_synthetic.py $W                                    # A1, the cu
 PYTHONPATH=$W python $S/fault_open_air.py $W                        # A1, 450 frames (and PYTHONPATH=$B ... $B)
 PYTHONPATH=$W python $S/cone_fix_check.py                           # A1, the proposed fix
 cd $S && PYTHONPATH=$W:. python f1a_ab.py                           # B1
+cd $S && PYTHONPATH=$W:. python f1a_low_ctrl.py                     # B1 repair, rejection control
 cd $S && PYTHONPATH=$W:. python r3_veto.py                          # B2 at 30 m; at 37 m:
 cd $S && PYTHONPATH=$W:. python -c "from r3_veto import run; [print(k, r3, [r[0] for r in run(15.0, 37.0, True, r3, n=18, kind=k) if r[2] == 'STOP']) for k in ('tall', 'hanging') for r3 in (True, False)]"
 ```

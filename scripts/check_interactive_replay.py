@@ -189,7 +189,11 @@ def main():
             if profile == "pandar128":
                 assert all(r["clear_distance"] <= 88.7 for r in obtained)
             else:
-                assert all(r["clear_distance"] == 0 and r["monitored_small"] is None for r in obtained)
+                # 19.10: falcon_ros resolves to the falcon_prime density prior, so the Falcon reports a
+                # small-target range like the Pandar. A fault row has no range (monitored_small None).
+                assert all(r["range_sensor_model"] == "falcon_prime" for r in obtained)
+                assert all(r["clear_distance"] <= (r["monitored_small"] or 0.0) for r in obtained)
+                assert any(r["monitored_small"] is not None for r in obtained)
             controls[profile] = {
                 "frames": len(obtained),
                 "expected_frames": expected_frames,

@@ -1,0 +1,4 @@
+ID: a5b0ede vs 8c2bf51 (switches off)
+{"files": 15, "rows": 15269, "rows_different": 0, "rows_latency_level_only": 36, "first_differences": [], "setF_straight_equal": true}
+control: 8c2bf51 off vs v5c-15
+{"files": 15, "rows": 15269, "rows_different": 15269, "rows_latency_level_only": 0, "first_differences": [["cloud_with_fake_obj.jsonl", 0], ["cloud_with_fake_obj.jsonl", 1], ["cloud_with_fake_obj.json
