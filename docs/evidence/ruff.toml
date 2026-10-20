@@ -1,0 +1,7 @@
+# Evidence scripts are one-off analysis records: several are pinned by hash in their
+# evidence, so they are never reformatted. Style rules are relaxed here only; pyflakes
+# checks other than unused imports (undefined names, unused variables, ...) still apply.
+extend = "../../pyproject.toml"
+
+[lint]
+extend-ignore = ["E401", "E402", "E701", "E702", "E731", "E741", "F401"]
