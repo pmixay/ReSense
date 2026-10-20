@@ -57,7 +57,9 @@ membership). Tests (`tests/test_k1_k2_axis.py`, 2 new): 0 is v5b bit for bit and
 the cap an object between the two axes stays strict, one inside the joint gauge only does not, before the cap nothing
 changes, off nothing changes. Mutation checks: removing the membership line fails the scene test; dropping the
 extension fails the range test. `tests/test_k1_k2_axis.py` 23 passed; late candidates, modules, algorithm, wall drift,
-edge axis, node, native: 234 passed, 42 skipped.
+edge axis, node, native: 234 passed, 42 skipped. Full suite in this container: 1,896 passed, 190 skipped,
+25 failed and 2 errors; the same 27 fail on `main` (`0acb18c`, run with its own checkout first on the path), from
+modules missing here (`open3d` for the synthetic injection and others), not from this change.
 
 ## 3. Offline proxy (not a measurement)
 
