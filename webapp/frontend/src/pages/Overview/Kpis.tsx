@@ -44,7 +44,7 @@ function LatencyViz({ latency, p95 }: { latency: readonly number[]; p95: number 
             x={p95Bin * (bw + gap) + bw / 2}
             y={H - (5 + (counts[p95Bin] / peak) * top) - 6}
             textAnchor="middle"
-            fontFamily="Montserrat, sans-serif"
+            fontFamily="var(--f-body)"
             fontWeight="800"
             fontSize="10.5"
             fill="#FFFFFF"
@@ -126,10 +126,10 @@ function FirstStopViz({ distance }: { distance: number }) {
           <rect x={0} y={cy - 4} width={x} height={8} rx={4} fill="#12A150" />
           <circle cx={x} cy={cy} r={r} fill={STOP} stroke="#FFFFFF" strokeWidth={3} />
           <path d={`M${x - 4.5} ${cy}h9`} stroke="#FFFFFF" strokeWidth={2.6} strokeLinecap="round" />
-          <text x={0} y={H - 3} fontFamily="Montserrat, sans-serif" fontWeight="700" fontSize="10.5" fill={INK}>
+          <text x={0} y={H - 3} fontFamily="var(--f-body)" fontWeight="700" fontSize="10.5" fill={INK}>
             0
           </text>
-          <text x={w} y={H - 3} textAnchor="end" fontFamily="Montserrat, sans-serif" fontWeight="700" fontSize="10.5" fill={INK}>
+          <text x={w} y={H - 3} textAnchor="end" fontFamily="var(--f-body)" fontWeight="700" fontSize="10.5" fill={INK}>
             {RANGE_M} м
           </text>
         </svg>

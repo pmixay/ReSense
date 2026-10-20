@@ -54,3 +54,6 @@ style.zip
 
 # Local assistant instruction template (not part of the repository)
 ui-screenshots.system-prompt.md
+
+# Local visual-review captures; published UI evidence lives in docs/images/.
+.impeccable/review/

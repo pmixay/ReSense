@@ -1,85 +1,49 @@
-// The smaller blocks of «О системе»: the headline results (big numbers, the caveat in «?»), the
-// documentation links and the team.
-import { Card, GoodMark, Help, Icon, KpiTile, StopMark, Tooltip } from '../../components';
 import { LINKS, RESULTS, TEAM } from './content';
 import styles from './About.module.css';
 
-const cx = (...c: (string | false | undefined)[]) => c.filter(Boolean).join(' ');
-
 export function Results({ className }: { className?: string }) {
-  return (
-    <div className={cx(styles.results, className)} role="list" aria-label="Результаты в выборке">
-      {RESULTS.map((r, i) => (
-        <div key={r.key} role="listitem" className={styles.result}>
-          <KpiTile
-            label={r.label}
-            icon={r.mark === 'stop' ? <StopMark /> : undefined}
-            value={r.value}
-            unit={r.unit}
-            after={r.mark === 'good' ? <GoodMark /> : undefined}
-            sub={r.sub}
-            help={r.help}
-            helpPlacement={i >= RESULTS.length - 2 ? 'bottom-end' : i === 0 ? 'bottom-start' : 'bottom'}
-            variant={r.variant}
-            className={styles.kpi}
-          />
-        </div>
-      ))}
+  return <details className={[styles.disclosure, className].filter(Boolean).join(' ')} data-about-detail="results">
+    <summary>Результаты в выборке<span className={styles.summaryNote}>Измерения и условия</span></summary>
+    <div className={styles.disclosureBody}>
+      <p className={styles.context}>Исторические измерения README: данные разработки, не оценка текущего стенда. Условия каждого измерения указаны ниже.</p>
+      <ul className={styles.results} aria-label="Результаты в выборке">
+        {RESULTS.map(result => <li key={result.key}>
+          <div className={styles.resultHead}>
+            <h3>{result.label}</h3>
+            <strong>{result.value}{result.unit && <span> {result.unit}</span>}</strong>
+          </div>
+          <p className={styles.resultSub}>{result.sub}</p>
+          <p>{result.help}</p>
+        </li>)}
+      </ul>
     </div>
-  );
+  </details>;
 }
 
 export function LinksCard({ className }: { className?: string }) {
-  return (
-    <Card
-      title="Документация"
-      className={cx(styles.links, className)}
-      help="GitBook и GitHub, в новой вкладке. Наведите на ссылку — что внутри."
-      helpPlacement="bottom-end"
-      helpWidth={220}
-    >
-      <ul className={styles.linkList} aria-label="Ссылки на документацию">
-        {LINKS.map((l) => (
-          <li key={l.key}>
-            <Tooltip content={l.help} placement="left" width={260} className={styles.linkTip}>
-              <a className={styles.link} href={l.href} target="_blank" rel="noreferrer">
-                <span className={styles.linkIc}>
-                  <Icon name={l.icon} size={16} />
-                </span>
-                <span className={styles.linkName}>{l.label}</span>
-                <Icon name="external" size={14} className={styles.linkExt} />
-              </a>
-            </Tooltip>
-          </li>
-        ))}
-      </ul>
-    </Card>
-  );
+  return <section className={[styles.links, className].filter(Boolean).join(' ')} aria-labelledby="about-docs">
+    <h2 id="about-docs">Документация</h2>
+    <ul className={styles.linkList} aria-label="Ссылки на документацию">
+      {LINKS.map(link => <li key={link.key}>
+        <a href={link.href} title={link.help} target="_blank" rel="noreferrer">{link.label}</a>
+      </li>)}
+    </ul>
+  </section>;
 }
 
 export function TeamCard({ className }: { className?: string }) {
-  return (
-    <Card
-      title="Команда «Молоток»"
-      className={cx(styles.team, className)}
-      help="Роли — по списку организаторов ЛЦТ 2026."
-      helpPlacement="bottom-end"
-      helpWidth={220}
-    >
+  return <details className={[styles.disclosure, className].filter(Boolean).join(' ')} data-about-detail="team">
+    <summary>Команда «Молоток»<span className={styles.summaryNote}>Роли и зоны ответственности</span></summary>
+    <div className={styles.disclosureBody}>
       <ul className={styles.members} aria-label="Роли в команде">
-        {TEAM.map((m) => (
-          <li key={m.id} className={styles.member}>
-            <span className={cx(styles.badge, m.captain && styles.captain)}>{m.id}</span>
-            <span className={styles.role}>
-              {m.role}
-              {m.captain && <span className={styles.capTag}>капитан</span>}
-            </span>
-            <Help placement="left" width={270} label={`Чем занимается ${m.id}`}>
-              {m.owns}
-            </Help>
-          </li>
-        ))}
+        {TEAM.map(member => <li key={member.id}>
+          <span className={styles.memberId}>{member.id}</span>
+          <div>
+            <h3>{member.role}{member.captain && <span className={styles.capTag}>капитан</span>}</h3>
+            <p>{member.owns}</p>
+          </div>
+        </li>)}
       </ul>
-    </Card>
-  );
+    </div>
+  </details>;
 }

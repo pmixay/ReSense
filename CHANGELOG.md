@@ -9,18 +9,16 @@
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), loosely; versions up to v0.6.4 are team labels; package 1.0.0
 dates from 25.09. **The published release is v1.0.0 only.** 1.1.0 (sealed 16.10) was not released and will not be (captain,
-19.10); **1.2.0 is the next release and is not released**: the detector seal fails `verify` until the combined reseal and CI is
-red. Figures are the team's, measured when a change landed (detector figures on the 1 cm frame cache). Current results:
+19.10); **1.2.0 is the next release and is not released**: the detector seal passes `verify` since the R3 reseal of 20.10. Figures are the team's, measured when a change landed (detector figures on the 1 cm frame cache). Current results:
 [`README.md`](README.md), [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
 20-minute, 13 km recording `new_data`.
 
 ## [1.2.0] — unreleased: LiDAR integration candidate of 18.10 and the integration of 19.10
 
-**State, 19.10 evening.** All four version declarations are 1.2.0. `python3 scripts/detector_freeze.py verify` **FAILS** (2 added and
-11 changed detector files): P3's L16/S3 and R3 (in `main`) and the integration below changed sealed files; a combined reseal
-(P1 + P4) follows the last code change (code stop 20.10 23:59 MSK). CI is red (0 of the last 100 runs succeeded). The latest
-targeted suites pass; the full suite, the final gate, X3 and the whole Falcon recording on the final commit are pending
-([`docs/BACKLOG.md`](docs/BACKLOG.md) "Current plan"). Not a release, not a J1 score, not a G3 run.
+**State, 20.10.** All four version declarations are 1.2.0. `python3 scripts/detector_freeze.py verify` **PASSES** (40 files, R3
+reseal on the measured `0a472d6`); CI on `main` is green at `f56ad5e`. The independent final-bundle review (P4) is open
+([`docs/BACKLOG.md`](docs/BACKLOG.md) "Current plan"). Not a release, not a J1 score, not a G3 run. (State of 19.10 evening, kept
+for the record: `verify` failed with 2 added and 11 changed files until the reseal; CI was red.)
 
 ### 20.10 — R3 B2/B3 completion
 

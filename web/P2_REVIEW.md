@@ -6,7 +6,8 @@
 > **Last verified:** 2026-09-29 evening: ownership (P2 declined the pitch on 29.09 evening), the deck
 > rebuild and the demo path checked; the media hashes of 28.09 below are historical (the deck and the
 > video were rebuilt after them)
-> **Status:** current
+> **Status:** historical acceptance basis, supplemented by the
+> [19.10 D1 reconciliation](../docs/evidence/p2_d1_2026-10-19/README.md).
 
 **P2 declined the pitch on 29.09 evening;** the captain owns the pitch, the deck, the live demo and the
 rehearsals, with agent help. Deliverable state and the rehearsal record: [`P2_STATUS.md`](P2_STATUS.md).
@@ -18,7 +19,7 @@ layouts and label tool: [`README.md`](README.md).
 | organizer requirement | P2 work and evidence | left (P2 unless noted) |
 |---|---|---|
 | §4: Docker → bag → raw cloud → detection → distance; preferably live | RViz layout with both known raw-cloud topics, corridor, boxes and status text; Foxglove layout; archival Docker/RViz chain [`docs/video/docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4); the browser's bundled roslib tested across subscribe, STOP, expiry, recovery and disconnect; CI on `main` runs the remote-viewer probe in a second container with link pause and recovery (`scripts/p2_viewer_test.sh`) | the live remote demo from a physical second device (visual layout import, link loss and recovery) at both rehearsals |
-| §5, §7.2: short video, accessible documentation | 2:50 overview video with Russian subtitles (burned in and `.srt`), 16-slide PPTX/PDF in the organizers' template, interface screenshots, label-tool and replay instructions; every number marked real / our synthetic / organizers' synthetic | the video is re-rendered for the current numbers by the video agent ([`docs/video/README.md`](../docs/video/README.md)); the deck's final gate values (coordinator) |
+| §5, §7.2: short video, accessible documentation | current overview is 3:00 (180.000 s remeasured by ffprobe 19.10), H.264/AAC with subtitles; older 2:50 descriptions are historical. The source-backed 18-slide draft is separate from the earlier 16-slide deck | final release-matched video, deck numbers and P1 approval remain pending; [media source](../docs/video/README.md) |
 | §8.5: robustness, tests, honest documentation | live validity contract, STOP hold, stale overlays, report schema v2, label import and numeric validation, Foxglove split-advertisement checks; browser tests cannot skip silently in CI | the organizers' stand is not available to the team |
 | §8.6: easy launch | [`README.md`](README.md): offline replay, browser validation, live Foxglove; the jury path (`scripts/play_bag.sh`, Docker CI) is P1's | — |
 | §8.7–8.8: approach, trade-offs, pitch | deck with speaker notes in the spec's order (the «увидел за 56 м» main shot on slide 9); in-sample and held-out figures labelled; misses and false alarms named; the team's approach to other teams' ideas (8 gated, 5 rejected, `shell` switched off after our safety review); no claims of arbitrary mounts, ready braking integration or unmeasured competitor accuracy | the captain: named deck, two rehearsals, the defence on 23.10 |

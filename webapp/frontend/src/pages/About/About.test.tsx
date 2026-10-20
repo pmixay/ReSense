@@ -41,9 +41,13 @@ function renderPage() {
   );
 }
 
-/** Text outside the (always mounted, hidden) tooltips. */
-const shown = (t: string | RegExp) => screen.queryAllByText(t).filter((el) => !el.closest('[role="tooltip"]'));
-const tip = (button: HTMLElement) => document.getElementById(button.getAttribute('aria-describedby') ?? '')?.textContent ?? '';
+const shown = (t: string | RegExp) => screen.queryAllByText(t).filter(el => !el.closest('details:not([open])'));
+function expand(label: string) {
+  const summary = screen.getByText(label, { selector: 'summary' });
+  fireEvent.click(summary);
+  expect(summary.parentElement!.hasAttribute('open')).toBe(true);
+  return summary.parentElement!;
+}
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -51,34 +55,44 @@ afterEach(() => {
 });
 
 describe('О системе', () => {
-  it('shows the pipeline as a line of stations, each explained in its «?»', () => {
+  it('keeps the overview concise and exposes the full pipeline on demand', () => {
     stubSystem(ok);
     renderPage();
     const line = screen.getByRole('list', { name: 'Обработка кадра' });
     expect(within(line).getAllByRole('listitem')).toHaveLength(STATIONS.length);
     expect(STATIONS.map((s) => s.name)).toEqual(['декодирование', 'калибровка', 'модель пути', 'габарит', 'кластеризация', 'трекинг', 'решение']);
-    expect(shown('2,1 × 3,0 м')).toHaveLength(1);
-    expect(shown('0,5 с')).toHaveLength(1);
-    expect(tip(screen.getByRole('button', { name: 'Этап «трекинг»' }))).toContain('0,5 с');
+    expect(shown('0,5 с')).toHaveLength(0);
+    expect(screen.queryByRole('button', { name: /Этап/ })).toBeNull();
+    const details = expand('Подробнее об обработке');
+    expect(details.textContent).toContain('1,05 м в каждую сторону');
+    expect(details.textContent).toContain('0,5 с');
+    fireEvent.click(screen.getByText('Подробнее об обработке', { selector: 'summary' }));
+    expect(details.hasAttribute('open')).toBe(false);
   });
 
   it('shows the four decisions as signals with their rule', () => {
     stubSystem(ok);
     renderPage();
     const list = screen.getByRole('list', { name: 'Решения' });
-    expect(within(list).getAllByRole('listitem').map((li) => li.textContent)).toEqual(['Препятствие не обнаружено?', 'ВНИМАНИЕ?', 'СТОП?', 'ОШИБКА?']);
-    expect(tip(screen.getByRole('button', { name: 'Когда СТОП' }))).toContain('подтверждённое препятствие в габарите 2,1 × 3,0 м');
-    expect(tip(screen.getByRole('button', { name: 'Когда ОШИБКА' }))).toContain('0,5 с');
+    const decisions = within(list).getAllByRole('listitem');
+    expect(decisions).toHaveLength(4);
+    expect(decisions[0].textContent).toContain('Препятствие не обнаружено');
+    expect(decisions[2].textContent).toContain('подтверждённое препятствие в габарите 2,1 × 3,0 м');
+    expect(decisions[3].textContent).toContain('0,5 с');
+    expect(within(list).queryByRole('button')).toBeNull();
   });
 
-  it('shows the README results as big numbers, each with its caveat', () => {
+  it('puts the measurements and their complete conditions in one disclosure', () => {
     stubSystem(ok);
     renderPage();
+    expect(screen.getByRole('list', { name: 'Результаты в выборке' }).closest('details')!.hasAttribute('open')).toBe(false);
+    expand('Результаты в выборке');
     const results = screen.getByRole('list', { name: 'Результаты в выборке' });
     const text = results.textContent ?? '';
     for (const v of ['55,5–56,6', '2,3', '8 из 8', '81', '10', '≈ 210']) expect(text).toContain(v);
     expect(RESULTS.every((r) => /в выборке|Синтетика|ВМ|кадр/i.test(r.help))).toBe(true);
     expect(RESULTS.find((r) => r.key === 'obstacle')?.help).toContain('В выборке');
+    for (const result of RESULTS) expect(results.textContent).toContain(result.help);
   });
 
   it('lists the five ROS commands and copies one', async () => {
@@ -86,12 +100,14 @@ describe('О системе', () => {
     const writeText = vi.fn(() => Promise.resolve());
     Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true });
     renderPage();
+    expand('Как проверить — ROS 2');
+    expand('Как проверить — веб');
     for (const c of ROS_COMMANDS) expect(shown(c.cmd)).toHaveLength(1);
     expect(ROS_COMMANDS[2].cmd).toContain('--read-ahead-queue-size 10');
     const copies = screen.getAllByRole('button', { name: 'Скопировать' });
-    expect(copies).toHaveLength(ROS_COMMANDS.length + 1); // + scripts/run_webapp.sh
+    expect(copies).toHaveLength(ROS_COMMANDS.length + 2); // UDP prerequisite + web command
     await act(async () => {
-      fireEvent.click(copies[1]);
+      fireEvent.click(copies[2]);
     });
     expect(writeText).toHaveBeenCalledWith('docker run --rm -it --net=host --ipc=host resense');
     expect(screen.getAllByRole('button', { name: 'Скопировано' })).toHaveLength(1);
@@ -101,8 +117,9 @@ describe('О системе', () => {
   it('shows this stand from /api/system: versions and features', async () => {
     stubSystem(ok);
     renderPage();
-    await waitFor(() => expect(shown('v1.0.0').length).toBeGreaterThan(0));
+    await waitFor(() => expect(shown('детектор v1.0.0')).toHaveLength(1));
     expect(shown('детектор v1.0.0')).toHaveLength(1); // the header chip
+    expand('Как проверить — веб');
     expect(shown('v0.1.0')).toHaveLength(1);
     for (const f of FEATURES) expect(shown(f.label)).toHaveLength(1);
     expect(screen.getByText(': нет')).toBeTruthy(); // open3d is missing on this stand
@@ -111,6 +128,7 @@ describe('О системе', () => {
   it('keeps the page usable when the backend is down', async () => {
     stubSystem(() => Promise.reject(new TypeError('Failed to fetch')));
     renderPage();
+    expand('Как проверить — веб');
     expect(await screen.findByText('Нет связи с бэкендом')).toBeTruthy();
     expect(screen.getByRole('alert').textContent).toContain('переподключится сама');
     expect(shown(/детектор v/)).toHaveLength(0);
@@ -120,6 +138,7 @@ describe('О системе', () => {
   it('links the documentation and names the team', () => {
     stubSystem(ok);
     renderPage();
+    expand('Команда «Молоток»');
     const links = screen.getByRole('list', { name: 'Ссылки на документацию' });
     for (const l of LINKS) {
       const a = within(links).getByRole('link', { name: new RegExp(l.label) });

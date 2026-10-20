@@ -1,0 +1,222 @@
+{
+  "capturedAt": "2026-10-19T14:59:23.010583+00:00",
+  "base": "http://127.0.0.1:4178",
+  "frontendSourceSha256": "c4ba70e25dfe4e13995dc346f6f4637122739d3524462895189426e0c851b201",
+  "references": [
+    "IMG_8349.jpeg",
+    "IMG_8350.jpeg",
+    "1591221.jpeg"
+  ],
+  "captures": [
+    {
+      "file": "closed-1280.png",
+      "viewport": [
+        1280,
+        720
+      ],
+      "routeFrom": "/runs",
+      "routeTo": "/upload",
+      "leaves": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 641,
+          "height": 720,
+          "top": 0,
+          "right": 641,
+          "bottom": 720,
+          "left": 0
+        },
+        {
+          "x": 639,
+          "y": 0,
+          "width": 641,
+          "height": 720,
+          "top": 0,
+          "right": 1280,
+          "bottom": 720,
+          "left": 639
+        }
+      ],
+      "glass": {
+        "height": 655.203125,
+        "blur": "blur(20px) saturate(0.75) contrast(0.94)",
+        "background": "linear-gradient(112deg, rgba(213, 217, 204, 0.32), rgba(223, 227, 215, 0.26) 45%, rgba(184, 195, 184, 0.3))"
+      }
+    },
+    {
+      "file": "closed-1366.png",
+      "viewport": [
+        1366,
+        768
+      ],
+      "routeFrom": "/runs",
+      "routeTo": "/upload",
+      "leaves": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 684,
+          "height": 768,
+          "top": 0,
+          "right": 684,
+          "bottom": 768,
+          "left": 0
+        },
+        {
+          "x": 682,
+          "y": 0,
+          "width": 684,
+          "height": 768,
+          "top": 0,
+          "right": 1366,
+          "bottom": 768,
+          "left": 682
+        }
+      ],
+      "glass": {
+        "height": 698.90625,
+        "blur": "blur(20px) saturate(0.75) contrast(0.94)",
+        "background": "linear-gradient(112deg, rgba(213, 217, 204, 0.32), rgba(223, 227, 215, 0.26) 45%, rgba(184, 195, 184, 0.3))"
+      }
+    },
+    {
+      "file": "closed-1440.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "routeFrom": "/runs",
+      "routeTo": "/upload",
+      "leaves": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 721,
+          "height": 900,
+          "top": 0,
+          "right": 721,
+          "bottom": 900,
+          "left": 0
+        },
+        {
+          "x": 719,
+          "y": 0,
+          "width": 721,
+          "height": 900,
+          "top": 0,
+          "right": 1440,
+          "bottom": 900,
+          "left": 719
+        }
+      ],
+      "glass": {
+        "height": 819.015625,
+        "blur": "blur(20px) saturate(0.75) contrast(0.94)",
+        "background": "linear-gradient(112deg, rgba(213, 217, 204, 0.32), rgba(223, 227, 215, 0.26) 45%, rgba(184, 195, 184, 0.3))"
+      }
+    },
+    {
+      "file": "closed-1920.png",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "routeFrom": "/runs",
+      "routeTo": "/upload",
+      "leaves": [
+        {
+          "x": 0,
+          "y": 0,
+          "width": 961,
+          "height": 1080,
+          "top": 0,
+          "right": 961,
+          "bottom": 1080,
+          "left": 0
+        },
+        {
+          "x": 959,
+          "y": 0,
+          "width": 961,
+          "height": 1080,
+          "top": 0,
+          "right": 1920,
+          "bottom": 1080,
+          "left": 959
+        }
+      ],
+      "glass": {
+        "height": 982.8125,
+        "blur": "blur(20px) saturate(0.75) contrast(0.94)",
+        "background": "linear-gradient(112deg, rgba(213, 217, 204, 0.32), rgba(223, 227, 215, 0.26) 45%, rgba(184, 195, 184, 0.3))"
+      }
+    }
+  ],
+  "motion": [
+    {
+      "viewport": [
+        1280,
+        720
+      ],
+      "outgoing": {
+        "x": 297.487,
+        "blur": 11.9861
+      },
+      "incoming": {
+        "x": -223.203,
+        "blur": 5.08926
+      }
+    },
+    {
+      "viewport": [
+        1366,
+        768
+      ],
+      "outgoing": {
+        "x": 317.475,
+        "blur": 11.9861
+      },
+      "incoming": {
+        "x": -238.2,
+        "blur": 5.08926
+      }
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "outgoing": {
+        "x": 334.673,
+        "blur": 11.9861
+      },
+      "incoming": {
+        "x": -251.104,
+        "blur": 5.08926
+      }
+    },
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "outgoing": {
+        "x": 446.231,
+        "blur": 11.9861
+      },
+      "incoming": {
+        "x": -334.805,
+        "blur": 5.08926
+      }
+    }
+  ],
+  "errors": [],
+  "optics": {
+    "method": "Actual closed panes over white/black backing and 32px checkerboard, with tint/blur removed as positive control; crop x130 y260 240x120.",
+    "blackWhiteBackingDifference": 165.72381944444444,
+    "frostedCheckerContrast": 0.6665340909090909,
+    "unfilteredCheckerContrast": 119.21721590909091,
+    "checkerAttenuation": 0.9944090785393164
+  }
+}

@@ -1,29 +1,17 @@
-// The console tiles of the cab (glass touch screens seated on the curved console): «Схема пути»,
+// Native-size telemetry panels below the display: «Схема пути»,
 // the decision, «До препятствия», latency / rate and «Исправность». Every value comes from the
 // frame result under the playhead or the run; explanations live in the «?» tooltips.
-import type { CSSProperties, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import type { DecodedCloud } from '../../api/cloud';
 import type { Decision, FrameResultDict } from '../../api/types';
 import { DECISION_ICON, Help, Icon } from '../../components';
 import { DECISION_CHIP_LABEL } from '../../lib/decisions';
 import { DASH, fmtInt, fmtMeters, fmtMs, fmtNum } from '../../lib/format';
 import { SENSOR_REACH } from '../../lib/track';
+import { useSize } from '../../lib/useSize';
 import { decisionText, decisionWordSize, distanceLabels, distanceModel, envelopeText, healthRows, type Tone } from './cab';
 import { MiniMap } from './MiniMap';
 import styles from './Player.module.css';
-
-/** Tiles ride the console arc: the top on the curve, skewed to its slope; the outer ones turn to the driver. */
-export function tileStyle(left: number, width: number, ry = 0): CSSProperties {
-  const cx = left + width / 2;
-  const top = 694 - 40 * ((cx - 800) / 800) ** 2;
-  const a = (Math.atan((-80 * (cx - 800)) / 640000) * 180) / Math.PI;
-  return {
-    left,
-    width,
-    top: Math.round(top * 10) / 10,
-    transform: `${ry ? `perspective(1400px) rotateY(${ry}deg) ` : ''}skewY(${a.toFixed(2)}deg)`,
-  };
-}
 
 function Title({ children, icon }: { children: ReactNode; icon?: 'clock' | 'live' }) {
   return (
@@ -38,7 +26,7 @@ function Title({ children, icon }: { children: ReactNode; icon?: 'clock' | 'live
 
 export function MapTile({ frame, cloud, pixelRatio }: { frame: FrameResultDict | null; cloud: DecodedCloud | null; pixelRatio: number }) {
   return (
-    <section className={`${styles.tile} ${styles.tMap}`} style={tileStyle(38, 292, 10)} aria-label="Схема пути">
+    <section className={`${styles.tile} ${styles.tMap}`} aria-label="Схема пути">
       <MiniMap frame={frame} cloud={cloud} pixelRatio={pixelRatio} />
       <div className={`${styles.tt} ${styles.mapTitle}`}>
         <span>Схема пути</span>
@@ -58,14 +46,14 @@ export function DecisionTile({ decision, frame, frameNo, confirmS }: { decision:
   const t = decisionText(decision, frame, confirmS);
   const light = decision !== 'CAUTION';
   return (
-    <section className={`${styles.tile} ${styles.tDec} ${styles[`dec_${decision.toLowerCase()}`]}`} style={tileStyle(342, 230)} aria-label="Решение">
+    <section className={`${styles.tile} ${styles.tDec} ${styles[`dec_${decision.toLowerCase()}`]}`} aria-label="Решение">
       <div className={styles.decTop}>
         <span className={styles.decO}>
           <Icon name={DECISION_ICON[decision]} size={28} strokeWidth={2.6} />
         </span>
         {frameNo !== null && <span className={styles.decFrame}>кадр {fmtInt(frameNo)}</span>}
       </div>
-      <div className={styles.decBig} style={{ fontSize: decisionWordSize(word) }}>
+      <div className={styles.decBig} style={{ fontSize: Math.min(30, decisionWordSize(word)) }}>
         {word}
       </div>
       <div className={styles.decL1}>{t.line1}</div>
@@ -94,50 +82,45 @@ function DistanceBar({
   unverified: boolean;
   value: number | null;
 }) {
-  const W = 426;
+  const [barRef, width] = useSize<HTMLDivElement>();
+  const W = width || 426;
   const x = (m: number) => (Math.min(SENSOR_REACH, Math.max(0, m)) / SENSOR_REACH) * W;
   const mon = monitored !== null ? x(monitored) : null;
   const fx = x(free);
   const labels = distanceLabels(W, unverified ? 'не проверено' : 'контроль ≈', value !== null && obstacle ? fmtNum(value, 1) : null, fx, mon, monitored);
   return (
-    <svg width={W} height="42" viewBox={`0 0 ${W} 42`} className={styles.dbar} aria-hidden>
-      <defs>
-        <pattern id="pl-mh" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <rect width="7" height="7" fill="#EDE9E4" />
-          <rect width="2.5" height="7" fill="#D6CFC6" />
-        </pattern>
-      </defs>
-      <rect x="0" y="5" width={W} height="14" rx="7" fill={unverified ? '#5B4E9C' : '#E7E2DB'} />
-      {mon !== null && <rect x="0" y="5" width={Math.max(14, mon + 1.5)} height="14" rx="7" fill="url(#pl-mh)" />}
-      {fx > 0.5 && <rect x="0" y="5" width={Math.max(14, fx)} height="14" rx="7" fill="#12A150" />}
-      {mon !== null && <rect x={Math.max(0, mon - 1.5)} y="0" width="3" height="24" rx="1.5" fill="#16151A" />}
-      {obstacle && (
-        <g>
-          <circle cx={fx} cy="12" r="10" fill="#D0001B" stroke="#fff" strokeWidth="3" />
-          <path d={`M${fx - 4.5} 12h9`} stroke="#fff" strokeWidth="2.6" strokeLinecap="round" />
-        </g>
-      )}
-      <text x="0" y="39" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#16151A">
-        {labels.free}
-      </text>
-      {labels.value && (
-        <text x={labels.valueX} y="39" textAnchor="middle" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#16151A">
-          {labels.value}
-        </text>
-      )}
-      {labels.mon && (
-        <text x={labels.monEnd} y="39" textAnchor="end" fontFamily="Montserrat" fontWeight="800" fontSize="12" fill="#16151A">
-          {labels.mon}
-        </text>
-      )}
-    </svg>
+    <div ref={barRef} className={styles.dbar} aria-hidden>
+      <svg width="100%" height="24" viewBox={`0 0 ${W} 24`}>
+        <defs>
+          <pattern id="pl-mh" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="7" height="7" fill="var(--well)" />
+            <rect width="2.5" height="7" fill="var(--hair-2)" />
+          </pattern>
+        </defs>
+        <rect x="0" y="5" width={W} height="14" rx="7" fill={unverified ? 'var(--fault)' : 'var(--well)'} />
+        {mon !== null && <rect x="0" y="5" width={Math.max(14, mon + 1.5)} height="14" rx="7" fill="url(#pl-mh)" />}
+        {fx > 0.5 && <rect x="0" y="5" width={Math.max(14, fx)} height="14" rx="7" fill="var(--go)" />}
+        {mon !== null && <rect x={Math.max(0, mon - 1.5)} y="0" width="3" height="24" rx="1.5" fill="#16151A" />}
+        {obstacle && (
+          <g>
+            <circle cx={fx} cy="12" r="10" fill="var(--stop)" stroke="#fff" strokeWidth="3" />
+            <path d={`M${fx - 4.5} 12h9`} stroke="#fff" strokeWidth="2.6" strokeLinecap="round" />
+          </g>
+        )}
+      </svg>
+      <div className={styles.barLabels}>
+        <span>{labels.free}</span>
+        {labels.value && <span className={styles.barValue} style={{ left: `${labels.valueX / W * 100}%` }}>{labels.value}</span>}
+        {labels.mon && <span className={styles.barMonitored} style={{ left: `${labels.monEnd / W * 100}%` }}>{labels.mon}</span>}
+      </div>
+    </div>
   );
 }
 
 export function DistanceTile({ frame, decision }: { frame: FrameResultDict | null; decision: Decision | null }) {
   const m = distanceModel(frame, decision);
   return (
-    <section className={`${styles.tile} ${styles.tDist}`} style={tileStyle(584, 462)} aria-label={m.title}>
+    <section className={`${styles.tile} ${styles.tDist}`} aria-label={m.title}>
       <div className={styles.tt}>
         {m.title}
         <Help placement="top" width={268}>
@@ -192,7 +175,7 @@ export function MetricsTile({
   const maxBar = Math.max(1, ...bars);
   const target = 10 * speed;
   return (
-    <section className={`${styles.tile} ${styles.tMet}`} style={tileStyle(1058, 238)} aria-label="Задержка и частота">
+    <section className={`${styles.tile} ${styles.tMet}`} aria-label="Задержка и частота">
       <div className={styles.tt}>
         <Icon name="clock" size={16} />
         Задержка
@@ -208,7 +191,7 @@ export function MetricsTile({
         </div>
         <div className={styles.spark} aria-hidden>
           {bars.map((v, i) => (
-            <i key={i} style={{ height: Math.max(3, (v / maxBar) * 30), background: i === bars.length - 1 ? '#16151A' : '#D6CFC6' }} />
+            <i key={i} style={{ height: Math.max(3, (v / maxBar) * 30), background: i === bars.length - 1 ? 'var(--ink)' : 'var(--hair-2)' }} />
           ))}
         </div>
       </div>
@@ -217,7 +200,7 @@ export function MetricsTile({
         Частота
         <span className={styles.tchip}>цель {fmtNum(target, target < 10 ? 1 : 0)}</span>
       </Title>
-      <div className={styles.metV} style={{ marginTop: 10 }}>
+      <div className={styles.metV} style={{ marginTop: 6 }}>
         {playing && playFps !== null ? fmtNum(playFps, 1) : playing ? DASH : 'пауза'}
         {playing && <small>кадр/с</small>}
       </div>
@@ -232,7 +215,7 @@ const LAMP: Record<Tone, string> = { ok: styles.lampOk, warn: styles.lampWarn, e
 export function HealthTile({ frame, minVisibility }: { frame: FrameResultDict | null; minVisibility: number }) {
   const rows = healthRows(frame, minVisibility);
   return (
-    <section className={`${styles.tile} ${styles.tHl}`} style={tileStyle(1308, 254, -10)} aria-label="Исправность">
+    <section className={`${styles.tile} ${styles.tHl}`} aria-label="Исправность">
       <div className={styles.tt} style={{ marginBottom: 4 }}>
         Исправность
         <Help placement="top-end" width={250}>
@@ -244,7 +227,7 @@ export function HealthTile({ frame, minVisibility }: { frame: FrameResultDict | 
         <div key={r.key} className={styles.hrow}>
           <span className={`${styles.lamp} ${LAMP[r.tone]}`} aria-hidden />
           {r.label}
-          <span className={`${styles.hv} ${r.key === 'calibration' ? styles.hvw : ''}`}>{r.value}</span>
+          <span className={styles.hv}>{r.value}</span>
         </div>
       ))}
     </section>

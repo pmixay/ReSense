@@ -1,0 +1,219 @@
+{
+  "capturedAt": "2026-10-19T17:10:07.642243+00:00",
+  "frontendSourceSha256": "c57fc3bb6ffa4c9d8a2743ca0cd9cf008b906074fa128997051f2a5f2ecc6a4c",
+  "base": "http://127.0.0.1:4182",
+  "journeys": [
+    {
+      "viewport": [
+        1280,
+        720
+      ],
+      "from": "/runs",
+      "to": "/upload",
+      "expected": [
+        "runs",
+        "queue",
+        "upload"
+      ],
+      "frames": [
+        {
+          "file": "runs-to-upload-queue-1280.png",
+          "time": 268.01319122314453,
+          "station": "queue"
+        }
+      ],
+      "observed": [
+        0,
+        1,
+        2
+      ],
+      "targetX": 0,
+      "finalFocus": true
+    },
+    {
+      "viewport": [
+        1366,
+        768
+      ],
+      "from": "/runs",
+      "to": "/upload",
+      "expected": [
+        "runs",
+        "queue",
+        "upload"
+      ],
+      "frames": [
+        {
+          "file": "runs-to-upload-queue-1366.png",
+          "time": 268.01319122314453,
+          "station": "queue"
+        }
+      ],
+      "observed": [
+        0,
+        1,
+        2
+      ],
+      "targetX": 0,
+      "finalFocus": true
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "from": "/runs",
+      "to": "/upload",
+      "expected": [
+        "runs",
+        "queue",
+        "upload"
+      ],
+      "frames": [
+        {
+          "file": "runs-to-upload-queue-1440.png",
+          "time": 268.01319122314453,
+          "station": "queue"
+        }
+      ],
+      "observed": [
+        0,
+        1,
+        2
+      ],
+      "targetX": 0,
+      "finalFocus": true
+    },
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "from": "/runs",
+      "to": "/upload",
+      "expected": [
+        "runs",
+        "queue",
+        "upload"
+      ],
+      "frames": [
+        {
+          "file": "runs-to-upload-queue-1920.png",
+          "time": 268.01319122314453,
+          "station": "queue"
+        }
+      ],
+      "observed": [
+        0,
+        1,
+        2
+      ],
+      "targetX": 0,
+      "finalFocus": true
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "from": "/upload",
+      "to": "/player",
+      "expected": [
+        "upload",
+        "queue",
+        "runs",
+        "player"
+      ],
+      "frames": [
+        {
+          "file": "upload-to-player-queue-1440.png",
+          "time": 239.36403274536133,
+          "station": "queue"
+        },
+        {
+          "file": "upload-to-player-runs-1440.png",
+          "time": 425.703182220459,
+          "station": "runs"
+        }
+      ],
+      "observed": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "targetX": 0,
+      "finalFocus": true
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "from": "/player",
+      "to": "/upload",
+      "expected": [
+        "player",
+        "runs",
+        "queue",
+        "upload"
+      ],
+      "frames": [
+        {
+          "file": "player-to-upload-runs-1440.png",
+          "time": 239.36403274536133,
+          "station": "runs"
+        },
+        {
+          "file": "player-to-upload-queue-1440.png",
+          "time": 425.703182220459,
+          "station": "queue"
+        }
+      ],
+      "observed": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "targetX": 0,
+      "finalFocus": true
+    }
+  ],
+  "errors": [],
+  "picker": {
+    "appearance": "base-select",
+    "radius": "16px",
+    "font": "Raleway, system-ui, sans-serif",
+    "keyboardSelection": true
+  },
+  "decisionCaptures": [
+    {
+      "state": "clear",
+      "route": "/player/iz5094ob05?pos=0",
+      "file": "clear-1440.png",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "state": "caution",
+      "route": "/player/iz5094ob05?pos=4",
+      "file": "caution-1440.png",
+      "viewport": [
+        1440,
+        900
+      ]
+    },
+    {
+      "state": "stop",
+      "route": "/player/y7oie2mfg0?pos=4",
+      "file": "stop-1440.png",
+      "viewport": [
+        1440,
+        900
+      ]
+    }
+  ]
+}
