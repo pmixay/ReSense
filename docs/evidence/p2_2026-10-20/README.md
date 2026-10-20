@@ -1,8 +1,10 @@
 # Role 2 — 20 October code handoff
 
-**Status:** today's Role 2 code work is verified locally. Publication is **blocked**
-by the missing deployment runtime/configuration. Stop at the non-code handoff in
-[PLAN.md](PLAN.md); final release acceptance remains with the captain/P3/P4.
+**Status:** today's Role 2 code work is verified and published at
+[resense.amdm.life](https://resense.amdm.life/). The user supplied the corrected
+domain after the initial blocked attempt below; [PUBLISH.md](PUBLISH.md) records
+the successful push, deployment and public checks. Stop at the non-code handoff
+in [PLAN.md](PLAN.md); final release acceptance remains with the captain/P3/P4.
 
 ## Plan correspondence
 
@@ -15,7 +17,7 @@ by the missing deployment runtime/configuration. Stop at the non-code handoff in
 | Navigation recovery | A queued readiness callback cannot restart a watchdog-expired journey. Cancelled snapshot warm-up cannot mark a later journey ready. Timer regression failed before the fix and passes after it. |
 | Paused live replay | Optional `paused=true` establishes pause on the server before delayed browser startup handling. Delayed-client backend regression failed before the fix and passes after it; browser replay deliberately delays `onopen` by one second at 10×. Frame-zero reconnect is covered. |
 | Browser checks match their intended scenarios | Stale-row 404, active-upload navigation and native-resize tests now synchronize their setup; real backend assertions and desktop layout checks remain. |
-| Commit, deploy and public identity check | Commit local work; deploy attempted and failed with `Runtime missing`. Public endpoints are unreachable; deployed identity cannot be confirmed. |
+| Commit, deploy and public identity check | Code committed and pushed as `c1a7614`; the corrected target `resense.amdm.life` is deployed with matching public identity. [Publication receipt](PUBLISH.md). |
 
 ## Verification
 
@@ -116,7 +118,10 @@ fixture is present, `app.page.set_default_timeout(60_000)`.
 JUnit files are local execution artifacts in `/tmp/opencode`; they are not
 release evidence or a hosted CI result.
 
-## Publication blocker and stopping point
+## Initial publication attempt (superseded) and stopping point
+
+The following records the first attempt using the former documented host. The
+subsequent successful publication is recorded in [PUBLISH.md](PUBLISH.md).
 
 `scripts/deploy_webapp.sh` exits 2:
 

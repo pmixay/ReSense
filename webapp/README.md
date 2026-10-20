@@ -9,7 +9,7 @@ design «Линия» ([`design/mockup/`](design/mockup/README.md)).
 
 ## Run it
 
-**Live preview of `ui-improvement`: [hack.amdm.life](https://hack.amdm.life/).**
+**Live preview of `ui-improvement`: [resense.amdm.life](https://resense.amdm.life/).**
 After changes on this server, run `scripts/deploy_webapp.sh` to update it. Deployment
 and service details are in [`../deploy/README.md`](../deploy/README.md); the live
 `/deployment.json` endpoint identifies the deployed commit.

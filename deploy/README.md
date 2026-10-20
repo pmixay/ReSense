@@ -1,6 +1,6 @@
 # Live preview on this server
 
-Current HTTPS preview: **https://hack.amdm.life/**.
+Current HTTPS preview: **https://resense.amdm.life/** (configured 20 October 2026).
 
 `scripts/deploy_webapp.sh` builds and publishes the current checkout to the running
 preview. The server-specific URL is in `~/.config/resense/deploy.env` and is printed
@@ -31,13 +31,50 @@ index replacement, and old hashed assets are retained for already-open lazy rout
 UI-only updates preserve running processing jobs and WebSocket sessions. Backend or
 runtime configuration changes reload the single `resense-web` user service.
 
-The user service is enabled at login/boot; one-time host provisioning enables user
-lingering so it also stays up after logout. nginx proxies HTTP/WebSockets to the
-loopback backend. Certbot uses a webroot challenge and a stored nginx reload hook.
+The user service is enabled at login/boot; user lingering keeps it running after
+logout. On this server, the existing Caddy container proxies HTTPS/WebSockets to
+the loopback backend and manages certificate renewal.
 
-## One-time host setup
+## Current server configuration
 
-Install the runtime, configure `~/.config/resense/deploy.env`, and publish first.
+`resense.amdm.life` resolves to this host, `5.83.140.123`. The deployment runs as
+`root`, with settings in `/root/.config/resense/deploy.env`:
+
+```bash
+RESENSE_PUBLIC_URL=https://resense.amdm.life
+RESENSE_WEB_PORT=8090
+RESENSE_DEPLOY_HOME=/root/.local/share/resense
+```
+
+The dedicated Python runtime is `~/.local/share/resense/venv`; installation uses
+`~/.local/share/resense/runtime-constraints.txt` to retain the verified numerical
+and web-runtime versions. Node 22.23.3 is installed under `/opt`, with `node`,
+`npm` and `npx` available in `/usr/local/bin`.
+
+The domain's block in `/etc/codex-lb/Caddyfile`, mounted by `codex-lb-https`, is:
+
+```caddyfile
+resense.amdm.life {
+    reverse_proxy 127.0.0.1:8090 {
+        flush_interval -1
+    }
+}
+```
+
+After editing the host proxy configuration:
+
+```bash
+docker exec codex-lb-https caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+docker exec codex-lb-https caddy reload --config /etc/caddy/Caddyfile --adapter caddyfile
+```
+
+Normal application updates still use only `scripts/deploy_webapp.sh`. Publication
+and public smoke checks: [20 October receipt](../docs/evidence/p2_2026-10-20/PUBLISH.md).
+
+## Provisioning a separate nginx host
+
+The nginx/Certbot provisioner is for hosts using nginx. Install the runtime,
+configure `~/.config/resense/deploy.env`, and publish first.
 Then run the root provisioning command with a domain whose DNS points to this host:
 
 ```bash

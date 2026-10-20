@@ -1,7 +1,8 @@
 # Role 2 — 20 October 2026 execution plan
 
-Execution receipt: [README.md](README.md). Today's scoped code checks are complete;
-publication is blocked by the missing preview runtime/configuration. Non-code
+Execution receipt: [README.md](README.md). Today's scoped code checks are complete.
+After the user's publishing request and corrected domain, publication completed
+at [resense.amdm.life](https://resense.amdm.life/): [receipt](PUBLISH.md). Non-code
 deliverables below are the stopping point requested by the user.
 
 ## Scope and stopping point

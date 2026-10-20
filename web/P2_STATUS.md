@@ -3,7 +3,8 @@
 **20.10 code handoff:** [execution plan](../docs/evidence/p2_2026-10-20/PLAN.md)
 and [verification receipt](../docs/evidence/p2_2026-10-20/README.md). The UI/main
 integration and scoped rendering/navigation/live-replay fixes are verified locally.
-Preview publication is blocked by the missing deployment runtime/configuration.
+Preview publication is complete at [resense.amdm.life](https://resense.amdm.life/);
+the [publication receipt](../docs/evidence/p2_2026-10-20/PUBLISH.md) records the public checks.
 Today's remaining Role 2 deliverables are assets, recordings, visuals, documents
 and device/rehearsal work; stop before those as requested. The dated queue below
 retains its historical verification dates.
