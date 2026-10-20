@@ -106,6 +106,7 @@ resense:
     axis_joint_range: true         # 20.10: with axis_joint_fit, the trusted range from the joint fit too (v3); false = axis shape only, range policy as before (v4)
     axis_joint_min_curvature: 0.0  # 19.10 (v5, off; 1/m; with axis_joint_fit and axis_joint_range false): > 0 = the estimator without the joint fit runs on its own state and is the output; the joint fit's shape replaces its axis shape only on frames with |curvature| >= this (a curve as it sees it); 0 = off (v4)
     axis_joint_reach_cap: false    # 19.10 (v5b, off; needs axis_joint_min_curvature > 0): on the frames with the joint shape, the trusted range also capped at the boundaries' reach along that axis + axis_valid_margin
+    axis_joint_reach_dual: 0.0     # 20.10 (v5c, off; m; needs axis_joint_reach_cap): extends the capped range by this much (not beyond the base range); between the cap and that end a point is strict-gauge only when inside the gauge from both the joint and the base axis; 0 = off (v5b)
     walls_smoothing_distance: 0.0  # 19.10 (K1, off): m; > 0: the axis EMA exponent and rate limits per distance travelled (travel / this, at least walls_smoothing_min_k, at most the frame periods); unknown speed as before
     walls_smoothing_min_k: 0.05    # 19.10 (K1): lower bound of that exponent
     walls_smoothing_standstill_speed: 1.0  # 19.10 (K1): m/s; no speed estimate and a texture profile without any change count as standing while the last confident estimate is at most this

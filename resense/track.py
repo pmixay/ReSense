@@ -1462,6 +1462,8 @@ def _joint_output(base: TrackModel, jshape: Optional[tuple], cfg: TrackConfig,
     the corridor follows the joint shape and the trusted range stays ``base``'s; the wall drift is then measured against
     that shape and, with ``axis_joint_reach_cap`` (v5b), the trusted range is also capped at the farthest boundary's
     reach along it plus ``axis_valid_margin`` (both boundaries' nearer reach for ``axis_valid_both``; ``.joint_reach``).
+    ``axis_joint_reach_dual`` (20.10, v5c) > 0 moves that end out by as much (never past ``base``'s own range); beyond
+    ``.joint_reach`` the detector then counts a point as strict gauge only inside both corridors (``Detector._corridor``).
     ``bounds``: :func:`estimate_axis_from_walls`' boundaries of this frame, or None (no re-measure, no cap)."""
     use = jshape is not None and abs(base.curvature) >= cfg.axis_joint_min_curvature
     out = replace(base, base=base, joint_shape=jshape, joint_used=bool(use), joint_reach=0.0)
@@ -1478,8 +1480,11 @@ def _joint_output(base: TrackModel, jshape: Optional[tuple], cfg: TrackConfig,
             both = (min(reach) + cfg.axis_valid_margin) if len(reach) == 2 else cap
             if cap < out.axis_valid:
                 out.joint_reach = cap
-            out.axis_valid = min(out.axis_valid, cap)
-            out.axis_valid_both = min(out.axis_valid_both, both)
+            # 20.10 (v5c, axis_joint_reach_dual): the range goes on beyond the cap (never past base's) where the
+            # detector holds a point to both corridors, the joint shape's and base's
+            ext = max(float(cfg.axis_joint_reach_dual), 0.0)
+            out.axis_valid = min(out.axis_valid, cap + ext)
+            out.axis_valid_both = min(out.axis_valid_both, both + ext)
             if out.axis_valid_bent < 1e9:
-                out.axis_valid_bent = min(out.axis_valid_bent, both)
+                out.axis_valid_bent = min(out.axis_valid_bent, both + ext)
     return out

@@ -6,6 +6,11 @@
 
 ## 0. State: K2 is held OFF
 
+> **20.10 correction (P4, [`../k2_v5c_2026-10-20/`](../k2_v5c_2026-10-20/README.md)):** the Falcon cost below was
+> overstated by the scorer's lateral match (the lateral is measured from each run's own axis). Re-scored from the same
+> committed records, variant B's first STOP on the person is 122.27 m (not 112.97 m) and 37 person STOP frames have
+> no STOP (not 158). v5c (`track.axis_joint_reach_dual`, off) addresses the remaining 36 at 113–125 m; not yet measured.
+
 The captain switched K2 on as variant B, then **held it off on 19.10 (evening)** after the whole Falcon recording
 showed **the walking person stopped 12 m later** ([`DECISIONS.md`](../../DECISIONS.md) rows 43–44). The shipped
 configuration has every K2/K1 switch at its value before variant B (`axis_joint_fit: false` and the rest off). It is

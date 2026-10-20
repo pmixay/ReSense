@@ -32,6 +32,7 @@ def test_switches_default_off_in_code_and_both_parameter_files():
         t = cfg.track
         assert t.axis_joint_fit is False and t.walls_smoothing_distance == 0.0 and t.axis_joint_range is True
         assert t.axis_joint_min_curvature == 0.0 and t.axis_joint_reach_cap is False      # v5 switches
+        assert t.axis_joint_reach_dual == 0.0                                                # v5c switch
         assert (t.axis_joint_knot, t.axis_joint_step_sigma, t.axis_joint_tolerance) == (60.0, 1e-3, 0.3)
 
 
@@ -338,3 +339,69 @@ def test_v5_rotation_rotates_the_base_state_and_the_joint_shape():
     X = np.array([40.0, 90.0])
     rot = np.stack([X, m.center_y(X), np.zeros(2)], 1) @ dR.T          # the joint axis, rotated
     assert np.allclose(r.center_y(rot[:, 0]), rot[:, 1], atol=0.02)
+
+
+# --- v5c (axis_joint_reach_dual): beyond the reach cap, the gauge of both shapes ---------------------------------
+def test_v5c_dual_extends_the_capped_range_never_past_base_and_zero_is_v5b():
+    """axis_joint_reach_dual 0 is v5b bit for bit; > 0 moves the capped range out by that much, never past the base
+    range, and keeps the cap itself as joint_reach (where the dual zone starts)."""
+    xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
+    V5B = dict(V5, axis_joint_reach_cap=True)
+    b, b0 = _run(xyz, _cfg(**V5B)), _run(xyz, _cfg(**dict(V5B, axis_joint_reach_dual=0.0)))
+    assert all(_same(x, y) and x.joint_reach == y.joint_reach for x, y in zip(b, b0))
+    capped = [m for m in b if m.joint_reach > 0]
+    assert capped, "positive control: the scene has capped frames"
+    for ext in (10.0, 1e4):
+        c = _run(xyz, _cfg(**dict(V5B, axis_joint_reach_dual=ext)))
+        for x, y in zip(b, c):
+            assert _same(x.base, y.base) and x.joint_reach == y.joint_reach
+            if x.joint_reach > 0:
+                assert y.axis_valid == min(y.base.axis_valid, x.joint_reach + ext) > x.axis_valid
+                assert x.axis_valid_both <= y.axis_valid_both <= y.base.axis_valid_both + ext
+            else:
+                assert _same(x, y)
+
+
+def _dual_detector(dual: float):
+    from resense.detector import Detector
+    cfg = DetectorConfig()
+    cfg = replace(cfg, track=replace(cfg.track, **{**OFF, **V5, "axis_joint_reach_cap": True,
+                                                   "axis_joint_reach_dual": dual}))
+    base = replace(_model(), axis_valid=200.0, axis_valid_both=200.0)
+    # the joint shape bends left: +0.72 m at 120 m, +0.405 m at 90 m; the cap ends at 100 m
+    out = replace(base, curvature=1e-4, base=base, joint_used=True, joint_reach=100.0, axis_valid=150.0)
+    det = Detector(cfg)
+    det.track = out
+    return det, out
+
+
+def _blob(x, y, h, rail_z):
+    g = np.array([(x + dx, y + dy, rail_z + h + dz) for dx in (0.0, 0.1) for dy in (-0.05, 0.05) for dz in (0.0, 0.3)])
+    return g
+
+
+def test_v5c_beyond_the_cap_strict_only_inside_both_gauges():
+    """Beyond joint_reach a point is strict gauge only when inside the gauge from the joint and the base axis: an
+    object between the two axes stays strict, one inside the joint gauge only does not; before the cap and with the
+    switch off nothing changes (positive control: the same object is strict there)."""
+    det, out = _dual_detector(10.0)
+
+    def rz(x):
+        return float(out.rail_z(np.array([x]))[0])
+
+    objs = {"both_120": (120.0, 0.36), "joint_only_120": (120.0, 1.45), "joint_only_90": (90.0, 1.15),
+            "base_only_120": (120.0, -0.35)}
+    xyz = np.concatenate([_blob(x, y, 1.0, rz(x)) for x, y in objs.values()]).astype(np.float32)
+    names = np.repeat(list(objs), 8)
+
+    def strict(d):
+        cand = d._corridor(xyz, np.ones(len(xyz), dtype=np.float32))[0]
+        res = {n: False for n in objs}
+        for i, s in zip(cand.idx, cand.in_gauge):
+            res[names[i]] |= bool(s)
+        return res
+
+    on = strict(det)
+    off = strict(_dual_detector(0.0)[0])
+    assert off == {"both_120": True, "joint_only_120": True, "joint_only_90": True, "base_only_120": False}
+    assert on == {"both_120": True, "joint_only_120": False, "joint_only_90": True, "base_only_120": False}

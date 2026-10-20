@@ -607,6 +607,22 @@ class Detector:
             if ax is not None:
                 cand.in_rail = cand.in_gauge            # the rails' own envelope (safety review of 26.09)
                 cand.in_gauge = cand.in_gauge | ax
+        tr = self.track
+        if cfg.track.axis_joint_reach_dual > 0 and tr.joint_reach > 0 and tr.base is not None and idx.size:
+            # 20.10 (v5c, axis_joint_reach_dual): beyond the reach cap the walls no longer confirm the joint shape,
+            # so a point there is strict gauge only when it is also inside the gauge measured from the base axis,
+            # which without K2 is trusted that far: what both shapes put in the gauge stays an obstacle, what only
+            # one of them does stays advisory (the rails' fallback membership in_rail likewise)
+            X = cand.xyz[:, 0].astype(np.float64)
+            z = np.flatnonzero(X > tr.joint_reach)
+            if z.size:
+                dyb = dy_all[cand.idx[z]] + (tr.center_y(X[z]) - tr.base.center_y(X[z]))
+                ok = point_in_polygon(dyb, cand.h[z], cfg.gauge.profile)
+                if has_edge_margin(cfg.gauge):
+                    ok &= gauge_core_mask(dyb, cand.h[z], X[z], cfg.gauge)
+                cand.in_gauge[z] &= ok
+                if cand.in_rail is not None:
+                    cand.in_rail[z] &= ok
         floor_valid = max(self.track.floor_range[1] + cfg.track.floor_valid_margin, self.track.floor_verified)
         axis_valid = min(self.track.axis_valid, cfg.gauge.range_max)
         if far is not None:
