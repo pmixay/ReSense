@@ -23,10 +23,10 @@ switches.
 
 | switch | claim (BACKLOG "Current detector switches") | result on `cc6226e` |
 |---|---|---|
-| **R3** cable confirmation (`tracking.cable_confirm_time_s` 0.3) | Set F cable sustained median 34.2 → 17.8 m is explained by coverage 2/6 → 4/6, no lost hits | **Reproduced and recounted independently.** 9 cable hits added, 0 lost, other four kinds identical, false detections unchanged, coverage 2/6 → 4/6, median 34.2 → 17.8 m, the baseline-success cohort 34.2 → 34.2 m. Across the whole gate (15,269 rows), X3 (40 cases, 29,765 rows) and the whole Falcon (4,443 rows) switching R3 on **loses no STOP row** and adds 3 (gate) / 40 (X3, the same cable in 10 variants) STOP rows, all on set O's labelled `thin_hanging` cable except one unlabelled row per case (§2.3). |
+| **R3** cable confirmation (`tracking.cable_confirm_time_s` 0.3) | Set F cable sustained median 34.2 → 17.8 m is explained by coverage 2/6 → 4/6, no lost hits | **Reproduced and recounted independently.** 9 cable hits added, 0 lost, other four kinds identical, false detections unchanged, coverage 2/6 → 4/6, median 34.2 → 17.8 m, the baseline-success cohort 34.2 → 34.2 m. Across the whole gate (15,269 rows), X3 (40 cases, 29,765 rows) and the whole Falcon (4,443 rows) switching R3 on **loses no STOP row** and adds 3 (gate) / 40 (X3, the same cable in 10 variants) STOP rows, all on set O's labelled `thin_hanging` cable except one unlabelled row (row 779) in 7 of the 10 X3 cases (§2.3). |
 | B2 (R3's fast path starts a STOP before the ego-motion veto has its hits) | 0 → 16–17 STOP frames at 37 m | **Still reproduces on `cc6226e` and on the new main**, frame for frame. Whether the STOP is *false* is a labelling question P3 disputes (§2.4); P4 leaves it to the captain. |
 | B3 (the cable shortcut never fires on accumulated clusters) | open | **Open on `cc6226e`** (speed given: `cable_kind` 0 on 33 accumulated track-frames, first STOP 76.0 m with and without R3). **Fixed on the new main**: 78.0 m with R3, `cable_kind` set on the accumulated track (§5). |
-| **H1** positive collision core (`cluster.column_core_margin` 0.02) | A-axis 82 → 114/177; the inherited High is OPEN; 63 misses | **Reproduced exactly:** 114/177 with H1 on, 82/177 with it off, 63 misses (58 CAUTION, 5 GO). H1 loses no STOP anywhere and adds 32 matched STOP frames on the A-axis probe. **On the real data it never fires:** no cluster has the core flag in any of the 15,269 gate frames, so gate, set F, X3 and the whole Falcon are identical with H1 off in every non-timing field. The benefit is measured on injected objects only; no real tall narrow object exists in the data (§3). |
+| **H1** positive collision core (`cluster.column_core_margin` 0.02) | A-axis 82 → 114/177; the inherited High is OPEN; 63 misses | **Reproduced exactly:** 114/177 with H1 on, 82/177 with it off, 63 misses (58 CAUTION, 5 GO). H1 loses no STOP anywhere and adds 32 matched STOP frames on the A-axis probe. **On the real data it never fires:** no cluster has the core flag in any of the 15,269 gate frames, so gate, X3 and the whole Falcon are identical with H1 off in every non-timing field (set F too, up to a 7e-9 m placement noise that a no-override re-run shows as well, §4). The benefit is measured on injected objects only; no real tall narrow object exists in the data (§3). |
 
 ## 2. R3
 
@@ -70,8 +70,8 @@ with R3 off it is the same cluster as a track that has not qualified yet.
   detection is on the labelled object's own track: label distances 53.09, 51.46, 49.83, 48.19 m step by 1.63 m, and the detection at 779
   is 46.56 m (the extrapolation is 46.55 m); lateral 0.20. The battery counts it as an unmatched STOP frame, inside its tolerance.
 * **Physical plausibility:** the step of 1.6 m per frame is 16–17 m/s at 10 Hz, inside the ride's range (the A-axis probe's ICP gives a
-  median 13.1 m/s; F1a acceptance quotes 14–17 m/s); a 3 cm cable at 35 m returning 3–4 points is what the sensor gives
-  (labels: `n_points` 4, 5, 4).
+  median 13.1 m/s; F1a acceptance quotes 14–17 m/s); a 3 cm cable at 35 m returning 3–5 points is what the sensor gives
+  (labels: `n_points` 4, 5, 4; the clusters have 3).
 
 ### 2.4 B2 and B3
 
@@ -186,7 +186,14 @@ scripts equal `5fa865b`'s. The shipped `cc6226e` runs are the reference.
 
 So on every real-data measure the new R3 (`0a472d6`) behaves exactly as the one reviewed in §2 (P3's "all equal" claims for the gate, X3,
 Falcon and set F reproduce from my side); what it changes is B3's synthetic scene. B2's behaviour is unchanged (§2.4).
-NEWMAIN_DEFAULT_CONTROL
+**Environment control on the new main (no override):** gate 15,269 rows, **0 differ** from the shipped `cc6226e` rows (735 latency-level only;
+every non-health row of the gate JSON equal); X3 **40 of 40 cases equal, 0 of 260 fail**; set F hits and per-kind medians equal; Falcon
+0 of 4,443 differ ([`out/main_identity_gate_shipped_vs_default.txt`](out/main_identity_gate_shipped_vs_default.txt),
+[`out/main_x3_compare_shipped_vs_default.txt`](out/main_x3_compare_shipped_vs_default.txt),
+[`out/falcon_main_shipped_vs_default.txt`](out/falcon_main_shipped_vs_default.txt)). So the new main (which the seal now names) equals the
+reviewed source on all of P4's real-data runs, and the switch-off conclusions of §2–§3 carry over to it unchanged. Files: [`out/main_f56ad5e/`](out/main_f56ad5e/).
+This is a switch review, not the independent review of `0a472d6` itself: its new code (current-frame support descriptors, ~80 lines) was
+exercised by these runs and by B2/B3 only, not read line by line, and its 32 analytic scenes and unit tests were not rerun.
 
 
 ## 6. What is not verified
