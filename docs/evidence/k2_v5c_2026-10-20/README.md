@@ -3,7 +3,8 @@
 > **Owner:** P4 (author; the review is by P3 or a fresh agent) · **Decides:** the captain · **Status:** measured on the
 > data (20.10, §6–§7) on `main` `8c2bf51`; every switch stays **off** by default. Registered rows: **G-1 pass, ID pass,
 > K1-2 reported; F-1 fail as scored** (every extra STOP is on the person; the scorer's reading, §6), **M-1 fail** (the
-> tunnels cube, as predicted; at 30 m also a platform cube). G-2 (X3): see §6. T3 (§7): K2 does not bend away from the
+> tunnels cube, as predicted; at 30 m also a platform cube); **G-2**: the same 6 X3 failures as variant B (both fail
+> against K2 off), one passing comparison worse by one episode. T3 (§7): K2 does not bend away from the
 > tunnels cube; the cube is an edge object that K2-off's displaced axis carries into its gauge. G3 not touched.
 > Package this answers: [`../k1_k2_gauge_2026-10-19/P4_PACKAGE.md`](../k1_k2_gauge_2026-10-19/P4_PACKAGE.md) §3 row 0.
 
@@ -182,7 +183,7 @@ sha256 the Yandex API publishes (Drive zip against `scripts/cold_bags.sha256`). 
 |---|---|---|---|
 | F-1 | person first STOP ≥ 124.0 m; `n_person_no_stop` ≤ 22; no new STOP frame beyond variant B's 9 | **fail as scored**: first STOP 122.27 m (frame 2994); `n_person_no_stop` **10** (pass); new STOP frames 18 = B's 9 + 9 more (2979–2983, 3003, 3007, 3008, 3039) | **fail as scored**: 122.27 m; 10; 26 = B's 9 + 17 (also 2950–2957) |
 | G-1 | only set O `small_center` fails; ride STOP episodes ≤ 12; five empty and squareT_platform 0 episodes | **pass**: exit 1 on the 6 `small_center` rows only (first STOP 55.8 → 52.5 m, held from 60.8 → 57.5 m, STOP frames 32 → 30), 11 rows better; ride STOP episodes 24 → **10** (alarm events 18 → 8); five empty 11 → **0**; squareT_platform 11 → **0** | **pass**: the same numbers as v5c-15 |
-| G-2 | X3 not worse than variant B | running | not run |
+| G-2 | X3 not worse than variant B | **the same 6 failures as B** (vs K2 off on this commit; 260 comparisons): `doubleT_obstacle` person-crossing inside STOP rows at +2° roll (60 → 56), 30 % dropout seed 2 and dedup (61 → 58), +2° roll positive STOP frames 192 → 188; set O at 5 Hz positive STOP frames 218 → 214 and `small_center` rows 18 → 14. One comparison differs from B: set O 30 % dropout seed 3, unmatched STOP episodes **7 vs B's 6** (reference 6; within the battery's tolerance of 1) with positive STOP frames 436 vs 434. So not worse than B in what fails; worse by one episode in one passing comparison ([`runs/data_8c2bf51/x3/`](runs/data_8c2bf51/x3/)) | not run |
 | K1-2 | standing person at 150 m: reported | 0 / 259 STOP frames (K2 off 90 / 259; B 0 / 259) | 0 / 259 |
 | ID | every switch off vs the commit without this change | Falcon: `8c2bf51` = `a5b0ede` in all 4,443 rows; gate: `8c2bf51` = `a5b0ede` in all 15,269 rows (36 differ in the latency health level only), set F equal; control: K2 off vs v5c-15 differ in every row | |
 | M-1 | every marked object's STOP frames and first STOP not worse than K2 off | **fail**, as predicted: only the tunnels cube (id 19) 29 → 13 STOP frames, first STOP 55.0 → 27.6 m; every other object equal or better (switch cubes 12 / 13 / 0: 11 → 21, 4 → 9, 35 → 37; tunnels big cube 52 → 55; platform cube 23 38 → 40) | **fail**: the tunnels cube as at 15, **and** the platform's small cube right (id 23) 38 → 31 STOP frames, first STOP 86.8 → 76.4 m |
@@ -275,7 +276,8 @@ the fitted gauge reads 0.04–0.10 m wide, so the midpoint carries a few centime
 
 ## 8. Not done (updated 20.10 after the data run)
 
-- G-2 (X3) for v5c-30: not run (v5c-30 already fails M-1 on a second object).
+- G-2 (X3) for v5c-30: not run (v5c-30 already fails M-1 on a second object). The 6 X3 failures B and v5c-15 share
+  against K2 off are not attributed.
 - Set O `small_center` 55.8 → 52.5 m (§7): inside both gauges; why K2 has no detection in frames 337–338 is not traced.
 - The ride's strict detections removed at 30–60 m (§7): which axis is right there is not established (rails resolve
   only to 13–19 m).
