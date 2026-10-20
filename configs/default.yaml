@@ -372,7 +372,7 @@ resense:
     local_rail_min_bins: 2         # 0.5 m bins with rail-band returns per line
     rail_band_range: 0.0           # m, (b) > 0 on: same-band rail-line test out to this range ...
     rail_band_margin: 0.05         # m ... with this margin, without rail_start_min_ref
-    local_rail_exclude_low: false  # amendment 6 option (measured: it costs the effect, amendment 7)
+    local_rail_exclude_low: true   # 20.10 B1: exclude all low returns from an independent reference; both it and the original must reject (missing support keeps ordinary confirmation)
     local_rail_cross_tol: 0.0      # m, 0 = off since 19.10 (it added a false STOP at ride 5714); > 0: rails' lines differing by more than this: the lower line is the reference (amendment 7, review B1)
     local_rail_advisory: false     # true: a cluster failing (a) / (b) is advisory 'below_rail_ref' instead of weak evidence (amendment 6 option; amendment 8)
     no_rail_low_within: 0.0        # m, (c) > 0 on: no rail pair -> a low cluster beyond this is advisory (no_rail_low)
