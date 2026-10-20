@@ -14,8 +14,11 @@
 > **CI re-checked 20.10 ~18:00 and ~19:05 MSK:** the billing block is gone; main runs
 > [#667](https://github.com/pmixay/ReSense/actions/runs/39432683938) (`5d83c5b`) and
 > [#669](https://github.com/pmixay/ReSense/actions/runs/39436711965) (`f56ad5e`) ran all five jobs to success.
-> **Run #680** on `8453458` (PR #47) was not finished at 19:07 MSK: checks, pytest, docker and offline-build succeeded; the webapp
-> job had been in its browser suite for 29 min (the same step took 4 min in #669; job timeout 40 min), so its final result is unknown.
+> **Run #680** on `8453458` (PR #47, merged 18:33 MSK, 63 s after its branch run #679 started) **failed**: checks, pytest, docker and
+> offline-build succeeded; the webapp browser suite ended `22 failed, 53 passed` after 29 min (4 min in #669); the backend step passed
+> (179 tests). The branch run #679 failed too. The log tail shows one failure: `webapp/e2e/test_system.py:553`, after `page.go_back()`
+> the page stays on `/upload?preset=…` instead of `/presets?id=…`. PR #47 changed no detector, config or ROS file. `main` is red since
+> the merge; [`CAPTAIN.md`](CAPTAIN.md) §6: a red `main` is fixed by its author within 1 h or reverted.
 > **Status:** current. "Current plan" below replaces every dated target: **P0** before the code stop, **P1** before the pitch,
 > **P2** after 23.10. Section numbers of the old file are kept where other documents cite them (§1, §3, §4, §6, §9);
 > §2, §5, §7, §8, §9d and §9e are in the archive.
@@ -32,7 +35,8 @@ H1 is still **OPEN**
 `claude/optimistic-mccarthy-z5nmwd` has already landed through PR #42.
 **Final source (captain, 20.10):** development is still active, so there is no final source yet; it is the last commit
 before the code stop 20.10 23:59 MSK. The final reseal with P4's acceptance, J1/G3, the S5 bench, the image and tag, and
-the dust and marked-bag replay all run on it, after it exists.
+the dust and marked-bag replay all run on it, after it exists. P4 has already run the dust and marked-bag replay on `f56ad5e`
+(branch `claude/jolly-brahmagupta-ehpapw`, no PR yet); it counts for the final source only if that is `f56ad5e`.
 
 **PR #43 merged 20.10** ([PR #43](https://github.com/pmixay/ReSense/pull/43), squash `8c2bf51`): main now also carries
 the off-by-default K2 v5c switch (`track.axis_joint_reach_dual`, 0 = off; code in `resense/track.py`,
@@ -91,7 +95,7 @@ image and the tag, and the captain's open decisions (P1 table).
 | done | Combined L16 repair + current F1a/K2-off main source | measured `afbf9fc`: fresh gate PASS without waivers, standard X3 PASS (40 cases /29,765 rows), whole4,443-row Falcon retained, 489 affected tests pass; all raw artifacts supplied ([record][l16-open-air]) |
 | done (author acceptance) | R3 B2/B3 completion merged with `5d83c5b` | measured `0a472d6`, same production bytes at `47b220c`: gate PASS,208 non-timing metrics and18,329 gate/Set F rows exact; X3 40 cases /29,765 rows and whole Falcon4,443 rows exact;448 affected tests pass ([record](evidence/r3_completion_2026-10-20/README.md)) |
 | P0 | After any accepted detector fix / K2 change: repeat affected checks and final gate/X3/Falcon on the exact reseal source; supply raw outputs for independent review | current checks are complete; the final run and the reseal acceptance wait for the final source (after the code stop) |
-| P0 | Organizer dust and all three marked bags on H1 main / final reseal source | **done on `4cf8e27`** (1,667 frames, 13 dust frames); not repeated after H1. No dust-attributed STOP/CAUTION in the old run; guard stays off. The replay on the final source is delayed until it exists (captain, 20.10) |
+| P0 | Organizer dust and all three marked bags on H1 main / final reseal source | **run by P4 on `f56ad5e`, 20.10** (1,667 frames, 13 dust frames; [record on an unmerged branch](https://github.com/pmixay/ReSense/blob/4bef39a011fb575cc4507a0b987d2719ba56e98d/docs/evidence/p4_dust_markers_final_2026-10-20/README.md), no PR yet; read here from its commit message and summary only): 0 STOP, detection or warning at the 30 dust boxes; all fields equal 1.1.0 except `clear` in 4 frames; the 12 background false STOPs remain. Earlier: done on `4cf8e27`. Holds for the final source only if that is `f56ad5e`; repeat if detector files change (captain, 20.10) |
 | P0 | Resolve or explicitly disposition full-suite failures before final acceptance | R3 merged `47b220c`:2386 passed +17 subtests, one inherited proxy-hook failure, eight external-data deselections, no skips; proxy failure reproduced on base/candidate, timing/node pass both. Earlier loaded timing/node failures retained, transient cause unverified ([audit](evidence/r3_completion_2026-10-20/audit-tests-final.json)). The hosted CI pytest job passed on main [#669](https://github.com/pmixay/ReSense/actions/runs/39436711965) (`f56ad5e`) |
 | P1 | Documentation clean-up and final numerical pass | CAPTAIN, CHANGELOG and this backlog reconciled 20.10 evening; other documents still carry 19.10 text (see D1); final release numbers depend on the final source, its reseal and J1 |
 | done | merge of the four agent lanes with identity proof; F1a and H′ switched on; decisions recorded | 19.10 |
@@ -366,7 +370,7 @@ rows pass ([handoff](evidence/n3_dust_fix_2026-10-19/HANDOFF.md)). The organizer
 dust-attributed `STOP` or `CAUTION` on 1.1.0 and was re-checked on `4cf8e27` (all 1,667 marked-bag frames). That completes the
 pre-H1 integration check, **not** the H1/final-reseal check, which remains pending. Independent raw subtraction verifies
 31 organizer-marked dust returns in platform frames 0–314; this tiny-particle case is not evidence of dense sustained
-dust robustness ([intake](evidence/organizer_markers_2026-10-19/README.md)). The replay on the final source is delayed until it exists (captain, 20.10); P4 acts if it regresses.
+dust robustness ([intake](evidence/organizer_markers_2026-10-19/README.md)). P4 ran the replay on `f56ad5e` on 20.10 (branch `claude/jolly-brahmagupta-ehpapw`, no PR yet): no STOP, detection or warning at the 30 dust boxes; it is repeated if the final source differs (captain, 20.10); P4 acts if it regresses.
 
 #### N6 · Late STOP on the synthetic person at the platform
 Candidate revision 3 (first STOP 44.01 →51.12 m) rejected, **off** (`track.rails_axis_extension=false`). The decisive
@@ -498,7 +502,7 @@ Verbatim in [`organizers/answers.md`](organizers/answers.md) §12; the order of 
   reviewed records**; their existing pending states are retained, not independently observed human outcomes.
 * **Addendum, 20.10 evening (~19:00 MSK; this file, `CAPTAIN.md`, `CHANGELOG.md`).** Checked: GitHub through the GitHub tools
   (branch list: 4 branches, no `ui-improvement`, `det/*`, integration or P2 K1/K2 branch; PRs #33–#47 with merge times; releases
-  and tags: v1.0.0 only; main runs #667 and #669 job by job; run #680 as it ran; PR #46's text and both P4 README files read in
+  and tags: v1.0.0 only; main runs #667 and #669 job by job; run #680 as it ended (failed in the webapp job; log tail read); PR #46's text and both P4 README files read in
   full); git in the worktree (ancestry of the cited commits in `main`; `git ls-tree` / `git grep` for the five root images and
   their references; `git diff` of PR #47 and of PR #46's branch for `resense/`, `native/`, `configs/`, `ros2_ws/`; no Falcon demo bag
   in `git ls-files`); `python3 scripts/detector_freeze.py verify` on `8453458` (PASS, 40 files, digest `6d091081…`); switch values
@@ -508,7 +512,7 @@ Verbatim in [`organizers/answers.md`](organizers/answers.md) §12; the order of 
   three files by script, with a deliberately broken copy as negative control (it found exactly its one bad row and one bad link);
   the two new pinned URLs and commit `972d19a` fetched. **Not checked:** the measured numbers quoted from the evidence were not
   re-derived and no P4 run was repeated; the five older pinned `972d19a` file URLs were not each fetched; the Falcon demo-bag agent
-  and P2's K1/K2 start are the captain's statements, not observed; run #680's final result; stale 19.10 statements in other
+  and P2's K1/K2 start are the captain's statements, not observed; the 21 failing e2e tests of run #680 other than the one at the log tail; P4's dust run on `f56ad5e`, read from its commit message and summary only; stale 19.10 statements in other
   documents are listed in D1, not edited.
 
 [p4-shipping]: https://github.com/pmixay/ReSense/blob/972d19a17aabfe223fd0f45551a2262b9a82e260/docs/evidence/p4_review_shipping_2026-10-20/README.md

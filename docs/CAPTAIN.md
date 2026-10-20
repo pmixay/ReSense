@@ -88,7 +88,7 @@ branches of 15–18.10 (merged: PR #33, #35–#38). Open PRs: only #46.
 
 | branch | state | recommendation |
 |---|---|---|
-| `main` | `8453458` (PR #47 on `f56ad5e`): the 1.2.0 candidate with the 19.10 integration (PR #42), H1 partial, K2 v5c off (PR #43), the F1a, L16 and R3 repairs and P4's data run (PR #44, #45); `detector_freeze.py verify` PASS (40 files, R3 integrity reseal); CI green at `5d83c5b` (#667) and `f56ad5e` (#669); run #680 on `8453458` not finished at 19:07 MSK (four jobs green, the webapp job 29 min in its browser suite, 4 min in #669); not released | base of everything; the final source is the last commit before the code stop 20.10 23:59 MSK |
+| `main` | `8453458` (PR #47 on `f56ad5e`): the 1.2.0 candidate with the 19.10 integration (PR #42), H1 partial, K2 v5c off (PR #43), the F1a, L16 and R3 repairs and P4's data run (PR #44, #45); `detector_freeze.py verify` PASS (40 files, R3 integrity reseal); CI green at `5d83c5b` (#667) and `f56ad5e` (#669); run #680 on `8453458` **failed** in the webapp browser suite (22 of 75 end-to-end tests; the other four jobs green), so `main` is red since the PR #47 merge; not released | base of everything; the final source is the last commit before the code stop 20.10 23:59 MSK; the red `main` is P2's lane to fix within 1 h or revert (§6) |
 | `claude/trusting-dirac-ywtapy` | PR #46, open: P4's review of H′ and the Falcon clear-distance model on `cc6226e`, Falcon and the H′-off gate re-run on `f56ad5e`; no detector, config or ROS file touched (checked with `git diff`), small edits to `DETECTOR_FREEZE.md` and `BACKLOG.md` (11 insertions, 5 deletions) | P1 reads the findings and decides on the merge (its `BACKLOG.md` lines overlap with this reconciliation); the findings for P3 are reported, not fixed |
 | `claude/wonderful-planck-tpv33h` | no PR yet: P4's switch review of R3 and H1 (`docs/evidence/p4_review_r3_h1_2026-10-20/`, head `4192f13`); its README says it is not the independent review of `0a472d6` itself | P1 reads it; P4 opens the PR |
 | `claude/p1-work-list-verification-o1hdlh` | no PR: P1's documentation reconciliation of 20.10 (BACKLOG commits `fe08f4f`, `9018b87`, `4635e9e`: CI, seal, `ui-improvement`, K1/K2 moved to P2); CAPTAIN and CHANGELOG are added to it | P1 merges to `main` |
@@ -105,7 +105,7 @@ development is still active and there is no final source yet; the final source i
 23:59 MSK, and only then the reseal, P4's acceptance, the image and the tag of **v1.2.0**. `.github/workflows/release.yml`
 builds the runtime image from a pushed `v*` tag, loads the archive back, plays both smoke bags with no internet, runs the E2
 check and publishes the archive with its checksums. **CI works now**: all five jobs passed on `main` at `5d83c5b` (run #667)
-and `f56ad5e` (#669); run #680 on `8453458` (PR #47) was not finished at 19:07 MSK (see §4). 19.10: 0 of the last 100 runs
+and `f56ad5e` (#669); run #680 on `8453458` (PR #47) failed in the webapp browser suite (see §4). 19.10: 0 of the last 100 runs
 succeeded; the failure on `cefd4c4` before any step no longer reproduces; fallbacks: `scripts/release.sh`, `scripts/export_image.sh`. Whether an updated archive may be
 re-run is asked in O1 (sent, unanswered).
 

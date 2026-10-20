@@ -17,9 +17,9 @@ dates from 25.09. **The published release is v1.0.0 only.** 1.1.0 (sealed 16.10)
 ## [1.2.0] — unreleased: LiDAR integration candidate of 18.10, the integration of 19.10 and the work of 20.10
 
 **State, 20.10 evening (`main` `8453458`).** All four version declarations are 1.2.0. `python3 scripts/detector_freeze.py verify`
-**PASSES** (40 files, R3 integrity reseal on the measured `0a472d6`; it is an integrity seal, not an acceptance). CI on `main` is
-green: all five jobs passed at `5d83c5b` (run #667) and `f56ad5e` (#669); run #680 on `8453458` (PR #47) was not finished at
-19:07 MSK (four jobs green, the web job still in its browser suite).
+**PASSES** (40 files, R3 integrity reseal on the measured `0a472d6`; it is an integrity seal, not an acceptance). CI on `main` was
+green at `5d83c5b` (run #667) and `f56ad5e` (#669), all five jobs; run #680 on `8453458` (PR #47) failed in the web job's browser
+suite (22 of 75 end-to-end tests; four jobs green), so `main` is red since the UI merge.
 PRs #43, #44, #45 and #47 are merged, #46 (P4's review of H′ and the Falcon clear-distance model) is open. **Not released:**
 release, tag and demo image wait for a final source, the last commit before the code stop 20.10 23:59 MSK (captain, 20.10); then
 the reseal, P4's independent acceptance of the final bundle, the image and the tag. Not a J1 score, not a G3 run
