@@ -55,6 +55,15 @@ acceptance's `out/`.
 
 `out/`: the outputs named above, `gate_l16.json`, the per-frame rows `gatework_l16.tar.xz`, the X3 summary and raw records.
 
+**Runs of the shipped source for reuse.** The detector source of `5fa865b` is byte-identical to the sealed `cc6226e`
+(`git diff 5fa865b cc6226e -- resense native configs ros2_ws` is empty). A switch review of the final source therefore
+needs only the switch-off runs; compare them against: the gate's per-frame rows `out/gatework_l16.tar.xz` (and
+`out/gate_l16.json`), X3 `out/x3_l16.json` with its raw records `out/x3_raw_5fa865b.tar.xz` (unpack to
+`/home/user/out/x3/`, the summary's `raw_path`), and the whole Falcon recording through
+`docs/evidence/f1_false_alarms_2026-10-19/scripts/falcon_trace.py`: `out/falcon/l16.jsonl.xz` (per-frame records,
+4,443 rows), `out/falcon/l16.x.jsonl.xz` (track model and each detection's cluster per frame) and `l16.meta.json`
+(stream intake: 20,281,548,800 bytes, 4,443 frames found and kept, 0 lost).
+
 ```
 export OPENBLAS_CORETYPE=Haswell OMP_NUM_THREADS=1
 cd <tree> && RESENSE_REPO=$PWD PYTHONPATH=$PWD python <repo>/docs/evidence/p4_review_shipping_2026-10-20/scripts/fault_open_air.py $PWD
