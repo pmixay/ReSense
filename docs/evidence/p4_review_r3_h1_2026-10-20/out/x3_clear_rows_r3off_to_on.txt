@@ -1,0 +1,15 @@
+cloud_with_fake_obj/nominal row 780 GO clear off 173.1 -> on 44.9 | nearest None None
+cloud_with_fake_obj/nominal row 781 GO clear off 172.5 -> on 43.3 | nearest None None
+cloud_with_fake_obj/pitch_p2 row 780 GO clear off 173.1 -> on 44.9 | nearest None None
+cloud_with_fake_obj/pitch_p2 row 781 GO clear off 172.5 -> on 43.3 | nearest None None
+cloud_with_fake_obj/pitch_m2 row 780 GO clear off 173.1 -> on 44.9 | nearest None None
+cloud_with_fake_obj/pitch_m2 row 781 GO clear off 172.5 -> on 43.3 | nearest None None
+cloud_with_fake_obj/roll_p2 row 780 GO clear off 173.1 -> on 44.9 | nearest None None
+cloud_with_fake_obj/roll_p2 row 781 GO clear off 172.5 -> on 43.3 | nearest None None
+cloud_with_fake_obj/drop30_s1 row 780 GO clear off 168.5 -> on 43.3 | nearest None None
+cloud_with_fake_obj/drop30_s1 row 781 GO clear off 171.3 -> on 40.9 | nearest None None
+cloud_with_fake_obj/drop30_s2 row 780 GO clear off 166.0 -> on 44.9 | nearest None None
+cloud_with_fake_obj/drop30_s2 row 781 GO clear off 171.3 -> on 43.3 | nearest None None
+cloud_with_fake_obj/dedup row 780 GO clear off 162.7 -> on 44.9 | nearest None None
+cloud_with_fake_obj/dedup row 781 GO clear off 168.1 -> on 43.3 | nearest None None
+14 rows

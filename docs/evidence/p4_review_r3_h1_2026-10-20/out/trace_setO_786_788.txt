@@ -1,0 +1,12 @@
+row 784 id336 hits1 rep0 span0.096 | cluster -/warning/- d3.6 lat1.385 h0.223..0.393 nraw29/pts29 | R3 kind0 hits0 span0.0 q_on0 q_off0 | H1 core0 col0/hold2 hold_core0 hold_nocore0
+row 784 id337 hits1 rep0 span0.096 | cluster -/warning/- d7.79 lat1.392 h0.205..0.375 nraw27/pts27 | R3 kind0 hits0 span0.0 q_on0 q_off0 | H1 core0 col0/hold2 hold_core0 hold_nocore0
+row 785 id336 hits2 rep0 span0.196 | cluster -/warning/- d4.4 lat1.389 h0.249..0.369 nraw10/pts10 | R3 kind0 hits0 span0.0 q_on0 q_off0 | H1 core0 col0/hold2 hold_core0 hold_nocore0
+row 785 id337 hits2 rep0 span0.196 | cluster -/warning/- d7.93 lat1.395 h0.193..0.353 nraw26/pts26 | R3 kind0 hits0 span0.0 q_on0 q_off0 | H1 core0 col0/hold2 hold_core0 hold_nocore0
+row 785 id338 hits1 rep0 span0.1 | cluster -/warning/- d10.67 lat1.393 h0.237..0.357 nraw18/pts18 | R3 kind0 hits0 span0.0 q_on0 q_off0 | H1 core0 col0/hold2 hold_core0 hold_nocore0
+row 785 id339 hits1 rep0 span0.1 | cluster hanging/gauge/- d36.74 lat0.175 h2.747..3.398 nraw3/pts3 | R3 kind2 hits1 span0.1 q_on0 q_off0 | H1 core0 col0/hold2 hold_core0 hold_nocore0
+row 786 id337 hits3 rep0 span0.301 | cluster -/warning/- d9.03 lat1.393 h0.219..0.379 nraw31/pts31 | R3 kind0 hits0 span0.0 q_on0 q_off0 | H1 core0 col0/hold2 hold_core0 hold_nocore0
+row 786 id339 hits2 rep1 span0.204 | cluster hanging/gauge/- d35.08 lat0.15 h2.95..3.56 nraw3/pts3 | R3 kind2 hits2 span0.204 q_on1 q_off0 | H1 core0 col0/hold2 hold_core0 hold_nocore0
+row 787 id336 hits3 rep0 span0.393 | cluster -/warning/- d4.67 lat1.388 h0.201..0.371 nraw21/pts21 | R3 kind0 hits0 span0.0 q_on0 q_off0 | H1 core0 col0/hold2 hold_core0 hold_nocore0
+row 787 id339 hits3 rep1 span0.297 | cluster hanging/gauge/- d33.43 lat0.149 h2.857..3.447 nraw3/pts3 | R3 kind2 hits3 span0.297 q_on1 q_off0 | H1 core0 col0/hold2 hold_core0 hold_nocore0
+row 788 id339 hits4 rep1 span0.396 | cluster hanging/gauge/- d31.77 lat0.142 h2.786..3.346 nraw3/pts3 | R3 kind2 hits4 span0.396 q_on1 q_off0 | H1 core0 col0/hold2 hold_core0 hold_nocore0
+row 789 id339 hits5 rep1 span0.504 | cluster hanging/gauge/- d30.14 lat0.143 h2.946..3.216 nraw2/pts2 | R3 kind2 hits5 span0.504 q_on1 q_off1 | H1 core0 col0/hold2 hold_core0 hold_nocore0

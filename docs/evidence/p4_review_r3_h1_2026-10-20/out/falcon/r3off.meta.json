@@ -1,0 +1,18 @@
+{
+ "src": "/dev/stdin",
+ "bytes": 20281548800,
+ "found": 4443,
+ "kept": 4443,
+ "lost": 0,
+ "order_violations": 0,
+ "duplicates": 0,
+ "frames": 4443,
+ "set": [
+  "tracking.cable_confirm_time_s=0"
+ ],
+ "repo": "/home/user/wt_ship",
+ "resets": [],
+ "wall_s": 504.8,
+ "cpu_s": 263.1,
+ "rss_peak_mb": 1382.2
+}
