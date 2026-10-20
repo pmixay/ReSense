@@ -954,14 +954,16 @@ class Detector:
     def _rail_reference(self, clusters: List[Cluster], xyz: np.ndarray, dy_rail: np.ndarray,
                         h_all: np.ndarray) -> List[Cluster]:
         """19.10 (F1 a/b; ``lowobj.local_rail_margin`` / ``rail_band_range`` > 0): low clusters that do not rise
-        above the frame's own rail returns around them (``lowobj.rail_reference_check``; the lines measured on the
-        returns of no low cluster with ``local_rail_exclude_low``; the opt-in near-bed path's clusters, which report
+        above the frame's own rail returns around them (``lowobj.rail_reference_check``; with
+        ``local_rail_exclude_low`` both original and independent low-free references must reject the cluster,
+        preventing fragmented objects from supplying their own reference; the opt-in near-bed clusters, which report
         objects below the rail head by design, are exempt) are advisory, reason ``below_rail_ref`` (a
         signature: an earned STOP is kept by the stop-keep rule) with ``local_rail_advisory``, or else weak low
         evidence handed to the tracker separately (it may continue a reported low STOP, never start one).
         Returns the clusters to confirm."""
         low = self.cfg.lowobj
-        free = low_free_mask(xyz.shape[0], clusters + self._low_height) if low.local_rail_exclude_low else None
+        free = (low_free_mask(xyz.shape[0], clusters + self._low_height, xyz[:, 0], dy_rail)
+                if low.local_rail_exclude_low else None)
         # the opt-in near-bed path (lowobj.near_enabled) reports objects below the rail head by design: exempt
         near = getattr(self, "_near_low", [])
         check = [c for c in clusters if not any(c is k for k in near)] if near else clusters

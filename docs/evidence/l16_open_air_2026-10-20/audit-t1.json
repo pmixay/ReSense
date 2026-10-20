@@ -1,0 +1,328 @@
+{
+  "raw_frames": 120,
+  "bags": {
+    "doubleT_obstacle": {
+      "minimum_above_fraction": 0.30866834281422634,
+      "first_before_cue": [
+        null,
+        null
+      ],
+      "first_after_cue": [
+        null,
+        null
+      ],
+      "confirmed_by_frame9": true
+    },
+    "doubleT_platform": {
+      "minimum_above_fraction": 0.28998327849398564,
+      "first_before_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "first_after_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "confirmed_by_frame9": true
+    },
+    "roundT_doubleT": {
+      "minimum_above_fraction": 0.2952826601318236,
+      "first_before_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "first_after_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "confirmed_by_frame9": true
+    },
+    "roundT_pressureGate_roundT": {
+      "minimum_above_fraction": 0.2826929128731566,
+      "first_before_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "first_after_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "confirmed_by_frame9": true
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "minimum_above_fraction": 0.29510201872598363,
+      "first_before_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "first_after_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "confirmed_by_frame9": true
+    },
+    "squareT_platform_squareT_switch": {
+      "minimum_above_fraction": 0.29399465675455916,
+      "first_before_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "first_after_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "confirmed_by_frame9": true
+    },
+    "set_O": {
+      "minimum_above_fraction": 0.284713328665995,
+      "first_before_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "first_after_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "confirmed_by_frame9": true
+    },
+    "ride_start": {
+      "minimum_above_fraction": 0.30232778497204765,
+      "first_before_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "first_after_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "confirmed_by_frame9": true
+    },
+    "falcon": {
+      "minimum_above_fraction": 0.465865101405369,
+      "first_before_cue": [
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "first_after_cue": [
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "confirmed_by_frame9": true
+    },
+    "marked_platform": {
+      "minimum_above_fraction": 0.291130300061516,
+      "first_before_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "first_after_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "confirmed_by_frame9": true
+    },
+    "marked_switch": {
+      "minimum_above_fraction": 0.3082120745466545,
+      "first_before_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "first_after_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "confirmed_by_frame9": true
+    },
+    "marked_tunnels": {
+      "minimum_above_fraction": 0.29793643938356523,
+      "first_before_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "first_after_cue": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "confirmed_by_frame9": true
+    }
+  },
+  "old_A1_exposed_frames": [],
+  "known_positive_detected_and_fixed": true,
+  "raw_ride_cache_checks": 10
+}
