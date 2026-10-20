@@ -1,0 +1,51 @@
+== cloud_with_fake_obj/nominal: 5 rows differ in decision/dets/warns
+   row 778: GO -> STOP  ref dets [] warns [] | cur dets [(48.19, 0.2, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 779: GO -> STOP  ref dets [] warns [] | cur dets [(46.56, 0.2, 'hanging', '', 'gauge')] warns [] | label match []
+   row 786: GO -> STOP  ref dets [] warns [] | cur dets [(35.08, 0.17, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 787: GO -> STOP  ref dets [] warns [] | cur dets [(33.43, 0.15, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 788: GO -> STOP  ref dets [] warns [] | cur dets [(31.77, 0.15, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+== cloud_with_fake_obj/pitch_p2: 5 rows differ in decision/dets/warns
+   row 778: GO -> STOP  ref dets [] warns [] | cur dets [(48.17, 0.2, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 779: GO -> STOP  ref dets [] warns [] | cur dets [(46.54, 0.2, 'hanging', '', 'gauge')] warns [] | label match []
+   row 786: GO -> STOP  ref dets [] warns [] | cur dets [(35.06, 0.17, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 787: GO -> STOP  ref dets [] warns [] | cur dets [(33.4, 0.16, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 788: GO -> STOP  ref dets [] warns [] | cur dets [(31.74, 0.15, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+== cloud_with_fake_obj/pitch_m2: 5 rows differ in decision/dets/warns
+   row 778: GO -> STOP  ref dets [] warns [] | cur dets [(48.17, 0.2, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 779: GO -> STOP  ref dets [] warns [] | cur dets [(46.54, 0.2, 'hanging', '', 'gauge')] warns [] | label match []
+   row 786: GO -> STOP  ref dets [] warns [] | cur dets [(35.06, 0.16, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 787: GO -> STOP  ref dets [] warns [] | cur dets [(33.4, 0.15, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 788: GO -> STOP  ref dets [] warns [] | cur dets [(31.74, 0.15, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+== cloud_with_fake_obj/roll_p2: 5 rows differ in decision/dets/warns
+   row 778: GO -> STOP  ref dets [] warns [] | cur dets [(48.19, 0.23, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 779: GO -> STOP  ref dets [] warns [] | cur dets [(46.56, 0.23, 'hanging', '', 'gauge')] warns [] | label match []
+   row 786: GO -> STOP  ref dets [] warns [] | cur dets [(35.08, 0.19, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 787: GO -> STOP  ref dets [] warns [] | cur dets [(33.43, 0.18, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 788: GO -> STOP  ref dets [] warns [] | cur dets [(31.77, 0.18, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+== cloud_with_fake_obj/hz5: 2 rows differ in decision/dets/warns
+   row 788: GO -> STOP  ref dets [] warns [] | cur dets [(31.77, 0.15, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 790: GO -> STOP  ref dets [] warns [] | cur dets [(28.45, 0.15, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+== cloud_with_fake_obj/drop30_s1: 4 rows differ in decision/dets/warns
+   row 778: GO -> STOP  ref dets [] warns [] | cur dets [(48.19, 0.2, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 779: GO -> STOP  ref dets [] warns [] | cur dets [(45.75, 0.2, 'hanging', '', 'gauge')] warns [] | label match []
+   row 789: GO -> STOP  ref dets [] warns [] | cur dets [(30.14, 0.16, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 790: GO -> STOP  ref dets [] warns [] | cur dets [(27.66, 0.16, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+== cloud_with_fake_obj/drop30_s2: 5 rows differ in decision/dets/warns
+   row 778: GO -> STOP  ref dets [] warns [] | cur dets [(48.19, 0.21, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 779: GO -> STOP  ref dets [] warns [] | cur dets [(46.56, 0.21, 'hanging', '', 'gauge')] warns [] | label match []
+   row 786: GO -> STOP  ref dets [] warns [] | cur dets [(35.08, 0.16, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 787: GO -> STOP  ref dets [] warns [] | cur dets [(33.43, 0.15, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 788: GO -> STOP  ref dets [] warns [] | cur dets [(31.77, 0.15, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+== cloud_with_fake_obj/drop30_s3: 1 rows differ in decision/dets/warns
+   row 788: GO -> STOP  ref dets [] warns [] | cur dets [(31.77, 0.14, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+== cloud_with_fake_obj/drop30_judge7: 1 rows differ in decision/dets/warns
+   row 788: GO -> STOP  ref dets [] warns [] | cur dets [(31.77, 0.15, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+== cloud_with_fake_obj/dedup: 7 rows differ in decision/dets/warns
+   row 776: CAUTION -> STOP  ref dets [] warns [(3.0, 1.39, '', '', 'warning')] | cur dets [(51.46, 0.21, 'hanging', '', 'gauge')] warns [(3.0, 1.39, '', '', 'warning')] | label match ['thin_hanging']
+   row 777: CAUTION -> STOP  ref dets [] warns [(2.27, 1.39, '', '', 'warning')] | cur dets [(49.83, 0.2, 'hanging', '', 'gauge')] warns [(2.27, 1.39, '', '', 'warning')] | label match ['thin_hanging']
+   row 778: GO -> STOP  ref dets [] warns [] | cur dets [(48.19, 0.21, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 779: GO -> STOP  ref dets [] warns [] | cur dets [(46.56, 0.21, 'hanging', '', 'gauge')] warns [] | label match []
+   row 786: GO -> STOP  ref dets [] warns [] | cur dets [(35.08, 0.17, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 787: GO -> STOP  ref dets [] warns [] | cur dets [(33.43, 0.15, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+   row 788: GO -> STOP  ref dets [] warns [] | cur dets [(31.77, 0.15, 'hanging', '', 'gauge')] warns [] | label match ['thin_hanging']
+TOTAL {"cases_differ": 10, "dec_rows": 40, "stop_added": 40, "stop_added_matched": 33, "stop_lost": 0, "other_rows": 14} other non-timing fields in rows with equal decision/dets/warns: {'clear': 14}

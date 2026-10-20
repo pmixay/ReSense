@@ -1,0 +1,695 @@
+{
+  "box0.5": {
+    "status": "no_sequence_regression",
+    "sequences": 6,
+    "baseline_sustained_sequences": 1,
+    "current_sustained_sequences": 1,
+    "baseline_conditional_median_m": 55.6,
+    "current_conditional_median_m": 55.6,
+    "baseline_success_cohort_baseline_median_m": 55.6,
+    "baseline_success_cohort_current_median_m": 55.6,
+    "lost_sustained_sequences": 0,
+    "regressed_sequences": 0,
+    "lost_hit_frames": 0,
+    "added_hit_frames": 0,
+    "pairs": [
+      {
+        "identity": {
+          "kind": "box0.5",
+          "file0": "new_data_46_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": 0.12796293092061584,
+          "refl": 38.255111545554435,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": null,
+        "current_sustained_m": null,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "box0.5",
+          "file0": "new_data_68_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.09277533456280984,
+          "refl": 25.994237810747695,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": null,
+        "current_sustained_m": null,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "box0.5",
+          "file0": "new_data_98_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.13329429122507547,
+          "refl": 33.7689346114188,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": null,
+        "current_sustained_m": null,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "box0.5",
+          "file0": "new_data_140_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.13005719936620652,
+          "refl": 26.758224510142664,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": null,
+        "current_sustained_m": null,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "box0.5",
+          "file0": "new_data_168_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.05959276002085567,
+          "refl": 23.00558933789678,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": null,
+        "current_sustained_m": null,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "box0.5",
+          "file0": "new_data_172_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.4734056645157245,
+          "refl": 27.30220336489657,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 55.6,
+        "current_sustained_m": 55.6,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      }
+    ]
+  },
+  "box1.0": {
+    "status": "no_sequence_regression",
+    "sequences": 6,
+    "baseline_sustained_sequences": 6,
+    "current_sustained_sequences": 6,
+    "baseline_conditional_median_m": 119.0,
+    "current_conditional_median_m": 119.0,
+    "baseline_success_cohort_baseline_median_m": 119.0,
+    "baseline_success_cohort_current_median_m": 119.0,
+    "lost_sustained_sequences": 0,
+    "regressed_sequences": 0,
+    "lost_hit_frames": 0,
+    "added_hit_frames": 0,
+    "pairs": [
+      {
+        "identity": {
+          "kind": "box1.0",
+          "file0": "new_data_46_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": 0.3759242870403269,
+          "refl": 20.330552710570583,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 85.3,
+        "current_sustained_m": 85.3,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "box1.0",
+          "file0": "new_data_68_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": 0.4358147068198638,
+          "refl": 23.51311241205118,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 119.9,
+        "current_sustained_m": 119.9,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "box1.0",
+          "file0": "new_data_98_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": 0.18055113152137958,
+          "refl": 33.71083968961389,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 118.1,
+        "current_sustained_m": 118.1,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "box1.0",
+          "file0": "new_data_140_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.2137567307088694,
+          "refl": 31.430596614595217,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 121.7,
+        "current_sustained_m": 121.7,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "box1.0",
+          "file0": "new_data_168_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.19665952734520753,
+          "refl": 21.171360696103886,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 22.1,
+        "current_sustained_m": 22.1,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "box1.0",
+          "file0": "new_data_172_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.360581467238144,
+          "refl": 33.43989755912719,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 127.2,
+        "current_sustained_m": 127.2,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      }
+    ]
+  },
+  "cable": {
+    "status": "success_population_expanded",
+    "sequences": 6,
+    "baseline_sustained_sequences": 2,
+    "current_sustained_sequences": 4,
+    "baseline_conditional_median_m": 34.2,
+    "current_conditional_median_m": 17.8,
+    "baseline_success_cohort_baseline_median_m": 34.2,
+    "baseline_success_cohort_current_median_m": 34.2,
+    "lost_sustained_sequences": 0,
+    "regressed_sequences": 0,
+    "lost_hit_frames": 0,
+    "added_hit_frames": 9,
+    "pairs": [
+      {
+        "identity": {
+          "kind": "cable",
+          "file0": "new_data_46_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.5967137997958223,
+          "refl": 34.475606623645966,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": null,
+        "current_sustained_m": null,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "cable",
+          "file0": "new_data_68_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": 0.1384621337775046,
+          "refl": 29.4156853472275,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 19.0,
+        "current_sustained_m": 19.0,
+        "lost_hit_frames": [],
+        "added_hit_frames": [
+          "new_data_69_0035",
+          "new_data_69_0036",
+          "new_data_69_0037"
+        ],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "cable",
+          "file0": "new_data_98_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.016997569401853152,
+          "refl": 19.30725626676867,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": null,
+        "current_sustained_m": 16.6,
+        "lost_hit_frames": [],
+        "added_hit_frames": [
+          "new_data_100_0000",
+          "new_data_99_0050"
+        ],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "cable",
+          "file0": "new_data_140_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": 0.3991729771840773,
+          "refl": 12.520460307471545,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 49.5,
+        "current_sustained_m": 49.5,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "cable",
+          "file0": "new_data_168_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.3617843465888936,
+          "refl": 22.136555194645844,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": null,
+        "current_sustained_m": 16.4,
+        "lost_hit_frames": [],
+        "added_hit_frames": [
+          "new_data_169_0022",
+          "new_data_169_0023"
+        ],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "cable",
+          "file0": "new_data_172_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.0001250235748235795,
+          "refl": 38.637714810722116,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": null,
+        "current_sustained_m": null,
+        "lost_hit_frames": [],
+        "added_hit_frames": [
+          "new_data_173_0027",
+          "new_data_173_0038"
+        ],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      }
+    ]
+  },
+  "person": {
+    "status": "no_sequence_regression",
+    "sequences": 6,
+    "baseline_sustained_sequences": 6,
+    "current_sustained_sequences": 6,
+    "baseline_conditional_median_m": 157.1,
+    "current_conditional_median_m": 157.1,
+    "baseline_success_cohort_baseline_median_m": 157.1,
+    "baseline_success_cohort_current_median_m": 157.1,
+    "lost_sustained_sequences": 0,
+    "regressed_sequences": 0,
+    "lost_hit_frames": 0,
+    "added_hit_frames": 0,
+    "pairs": [
+      {
+        "identity": {
+          "kind": "person",
+          "file0": "new_data_46_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.27625594348335564,
+          "refl": 41.84808436607271,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 91.5,
+        "current_sustained_m": 91.5,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "person",
+          "file0": "new_data_68_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": 0.27558653571593283,
+          "refl": 11.679278765273217,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 122.0,
+        "current_sustained_m": 122.0,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "person",
+          "file0": "new_data_98_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": 0.5966519229470532,
+          "refl": 29.183877713094173,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 170.1,
+        "current_sustained_m": 170.1,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "person",
+          "file0": "new_data_140_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.17064576394911574,
+          "refl": 56.70217579781249,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 164.4,
+        "current_sustained_m": 164.4,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "person",
+          "file0": "new_data_168_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.3127566684084574,
+          "refl": 49.35491537443417,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 151.0,
+        "current_sustained_m": 151.0,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "person",
+          "file0": "new_data_172_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.24156464061729288,
+          "refl": 39.01661929934254,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 163.2,
+        "current_sustained_m": 163.2,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      }
+    ]
+  },
+  "trolley": {
+    "status": "no_sequence_regression",
+    "sequences": 6,
+    "baseline_sustained_sequences": 6,
+    "current_sustained_sequences": 6,
+    "baseline_conditional_median_m": 120.9,
+    "current_conditional_median_m": 120.9,
+    "baseline_success_cohort_baseline_median_m": 120.9,
+    "baseline_success_cohort_current_median_m": 120.9,
+    "lost_sustained_sequences": 0,
+    "regressed_sequences": 0,
+    "lost_hit_frames": 0,
+    "added_hit_frames": 0,
+    "pairs": [
+      {
+        "identity": {
+          "kind": "trolley",
+          "file0": "new_data_46_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": 0.5220869085453218,
+          "refl": 83.48999931723384,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 89.5,
+        "current_sustained_m": 89.5,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "trolley",
+          "file0": "new_data_68_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.45086006820052327,
+          "refl": 42.26557369163704,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 122.0,
+        "current_sustained_m": 122.0,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "trolley",
+          "file0": "new_data_98_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": 0.030425186970871043,
+          "refl": 97.71906721552654,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 113.9,
+        "current_sustained_m": 113.9,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "trolley",
+          "file0": "new_data_140_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.3274108877599443,
+          "refl": 111.22194816038339,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 119.8,
+        "current_sustained_m": 119.8,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "trolley",
+          "file0": "new_data_168_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": -0.5375744387227085,
+          "refl": 58.45137671949979,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 154.8,
+        "current_sustained_m": 154.8,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      },
+      {
+        "identity": {
+          "kind": "trolley",
+          "file0": "new_data_172_0000.npy.zst",
+          "d0": 220.0,
+          "lateral": 0.512585463681441,
+          "refl": 90.32865212317674,
+          "placement_mode": "legacy",
+          "reference": null,
+          "perturbation": null,
+          "anchor_frame": null
+        },
+        "baseline_sustained_m": 129.1,
+        "current_sustained_m": 129.1,
+        "lost_hit_frames": [],
+        "added_hit_frames": [],
+        "first_range_regressed": false,
+        "false_detections_added": 0,
+        "regressed": false
+      }
+    ]
+  }
+}
