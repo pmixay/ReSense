@@ -318,6 +318,38 @@ def low_free_mask(n: int, clusters, X: Optional[np.ndarray] = None,
     return free
 
 
+def _rail_surface_reference(c, X: np.ndarray, dy: np.ndarray, h: np.ndarray, d0: float, d1: float,
+                            cfg: LowObjectConfig, rails_spacing: float) -> Optional[float]:
+    """Independent head continuation in a narrow fragment's own lateral band.
+
+    The median rail line can read the web when only a few rings hit the head.
+    A head return above it is not an object if that surface independently
+    continues on *both* along-track sides. The caller supplies low-free points;
+    the cluster and all neighbouring low footprints must not support this line.
+    Both side heights must support the top separately: use their minimum,
+    never interpolate a low web and a high head into a fabricated reference.
+    A steep grade or one-sided head observations therefore fail open.
+    """
+    half, tol = 0.5 * float(rails_spacing), float(cfg.rail_start_lateral)
+    if (float(c.size[1]) > cfg.rail_start_max_width
+            or not any(d0 <= s * half + tol and d1 >= s * half - tol for s in (-1.0, 1.0))):
+        return None
+    x0, x1, w = float(c.bbox_min[0]), float(c.bbox_max[0]), float(cfg.local_rail_window)
+    band = (dy >= d0) & (dy <= d1) & (h > -0.3) & (h < 0.3)
+    sides = []
+    bins = 0
+    for lo, hi in ((x0 - w, x0 - 0.3), (x1 + 0.3, x1 + w)):
+        idx = np.flatnonzero(band & (X > lo) & (X < hi))
+        if not idx.size:
+            return None
+        bins += np.unique(np.floor((X[idx] - (x0 - w)) / 0.5).astype(np.int64)).size
+        best = idx[int(np.argmax(h[idx]))]
+        sides.append((float(X[best]), float(h[best])))
+    if bins < max(2, int(cfg.local_rail_min_bins)):
+        return None
+    return min(height for _, height in sides)
+
+
 def rail_reference_check(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray, cfg: LowObjectConfig,
                          rails_spacing: float, free: Optional[np.ndarray] = None) -> list:
     """19.10 (F1 tasks a and b): the clean low clusters of ``clusters`` (kind ``low``, zone gauge, no
@@ -330,7 +362,10 @@ def rail_reference_check(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray,
     the independent lines may be measured on (:func:`low_free_mask`). With it, F1a requires both the original
     and independent reference to reject the cluster; missing either retains ordinary confirmation. Removing
     low returns can raise a median, so the independent reference is capped by the original one (B1 repair,
-    20.10). None = every return (the original, unsafe ablation).
+    20.10). A narrow old-rule-rejected rail fragment may also be explained by independent head
+    continuation on both sides in its own lateral band, with ``rail_start_margin``. This uses the
+    full footprint top too; no support means no extra rejection. None = every return (the original,
+    unsafe ablation; independent head continuation disabled).
     Returns them; the detector makes them advisory (``local_rail_advisory``) or weak low evidence. The
     clusters themselves are not modified here."""
     out = []
@@ -350,12 +385,20 @@ def rail_reference_check(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray,
             if footprint.any():
                 top = max(top, float(h[footprint].max()))
             ref = local_rail_reference(c, Xr, dyr, hr, cfg, rails_spacing)
-            if free is not None and ref is not None:
+            original = None
+            if free is not None:
                 original = local_rail_reference(c, X, dy, h, cfg, rails_spacing)
+            if free is not None and ref is not None:
                 ref = min(ref, original) if original is not None else None
             if ref is not None and top < ref + float(cfg.local_rail_margin):
                 out.append(c)
                 continue
+            if (free is not None and original is not None
+                    and float(c.height_max) < original + float(cfg.local_rail_margin)):
+                surface = _rail_surface_reference(c, Xr, dyr, hr, float(d.min()), float(d.max()), cfg, rails_spacing)
+                if surface is not None and top <= surface + float(cfg.rail_start_margin):
+                    out.append(c)
+                    continue
         if cfg.rail_band_range > 0 and c.distance < cfg.rail_band_range:
             d = dy[c.points_idx]
             d0, d1 = float(d.min()), float(d.max())

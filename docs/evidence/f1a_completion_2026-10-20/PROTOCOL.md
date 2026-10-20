@@ -74,3 +74,13 @@ Initial red-test fixtures had two errors: a 0.40 m upper return exceeded the
 existing `foot_max_top` cap, and the missing-support fixture removed the
 target's upper return too. Corrected to <=0.34 m and removal outside the
 target guard before production edits; the original failing XML is retained.
+
+### Two-sided support strengthening after targeted check A
+
+The first candidate passed 154 targeted checks but failed the missing-before
+head control: interpolation between a low web on one side and a high head on
+the other could manufacture sufficient height at the target. Strengthen the
+condition before further measurement: **both side heights separately** must
+support the footprint top within the existing 0.05 m margin. Use the lower
+side height, never an interpolated height above it. This deliberately fails
+open on a steep grade or one-sided head observations. Keep targeted-A XML.
