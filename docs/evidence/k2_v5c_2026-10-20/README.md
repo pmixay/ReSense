@@ -1,10 +1,10 @@
 # K2 v5c: keep genuine detections beyond the reach cap (20.10)
 
-> **Owner:** P4 (author; the review is by P3 or a fresh agent) · **Decides:** the captain · **Status:** code and
-> offline evidence. The variant is **not measured on the data**: this container cannot reach Google Drive or Yandex
-> Disk (network policy), so no bag or cache was available. Every switch stays **off** by default; nothing ships until
-> the measurement below runs and the captain decides. G3 not touched. v5c addresses the Falcon person's loss beyond
-> the reach cap; the tunnels cube lost inside the cap (§1b) is open, so **K2 is not ready to switch on**.
+> **Owner:** P4 (author; the review is by P3 or a fresh agent) · **Decides:** the captain · **Status:** measured on the
+> data (20.10, §6–§7) on `main` `8c2bf51`; every switch stays **off** by default. Registered rows: **G-1 pass, ID pass,
+> K1-2 reported; F-1 fail as scored** (every extra STOP is on the person; the scorer's reading, §6), **M-1 fail** (the
+> tunnels cube, as predicted; at 30 m also a platform cube). G-2 (X3): see §6. T3 (§7): K2 does not bend away from the
+> tunnels cube; the cube is an edge object that K2-off's displaced axis carries into its gauge. G3 not touched.
 > Package this answers: [`../k1_k2_gauge_2026-10-19/P4_PACKAGE.md`](../k1_k2_gauge_2026-10-19/P4_PACKAGE.md) §3 row 0.
 
 ## 1. Correction: variant B cost the Falcon person 2.6 m, not 12 m
@@ -60,6 +60,10 @@ detections at 30–60 m on the ride, where the gate counts every STOP as a false
 bring back ([`../n5_markers_2026-10-20/scripts/k2_removed.py`](../n5_markers_2026-10-20/scripts/k2_removed.py)). What makes the joint fit bend wrongly in the
 tunnel needs the cloud (frames 255–275); this container cannot reach it. Until then **K2 is not ready to switch on**,
 v5c included.
+
+**Superseded by §7 (data run, 20.10):** measured against the rails, the cube's centre is 1.165 m from the axis (inner
+face 0.92 m, 0.05–0.08 m inside the strict envelope), and over frames 259–273 B's axis is nearer the true axis than
+K2-off's, both displaced towards the cube. The 0.96 m above was measured from 1.1.0's axis.
 
 ## 2. v5c: what both axes put in the gauge stays an obstacle
 
@@ -269,10 +273,12 @@ open. They are what an OR-of-gauges rule would bring back, and the gate counts e
 the fitted gauge reads 0.04–0.10 m wide, so the midpoint carries a few centimetres of uncertainty, much less than the
 0.1–0.2 m differences above. The synthetic bag's own track geometry is not known otherwise.
 
-## 6. Not done
+## 8. Not done (updated 20.10 after the data run)
 
-- No measurement on data (G-1, G-2, F-1, K1-2, ID): the data is not reachable from this container.
-- Set O `small_center` 3.3 m later (package row 1) is the joint shape at 55 m, before any cap; v5c does not touch it.
-- The tunnels cube (§1b): inside the cap, not addressed; diagnosing it needs the cloud of frames 255–275.
-- The 9 new near STOP frames on Falcon (4373–4379, 4410–4411) are not attributed.
-- Review by P3 or a fresh agent.
+- G-2 (X3) for v5c-30: not run (v5c-30 already fails M-1 on a second object).
+- Set O `small_center` 55.8 → 52.5 m (§7): inside both gauges; why K2 has no detection in frames 337–338 is not traced.
+- The ride's strict detections removed at 30–60 m (§7): which axis is right there is not established (rails resolve
+  only to 13–19 m).
+- The platform cube under v5c-30 (§6): the `doubt` hold is inferred from the records, not traced.
+- The 9 near STOP frames on Falcon at 5–6 m (4373–4379, 4410–4411, every K2 variant) are still not attributed.
+- Review by P3 or a fresh agent; the captain's decision.
