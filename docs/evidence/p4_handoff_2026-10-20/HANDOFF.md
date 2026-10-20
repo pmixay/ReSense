@@ -19,11 +19,14 @@
    the tunnels cube K2 loses.
 5. [`docs/VM_GUIDE.md`](../../VM_GUIDE.md) §2 (data and frame caches) and §4.4 (the gate).
 
-**State.** `main` (`0acb18c`) carries the final detector `4cf8e27`: K2 held off; F1a, H′, R3, L16/S3 on. Branch
-`claude/k2-refinement-ty1aya` ([PR #43](https://github.com/pmixay/ReSense/pull/43), draft) = `main` + the K2 v5c
-switch `track.axis_joint_reach_dual` (default 0 = off) + P4 evidence. With every switch off it equals `main` on 180
-synthetic frames; **not yet checked on the recordings** (row ID below). Work on this branch, or on a branch made from
-it with a PR into it.
+**State (updated 20.10 after [PR #43](https://github.com/pmixay/ReSense/pull/43) was merged).** `main` (`8c2bf51`)
+= H1's collision core (`cluster.column_core_margin` 0.02, **on**, DECISIONS row 45; the detector of `a5b0ede`, which
+H1 measured as `0f02b28`) + PR #43: the K2 v5c switch `track.axis_joint_reach_dual` (default 0 = off) and the P4
+evidence. K2 held off; F1a, H′, R3, L16/S3, H1 on. **The detector is no longer `4cf8e27`: every reference run is on
+the current `main` head.** With every K2 switch off, `8c2bf51` equals `a5b0ede` on 180 synthetic frames (rechecked
+after the merge); **not yet checked on the recordings** (row ID below). The three ships-on findings were re-run on
+`8c2bf51` with identical results (shipping review, "Current `main`"). Work on a new branch from `main`, with a PR into
+`main`.
 
 ## 1. Data
 
@@ -51,14 +54,15 @@ ride split, `falcon_test` and the three marked synthetic bags: decode as the jur
 with x < 0, and `directional_axes(xyz)`. Positive control: `p4_review_shipping_2026-10-20/scripts/cue_synthetic.py`
 gives (0, 0, −1) at 0.2 % above. A real frame with a one-sided axis other than +X means the bug fires there; the
 smallest share above the sensor among real starts says how close the data is to it. Then, when P3 commits a fix:
-gate + Falcon on that commit vs `4cf8e27` (expected identical) and `scripts/fault_open_air.py` (expected GO).
+gate + Falcon on that commit vs the `main` commit it is based on (expected identical) and
+`scripts/fault_open_air.py` (expected GO).
 
 ### T2. K2 v5c: the registered measurement (P4's P0)
 
 Exactly the rows of the v5c README §4 (revision 2), nothing else tried: candidate **v5c-15**; **v5c-30** only if
-F-1 fails at 15. Overrides `V` and the gate / Falcon / probe commands are in §5. Run the K2-off reference with the
-same commands on the same head (it is row **ID** against `4cf8e27`/`main`, and the per-frame reference for the
-others). Rows: **F-1** (`score_falcon_pos.py`), **G-1** (gate, no `--allow`), **G-2** (X3), **K1-2** (standing-person
+F-1 fails at 15. Overrides `V` and the gate / Falcon / probe commands are in §5; the reference is the README's
+"Amendment of 20.10" under §4. Run the K2-off reference with the same commands on the same `main` head: it is the
+per-frame reference for the other rows, and against `a5b0ede` (`main` before the merge) it is row **ID**. Rows: **F-1** (`score_falcon_pos.py`), **G-1** (gate, no `--allow`), **G-2** (X3), **K1-2** (standing-person
 probe), **ID**, and **M-1**, the three marked bags:
 
 ```

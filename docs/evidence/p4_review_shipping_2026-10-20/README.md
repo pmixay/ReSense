@@ -19,6 +19,13 @@
 
 Each confirmed finding has a proposed minimal fix for P3 below. None is measured on the recordings.
 
+**Current `main` (re-run 20.10 after H1 and PR #43 were merged, `8c2bf51`, H1's `column_core_margin` 0.02 on; the
+detector imported from that worktree):** the same commands as in "Reproduce" give the same results. A1: the cue is
+(0, 0, −1) at 0.2 % and 1 % above and none at 3 % and 10 %; FAULT in 450 / 450 frames in open air, GO in 450 / 450 in
+the tunnel. B1: every row is the same, 8 STOP frames → 0 with the rails 0.18 / 0.20 m high, the flat-track control
+equal. B2: at 37 m, STOP frames 2–17 (tall) and 1–17 (hanging) with R3, none without; the 30 m rows as tabulated.
+H1 does not change these findings; their exposure on the recordings is still unmeasured.
+
 ## A. L16/S3 calibration and the Falcon range model
 
 ### A1. A correct full-revolution Pandar that starts in open air is FAULT for the whole run (confirmed)
