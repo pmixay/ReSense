@@ -28,6 +28,11 @@ after the merge); **not yet checked on the recordings** (row ID below). The thre
 `8c2bf51` with identical results (shipping review, "Current `main`"). Work on a new branch from `main`, with a PR into
 `main`.
 
+**F1a publication update:** `f07f4b8`, merged with PR #43 at `060bde7`, repairs the two B1 mechanisms on the author's
+checks. It also returns ride STOP events (18 →23 in the chunked gate), so independent acceptance and disposition of
+the ride cost remain pending. The `8c2bf51` re-check above is historical, before this repair. Use the latest main
+for new work, and compare against its exact parent/configuration; see [author evidence](../f1a_b1_2026-10-20/README.md).
+
 ## 1. Data
 
 | what | where | size | used by |
