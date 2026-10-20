@@ -177,10 +177,10 @@ sha256 the Yandex API publishes (Drive zip against `scripts/cold_bags.sha256`). 
 | # | criterion | v5c-15 | v5c-30 (run because F-1 failed at 15) |
 |---|---|---|---|
 | F-1 | person first STOP ≥ 124.0 m; `n_person_no_stop` ≤ 22; no new STOP frame beyond variant B's 9 | **fail as scored**: first STOP 122.27 m (frame 2994); `n_person_no_stop` **10** (pass); new STOP frames 18 = B's 9 + 9 more (2979–2983, 3003, 3007, 3008, 3039) | **fail as scored**: 122.27 m; 10; 26 = B's 9 + 17 (also 2950–2957) |
-| G-1 | only set O `small_center` fails; ride STOP episodes ≤ 12; five empty and squareT_platform 0 episodes | running | running |
+| G-1 | only set O `small_center` fails; ride STOP episodes ≤ 12; five empty and squareT_platform 0 episodes | **pass**: exit 1 on the 6 `small_center` rows only (first STOP 55.8 → 52.5 m, held from 60.8 → 57.5 m, STOP frames 32 → 30), 11 rows better; ride STOP episodes 24 → **10** (alarm events 18 → 8); five empty 11 → **0**; squareT_platform 11 → **0** | **pass**: the same numbers as v5c-15 |
 | G-2 | X3 not worse than variant B | running | not run |
 | K1-2 | standing person at 150 m: reported | 0 / 259 STOP frames (K2 off 90 / 259; B 0 / 259) | 0 / 259 |
-| ID | every switch off vs the commit without this change | Falcon: `8c2bf51` = `a5b0ede` in all 4,443 rows; gate: running | |
+| ID | every switch off vs the commit without this change | Falcon: `8c2bf51` = `a5b0ede` in all 4,443 rows; gate: `8c2bf51` = `a5b0ede` in all 15,269 rows (36 differ in the latency health level only), set F equal; control: K2 off vs v5c-15 differ in every row | |
 | M-1 | every marked object's STOP frames and first STOP not worse than K2 off | **fail**, as predicted: only the tunnels cube (id 19) 29 → 13 STOP frames, first STOP 55.0 → 27.6 m; every other object equal or better (switch cubes 12 / 13 / 0: 11 → 21, 4 → 9, 35 → 37; tunnels big cube 52 → 55; platform cube 23 38 → 40) | **fail**: the tunnels cube as at 15, **and** the platform's small cube right (id 23) 38 → 31 STOP frames, first STOP 86.8 → 76.4 m |
 
 **F-1, what the scorer counts.** [`score_falcon_pos.py`](scripts/score_falcon_pos.py) counts a candidate STOP only in
@@ -246,6 +246,24 @@ read-only; its records equal the plain run's in every field but the latency heal
 `dy`, so a 0.1–0.2 m shift of the axis decides whether they form a cluster at all. Beyond 60 m B's curvature step
 (−2·10⁻³ 1/m at the 60 m knot) follows a left-wall segment that sweeps from +1.2 to −2 m at 68–92 m
 ([`runs/t3/png/tunnels_f262.png`](runs/t3/png/tunnels_f262.png)); that bend is beyond the cube and does not reach it.
+
+**Set O `small_center` (§6 of revision 1, package row 1) is a different case.** The 0.3 m box hangs 0.95–1.25 m above
+the rail head "in the middle of the gauge" (organizers). From the gate rows
+([`scripts/t3_small_center.py`](scripts/t3_small_center.py), [`runs/t3/small_center.txt`](runs/t3/small_center.txt)):
+at 55.8 m its centre is 0.76 m from K2-off's axis and 0.89 m from K2's (inner edge 0.61 / 0.74 m), well inside the
+gauge in both; K2 simply has no detection or warning on it in frames 337–338 and STOPs from 339 (52.5 m), K2 off from
+337. So K2 does not lose it at the gauge edge as it does the cube. If the box really hangs on the track's centre line,
+both axes are 0.5–0.9 m off on this curve at 30–56 m, K2's by about 0.1 m more; not verified (no rails at that range).
+
+**The ride's removed STOPs at 30–60 m.** On `main` the strict detections K2 removes at 30–60 m are `new_data_4`
+1223–1228 (36.9–43.3 m) and `new_data_5` 814–824 (40.1–47.6 m), 1.2–1.4 m from K2-off's axis and 1.4–1.75 m from K2's
+([`k2_removed_8c2bf51.json`](runs/t3/k2_removed_8c2bf51.json); `new_data_7` 623–644 of the v5b list are no longer
+among them). Replayed with [`scripts/t3_ride.py`](scripts/t3_ride.py) (records equal the gate's: 0 rows differ) and
+measured with [`scripts/t3_ride_rails.py`](scripts/t3_ride_rails.py) (rail pairs per 2 m bin): the rails resolve only to
+13–19 m in these frames ([`runs/t3/png/ride_nd4_1228.png`](runs/t3/png/ride_nd4_1228.png)), and their midpoint
+extrapolated to 37–48 m jumps by up to 1.4 m between consecutive frames ([`runs/t3/ride_rails.txt`](runs/t3/ride_rails.txt)).
+**Which axis is right at these detections is not established**, so whether they are the same mechanism as the cube is
+open. They are what an OR-of-gauges rule would bring back, and the gate counts each as a false STOP.
 
 **Limits.** One recording, one object. The true axis is extrapolated 0.5–5 m from the rails in front of the cube;
 the fitted gauge reads 0.04–0.10 m wide, so the midpoint carries a few centimetres of uncertainty, much less than the
