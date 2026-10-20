@@ -362,46 +362,63 @@ def test_v5c_dual_extends_the_capped_range_never_past_base_and_zero_is_v5b():
                 assert _same(x, y)
 
 
-def _dual_detector(dual: float):
+def _dual_detector(joint_reach: float = 100.0):
     from resense.detector import Detector
     cfg = DetectorConfig()
     cfg = replace(cfg, track=replace(cfg.track, **{**OFF, **V5, "axis_joint_reach_cap": True,
-                                                   "axis_joint_reach_dual": dual}))
+                                                   "axis_joint_reach_dual": 15.0}))
     base = replace(_model(), axis_valid=200.0, axis_valid_both=200.0)
-    # the joint shape bends left: +0.72 m at 120 m, +0.405 m at 90 m; the cap ends at 100 m
-    out = replace(base, curvature=1e-4, base=base, joint_used=True, joint_reach=100.0, axis_valid=150.0)
+    # the joint shape bends left of the straight base axis: +0.72 m at 120 m; the cap ends at joint_reach
+    out = replace(base, curvature=1e-4, base=base, joint_used=True, joint_reach=joint_reach, axis_valid=150.0)
     det = Detector(cfg)
     det.track = out
-    return det, out
+    return det
 
 
-def _blob(x, y, h, rail_z):
-    g = np.array([(x + dx, y + dy, rail_z + h + dz) for dx in (0.0, 0.1) for dy in (-0.05, 0.05) for dz in (0.0, 0.3)])
-    return g
+def _cluster(x0, x1, ylo, yhi, zone="gauge", reason=""):
+    from resense.clustering import Cluster
+    return Cluster(points_idx=np.zeros(0, dtype=np.int64), n=12, n_raw=12,
+                   centroid=np.array([0.5 * (x0 + x1), 0.5 * (ylo + yhi), 0.0]),
+                   bbox_min=np.array([x0, ylo, -0.6]), bbox_max=np.array([x1, yhi, 0.6]), distance=x0,
+                   lateral=0.0, height_min=0.3, height_max=1.5, intensity=0.0, n_expected=1.0, score=1.0,
+                   zone=zone, reason=reason)
 
 
-def test_v5c_beyond_the_cap_strict_only_inside_both_gauges():
-    """Beyond joint_reach a point is strict gauge only when inside the gauge from the joint and the base axis: an
-    object between the two axes stays strict, one inside the joint gauge only does not; before the cap and with the
-    switch off nothing changes (positive control: the same object is strict there)."""
-    det, out = _dual_detector(10.0)
+def test_v5c_beyond_the_cap_an_obstacle_needs_the_base_gauge_too():
+    """Beyond joint_reach a gauge cluster stays an obstacle only when its lateral extent also reaches into the strict
+    gauge from the base axis (core half-width 1.05 - 0.18 = 0.87 m at 120 m); a cluster starting before the cap, an
+    advisory one, and every cluster on a frame without a cap are left as they are (nothing v5b keeps is demoted)."""
+    cases = {
+        "both": (_cluster(119.8, 120.2, 0.2, 0.5), "gauge", ""),                  # base lateral 0.2-0.5
+        "spans_base_axis": (_cluster(119.8, 120.2, -0.3, 1.2), "gauge", ""),     # extent crosses the base axis
+        "joint_only": (_cluster(119.8, 120.2, 1.3, 1.6), "warning", "beyond_axis"),
+        "base_edge_out": (_cluster(119.8, 120.2, -1.2, -0.9), "warning", "beyond_axis"),
+        "starts_before_cap": (_cluster(99.8, 102.0, 1.3, 1.6), "gauge", ""),
+        "already_advisory": (_cluster(119.8, 120.2, 1.3, 1.6, "warning", "column"), "warning", "column"),
+    }
+    det = _dual_detector()
+    det._dual_zone([c for c, _, _ in cases.values()])
+    assert {k: (c.zone, c.reason) for k, (c, _, _) in cases.items()} == {k: (z, r) for k, (_, z, r) in cases.items()}
+    # no cap on this frame: nothing changes (positive control: the same cluster is demoted above)
+    c = _cluster(119.8, 120.2, 1.3, 1.6)
+    _dual_detector(joint_reach=0.0)._dual_zone([c])
+    assert (c.zone, c.reason) == ("gauge", "")
 
-    def rz(x):
-        return float(out.rail_z(np.array([x]))[0])
 
-    objs = {"both_120": (120.0, 0.36), "joint_only_120": (120.0, 1.45), "joint_only_90": (90.0, 1.15),
-            "base_only_120": (120.0, -0.35)}
-    xyz = np.concatenate([_blob(x, y, 1.0, rz(x)) for x, y in objs.values()]).astype(np.float32)
-    names = np.repeat(list(objs), 8)
-
-    def strict(d):
-        cand = d._corridor(xyz, np.ones(len(xyz), dtype=np.float32))[0]
-        res = {n: False for n in objs}
-        for i, s in zip(cand.idx, cand.in_gauge):
-            res[names[i]] |= bool(s)
-        return res
-
-    on = strict(det)
-    off = strict(_dual_detector(0.0)[0])
-    assert off == {"both_120": True, "joint_only_120": True, "joint_only_90": True, "base_only_120": False}
-    assert on == {"both_120": True, "joint_only_120": False, "joint_only_90": True, "base_only_120": False}
+def test_v5c_the_frame_runs_the_dual_rule_only_when_switched_on():
+    """Wiring: Detector.process applies the dual rule with axis_joint_reach_dual > 0 and never with 0 (v5b)."""
+    from resense.detector import Detector
+    from resense.frame import Frame
+    xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
+    calls = {}
+    for dual in (0.0, 15.0):
+        cfg = DetectorConfig()
+        cfg = replace(cfg, track=replace(cfg.track, **{**OFF, **V5, "axis_joint_reach_cap": True,
+                                                       "axis_joint_reach_dual": dual}))
+        det = Detector(cfg)
+        seen = []
+        det._dual_zone = lambda clusters, seen=seen: seen.append(len(clusters))
+        for k in range(3):
+            det.process(Frame(xyz=xyz, intensity=np.full(len(xyz), 30.0, np.float32), stamp=0.1 * k))
+        calls[dual] = len(seen)
+    assert calls == {0.0: 0, 15.0: 3}

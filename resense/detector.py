@@ -392,6 +392,8 @@ class Detector:
         merged, n_acc = self._accumulate(cand, speed, dt)
         t4 = time.perf_counter()
         clusters = self._cluster(merged, n_acc, valid, floor_valid, straddle, near)
+        if cfg.track.axis_joint_reach_dual > 0:
+            self._dual_zone(clusters)
         if cfg.cluster.far_axis_both_sides == 2:
             valid = self._far_both_sides(clusters, valid, floor_valid)
         if cfg.cluster.hanging_enabled and (not cfg.cluster.hanging_needs_rails or self.track.rail_slabs > 0):
@@ -607,22 +609,6 @@ class Detector:
             if ax is not None:
                 cand.in_rail = cand.in_gauge            # the rails' own envelope (safety review of 26.09)
                 cand.in_gauge = cand.in_gauge | ax
-        tr = self.track
-        if cfg.track.axis_joint_reach_dual > 0 and tr.joint_reach > 0 and tr.base is not None and idx.size:
-            # 20.10 (v5c, axis_joint_reach_dual): beyond the reach cap the walls no longer confirm the joint shape,
-            # so a point there is strict gauge only when it is also inside the gauge measured from the base axis,
-            # which without K2 is trusted that far: what both shapes put in the gauge stays an obstacle, what only
-            # one of them does stays advisory (the rails' fallback membership in_rail likewise)
-            X = cand.xyz[:, 0].astype(np.float64)
-            z = np.flatnonzero(X > tr.joint_reach)
-            if z.size:
-                dyb = dy_all[cand.idx[z]] + (tr.center_y(X[z]) - tr.base.center_y(X[z]))
-                ok = point_in_polygon(dyb, cand.h[z], cfg.gauge.profile)
-                if has_edge_margin(cfg.gauge):
-                    ok &= gauge_core_mask(dyb, cand.h[z], X[z], cfg.gauge)
-                cand.in_gauge[z] &= ok
-                if cand.in_rail is not None:
-                    cand.in_rail[z] &= ok
         floor_valid = max(self.track.floor_range[1] + cfg.track.floor_valid_margin, self.track.floor_verified)
         axis_valid = min(self.track.axis_valid, cfg.gauge.range_max)
         if far is not None:
@@ -842,6 +828,32 @@ class Detector:
             self._low_height = self._not_part_of_corridor_objects(
                 self._low_height, self._low_height, clusters, corr)
         return clusters
+
+    def _dual_zone(self, clusters: List[Cluster]) -> None:
+        """20.10 (v5c, ``track.axis_joint_reach_dual``): on a frame whose trusted range the K2 reach cap shortened
+        (``track.joint_reach`` > 0), the range goes on beyond the cap (``track._joint_output``), where the walls no
+        longer confirm the joint shape. An obstacle there whose nearest point lies beyond the cap stays one only
+        when its lateral extent also reaches into the strict gauge measured from the base axis, which the
+        estimator without K2 trusts that far; otherwise it is advisory ``beyond_axis``, as with the cap alone
+        (v5b). A cluster that starts before the cap is left as it is, so nothing v5b keeps is demoted. The
+        extent is the cluster's box (accumulated points included) at its centroid's distance."""
+        tr, g = self.track, self.cfg.gauge
+        if tr is None or tr.joint_reach <= 0 or tr.base is None:
+            return
+        prof = np.asarray(g.profile, dtype=np.float64)
+        hlo, hhi = float(prof[:, 1].min()), float(prof[:, 1].max())
+        for c in clusters:
+            if c.zone != "gauge" or c.reason or float(c.bbox_min[0]) <= tr.joint_reach:
+                continue
+            x = float(c.centroid[0])
+            yb = float(tr.base.center_y(np.array([x]))[0])
+            lo, hi = float(c.bbox_min[1]) - yb, float(c.bbox_max[1]) - yb
+            near = 0.0 if lo <= 0.0 <= hi else (lo if lo > 0.0 else hi)   # its point nearest the base axis
+            h = float(np.clip(0.5 * (c.height_min + c.height_max), hlo + 0.01, hhi - 0.01))
+            dy, hh, xx = np.array([near]), np.array([h]), np.array([x])
+            inside = gauge_core_mask(dy, hh, xx, g) if has_edge_margin(g) else point_in_polygon(dy, hh, g.profile)
+            if not bool(inside[0]):
+                c.zone, c.reason = "warning", "beyond_axis"
 
     def _far_both_sides(self, clusters: List[Cluster], valid: float, floor_valid: float) -> float:
         """``cluster.far_axis_both_sides`` 2 (25.09, far_switch, opt-in): on a bent axis (no

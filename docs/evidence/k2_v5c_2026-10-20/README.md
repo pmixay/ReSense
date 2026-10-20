@@ -32,9 +32,12 @@ at 120 m), and K2 within 0.3 m of its axis. That K2's axis is the truer one ther
 independent track reference for Falcon).
 
 What remains real: 36 STOP frames lost at 113–125 m (plus frame 4382 at 5.7 m, not attributed) and the first STOP
-2.6 m later. In the 36 frames the person is a
-warning, `beyond_axis` (19), `beyond_height_ref` (2) or no reason (15, tracker votes after the demotions), because the
-reach cap ends the trusted range at the walls' reach + 15 m.
+2.6 m later. In those 36 frames, matching variant B's warnings to the base STOP by vehicle position (within 1.5 m
+in distance and 0.7 m in Y), the person is a warning `beyond_axis` in 15 (all 1.2–13.7 m beyond the monitored range:
+the reach cap), `beyond_height_ref` in 2, a warning with no reason in 14 (inside the monitored range; the tracker had
+not confirmed it, inferred to follow the demotions) and not reported at all in 5. Only the 15 `beyond_axis` frames are
+what the reach cap does directly. (A first, looser count on 20.10 morning gave 19 / 2 / 15; it matched the first
+warning near the person and is superseded.)
 
 ## 2. v5c: what both axes put in the gauge stays an obstacle
 
@@ -42,9 +45,18 @@ reach cap ends the trusted range at the walls' reach + 15 m.
 
 With the reach cap on, the cap is where the walls stop confirming the joint shape. v5b ends the trusted range there,
 so everything beyond becomes advisory, true objects included. v5c moves that end out by `axis_joint_reach_dual`
-metres (never past the base estimator's own range) and, between the cap (`track.joint_reach`) and that end, counts a
-point as strict gauge only when it is inside the gauge measured from the joint axis **and** from the base axis
-(`Detector._corridor`; the rails' fallback membership `in_rail` too). Everything else is v5b.
+metres (never past the base estimator's own range), on frames the cap shortened only. An obstacle whose nearest point
+lies between the cap (`track.joint_reach`) and that end stays an obstacle only when its lateral extent (its box,
+accumulated points included, at its centroid's distance) also reaches into the strict gauge measured from the base
+axis; otherwise it is advisory `beyond_axis`, exactly as v5b makes it (`Detector._dual_zone`, run right after
+clustering). A cluster that starts before the cap is not touched, so nothing v5b keeps as an obstacle is demoted.
+Everything else is v5b.
+
+**Revision 1 (20.10, before any measurement).** The first version (commit `a246bf0`) ANDed the two memberships per
+point before clustering. The self-review found two flaws: a cluster starting before the cap with its strict points
+only beyond it could lose its STOP compared with v5b, and the accumulated points of earlier frames (accumulation is
+on beyond 40 m, 5 frames) were not held to the rule. The rule moved to the cluster level, and the range and
+`axis_valid_both` / `_bent` are extended only on frames the cap shortened.
 
 Why this targets the genuine detections and not the false ones: the base axis is trusted that far without K2, so an
 object inside both gauges is one that neither shape can explain away. The two false alarms v5b's cap was traced to
@@ -52,12 +64,19 @@ remove ([`V5.md`](../k1_k2_gauge_2026-10-19/V5.md) §6) lie inside only one: rou
 5.2 m off the driven path, the cluster 1.6 m from it) and set O background 661–665 (base and joint axes 1.3 m apart at
 118 m, on opposite sides).
 
-Code: `resense/track.py` `_joint_output` (the extended range), `resense/detector.py` `_corridor` (the dual
-membership). Tests (`tests/test_k1_k2_axis.py`, 2 new): 0 is v5b bit for bit and the range never passes base's; beyond
-the cap an object between the two axes stays strict, one inside the joint gauge only does not, before the cap nothing
-changes, off nothing changes. Mutation checks: removing the membership line fails the scene test; dropping the
-extension fails the range test. `tests/test_k1_k2_axis.py` 23 passed; late candidates, modules, algorithm, wall drift,
-edge axis, node, native: 234 passed, 42 skipped. Full suite in this container: 1,896 passed, 190 skipped,
+Code: `resense/track.py` `_joint_output` (the extended range), `resense/detector.py` `_dual_zone` (the rule).
+Tests (`tests/test_k1_k2_axis.py`, 3 new): 0 is v5b bit for bit and the range never passes base's; beyond the cap a
+cluster inside both gauges, or spanning the base axis, stays an obstacle, one inside the joint gauge only or past the
+base gauge's edge is demoted, one starting before the cap, an already advisory one and every cluster on an uncapped
+frame are left alone; `Detector.process` runs the rule only with the switch on. Mutation checks: removing the demotion
+or testing the adjusted distance instead of the nearest point fails the rule test; dropping the extension fails the
+range test. `tests/test_k1_k2_axis.py` 24 passed. Off identity on synthetic scenes
+([`scripts/synthetic_identity.py`](scripts/synthetic_identity.py): the entry-curve scene at three curvatures with a
+person at 60–158 m or none, and the station scene with a person at 25–83 m; 18 scenes × 10 frames, every field of the
+result and the track): this branch equals `main` (`0acb18c`) with K2 off (0 of 180 rows differ) and with variant B
+(0 of 180); v5c-15 differs from variant B in 101 rows, all in the track range and the clear distance, none in a
+decision, detection or warning (in these scenes the base axis is 3.6–5 m off the track beyond the cap, so v5c keeps
+v5b's demotions); positive control: variant B differs from off in 180 rows, 66 of them in decisions or detections. Full suite in this container (revision 1): 1,897 passed, 190 skipped,
 25 failed and 2 errors; the same 27 fail on `main` (`0acb18c`, run with its own checkout first on the path), from
 modules missing here (`open3d` for the synthetic injection and others), not from this change.
 
@@ -79,12 +98,15 @@ variant B on the current commit.
 
 So the proxy expects at most **3 of the 18 ride episodes** that variant B removed to come back (ride STOP episodes
 9 → at most 12; without K2: 24), the squareT_platform and empty-recording gains to stay, and no change on set O's
-STOP frames. On Falcon the 36 lost frames at 113–125 m are inside both gauges (base lateral −0.56 to −1.0 m with a 0.8 m wide
-cluster, joint lateral 0.07–0.4 m) and at most 13.7 m beyond the monitored range, so v5c at 15 m is expected to restore
-them (inferred: the monitored range is not exactly the trusted range). With 30 m the proxy adds one frame on
+STOP frames. On Falcon, of the 36 lost frames the 15 `beyond_axis` ones are what v5c changes directly: the person's
+box reaches into the base gauge in every one of the 36 (base lateral −1.02 to 0.02 m, |lateral| − half width ≤ 0.73 m,
+core 0.87 m) and its joint lateral is 0.0–0.45 m, and those 15 lie 1.2–13.7 m beyond the monitored range, so within
+15 m of the cap if the monitored range equals the cap there (inferred; the monitored range is also limited by the
+visibility and the wall drift). The 14 unconfirmed frames may follow once the demotions stop (inferred); the 2
+`beyond_height_ref` and the 5 unreported ones are not touched by v5c. With 30 m the proxy adds one frame on
 `new_data_5` and one on `new_data_6`.
 
-## 4. Registered before measuring (rows, values, criteria)
+## 4. Registered before measuring (rows, values, criteria; revision 1 of 20.10, still before any measurement)
 
 Candidate **v5c-15** = variant B + `axis_joint_reach_dual: 15.0`; fallback **v5c-30** (30.0) only if F-1 fails at 15.
 No other value is tried. Reference: the committed defaults of the measured commit (K2 off), as in the integration
@@ -92,7 +114,7 @@ evidence.
 
 | # | row | criterion |
 |---|---|---|
-| F-1 | Falcon, whole recording, [`score_falcon_pos.py`](scripts/score_falcon_pos.py) | person first STOP ≥ 124.0 m; decision-level lost person frames ≤ 5; no new STOP frame beyond variant B's 9 |
+| F-1 | Falcon, whole recording, [`score_falcon_pos.py`](scripts/score_falcon_pos.py) | person first STOP ≥ 124.0 m; `n_person_no_stop` (decision level) ≤ 22 (variant B's 37 minus its 15 `beyond_axis` frames; the count is reported, fewer is better); no new STOP frame beyond variant B's 9 |
 | G-1 | full gate, seal baseline, no `--allow` | the only failing rows are set O `small_center` (variant B's accepted exception); ride STOP episodes ≤ 12; five empty recordings and squareT_platform 0 episodes |
 | G-2 | X3 battery vs the committed reference | not worse than variant B |
 | K1-2 | standing person at 150 m (`S_person_150`) | reported (v5b 0 / 260, base 90 / 259) |
