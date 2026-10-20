@@ -74,7 +74,14 @@ Decisions: [`DECISIONS.md`](../../DECISIONS.md) rows 40–44; the plan per role:
 ## 4. Not done yet / not checked
 
 - K2: held off; P4 resolves its problems ([package](../k1_k2_gauge_2026-10-19/P4_PACKAGE.md)).
-- P4's independent review of everything that ships on.
+- P4's independent review of everything that ships on: done on synthetic scenes 20.10
+  ([`p4_review_shipping_2026-10-20`](../p4_review_shipping_2026-10-20/README.md)): L16/S3 can FAULT a whole run that
+  starts in open air with the full-revolution Pandar; F1a can drop a low in-gauge object where the model's rail-head
+  plane runs low; R3 can STOP a thin target carried along before the ego-motion veto decides. Fixes are proposed for
+  P3, none measured on the recordings. The identity proof above was re-checked
+  ([`p4_review_integration_2026-10-20`](../p4_review_integration_2026-10-20/README.md)); the tunnels cube (marker id 19)
+  that K2 variant B loses is inside the gauge by the marker geometry
+  ([`n5_markers_2026-10-20`](../n5_markers_2026-10-20/README.md)).
 - The reseal.
 - The full test suite: on `4cf8e27` 2,140 passed, 0 failed (on `ff91d40` 2,133 passed), 8 deselected. 7 are
   deselected by default (local datasets). The 8th is
