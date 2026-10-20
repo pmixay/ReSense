@@ -1,0 +1,1349 @@
+{
+ "_meta": {
+  "schema": "resense-n5-marker-supplement-v1",
+  "basis": "organizers' marker boxes, docs/evidence/synth_markers_2026-10-19; N5 labels of 17.10 unchanged",
+  "add": {
+   "bag": "synthetic_tunnels",
+   "object": "box_left_0",
+   "marker_id": 18,
+   "obstacles_md_item": "tunnels 1, small cube left",
+   "frames": 34,
+   "first_frame": 4,
+   "last_frame": 59,
+   "gauge_relation": "unknown",
+   "gauge_note": "inner face 1.31-1.33 m left of the sensor axis at 1-5 m (frames 58-60); the replayed 1.1.0 run has no detection or warning on it in any frame, so probably outside the 2.1 m gauge; not checked against the rails"
+  },
+  "flag": {
+   "rows": 12,
+   "status": "matches no marker object (sparse 1-4 point rows); drop when scoring against the markers, keep when scoring against N5 as of 17.10"
+  }
+ },
+ "rows": {
+  "00004": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 83.026,
+    "lateral": -0.3225,
+    "lateral_sensor": -0.3225,
+    "bbox": [
+     [
+      83.026,
+      -0.548,
+      -1.13
+     ],
+     [
+      83.481,
+      -0.097,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.455,
+     0.451,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00005": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 82.053,
+    "lateral": -0.3315,
+    "lateral_sensor": -0.3315,
+    "bbox": [
+     [
+      82.053,
+      -0.557,
+      -1.13
+     ],
+     [
+      82.509,
+      -0.106,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.456,
+     0.451,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00006": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 81.16,
+    "lateral": -0.34,
+    "lateral_sensor": -0.34,
+    "bbox": [
+     [
+      81.16,
+      -0.565,
+      -1.13
+     ],
+     [
+      81.616,
+      -0.115,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.456,
+     0.45,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00008": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 77.982,
+    "lateral": -0.37,
+    "lateral_sensor": -0.37,
+    "bbox": [
+     [
+      77.982,
+      -0.595,
+      -1.13
+     ],
+     [
+      78.438,
+      -0.145,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.456,
+     0.45,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00009": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 77.044,
+    "lateral": -0.3775,
+    "lateral_sensor": -0.3775,
+    "bbox": [
+     [
+      77.044,
+      -0.603,
+      -1.13
+     ],
+     [
+      77.5,
+      -0.152,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.456,
+     0.451,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00012": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 71.274,
+    "lateral": -0.3705,
+    "lateral_sensor": -0.3705,
+    "bbox": [
+     [
+      71.274,
+      -0.596,
+      -1.13
+     ],
+     [
+      71.73,
+      -0.145,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.456,
+     0.451,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00013": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 70.253,
+    "lateral": -0.349,
+    "lateral_sensor": -0.349,
+    "bbox": [
+     [
+      70.253,
+      -0.574,
+      -1.13
+     ],
+     [
+      70.709,
+      -0.124,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.456,
+     0.45,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00014": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 68.204,
+    "lateral": -0.3235,
+    "lateral_sensor": -0.3235,
+    "bbox": [
+     [
+      68.204,
+      -0.549,
+      -1.13
+     ],
+     [
+      68.66,
+      -0.098,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.456,
+     0.451,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00015": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 67.338,
+    "lateral": -0.3035,
+    "lateral_sensor": -0.3035,
+    "bbox": [
+     [
+      67.338,
+      -0.529,
+      -1.13
+     ],
+     [
+      67.794,
+      -0.078,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.456,
+     0.451,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00016": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 66.438,
+    "lateral": -0.283,
+    "lateral_sensor": -0.283,
+    "bbox": [
+     [
+      66.438,
+      -0.508,
+      -1.13
+     ],
+     [
+      66.893,
+      -0.058,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.455,
+     0.45,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00025": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 52.744,
+    "lateral": -0.065,
+    "lateral_sensor": -0.065,
+    "bbox": [
+     [
+      52.744,
+      -0.29,
+      -1.13
+     ],
+     [
+      53.199,
+      0.16,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.455,
+     0.45,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00034": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 39.191,
+    "lateral": 0.4215,
+    "lateral_sensor": 0.4215,
+    "bbox": [
+     [
+      39.191,
+      0.198,
+      -1.13
+     ],
+     [
+      39.644,
+      0.645,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.453,
+     0.447,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00038": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 33.175,
+    "lateral": 0.655,
+    "lateral_sensor": 0.655,
+    "bbox": [
+     [
+      33.175,
+      0.432,
+      -1.13
+     ],
+     [
+      33.627,
+      0.878,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.452,
+     0.446,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00039": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 32.216,
+    "lateral": 0.717,
+    "lateral_sensor": 0.717,
+    "bbox": [
+     [
+      32.216,
+      0.494,
+      -1.13
+     ],
+     [
+      32.667,
+      0.94,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.451,
+     0.446,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00040": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 30.491,
+    "lateral": 0.771,
+    "lateral_sensor": 0.771,
+    "bbox": [
+     [
+      30.491,
+      0.548,
+      -1.13
+     ],
+     [
+      30.943,
+      0.994,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.452,
+     0.446,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00041": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 29.319,
+    "lateral": 0.8255,
+    "lateral_sensor": 0.8255,
+    "bbox": [
+     [
+      29.319,
+      0.603,
+      -1.13
+     ],
+     [
+      29.77,
+      1.048,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.451,
+     0.445,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00042": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 28.38,
+    "lateral": 0.8825,
+    "lateral_sensor": 0.8825,
+    "bbox": [
+     [
+      28.38,
+      0.66,
+      -1.13
+     ],
+     [
+      28.831,
+      1.105,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.451,
+     0.445,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00043": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 26.675,
+    "lateral": 0.9505,
+    "lateral_sensor": 0.9505,
+    "bbox": [
+     [
+      26.675,
+      0.728,
+      -1.13
+     ],
+     [
+      27.126,
+      1.173,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.451,
+     0.445,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00044": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 25.385,
+    "lateral": 1.003,
+    "lateral_sensor": 1.003,
+    "bbox": [
+     [
+      25.385,
+      0.781,
+      -1.13
+     ],
+     [
+      25.835,
+      1.225,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.45,
+     0.444,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00045": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 24.192,
+    "lateral": 1.0515,
+    "lateral_sensor": 1.0515,
+    "bbox": [
+     [
+      24.192,
+      0.83,
+      -1.13
+     ],
+     [
+      24.641,
+      1.273,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.449,
+     0.443,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00046": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 21.697,
+    "lateral": 1.103,
+    "lateral_sensor": 1.103,
+    "bbox": [
+     [
+      21.697,
+      0.881,
+      -1.13
+     ],
+     [
+      22.145,
+      1.325,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.448,
+     0.444,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00047": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 20.617,
+    "lateral": 1.1555,
+    "lateral_sensor": 1.1555,
+    "bbox": [
+     [
+      20.617,
+      0.934,
+      -1.13
+     ],
+     [
+      21.066,
+      1.377,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.449,
+     0.443,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00048": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 18.53,
+    "lateral": 1.208,
+    "lateral_sensor": 1.208,
+    "bbox": [
+     [
+      18.53,
+      0.987,
+      -1.13
+     ],
+     [
+      18.978,
+      1.429,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.448,
+     0.442,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00049": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 17.74,
+    "lateral": 1.247,
+    "lateral_sensor": 1.247,
+    "bbox": [
+     [
+      17.74,
+      1.026,
+      -1.13
+     ],
+     [
+      18.188,
+      1.468,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.448,
+     0.442,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00050": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 15.89,
+    "lateral": 1.2885,
+    "lateral_sensor": 1.2885,
+    "bbox": [
+     [
+      15.89,
+      1.068,
+      -1.13
+     ],
+     [
+      16.337,
+      1.509,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.447,
+     0.441,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00051": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 14.705,
+    "lateral": 1.3355,
+    "lateral_sensor": 1.3355,
+    "bbox": [
+     [
+      14.705,
+      1.115,
+      -1.13
+     ],
+     [
+      15.151,
+      1.556,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.446,
+     0.441,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00052": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 13.692,
+    "lateral": 1.37,
+    "lateral_sensor": 1.37,
+    "bbox": [
+     [
+      13.692,
+      1.15,
+      -1.13
+     ],
+     [
+      14.138,
+      1.59,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.446,
+     0.44,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00053": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 12.439,
+    "lateral": 1.406,
+    "lateral_sensor": 1.406,
+    "bbox": [
+     [
+      12.439,
+      1.186,
+      -1.13
+     ],
+     [
+      12.884,
+      1.626,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.445,
+     0.44,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00054": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 10.806,
+    "lateral": 1.4375,
+    "lateral_sensor": 1.4375,
+    "bbox": [
+     [
+      10.806,
+      1.218,
+      -1.13
+     ],
+     [
+      11.25,
+      1.657,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.444,
+     0.439,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00055": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 9.279,
+    "lateral": 1.47,
+    "lateral_sensor": 1.47,
+    "bbox": [
+     [
+      9.279,
+      1.251,
+      -1.13
+     ],
+     [
+      9.723,
+      1.689,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.444,
+     0.438,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00056": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 7.775,
+    "lateral": 1.4945,
+    "lateral_sensor": 1.4945,
+    "bbox": [
+     [
+      7.775,
+      1.276,
+      -1.13
+     ],
+     [
+      8.218,
+      1.713,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.443,
+     0.437,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00057": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 6.464,
+    "lateral": 1.5125,
+    "lateral_sensor": 1.5125,
+    "bbox": [
+     [
+      6.464,
+      1.294,
+      -1.13
+     ],
+     [
+      6.907,
+      1.731,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.443,
+     0.437,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00058": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 4.96,
+    "lateral": 1.528,
+    "lateral_sensor": 1.528,
+    "bbox": [
+     [
+      4.96,
+      1.31,
+      -1.13
+     ],
+     [
+      5.403,
+      1.746,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.443,
+     0.436,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ],
+  "00059": [
+   {
+    "name": "box_left_0",
+    "label": "box_left_0",
+    "kind": "box",
+    "distance": 3.759,
+    "lateral": 1.538,
+    "lateral_sensor": 1.538,
+    "bbox": [
+     [
+      3.759,
+      1.32,
+      -1.13
+     ],
+     [
+      4.201,
+      1.756,
+      -0.79
+     ]
+    ],
+    "size": [
+     0.442,
+     0.436,
+     0.34
+    ],
+    "n_points": null,
+    "n_unique_points": null,
+    "gauge_relation": "unknown",
+    "in_gauge": null,
+    "annotation_confidence": "organizer_marker",
+    "source": "organizers' marker box (synth_markers_2026-10-19, marker id 18), not raw-point geometry",
+    "coordinate_frame": "sensor_axis_mapped"
+   }
+  ]
+ },
+ "unmatched_n5_rows": [
+  {
+   "bag": "synthetic_switch",
+   "frame": 328,
+   "name": "box_left_2",
+   "n5_distance": 39.4,
+   "n5_lateral": 1.49,
+   "n5_points": 1,
+   "nearest_marker": {
+    "ids": [
+     0
+    ],
+    "fwd": 37.02,
+    "lat": 1.06
+   }
+  },
+  {
+   "bag": "synthetic_switch",
+   "frame": 330,
+   "name": "box_left_2",
+   "n5_distance": 36.44,
+   "n5_lateral": 1.64,
+   "n5_points": 2,
+   "nearest_marker": {
+    "ids": [
+     0
+    ],
+    "fwd": 34.14,
+    "lat": 1.02
+   }
+  },
+  {
+   "bag": "synthetic_switch",
+   "frame": 510,
+   "name": "box_left_4",
+   "n5_distance": 69.47,
+   "n5_lateral": 6.38,
+   "n5_points": 1,
+   "nearest_marker": null
+  },
+  {
+   "bag": "synthetic_switch",
+   "frame": 521,
+   "name": "box_left_4",
+   "n5_distance": 48.88,
+   "n5_lateral": 4.5,
+   "n5_points": 1,
+   "nearest_marker": {
+    "ids": [
+     13
+    ],
+    "fwd": 52.41,
+    "lat": 4.33
+   }
+  },
+  {
+   "bag": "synthetic_switch",
+   "frame": 523,
+   "name": "box_left_4",
+   "n5_distance": 44.38,
+   "n5_lateral": 4.1,
+   "n5_points": 4,
+   "nearest_marker": {
+    "ids": [
+     13
+    ],
+    "fwd": 49.28,
+    "lat": 3.92
+   }
+  },
+  {
+   "bag": "synthetic_switch",
+   "frame": 524,
+   "name": "box_left_4",
+   "n5_distance": 43.2,
+   "n5_lateral": 3.67,
+   "n5_points": 1,
+   "nearest_marker": {
+    "ids": [
+     13
+    ],
+    "fwd": 48.16,
+    "lat": 3.72
+   }
+  },
+  {
+   "bag": "synthetic_switch",
+   "frame": 525,
+   "name": "box_left_4",
+   "n5_distance": 42.34,
+   "n5_lateral": 3.98,
+   "n5_points": 1,
+   "nearest_marker": {
+    "ids": [
+     13
+    ],
+    "fwd": 46.86,
+    "lat": 3.54
+   }
+  },
+  {
+   "bag": "synthetic_switch",
+   "frame": 526,
+   "name": "box_left_4",
+   "n5_distance": 40.1,
+   "n5_lateral": 3.53,
+   "n5_points": 1,
+   "nearest_marker": {
+    "ids": [
+     14
+    ],
+    "fwd": 242.81,
+    "lat": 11.49
+   }
+  },
+  {
+   "bag": "synthetic_switch",
+   "frame": 527,
+   "name": "box_left_4",
+   "n5_distance": 38.57,
+   "n5_lateral": 3.33,
+   "n5_points": 1,
+   "nearest_marker": null
+  },
+  {
+   "bag": "synthetic_switch",
+   "frame": 528,
+   "name": "box_left_4",
+   "n5_distance": 38.65,
+   "n5_lateral": 3.06,
+   "n5_points": 1,
+   "nearest_marker": {
+    "ids": [
+     13
+    ],
+    "fwd": 42.11,
+    "lat": 3.03
+   }
+  },
+  {
+   "bag": "synthetic_switch",
+   "frame": 529,
+   "name": "box_left_4",
+   "n5_distance": 37.11,
+   "n5_lateral": 2.96,
+   "n5_points": 1,
+   "nearest_marker": {
+    "ids": [
+     13
+    ],
+    "fwd": 40.52,
+    "lat": 2.86
+   }
+  },
+  {
+   "bag": "synthetic_tunnels",
+   "frame": 346,
+   "name": "panel_2",
+   "n5_distance": 173.96,
+   "n5_lateral": -22.09,
+   "n5_points": 1,
+   "nearest_marker": {
+    "ids": [
+     0
+    ],
+    "fwd": 173.65,
+    "lat": -23.2
+   }
+  }
+ ]
+}

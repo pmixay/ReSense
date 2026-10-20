@@ -3,7 +3,8 @@
 > **Owner:** P4 (author; the review is by P3 or a fresh agent) · **Decides:** the captain · **Status:** code and
 > offline evidence. The variant is **not measured on the data**: this container cannot reach Google Drive or Yandex
 > Disk (network policy), so no bag or cache was available. Every switch stays **off** by default; nothing ships until
-> the measurement below runs and the captain decides. G3 not touched.
+> the measurement below runs and the captain decides. G3 not touched. v5c addresses the Falcon person's loss beyond
+> the reach cap; the tunnels cube lost inside the cap (§1b) is open, so **K2 is not ready to switch on**.
 > Package this answers: [`../k1_k2_gauge_2026-10-19/P4_PACKAGE.md`](../k1_k2_gauge_2026-10-19/P4_PACKAGE.md) §3 row 0.
 
 ## 1. Correction: variant B cost the Falcon person 2.6 m, not 12 m
@@ -38,6 +39,27 @@ the reach cap), `beyond_height_ref` in 2, a warning with no reason in 14 (inside
 not confirmed it, inferred to follow the demotions) and not reported at all in 5. Only the 15 `beyond_axis` frames are
 what the reach cap does directly. (A first, looser count on 20.10 morning gave 19 / 2 / 15; it matched the first
 warning near the person and is superseded.)
+
+## 1b. A second genuine loss, inside the cap: v5c does not address it (added 20.10, after revision 1)
+
+The integration evidence also records that variant B STOPs the **small cube right of `synthetic_tunnels`** (marker id
+19) in fewer frames, and calls it "probably just outside the 2.1 m gauge; not verified". Scored per marked object from
+the committed records ([`../n5_markers_2026-10-20/`](../n5_markers_2026-10-20/README.md)): it is the only marked object
+that loses STOPs under B, **29 → 13 frames, first STOP 55.0 → 27.6 m** (frames 259–273 and 279 lost). It is inside the
+gauge: a static object keeps its offset from the track, and measured from 1.1.0's axis its centre is 0.96 m right of
+the axis (median) both inside the rails' range and at 30–55 m, K2's axis giving the same inside the rails' range; its
+inner face is about 0.7 m from the axis, 0.3 m inside the half-width. At 30–55 m B's monitored range is 67–87 m, so
+the loss is **inside the trusted range**: the cube touches B's strict envelope in 9 of 15 frames (the clear distance is
+capped at it) and is never confirmed. B's joint axis there is about 0.3 m farther from the cube than the true axis
+(inferred; the records have no axis at the cube for B). Set O `small_center` (§6) is the same kind of loss, at 55 m.
+
+v5c changes nothing before the cap, so it **does not restore this cube**. Making the rule an OR of the two gauges
+inside the cap would, but the committed gate rows show variant B (with K1, `gatework_v5b`) also removing strict
+detections at 30–60 m on the ride, where the gate counts every STOP as a false alarm: 10 of them with the joint axis
+0.3–0.6 m farther out than base's (`new_data_4` 1223–1228, `new_data_7` 623–624 and 643–644), which such a rule would
+bring back ([`../n5_markers_2026-10-20/scripts/k2_removed.py`](../n5_markers_2026-10-20/scripts/k2_removed.py)). What makes the joint fit bend wrongly in the
+tunnel needs the cloud (frames 255–275); this container cannot reach it. Until then **K2 is not ready to switch on**,
+v5c included.
 
 ## 2. v5c: what both axes put in the gauge stays an obstacle
 
@@ -106,7 +128,7 @@ visibility and the wall drift). The 14 unconfirmed frames may follow once the de
 `beyond_height_ref` and the 5 unreported ones are not touched by v5c. With 30 m the proxy adds one frame on
 `new_data_5` and one on `new_data_6`.
 
-## 4. Registered before measuring (rows, values, criteria; revision 1 of 20.10, still before any measurement)
+## 4. Registered before measuring (rows, values, criteria; revision 2 of 20.10, still before any measurement)
 
 Candidate **v5c-15** = variant B + `axis_joint_reach_dual: 15.0`; fallback **v5c-30** (30.0) only if F-1 fails at 15.
 No other value is tried. Reference: the committed defaults of the measured commit (K2 off), as in the integration
@@ -119,6 +141,7 @@ evidence.
 | G-2 | X3 battery vs the committed reference | not worse than variant B |
 | K1-2 | standing person at 150 m (`S_person_150`) | reported (v5b 0 / 260, base 90 / 259) |
 | ID | every switch off vs the commit without this change | identical per frame (gate and Falcon) |
+| M-1 | the three marked synthetic bags, per marked object ([`per_object.py`](../n5_markers_2026-10-20/scripts/per_object.py) against the K2-off run) | every object's STOP frames and first STOP not worse than K2 off. Registered prediction: **fails** on the tunnels cube (id 19, as variant B: 29 → 13), because that loss is inside the cap (§1b). Added in revision 2 |
 
 ## 5. Commands (need the data; `OPENBLAS_CORETYPE=Haswell OMP_NUM_THREADS=1 RESENSE_REPO=<tree>`)
 
@@ -144,5 +167,6 @@ python docs/evidence/k2_v5c_2026-10-20/scripts/dual_proxy.py <base gate work> <v
 
 - No measurement on data (G-1, G-2, F-1, K1-2, ID): the data is not reachable from this container.
 - Set O `small_center` 3.3 m later (package row 1) is the joint shape at 55 m, before any cap; v5c does not touch it.
+- The tunnels cube (§1b): inside the cap, not addressed; diagnosing it needs the cloud of frames 255–275.
 - The 9 new near STOP frames on Falcon (4373–4379, 4410–4411) are not attributed.
 - Review by P3 or a fresh agent.
