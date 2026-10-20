@@ -305,6 +305,22 @@ extrinsics/error budget. The **63 misses remain unresolved**.
 [repair](evidence/h1_reference_2026-10-19/README.md),
 [rejected reference attempts](evidence/h1_trajectory_2026-10-19/README.md).
 
+**H1-REF — required missing input, explicitly confirmed by the user (20.10). Status: MISSING / BLOCKED.**
+To continue H1 validation, obtain either:
+
+1. **Verified geometry of both rail heads and the correct host-path identity at 100–150 m in specific A/C
+   frames, with quantified spatial uncertainty**; or
+2. **An independently verified synchronized trajectory**, with sensor extrinsics and an error budget,
+   sufficient to transfer independently checked rail-head observations into those A/C frames.
+
+Here **A** is `roundT_squareT_pressureGate_squareT` and **C** is `roundT_pressureGate_roundT`.
+The handoff must identify the source recording, frame IDs and timestamps, coordinate system and
+sensor transforms, measurement support, uncertainty, and the independent validation method/reviewer.
+The supplied Falcon and organizer-folder links have already been checked; access to those recordings
+alone does not satisfy H1-REF. Until the spatial input is received and independently validated,
+**H1 remains OPEN/BLOCKED**. Receiving it enables the remaining repairs and acceptance checks;
+it does not by itself resolve the 63 misses or the wrong-pair failures.
+
 #### K1 · Standing train: far axis jitter → STOP flicker at 100–150 m, perturbation-sensitive platform false STOPs
 Distance-based smoothing of the wall fit is **off** (`track.walls_smoothing_distance=0`). Historical v4: standing person
 at 100 /150 m 255 /197 STOP frames (base 82 /90), but full gate exit 1 (19 rows) and added false STOPs. No accepted
