@@ -1,0 +1,22 @@
+candidate: sections rebuilt from raw rows ['recordings', 'five_empty', 'ride', 'set_O', 'set_F_straight']; differing from the published gate JSON: none
+   own count doubleT_obstacle                           frames   201 STOP  193 advisory   91 episodes   1 OK
+   own count doubleT_platform                           frames   345 STOP    0 advisory  182 episodes   0 OK
+   own count roundT_doubleT                             frames   252 STOP    0 advisory  173 episodes   0 OK
+   own count roundT_pressureGate_roundT                 frames   268 STOP    0 advisory  107 episodes   0 OK
+   own count roundT_squareT_pressureGate_squareT        frames   545 STOP    0 advisory  146 episodes   0 OK
+   own count squareT_platform_squareT_switch            frames   877 STOP   37 advisory  398 episodes  11 OK
+   own count cloud_with_fake_obj                        frames  1510 STOP  450 advisory  406 episodes   8 OK
+   own ride: frames 11271 STOP frames 111 STOP episodes 26 | published 11271 111 26
+reference: sections rebuilt from raw rows ['recordings', 'five_empty', 'ride', 'set_O', 'set_F_straight']; differing from the published gate JSON: none
+   own count doubleT_obstacle                           frames   201 STOP  193 advisory   91 episodes   1 OK
+   own count doubleT_platform                           frames   345 STOP    0 advisory  182 episodes   0 OK
+   own count roundT_doubleT                             frames   252 STOP    0 advisory  173 episodes   0 OK
+   own count roundT_pressureGate_roundT                 frames   268 STOP    0 advisory  107 episodes   0 OK
+   own count roundT_squareT_pressureGate_squareT        frames   545 STOP    0 advisory  146 episodes   0 OK
+   own count squareT_platform_squareT_switch            frames   877 STOP   37 advisory  398 episodes  11 OK
+   own count cloud_with_fake_obj                        frames  1510 STOP  450 advisory  406 episodes   8 OK
+   own ride: frames 11271 STOP frames 111 STOP episodes 26 | published 11271 111 26
+metric keys 224 (same keys on both sides: True); non-timing 208; gated 146
+non-timing metrics equal, candidate vs reference: 208 of 208
+code: candidate 0a472d6 reference 5fa865b; gate passed True/True, allow [], better 8, worse 0
+P4's own gate run on f56ad5e (gate_default.json): non-timing metrics differing from the candidate: 0 []

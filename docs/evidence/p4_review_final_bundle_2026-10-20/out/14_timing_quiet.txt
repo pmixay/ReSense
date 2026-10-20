@@ -1,0 +1,2 @@
+[synthetic, this machine] detector with accumulation: mean 35.1 ms, p95 50.6 ms, max 52.5 ms over 19 frames; last frame stages: {'track': 16.3, 'corridor': 7.0, 'egomotion': 0.0, 'accumulate': 0.2, 'c
+1 passed, 28 deselected in 2.56s

@@ -1,0 +1,9 @@
+gate: R3 candidate vs fresh base replay: rows 15269 | rows differing after latency normalisation 0 | level differences 26 (not explained by a latency message: 0) | STOP rows lost 0 added 0 | detections of side B absent in side A 0
+gate [planted control]: rows 15269 | rows differing after latency normalisation 3 | level differences 26 (not explained by a latency message: 0) | STOP rows lost 0 added 1 | detections of side B absent in side A 1
+control FOUND (planted 3, found 3)
+X3: R3 candidate vs fresh base replay: rows 29765 | rows differing after latency normalisation 0 | level differences 1342 (not explained by a latency message: 0) | STOP rows lost 0 added 0 | detections of side B absent in side A 0
+X3 [planted control]: rows 29765 | rows differing after latency normalisation 2 | level differences 1342 (not explained by a latency message: 0) | STOP rows lost 1 added 0 | detections of side B absent in side A 1
+control FOUND (planted 2, found 2)
+Falcon: R3 candidate vs fresh base replay: rows 4443 | rows differing after latency normalisation 0 | level differences 18 (not explained by a latency message: 0) | STOP rows lost 0 added 0 | detections of side B absent in side A 0
+Falcon [planted control]: rows 4443 | rows differing after latency normalisation 1 | level differences 18 (not explained by a latency message: 0) | STOP rows lost 1 added 0 | detections of side B absent in side A 0
+control FOUND (planted 1, found 1)

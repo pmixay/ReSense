@@ -1,0 +1,3 @@
+entries 40 rows 29765 STOP rows 6324; metrics differing from the raw recount 0; raw sha256 mismatches 0
+comparisons 260 passed 260 in 40 cases; status PASS; errors 0
+harness 0a472d6 evaluated 0a472d6 1.2.0

@@ -1,0 +1,6 @@
+platform  frames 386: N5 report of the final run == v1.1.0 report: True | certain-inside matched [147, 147] of 171, recall bounds [0.8596491228070176, 0.8596491228070176], STOP detections 185 (unmatched 0)
+switch    frames 736: N5 report of the final run == v1.1.0 report: True | certain-inside matched [36, 36] of 36, recall bounds [1.0, 1.0], STOP detections 142 (unmatched 12)
+tunnels   frames 545: N5 report of the final run == v1.1.0 report: True | certain-inside matched [61, 61] of 63, recall bounds [0.9682539682539683, 0.9682539682539683], STOP detections 128 (unmatched 10)
+supplement as committed: REJECTED by scripts/score_team_labels.py: ValueError: 00004/box_left_0: n_points must be a nonnegative integer
+supplement with n_points=1: accepted. possible-inside object frames 296 -> 330 | certain-inside matched [61, 61] -> [61, 61] | gauge relation frames {'boundary_uncertain': 64, 'inside': 63, 'unknown': 169} -> {'boundary_uncertain': 64, 'inside': 63, 'unknown': 203}
+box_left_0: {'point_supported_frames': 34, 'first_frame': 4, 'last_frame': 59, 'first_visible_m': 83.026, 'gauge_relation_frames': {'unknown': 34}, 'stop_match_frames_bounds': [0, 0], 'warning_match_frames_bounds': [0, 0], 'certain_inside_frames': 0}

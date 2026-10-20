@@ -1,0 +1,5 @@
+kinds {'person': 6, 'box1.0': 6, 'box0.5': 6, 'trolley': 6, 'cable': 6} sequences 30
+candidate vs reference: {'rows': 3060, 'differing': 0, 'fields': {}, 'hits_candidate': 1073, 'hits_reference': 1073, 'lost': 0, 'added': 0}
+planted hit flip: {'rows': 3060, 'differing': 1, 'fields': {'hit': 1}, 'hits_candidate': 1074, 'hits_reference': 1073, 'lost': 0, 'added': 1}
+wrong-sequence control rows differing: 102
+summary per_kind equal: True
