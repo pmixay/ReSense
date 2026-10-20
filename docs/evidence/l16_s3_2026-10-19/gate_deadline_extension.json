@@ -1,0 +1,8 @@
+{
+  "pid": 1968756,
+  "pgid": 1968754,
+  "start_ticks": "127136116",
+  "extension_seconds": 2400,
+  "reason": "Shared-host paired full gate exceeds the original combined 1800-second deadline.",
+  "status": "completed_before_extended_deadline"
+}

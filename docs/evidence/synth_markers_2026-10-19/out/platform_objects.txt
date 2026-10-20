@@ -1,0 +1,29 @@
+segment id 17: frames    0- 385 (386)  fwd   335.0 ->     8.0
+segment id 20: frames    0- 385 (312)  fwd   335.0 ->     8.0
+segment id 22: frames    0- 385 (327)  fwd   335.0 ->     8.0
+segment id 23: frames    0- 178 (179)  fwd   244.0 ->     0.7
+segment id 24: frames    8- 257 (209)  fwd   289.5 ->     0.7
+segment id 21: frames   11- 385 (281)  fwd   318.6 ->     8.0
+segment id  0: frames   21-  21 (1)  fwd     3.5 ->     3.5
+segment id  1: frames   21-  21 (1)  fwd     4.4 ->     4.4
+segment id 19: frames   21- 385 (321)  fwd   302.9 ->     8.0
+segment id  6: frames   27-  27 (1)  fwd     4.4 ->     4.4
+segment id  7: frames   27-  27 (1)  fwd     6.1 ->     6.1
+segment id 12: frames   35-  35 (1)  fwd     4.3 ->     4.3
+segment id 13: frames   35-  36 (2)  fwd     5.0 ->     3.9
+segment id 18: frames  109- 385 (274)  fwd   173.3 ->     8.0
+segment id 15: frames  112- 385 (264)  fwd   170.2 ->     8.0
+segment id 16: frames  170- 385 (198)  fwd    99.6 ->     8.0
+
+object  1 ids [23]: frames    0- 178 (179, gaps 0) near face   243.8 ->    0.5 m (min 0.5); lateral centre [-1.17, -1.41] extent [-1.67, -0.79]; up [-1.13, -0.69]; size f,l,u [0.45, 0.52, 0.44] (max [0.45, 0.52, 0.44])
+object  2 ids [15, 16, 17, 18, 19, 20, 21, 22]: frames    0- 385 (386, gaps 0) near face   334.9 ->    7.8 m (min 7.8); lateral centre [0.18, -1.06] extent [-1.36, 0.49]; up [-1.12, 0.6]; size f,l,u [0.24, 0.6, 1.73] (max [0.25, 0.6, 1.73])
+object  3 ids [24]: frames    8- 257 (209, gaps 10) near face   289.2 ->    0.4 m (min 0.4); lateral centre [2.15, 1.47] extent [1.2, 2.56]; up [-1.13, -0.67]; size f,l,u [0.56, 0.54, 0.46] (max [0.56, 0.55, 0.46])
+object  4 ids [0]: frames   21-  21 (1, gaps 0) near face     3.5 ->    3.5 m (min 3.5); lateral centre [1.48, 1.48] extent [1.46, 1.5]; up [0.29, 0.31]; size f,l,u [0.04, 0.04, 0.03] (max [0.04, 0.04, 0.03])
+object  5 ids [1]: frames   21-  21 (1, gaps 0) near face     4.4 ->    4.4 m (min 4.4); lateral centre [1.75, 1.75] extent [1.73, 1.77]; up [0.47, 0.49]; size f,l,u [0.04, 0.03, 0.03] (max [0.04, 0.03, 0.03])
+object  6 ids [6]: frames   27-  27 (1, gaps 0) near face     4.4 ->    4.4 m (min 4.4); lateral centre [1.4, 1.4] extent [1.38, 1.42]; up [0.5, 0.54]; size f,l,u [0.04, 0.04, 0.04] (max [0.04, 0.04, 0.04])
+object  7 ids [7]: frames   27-  27 (1, gaps 0) near face     6.1 ->    6.1 m (min 6.1); lateral centre [1.77, 1.77] extent [1.76, 1.78]; up [0.27, 0.29]; size f,l,u [0.04, 0.03, 0.03] (max [0.04, 0.03, 0.03])
+object  8 ids [12]: frames   35-  35 (1, gaps 0) near face     4.2 ->    4.2 m (min 4.2); lateral centre [-0.38, -0.38] extent [-0.4, -0.36]; up [0.16, 0.2]; size f,l,u [0.04, 0.04, 0.03] (max [0.04, 0.04, 0.03])
+object  9 ids [13]: frames   35-  36 (2, gaps 0) near face     4.9 ->    3.9 m (min 3.9); lateral centre [0.17, 0.17] extent [0.15, 0.19]; up [0.33, 0.37]; size f,l,u [0.04, 0.04, 0.03] (max [0.04, 0.04, 0.03])
+
+speed from object [15, 16, 17, 18, 19, 20, 21, 22]: first 15.57 m/s, max 15.92 m/s, last -0.0 m/s
+messages 386; active boxes per message: min 2, max 10; without any: 0

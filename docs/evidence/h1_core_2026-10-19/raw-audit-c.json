@@ -1,0 +1,1100 @@
+{
+  "gate": {
+    "cloud_with_fake_obj": {
+      "frames": 1510,
+      "baseline_STOP": 450,
+      "candidate_STOP": 450,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "doubleT_obstacle": {
+      "frames": 201,
+      "baseline_STOP": 193,
+      "candidate_STOP": 193,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "doubleT_platform": {
+      "frames": 345,
+      "baseline_STOP": 2,
+      "candidate_STOP": 2,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "new_data_0": {
+      "frames": 1409,
+      "baseline_STOP": 12,
+      "candidate_STOP": 12,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "new_data_1": {
+      "frames": 1409,
+      "baseline_STOP": 14,
+      "candidate_STOP": 14,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "new_data_2": {
+      "frames": 1409,
+      "baseline_STOP": 6,
+      "candidate_STOP": 6,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "new_data_3": {
+      "frames": 1409,
+      "baseline_STOP": 2,
+      "candidate_STOP": 2,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "new_data_4": {
+      "frames": 1409,
+      "baseline_STOP": 20,
+      "candidate_STOP": 20,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "new_data_5": {
+      "frames": 1409,
+      "baseline_STOP": 36,
+      "candidate_STOP": 36,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "new_data_6": {
+      "frames": 1409,
+      "baseline_STOP": 27,
+      "candidate_STOP": 27,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "new_data_7": {
+      "frames": 1408,
+      "baseline_STOP": 9,
+      "candidate_STOP": 9,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "roundT_doubleT": {
+      "frames": 252,
+      "baseline_STOP": 0,
+      "candidate_STOP": 0,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "roundT_pressureGate_roundT": {
+      "frames": 268,
+      "baseline_STOP": 0,
+      "candidate_STOP": 0,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "frames": 545,
+      "baseline_STOP": 0,
+      "candidate_STOP": 0,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "squareT_platform_squareT_switch": {
+      "frames": 877,
+      "baseline_STOP": 37,
+      "candidate_STOP": 37,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    }
+  },
+  "X3": {
+    "squareT_platform_squareT_switch/nominal": {
+      "frames": 877,
+      "baseline_STOP": 11,
+      "candidate_STOP": 11,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "squareT_platform_squareT_switch/pitch_p2": {
+      "frames": 877,
+      "baseline_STOP": 20,
+      "candidate_STOP": 20,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "squareT_platform_squareT_switch/pitch_m2": {
+      "frames": 877,
+      "baseline_STOP": 27,
+      "candidate_STOP": 27,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "squareT_platform_squareT_switch/roll_p2": {
+      "frames": 877,
+      "baseline_STOP": 37,
+      "candidate_STOP": 37,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "squareT_platform_squareT_switch/hz5": {
+      "frames": 439,
+      "baseline_STOP": 19,
+      "candidate_STOP": 19,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "squareT_platform_squareT_switch/drop30_s1": {
+      "frames": 877,
+      "baseline_STOP": 56,
+      "candidate_STOP": 56,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "squareT_platform_squareT_switch/drop30_s2": {
+      "frames": 877,
+      "baseline_STOP": 55,
+      "candidate_STOP": 55,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "squareT_platform_squareT_switch/drop30_s3": {
+      "frames": 877,
+      "baseline_STOP": 51,
+      "candidate_STOP": 51,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "squareT_platform_squareT_switch/drop30_judge7": {
+      "frames": 877,
+      "baseline_STOP": 61,
+      "candidate_STOP": 61,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "squareT_platform_squareT_switch/dedup": {
+      "frames": 877,
+      "baseline_STOP": 20,
+      "candidate_STOP": 20,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "doubleT_obstacle/nominal": {
+      "frames": 201,
+      "baseline_STOP": 193,
+      "candidate_STOP": 193,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "doubleT_obstacle/pitch_p2": {
+      "frames": 201,
+      "baseline_STOP": 192,
+      "candidate_STOP": 192,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "doubleT_obstacle/pitch_m2": {
+      "frames": 201,
+      "baseline_STOP": 193,
+      "candidate_STOP": 193,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "doubleT_obstacle/roll_p2": {
+      "frames": 201,
+      "baseline_STOP": 192,
+      "candidate_STOP": 192,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "doubleT_obstacle/hz5": {
+      "frames": 101,
+      "baseline_STOP": 95,
+      "candidate_STOP": 95,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "doubleT_obstacle/drop30_s1": {
+      "frames": 201,
+      "baseline_STOP": 178,
+      "candidate_STOP": 178,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "doubleT_obstacle/drop30_s2": {
+      "frames": 201,
+      "baseline_STOP": 178,
+      "candidate_STOP": 178,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "doubleT_obstacle/drop30_s3": {
+      "frames": 201,
+      "baseline_STOP": 178,
+      "candidate_STOP": 178,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "doubleT_obstacle/drop30_judge7": {
+      "frames": 201,
+      "baseline_STOP": 154,
+      "candidate_STOP": 154,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "doubleT_obstacle/dedup": {
+      "frames": 201,
+      "baseline_STOP": 189,
+      "candidate_STOP": 189,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "roundT_squareT_pressureGate_squareT/nominal": {
+      "frames": 545,
+      "baseline_STOP": 0,
+      "candidate_STOP": 0,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "roundT_squareT_pressureGate_squareT/pitch_p2": {
+      "frames": 545,
+      "baseline_STOP": 0,
+      "candidate_STOP": 0,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "roundT_squareT_pressureGate_squareT/pitch_m2": {
+      "frames": 545,
+      "baseline_STOP": 0,
+      "candidate_STOP": 0,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "roundT_squareT_pressureGate_squareT/roll_p2": {
+      "frames": 545,
+      "baseline_STOP": 0,
+      "candidate_STOP": 0,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "roundT_squareT_pressureGate_squareT/hz5": {
+      "frames": 273,
+      "baseline_STOP": 0,
+      "candidate_STOP": 0,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "roundT_squareT_pressureGate_squareT/drop30_s1": {
+      "frames": 545,
+      "baseline_STOP": 0,
+      "candidate_STOP": 0,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "roundT_squareT_pressureGate_squareT/drop30_s2": {
+      "frames": 545,
+      "baseline_STOP": 0,
+      "candidate_STOP": 0,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "roundT_squareT_pressureGate_squareT/drop30_s3": {
+      "frames": 545,
+      "baseline_STOP": 0,
+      "candidate_STOP": 0,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "roundT_squareT_pressureGate_squareT/drop30_judge7": {
+      "frames": 545,
+      "baseline_STOP": 0,
+      "candidate_STOP": 0,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "roundT_squareT_pressureGate_squareT/dedup": {
+      "frames": 545,
+      "baseline_STOP": 0,
+      "candidate_STOP": 0,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "cloud_with_fake_obj/nominal": {
+      "frames": 1510,
+      "baseline_STOP": 457,
+      "candidate_STOP": 457,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "cloud_with_fake_obj/pitch_p2": {
+      "frames": 1510,
+      "baseline_STOP": 453,
+      "candidate_STOP": 453,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "cloud_with_fake_obj/pitch_m2": {
+      "frames": 1510,
+      "baseline_STOP": 458,
+      "candidate_STOP": 458,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "cloud_with_fake_obj/roll_p2": {
+      "frames": 1510,
+      "baseline_STOP": 454,
+      "candidate_STOP": 454,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "cloud_with_fake_obj/hz5": {
+      "frames": 755,
+      "baseline_STOP": 218,
+      "candidate_STOP": 218,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "cloud_with_fake_obj/drop30_s1": {
+      "frames": 1510,
+      "baseline_STOP": 438,
+      "candidate_STOP": 438,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "cloud_with_fake_obj/drop30_s2": {
+      "frames": 1510,
+      "baseline_STOP": 443,
+      "candidate_STOP": 443,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "cloud_with_fake_obj/drop30_s3": {
+      "frames": 1510,
+      "baseline_STOP": 434,
+      "candidate_STOP": 434,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "cloud_with_fake_obj/drop30_judge7": {
+      "frames": 1510,
+      "baseline_STOP": 429,
+      "candidate_STOP": 429,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "cloud_with_fake_obj/dedup": {
+      "frames": 1510,
+      "baseline_STOP": 441,
+      "candidate_STOP": 441,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    }
+  },
+  "probes": {
+    "A-axis": {
+      "baseline": {
+        "cache": "roundT_squareT_pressureGate_squareT",
+        "obj": [
+          0.3,
+          0.3,
+          2.8
+        ],
+        "lat": 0.0,
+        "base": 0.0,
+        "start": 150,
+        "d0": 230.0,
+        "first_visible_X": 228.36,
+        "first_stop_X": 218.38,
+        "held_from_X": null,
+        "visible_frames": 177,
+        "stop_frames": 82,
+        "bins": {
+          "3-30": "0/18",
+          "30-60": "0/21",
+          "60-100": "16/27",
+          "100-150": "20/39",
+          "150-200": "35/42",
+          "200-260": "11/30"
+        },
+        "decisions_while_visible": {
+          "GO": 5,
+          "CAUTION": 90,
+          "STOP": 82,
+          "FAULT": 0
+        },
+        "go_within_60m": 0,
+        "n_obj_at": {
+          "200": 6,
+          "150": 16,
+          "100": 26,
+          "60": 63,
+          "30": 228
+        }
+      },
+      "candidate": {
+        "cache": "roundT_squareT_pressureGate_squareT",
+        "obj": [
+          0.3,
+          0.3,
+          2.8
+        ],
+        "lat": 0.0,
+        "base": 0.0,
+        "start": 150,
+        "d0": 230.0,
+        "first_visible_X": 228.36,
+        "first_stop_X": 218.38,
+        "held_from_X": 9.58,
+        "visible_frames": 177,
+        "stop_frames": 105,
+        "bins": {
+          "3-30": "5/18",
+          "30-60": "7/21",
+          "60-100": "27/27",
+          "100-150": "20/39",
+          "150-200": "35/42",
+          "200-260": "11/30"
+        },
+        "decisions_while_visible": {
+          "GO": 5,
+          "CAUTION": 67,
+          "STOP": 105,
+          "FAULT": 0
+        },
+        "go_within_60m": 0,
+        "n_obj_at": {
+          "200": 6,
+          "150": 16,
+          "100": 26,
+          "60": 63,
+          "30": 228
+        }
+      },
+      "added_matches": [
+        285,
+        286,
+        287,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        294,
+        295,
+        296,
+        297,
+        298,
+        299,
+        300,
+        301,
+        302,
+        330,
+        331,
+        332,
+        333,
+        334
+      ],
+      "lost_matches": [],
+      "added_unmatched_decisions": [
+        {
+          "k": 335,
+          "X": 2.41,
+          "n_obj": 0,
+          "lat": 0.0,
+          "decision": "STOP",
+          "hit": false,
+          "warn": false,
+          "nearest": 2.37
+        }
+      ]
+    },
+    "C-person": {
+      "baseline": {
+        "cache": "roundT_pressureGate_roundT",
+        "obj": [
+          0.5,
+          0.5,
+          1.75
+        ],
+        "lat": 0.0,
+        "base": 0.0,
+        "start": 0,
+        "d0": 230.0,
+        "first_visible_X": 230.0,
+        "first_stop_X": 82.77,
+        "held_from_X": 91.63,
+        "visible_frames": 153,
+        "stop_frames": 55,
+        "bins": {
+          "3-30": "19/19",
+          "30-60": "20/20",
+          "60-100": "16/27",
+          "100-150": "0/34",
+          "150-200": "0/33",
+          "200-260": "0/20"
+        },
+        "decisions_while_visible": {
+          "GO": 42,
+          "CAUTION": 56,
+          "STOP": 55,
+          "FAULT": 0
+        },
+        "go_within_60m": 0,
+        "n_obj_at": {
+          "200": 4,
+          "150": 5,
+          "100": 24,
+          "60": 70,
+          "30": 260
+        }
+      },
+      "candidate": {
+        "cache": "roundT_pressureGate_roundT",
+        "obj": [
+          0.5,
+          0.5,
+          1.75
+        ],
+        "lat": 0.0,
+        "base": 0.0,
+        "start": 0,
+        "d0": 230.0,
+        "first_visible_X": 230.0,
+        "first_stop_X": 82.77,
+        "held_from_X": 91.63,
+        "visible_frames": 153,
+        "stop_frames": 55,
+        "bins": {
+          "3-30": "19/19",
+          "30-60": "20/20",
+          "60-100": "16/27",
+          "100-150": "0/34",
+          "150-200": "0/33",
+          "200-260": "0/20"
+        },
+        "decisions_while_visible": {
+          "GO": 42,
+          "CAUTION": 56,
+          "STOP": 55,
+          "FAULT": 0
+        },
+        "go_within_60m": 0,
+        "n_obj_at": {
+          "200": 4,
+          "150": 5,
+          "100": 24,
+          "60": 70,
+          "30": 260
+        }
+      },
+      "added_matches": [],
+      "lost_matches": [],
+      "added_unmatched_decisions": []
+    },
+    "E6": {
+      "baseline": {
+        "cache": "roundT_squareT_pressureGate_squareT",
+        "obj": [
+          0.05,
+          0.05,
+          2.6
+        ],
+        "lat": 0.0,
+        "base": 0.2,
+        "start": 150,
+        "d0": 230.0,
+        "first_visible_X": 222.61,
+        "first_stop_X": 86.25,
+        "held_from_X": 61.28,
+        "visible_frames": 59,
+        "stop_frames": 34,
+        "bins": {
+          "3-30": "18/18",
+          "30-60": "13/15",
+          "60-100": "3/10",
+          "100-150": "0/6",
+          "150-200": "0/4",
+          "200-260": "0/6"
+        },
+        "decisions_while_visible": {
+          "GO": 22,
+          "CAUTION": 3,
+          "STOP": 34,
+          "FAULT": 0
+        },
+        "go_within_60m": 1,
+        "n_obj_at": {
+          "200": 6,
+          "150": 9,
+          "100": 13,
+          "60": 20,
+          "30": 35
+        }
+      },
+      "candidate": {
+        "cache": "roundT_squareT_pressureGate_squareT",
+        "obj": [
+          0.05,
+          0.05,
+          2.6
+        ],
+        "lat": 0.0,
+        "base": 0.2,
+        "start": 150,
+        "d0": 230.0,
+        "first_visible_X": 222.61,
+        "first_stop_X": 86.25,
+        "held_from_X": 61.28,
+        "visible_frames": 59,
+        "stop_frames": 34,
+        "bins": {
+          "3-30": "18/18",
+          "30-60": "13/15",
+          "60-100": "3/10",
+          "100-150": "0/6",
+          "150-200": "0/4",
+          "200-260": "0/6"
+        },
+        "decisions_while_visible": {
+          "GO": 22,
+          "CAUTION": 3,
+          "STOP": 34,
+          "FAULT": 0
+        },
+        "go_within_60m": 1,
+        "n_obj_at": {
+          "200": 6,
+          "150": 9,
+          "100": 13,
+          "60": 20,
+          "30": 35
+        }
+      },
+      "added_matches": [],
+      "lost_matches": [],
+      "added_unmatched_decisions": []
+    },
+    "Falcon": {
+      "frames": 4443,
+      "baseline_STOP": 1372,
+      "candidate_STOP": 1372,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    }
+  },
+  "physical": {
+    "full_cases": 32,
+    "full_rows": 896,
+    "preserved_matches": 80,
+    "added_matches": 150,
+    "remaining_missed_cases": [
+      {
+        "distance": 109.0,
+        "lateral": -0.68,
+        "top": 2.72,
+        "absorbing": null
+      },
+      {
+        "distance": 109.0,
+        "lateral": -0.68,
+        "top": 3.22,
+        "absorbing": null
+      },
+      {
+        "distance": 109.0,
+        "lateral": -0.68,
+        "top": 4.12,
+        "absorbing": null
+      },
+      {
+        "distance": 137.0,
+        "lateral": -0.68,
+        "top": 2.72,
+        "absorbing": null
+      },
+      {
+        "distance": 137.0,
+        "lateral": -0.68,
+        "top": 3.22,
+        "absorbing": null
+      },
+      {
+        "distance": 137.0,
+        "lateral": -0.68,
+        "top": 4.12,
+        "absorbing": null
+      },
+      {
+        "distance": 137.0,
+        "lateral": 0.68,
+        "top": 2.72,
+        "absorbing": null
+      },
+      {
+        "distance": 137.0,
+        "lateral": 0.68,
+        "top": 3.22,
+        "absorbing": null
+      },
+      {
+        "distance": 137.0,
+        "lateral": 0.68,
+        "top": 4.12,
+        "absorbing": null
+      }
+    ],
+    "outside_budget_cases": 48,
+    "larger_error_results": [
+      {
+        "distance": 37.0,
+        "lateral": -1.29,
+        "error": -0.6,
+        "core": true,
+        "matched_stop": true
+      },
+      {
+        "distance": 37.0,
+        "lateral": -1.29,
+        "error": 0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 37.0,
+        "lateral": 1.29,
+        "error": -0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 37.0,
+        "lateral": 1.29,
+        "error": 0.6,
+        "core": true,
+        "matched_stop": true
+      },
+      {
+        "distance": 37.0,
+        "lateral": -1.5,
+        "error": -0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 37.0,
+        "lateral": -1.5,
+        "error": 0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 37.0,
+        "lateral": 1.5,
+        "error": -0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 37.0,
+        "lateral": 1.5,
+        "error": 0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 67.0,
+        "lateral": -1.29,
+        "error": -0.6,
+        "core": true,
+        "matched_stop": true
+      },
+      {
+        "distance": 67.0,
+        "lateral": -1.29,
+        "error": 0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 67.0,
+        "lateral": 1.29,
+        "error": -0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 67.0,
+        "lateral": 1.29,
+        "error": 0.6,
+        "core": true,
+        "matched_stop": true
+      },
+      {
+        "distance": 67.0,
+        "lateral": -1.5,
+        "error": -0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 67.0,
+        "lateral": -1.5,
+        "error": 0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 67.0,
+        "lateral": 1.5,
+        "error": -0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 67.0,
+        "lateral": 1.5,
+        "error": 0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 109.0,
+        "lateral": -1.29,
+        "error": -0.6,
+        "core": true,
+        "matched_stop": true
+      },
+      {
+        "distance": 109.0,
+        "lateral": -1.29,
+        "error": 0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 109.0,
+        "lateral": 1.29,
+        "error": -0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 109.0,
+        "lateral": 1.29,
+        "error": 0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 109.0,
+        "lateral": -1.5,
+        "error": -0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 109.0,
+        "lateral": -1.5,
+        "error": 0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 109.0,
+        "lateral": 1.5,
+        "error": -0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 109.0,
+        "lateral": 1.5,
+        "error": 0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 137.0,
+        "lateral": -1.29,
+        "error": -0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 137.0,
+        "lateral": -1.29,
+        "error": 0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 137.0,
+        "lateral": 1.29,
+        "error": -0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 137.0,
+        "lateral": 1.29,
+        "error": 0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 137.0,
+        "lateral": -1.5,
+        "error": -0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 137.0,
+        "lateral": -1.5,
+        "error": 0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 137.0,
+        "lateral": 1.5,
+        "error": -0.6,
+        "core": false,
+        "matched_stop": false
+      },
+      {
+        "distance": 137.0,
+        "lateral": 1.5,
+        "error": 0.6,
+        "core": false,
+        "matched_stop": false
+      }
+    ]
+  },
+  "positive_controls": {
+    "deleted_positive_STOP_and_payload_detected": true,
+    "added_empty_STOP_detected": true,
+    "changed_axis_field_detected": true
+  },
+  "measured_snapshot_equal_current_committed_source": true,
+  "current_source": "fd897124612c42fd60a47327a4b6f97490ac8d2f",
+  "Set_F": {
+    "sequences": 30,
+    "rows": 3060,
+    "identical": true
+  },
+  "gate_non_timing_metrics": {
+    "same": 208
+  }
+}

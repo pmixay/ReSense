@@ -1,0 +1,30 @@
+PASS    detector_freeze verify: Detector freeze PASS: 38 files; source 68dee667f19e862913575c72fada3820199ec29cf497697cd7194b9e897f16d3
+PASS    synthetic synthetic_platform decisions: 386/386 frames equal
+PASS    synthetic synthetic_switch decisions: 736/736 frames equal
+PASS    synthetic synthetic_tunnels decisions: 545/545 frames equal
+PASS    synthetic_platform score (0-314): person first STOP 44.0 m, unmatched 0
+PASS    Falcon whole recording decisions: 4443/4443 frames equal (4443 run)
+PASS    Falcon stream complete: 4443 of 4443 messages, 0 lost
+PASS    switch p2f: decisions {'GO': 16, 'STOP': 194, 'FAULT': 1, 'CAUTION': 975}, resets [[201, 'new_input']], field differences only wall-clock 'level': True
+PASS    switch f2p: decisions {'FAULT': 1, 'GO': 16, 'CAUTION': 975, 'STOP': 194}, resets [[985, 'new_input']], field differences only wall-clock 'level': True
+PASS    gauge cloud_with_fake_obj: trusted range p50 155.0 m, blinks 4
+PASS    gauge honesty cloud_with_fake_obj: reported range > 1.05 m off: 0.016 (committed 0.016)
+PASS    gauge doubleT_obstacle: trusted range p50 151.0 m, blinks 0
+PASS    gauge doubleT_platform: trusted range p50 120.0 m, blinks 22
+PASS    gauge honesty doubleT_platform: reported range > 1.05 m off: 0.086 (committed 0.086)
+PASS    gauge roundT_doubleT: trusted range p50 157.0 m, blinks 1
+PASS    gauge honesty roundT_doubleT: reported range > 1.05 m off: 0.401 (committed 0.401)
+PASS    gauge roundT_pressureGate_roundT: trusted range p50 143.0 m, blinks 5
+PASS    gauge honesty roundT_pressureGate_roundT: reported range > 1.05 m off: 0.022 (committed 0.022)
+PASS    gauge roundT_squareT_pressureGate_squareT: trusted range p50 175.0 m, blinks 1
+PASS    gauge honesty roundT_squareT_pressureGate_squareT: reported range > 1.05 m off: 0.093 (committed 0.093)
+PASS    gauge squareT_platform_squareT_switch: trusted range p50 151.0 m, blinks 4
+PASS    gauge honesty squareT_platform_squareT_switch: reported range > 1.05 m off: 0.117 (committed 0.117)
+PASS    gauge synthetic_platform: trusted range p50 120.0 m, blinks 5
+PASS    gauge honesty synthetic_platform: reported range > 1.05 m off: 0.404 (committed 0.404)
+PASS    gauge synthetic_switch: trusted range p50 147.0 m, blinks 11
+PASS    gauge honesty synthetic_switch: reported range > 1.05 m off: 0.035 (committed 0.035)
+PASS    gauge synthetic_tunnels: trusted range p50 139.0 m, blinks 8
+PASS    gauge honesty synthetic_tunnels: reported range > 1.05 m off: 0.134 (committed 0.134)
+
+28 PASS, 0 DIFF, 0 MISSING

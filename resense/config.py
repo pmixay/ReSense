@@ -121,6 +121,26 @@ class TrackConfig:
     floor_verify_tolerance: float = 0.5              # m, allowed deviation of the far side base from its near-range height
     floor_verify_min_points: int = 5                 # side points per bin for the bin to count
     floor_verify_max_range: float = 250.0            # m, how far the verification is attempted
+    # --- 19.10 (K2, off): joint axis fit of the rail midpoints and the tunnel boundaries (track.joint_axis_fit) ---
+    axis_joint_fit: bool = False                     # (K2 held off for P4, captain 19.10; variant B = fit true, range false, min_curvature 1e-4, reach_cap true) off = the axis as before (rail tangent with the prior curvature held, then the boundary curvature); on: tangent, curvature and the far curvature step from one least-squares fit of the near rail-pair midpoints and every boundary segment (each its own offset), grown outward from the rail range
+    axis_joint_knot: float = 60.0                    # m, X from which the curvature may change (C1 piecewise axis: centre_y + curv_step (X - knot)^2 / 2 beyond it); 0 = a single quadratic
+    axis_joint_step_sigma: float = 1.0e-3            # 1/m, prior SD of the curvature step at the knot (ridge towards no step)
+    axis_joint_min_far_bins: int = 4                 # boundary bins beyond the knot needed to fit a curvature step (else none)
+    axis_joint_rail_sigma: float = 0.03              # m, assumed SD of a rail-pair slab midpoint
+    axis_joint_wall_sigma: float = 0.10              # m, assumed SD of a boundary bin
+    axis_joint_tolerance: float = 0.3                # m, a boundary bin joins the fit when within this of the current fit, the range growing by axis_joint_grow_step from axis_joint_grow_start
+    axis_joint_grow_start: float = 40.0              # m
+    axis_joint_grow_step: float = 16.0               # m
+    axis_joint_min_segment: int = 3                  # boundary bins a segment (between structure edges / gaps) needs to take part
+    axis_joint_range: bool = True                    # 20.10: with axis_joint_fit, the trusted range / sides / disagreement also from the joint fit (v3); false: the joint fit sets the axis shape only and the range policy stays the per-side fits' (v4)
+    axis_joint_min_curvature: float = 0.0            # 19.10 (v5, off; 1/m; needs axis_joint_fit and axis_joint_range false): > 0: the estimator without the joint fit runs on its own state every frame and is the output; the joint fit's shape (its own EMA / rate limits) replaces its axis shape only on frames whose curvature is |k| >= this (a curve as that estimator sees it; 1e-4 = its straight test). 0 = off (v4)
+    axis_joint_reach_cap: bool = False               # 19.10 (v5b, off; needs axis_joint_min_curvature > 0): on the frames with the joint shape, the trusted range is also capped at the boundaries' reach along that output axis (track._followed_reach) + axis_valid_margin
+    axis_joint_reach_dual: float = 0.0               # 20.10 (v5c, off; m; needs axis_joint_reach_cap): the capped range is extended by this much (never beyond the base range); an obstacle starting between the cap (track.joint_reach) and that end must also reach into the strict gauge measured from the base axis, else it is advisory beyond_axis as in v5b (Detector._dual_zone). 0 = off (v5b)
+    # --- 19.10 (K1, off): yaw / curvature EMA per distance travelled instead of per frame period ---
+    walls_smoothing_distance: float = 0.0            # m; > 0: the EMA weight is walls_smoothing ** max(walls_smoothing_min_k, min(k, travel / this)) with travel = the previous frame's speed x the time since it (unknown speed: as before); the axis rate limits scale the same way. 0 = off
+    walls_smoothing_min_k: float = 0.05              # lower bound of that exponent (a standing train still follows a real change, slowly)
+    walls_smoothing_standstill_speed: float = 1.0    # m/s; with no speed estimate, a frame whose texture profile shows no change at all counts as standing (travel 0) while the last confident estimate is at most this
+    walls_smoothing_standstill_max: float = 60.0     # s; that standing rule applies at most this long in a row (backlog K1: never one fit held for more than 60 s)
 
 
 @dataclass
@@ -258,6 +278,12 @@ class ClusterConfig:
     column_width_trim: float = 0.05     # 27.09 (P4 history, on; 0 = the box width): the column rule reads the cluster's width across the track between the trim and 1 - trim quantiles of its points: a fragment of a few returns joined at the DBSCAN radius does not widen a column past column_max_width (the clear-run STOP of 26.09: 7 of 143 returns widened a 0.74 m column to 1.10 m in one frame, mechanism 2)
     column_width_trim_min_cut: float = 0.25  # 27.09: m, the trimmed width is used only when it is at least this much narrower than the box (sparse tails: a joined fragment); a dense body keeps its width
     column_min_width: float = 0.25     # m, v0.6: near the axis only clusters at least this wide are columns (a hanging cable is thinner)
+    # Positive current-frame collision evidence; zero margin disables the exemption.
+    # Fresh raw rail-anchor and boundary hypotheses are checked in addition to this erosion.
+    column_core_margin: float = 0.02
+    column_core_min_voxels: int = 8
+    column_core_min_height: float = 2.2
+    column_core_max_footprint: float = 0.8
     # Development-only free-top exemption, withdrawn from shipping after H4. Zero disables the whole
     # observation/spare path; an explicit positive opt-in (historically 2.95 m) remains unaccepted, with
     # known tall-object misses and dark-continuation false STOPs. Evidence: h4_fixes/columns/WITHDRAWAL.md.
@@ -331,6 +357,16 @@ class ClusterConfig:
     retro_min_fraction: float = 0.5    # fraction of retro returns for a cluster to count as a reflector
     retro_max_height: float = 1.2      # m, taller retro clusters (a person in a hi-vis vest, a train) are kept
     retro_max_width: float = 0.8       # m, narrower retro clusters (plate, sign, marker, post) are demoted to advisory
+    # 19.10 (F1 lane, off by default; Detector._mount_cross_check): where the track model's rail head
+    # at a gauge cluster's distance X is more than mount_cross_tol + mount_cross_grade * X away from the
+    # calibrated mount's rail-head plane (z = -MountCalibration.height), the cluster stays an obstacle only
+    # if that plane also puts some of its points within 0 .. the envelope top; otherwise advisory
+    # ('height_conflict'). Falcon frames 4394-4401: a floor fit that climbed to the ceiling put the
+    # ceiling 0.15-0.33 m above the "rail head".
+    mount_cross_tol: float = 0.5       # m, > 0 on (H′, switched on by the captain 19.10; 0 = off, the aec88d2 behaviour)
+    mount_cross_grade: float = 0.05    # m per m of distance (5 %: steeper than a metro gradient)
+    mount_cross_range: float = 30.0    # m, only the near field (the mount plane is a near reference)
+    mount_cross_above_only: bool = True  # amendment 6: advisory only when the mount puts the cluster entirely above the envelope top (the ceiling), never below the rail head
 
 
 @dataclass
@@ -362,6 +398,13 @@ class TrackingConfig:
     confirm_hits: int = 3          # consecutive frames before an obstacle is reported
     low_confirm_hits: int = 5      # v0.6: hits before a low (bed-level) object is reported: it is static and in view for seconds, while rail-area clutter flickers for 2-3 frames
     confirm_time_s: float = 0.5    # s of sensor time a track must have been observed (frames x interval, first frame included: 0.5 s = 5 frames at 10 Hz, v0.6.2; 0.3 = 3 frames, the v0.3-v0.6.1 persistence); applied when the caller supplies the frame interval (the Detector does); 0 = hits only
+    cable_confirm_time_s: float = 0.3  # 0 = off; consecutive resolved thin vertical hits, not generic clutter
+    cable_max_footprint: float = 0.15  # m, maximum observed extent in both X and Y
+    cable_min_height: float = 1.5     # m, tall-body evidence inside the strict gauge
+    cable_min_voxels: int = 8         # current strict voxels, never accumulated weak evidence
+    hanging_confirm_time_s: float = 0.2  # narrow hanging group with positive below/above-top support
+    hanging_confirm_hits: int = 2
+    hanging_confirm_min_height: float = 0.25  # m, exclude a single horizontal scan line
     hit_window: int = 10           # frames of a track's recent history kept for min_hit_fraction
     min_hit_fraction: float = 0.6  # a track must have been matched in this share of its last hit_window frames (flickering structures are not reported); 0 = off
     zone_window: int = 10          # hits over which the zone (gauge / advisory) is decided (5 in v0.3)
@@ -446,6 +489,18 @@ class TrackingConfig:
     conf_gain: float = 0.35       # confidence added per hit
     conf_decay: float = 0.25       # confidence removed per miss
     conf_threshold: float = 0.6    # report obstacles with confidence >= threshold
+    # 19.10 (F1 lane, off by default; Track.settled_outside): a track whose last settle_window hits (at
+    # least settle_min_hits) kept its cluster centroid within settle_max_spread m in every axis of the
+    # sensor frame is a settled static scene (object and train both still): its gauge verdict can only
+    # change through the reference (the axis), not the object. Such a track is an obstacle only while at
+    # least settle_min_share of those hits were inside the strict gauge, whatever its last zone_window
+    # votes; near escalation still wins. Falcon 115 m support: inside the gauge in 8.8 % of 4,246 hits,
+    # STOP on 4 frames when 6 of the last 10 votes happened to be inside.
+    settle_min_hits: int = 0           # > 0 on (opt-in; withdrawn from the 19.10 candidate by amendment 6: it can delay an object entering the gauge without moving 0.5 m horizontally)
+    settle_window: int = 100           # hits
+    settle_max_spread: float = 0.5     # m, max - min of the centroid per axis over the window
+    settle_min_share: float = 0.5
+    settle_check_z: bool = False       # true: the spread limit also on the centroid height (S); false: ground-plane X / Y only (S2, the candidate)
 
     def frames_to_confirm(self, frame_dt: float | None = None) -> int:
         """Consecutive frames a static, always-matched object needs before it is reported
@@ -525,6 +580,23 @@ class LowObjectConfig:
     rail_start_lateral: float = 0.10     # m; the cluster's lateral extent reaches the model axis +- track.rails_spacing / 2 within this
     rail_start_max_width: float = 0.45   # m across the track; wider is not a rail (an object lying across a rail: 0.5-0.6 m)
     rail_start_min_ref: float = 0.06     # m (safety review of 26.09): only where that band's line is at least this far above the model's rail-head plane, the young-model fault the rule compensates (the finding: 0.135-0.148 m; a correct model ~0)
+    # 19.10 (F1, docs/evidence/f1_false_alarms_2026-10-19; lowobj.rail_reference_check): the rail-head
+    # plane a low cluster's top is compared with is the model's, extrapolated beyond template_range /
+    # rails_range, so bed fixtures there read a few cm above it. (a) and (b) compare the top with the
+    # frame's own rail returns around the cluster instead; a cluster failing them becomes weak low
+    # evidence (Cluster.low_height_weak): it may only continue an already reported low STOP
+    # (tracking.stop_keep_low_s), never start one. No measurable line: no change. Candidate: (a) 0.01 on, (b) and
+    # (c) off.
+    local_rail_margin: float = 0.01      # m, (a) > 0 on (switched on by the captain 19.10, review B1 accepted, P3 improves; 0 = off, the aec88d2 behaviour): the top must reach the local rail-head reference + this
+    local_rail_window: float = 5.0       # m along the track on each side of the cluster (its own extent +- 0.3 m excluded)
+    local_rail_band: float = 0.10        # m, half-width of each rail's lateral band around the axis +- track.rails_spacing / 2
+    local_rail_min_bins: int = 2         # 0.5 m along-track bins with rail-band returns that a rail's line needs
+    rail_band_range: float = 0.0         # m, (b) > 0 on: mark_rail_line's same-band test (narrow cluster reaching a rail line) out to this range ...
+    rail_band_margin: float = 0.05       # m ... with this margin above the band's own line, without rail_start_min_ref
+    local_rail_exclude_low: bool = False  # amendment 6 (review B1, measured: costs the effect, amendment 7): the rail lines leave out every low cluster's returns
+    local_rail_cross_tol: float = 0.0    # amendment 7 (review B1), off since 19.10 (it added a false STOP at ride 5714): m; when the two rails' lines differ by more than this, the lower line is the reference (an object along one rail raises only its line); 0 = off
+    local_rail_advisory: bool = False    # amendment 6 option (measured in amendments 7-8: it costs the effect): a cluster failing (a) / (b) is advisory ('below_rail_ref', a signature), not weak continuation evidence
+    no_rail_low_within: float = 0.0      # m, (c) > 0 on: on a frame without the rail pair (track.rail_slabs == 0) a low cluster farther than this is advisory (reason 'no_rail_low', a signature: an earned STOP is kept by tracking.stop_keep_signature)
 
 
 @dataclass
@@ -616,6 +688,85 @@ class HealthConfig:
 
 
 @dataclass
+class FarRangeConfig:
+    """19.10 (Falcon long range, P3 ``det/falcon-long-range``): off by default; the Falcon sensor
+    profiles (``resense_ros.sensor_profiles``) switch it on when ``with_falcon_profile``. Pandar
+    runs never read it. ``resense/farline.py`` has the far axis; the keys below the crop are its."""
+    enabled: bool = False
+    with_falcon_profile: bool = False  # True: the falcon_ros / falcon_native profiles enable this block (off: report 19.10)
+    max_range: float = 400.0           # m: sensor crop, gauge.range_max and track.floor_verify_max_range under the profile
+    axis_enabled: bool = True          # the far straight axis beyond axis_join (resense/farline.py)
+    axis_join: float = 50.0            # m: the near track model is used up to here, the far line from here on
+    axis_fit_range: Tuple[float, float] = (50.0, 400.0)  # m: tunnel-boundary bins fitted by the far line
+    axis_bin: float = 5.0              # m
+    axis_band: Tuple[float, float] = (1.0, 2.8)    # m above the rail head: boundary points
+    axis_lateral: Tuple[float, float] = (1.2, 4.0)  # m |lateral| from the provisional line: boundary points (never the gauge)
+    axis_min_points: int = 3           # per bin
+    axis_min_bins: int = 8             # kept bins of a side
+    axis_min_span: float = 80.0        # m between the first and last kept bin of a side
+    axis_max_rms: float = 0.15         # m, line residual of a side
+    axis_max_bow: float = 0.15         # m, largest quadratic-minus-line difference over the span (a curve fails)
+    axis_max_kink: float = 0.01        # |far slope - near tangent at axis_join| with two sides (a curve starting there fails)
+    axis_max_kink_one_side: float = 0.006  # the same with one side (a diverging wall steeper than this fails)
+    axis_one_side_slope_sigma: float = 0.003  # rad added to sigma with one side: a wall diverging less than the kink limit is not detectable
+    axis_second_min_bins: int = 4      # kept bins for the second (confirming) side, e.g. a column row every 30 m
+    axis_max_gap: float = 40.0         # m: the support ends at a gap longer than this between kept bins ...
+    axis_max_rejected_run: int = 3     # ... or at this many consecutive bins off the line (a curve starting; a wall niche is 1-2 bins)
+    axis_max_side_disagreement: float = 0.002  # slope difference of two fitted sides
+    axis_smoothing: float = 0.7        # EMA weight of the previous slope
+    axis_confirm_frames: int = 5       # consecutive good frames before the far line is used
+    axis_hold_frames: int = 10         # failed frames for which the last far line is kept
+    axis_margin: float = 15.0          # m, trusted beyond the last supporting bin (an R 300 m curve departs 0.37 m in 15 m)
+    declared_straight_to: float = 0.0  # m: operator / route-map statement that the track is straight to here; 0 = none.
+                                       # Only this extends the trust beyond the observed support (sigma without the unseen-curvature term)
+    axis_sigma0: float = 0.15          # m, lateral uncertainty at the join
+    axis_max_sigma: float = 0.5        # m: the far axis is trusted only where sigma(X) stays below this
+    axis_unseen_curvature: float = 1.0 / 300.0  # 1/m, allowed beyond the last supporting bin (sigma grows as k x^2 / 2; metro R >= 300 m)
+    axis_core_margin: bool = True      # the strict gauge shrinks by sigma(X) beyond the join
+    far_min_height: float = 0.3        # cluster.far_min_height under the profile: beyond the height reference a far
+                                       # obstacle's visible part is short (the rays to its foot return from the track first)
+    far_max_length: float = 4.0        # cluster.far_max_length under the profile (a 2 m deep box measures 3.1-3.2 m)
+    confirm_enabled: bool = False      # far confirmation (resense/farline.py FarConfirm); measured 19.10: no false alarm removed, held fraction lower, so off
+    confirm_from: float = 150.0        # m: a strict-gauge track beyond this needs range-consistent evidence to STOP
+    confirm_window: int = 10           # frames looked back
+    confirm_min_hits: int = 5          # matched frames in the window
+    confirm_max_residual: float = 0.75  # m, rms of the matched distances about a straight line in time
+    confirm_max_step: float = 3.0      # m per frame, |slope| of that line (a train at 30 m/s)
+
+
+@dataclass
+class DustGuardConfig:
+    """N3 diffuse-return guard (resense/dust_guard.py), 19.10, off by default. Synthetic-model
+    evidence only (docs/evidence/n3_dust_fix_2026-10-19). Off: the detector is unchanged."""
+    enabled: bool = False
+    interior_range: Tuple[float, float] = (5.0, 60.0)    # m along X: the gauge interior examined for diffuse returns
+    interior_half_width: float = 1.0                     # m, |dy| of that interior
+    interior_height: Tuple[float, float] = (0.3, 2.7)    # m above the rail head
+    support_radius: float = 0.10                         # m, r(R) = support_radius + R * support_radius_per_m
+    support_radius_per_m: float = 0.004                  # ~0.23 deg: about two beam spacings of a 128-line sensor
+    dedup: float = 0.02                                  # m, coincident returns count once
+    on_density: float = 0.3                              # isolated interior returns per m^3 that switch the guard on
+    off_density: float = 0.15                            # ... below which it may switch off
+    hold_frames: int = 10                                # frames below off_density before it switches off
+    cell: Tuple[float, float, float] = (5.0, 0.5, 0.6)  # m, interior cells (X, dy, h) for the spread of isolated returns
+    on_spread: float = 0.35                              # share of interior cells holding an isolated return, to switch on
+    off_spread: float = 0.2                              # ... below which it may switch off
+    attach_factor: float = 0.0                           # unsupported returns within this many r(R) of a supported one are kept (0 = off)
+    track_filter: bool = True                            # while active, unsupported returns near the track are withheld from the track model
+    track_margin: float = 10.0                           # m beyond interior_range[1] where that applies
+    track_min_height: float = 0.15                       # m above the rail head: rails and bed below it are never withheld
+    light_window: int = 20                               # frames of the sustained light-field test (track filter only)
+    light_density: float = 0.05                          # mean isolated interior returns per m^3 over that window
+    light_spread: float = 0.0                            # mean spread over that window; 0 = no light mode (19.10 dev: 0.08 lost real STOPs at low)
+    min_support: int = 3                                 # neighbours a candidate return needs while active (at least)
+    max_support: int = 12                                # cap of the density-scaled requirement
+    false_support: float = 0.001                         # chance-support probability of a diffuse return at the measured density
+    max_density: float = 50.0                            # bound of the corrected field density (per m^3)
+    roi_half_width: float = 3.0                          # m, |dy| of the returns that can support a candidate
+    roi_height: Tuple[float, float] = (-0.8, 4.5)        # m above the rail head, likewise
+
+
+@dataclass
 class DetectorConfig:
     sensor: SensorConfig = field(default_factory=SensorConfig)
     track: TrackConfig = field(default_factory=TrackConfig)
@@ -626,13 +777,15 @@ class DetectorConfig:
     lowobj: LowObjectConfig = field(default_factory=LowObjectConfig)
     calibration: CalibrationConfig = field(default_factory=CalibrationConfig)
     health: HealthConfig = field(default_factory=HealthConfig)
+    farrange: FarRangeConfig = field(default_factory=FarRangeConfig)
+    dust: DustGuardConfig = field(default_factory=DustGuardConfig)
     voxel: float = 0.0             # optional voxel downsampling of corridor candidates (0 = off)
 
     # ---- (de)serialisation -------------------------------------------------
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "DetectorConfig":
         cfg = cls()
-        for section in ("sensor", "track", "gauge", "cluster", "tracking", "accumulation", "lowobj", "calibration", "health"):
+        for section in ("sensor", "track", "gauge", "cluster", "tracking", "accumulation", "lowobj", "calibration", "health", "farrange", "dust"):
             if section in d and d[section]:
                 obj = getattr(cfg, section)
                 for k, v in d[section].items():

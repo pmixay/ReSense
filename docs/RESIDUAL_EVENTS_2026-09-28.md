@@ -1,7 +1,7 @@
 # Residual false STOP inventory — 28 September 2026
 
 **Historical inventory:** these saved captures predate the remote detector updates merged after
-`9aa1775`; see [integration provenance](RESIDUAL_REVIEW_2026-09-28.md#integration-provenance).
+`9aa1775`; see [integration provenance](archive/2026-09-28/RESIDUAL_REVIEW_2026-09-28.md#integration-provenance).
 
 **The saved fresh-onset candidate leaves exactly 27 track events, 117 distinct STOP
 frames and 26 STOP episodes across 11,271 ride frames.** There are 133 STOP
@@ -144,7 +144,7 @@ event reduction. It separates three materially different problems:
    the gauge. The earlier [far-structure study](EXPERIMENT_FAR_STRUCTURE.md) measures
    these distinctions and shows that two farther ground positions can make `:331`
    look like a long structure under range-normalized connectivity.
-   The [range/shape investigation](EXPERIMENT_RANGE_SHAPE_SUPPORT.md) independently
+   The [range/shape investigation](archive/2026-09-28/EXPERIMENT_RANGE_SHAPE_SUPPORT.md) independently
    found resolved synthetic person support lost after background connection at
    **114.8–77.7 m**, and cable support at **98.4 m**. A useful follow-up therefore
    needs local-body decomposition plus evidence of local protrusion or surface
@@ -204,8 +204,8 @@ no detector/tracker and runs no replay. The coordinator subsequently reproduced 
 inventory and verified the combined tree: **228 passed, 1 deselected, 6 subtests passed**;
 repository-wide Ruff passed. The unfinished `evidence_coherence` candidate was rejected
 and removed, resolving the earlier shared-tree integration issue. See
-[the temporal investigation](EXPERIMENT_EVIDENCE_COHERENCE.md) and
-[the coordinator closeout](RESIDUAL_REVIEW_2026-09-28.md).
+[the temporal investigation](archive/2026-09-28/EXPERIMENT_EVIDENCE_COHERENCE.md) and
+[the coordinator closeout](archive/2026-09-28/RESIDUAL_REVIEW_2026-09-28.md).
 
 Scope: the available saved ride captures only. Set O, synthetic positives and missing
 short organizer bags are discussed through the linked investigations; they are not

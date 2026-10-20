@@ -16,7 +16,7 @@
 """
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 from typing import Optional
 
 import numpy as np
@@ -52,6 +52,28 @@ class TrackModel:
     wall_drift: float = 1e9          # 15.10 (axis_wall_drift): X where a near tunnel boundary has come axis_wall_drift nearer the axis than in the rail range (1e9 = none): the monitored range ends there
     axis_valid_without_rails: float = 0.0  # N6: pre-extension range, restored before the next frame
     rail_axis_support: float = 0.0   # N6: last observed paired-rail station supporting an extension
+    curv_step: float = 0.0           # 19.10 (axis_joint_fit): curvature change at curv_knot (1/m): the axis bends by curv_step (X - curv_knot)^2 / 2 more beyond it (C1 piecewise); 0 = a single quadratic
+    curv_knot: float = 0.0           # 19.10: X of that change (m)
+    curv_range: float = 0.0          # 20.10 (v4, axis_joint_range off): the per-side fits' curvature, smoothed, for the straight test only (not serialised)
+    axis_straight: bool = False      # 19.10: the straight bonus applied this frame (hysteresis with axis_joint_fit; not serialised)
+    # 19.10 (v5, axis_joint_min_curvature > 0; None otherwise): the model of the estimator without the joint fit, carried
+    # to the next frame as its state (this model is the output); the joint fit's own shape state (centre, yaw, curvature,
+    # curv_step, curv_knot); whether the output uses that shape this frame (serialised as track.joint_used only then);
+    # the reach cap applied this frame (v5b, axis_joint_reach_cap; serialised as track.joint_reach only when it capped)
+    base: Optional["TrackModel"] = field(default=None, repr=False, compare=False)
+    joint_shape: Optional[tuple] = field(default=None, repr=False, compare=False)
+    joint_used: Optional[bool] = None
+    joint_reach: float = 0.0
+
+    @property
+    def bent(self) -> bool:
+        """The axis has a curvature step (19.10, ``axis_joint_fit``): ``center_coefs`` alone does not describe
+        it, so the native kernels, which take only those, are not used for it."""
+        return self.curv_step != 0.0
+
+    def _step_y(self, X: np.ndarray) -> np.ndarray:
+        d = np.maximum(X - self.curv_knot, 0.0)
+        return 0.5 * self.curv_step * d * d
 
     def floor_z(self, X) -> np.ndarray:
         """Bed reference height at along-track coordinate X, linearly extrapolated beyond
@@ -76,6 +98,9 @@ class TrackModel:
         return self.floor_z(X) + self.rail_offset
 
     def center_y(self, X) -> np.ndarray:
+        if self.bent:
+            X = np.asarray(X, dtype=np.float64)
+            return self.center + np.tan(self.yaw) * X + 0.5 * self.curvature * X * X + self._step_y(X)
         if _native.enabled():
             y = _native.center_y(X, *self.center_coefs())
             if y is not None:
@@ -110,6 +135,11 @@ class TrackModel:
             **({"axis_valid_without_rails": round(float(self.axis_valid_without_rails), 2),
                 "rail_axis_support": round(float(self.rail_axis_support), 2)}
                if self.rail_axis_support > 0 else {}),
+            # 19.10 (additive, only with a curvature step)
+            **({"curv_step": float(self.curv_step), "curv_knot": float(self.curv_knot)} if self.bent else {}),
+            # 19.10 (v5, additive, only with axis_joint_min_curvature > 0): which shape the output uses, the reach cap
+            **({"joint_used": bool(self.joint_used)} if self.joint_used is not None else {}),
+            **({"joint_reach": round(float(self.joint_reach), 1)} if self.joint_reach > 0 else {}),
         }
 
 
@@ -266,7 +296,7 @@ def _fit_floor(xyz: np.ndarray, cfg: TrackConfig, prior: TrackModel,
                             np.arange(max(40.0, x0), x1 + 2.5 * cfg.floor_bin, 2.5 * cfg.floor_bin)])
     nb = edges.size - 1
     fast = (_native.floor_band(xyz, x0, x1, prior.center_coefs(), cfg.floor_halfwidth, edges)
-            if _native.enabled() else None)                 # the band below in one pass (resense/_native.py)
+            if _native.enabled() and not prior.bent else None)   # the band below in one pass (resense/_native.py)
     if fast is not None:
         n_band, Zin, idx_in = fast
     else:
@@ -420,7 +450,7 @@ def estimate_axis_from_walls(xyz: np.ndarray, model: TrackModel, cfg: TrackConfi
     x0, x1 = cfg.walls_range
     zf = model.floor_z(X) if floor_z_all is None else floor_z_all
     fast = (_native.walls_band(xyz, zf, model.rail_offset, x0, x1, cfg.walls_band[0], cfg.walls_band[1],
-                               model.center_coefs()) if _native.enabled() else None)
+                               model.center_coefs()) if _native.enabled() and not model.bent else None)
     if fast is not None:                                   # the band below in one pass (resense/_native.py)
         Xb, Yb, dy = fast
         if Xb.size < 50:
@@ -490,6 +520,8 @@ _DRIFT_GAP_BINS = 3        # 15.10 (axis_wall_drift): a boundary is followed out
 _DRIFT_NEAR_MAD = 0.25     # m, the boundary's offset in the rail range must be this consistent (median absolute deviation) to be the reference
 _DRIFT_NEAR_SLOPE = 0.02   # and run this parallel to the rails there (|slope| of a line through its offsets: 0.4 m over 20 m)
 _DRIFT_MAX_CURVATURE = 2e-3  # 1/m (R 500 m): a curvature error this large moves a boundary by at most this x X x dX between bins at X; a faster change is a structure edge
+_STEP_ZERO = 1e-7          # 19.10: 1/m, a smaller curvature step is none (0.4 mm at 150 m); keeps the native kernels in use
+_STRAIGHT_X = 150.0        # 19.10: m, where a curvature step's bend is compared with the straight test's (|curvature| < 1e-4)
 
 
 def wall_drift_range(boundaries: dict, model: TrackModel, cfg: TrackConfig) -> float:
@@ -522,6 +554,8 @@ def wall_drift_range(boundaries: dict, model: TrackModel, cfg: TrackConfig) -> f
     for x, y in boundaries.values():
         x = np.asarray(x, dtype=np.float64)
         dy = np.asarray(y, dtype=np.float64) - (c + t * x + k2 * x * x)
+        if model.bent:
+            dy = dy - model._step_y(x)
         near = x <= near_max
         if int(near.sum()) < 3:
             continue
@@ -550,6 +584,209 @@ def wall_drift_range(boundaries: dict, model: TrackModel, cfg: TrackConfig) -> f
     return best
 
 
+def _followed_reach(x, y, model: TrackModel, cfg: TrackConfig) -> float:
+    """How far a boundary (bins ``x`` / absolute ``y``, nearest first) runs parallel to ``model``'s axis (19.10,
+    ``axis_joint_fit``): followed outward from its first bins while populated bins are at most ``_DRIFT_GAP_BINS``
+    bins apart; a jump faster than a curvature error of ``_DRIFT_MAX_CURVATURE`` is a structure edge (the reference
+    moves with it, as in :func:`wall_drift_range`); it ends before the first of two consecutive bins more than
+    ``walls_max_residual`` from the reference. 0 when it has fewer than 3 bins."""
+    x = np.asarray(x, dtype=np.float64)
+    y = np.asarray(y, dtype=np.float64)
+    fin = np.isfinite(x) & np.isfinite(y)
+    x, y = x[fin], y[fin]
+    if x.size < 3:
+        return 0.0
+    a = y - model.center_y(x)
+    ref = float(np.median(a[:3]))
+    last, prev, prev_a, off = float(x[0]), float(x[0]), float(a[0]), 0
+    for xi, ai in zip(x[1:], a[1:]):
+        if xi - prev > _DRIFT_GAP_BINS * cfg.walls_bin:
+            break
+        if abs(ai - prev_a) > max(cfg.axis_joint_tolerance, _DRIFT_MAX_CURVATURE * xi * (xi - prev)):
+            ref += ai - prev_a                              # a structure edge
+        prev, prev_a = float(xi), float(ai)
+        if abs(ai - ref) > cfg.walls_max_residual:
+            off += 1
+            if off >= 2:
+                break
+        else:
+            off, last = 0, float(xi)
+    return last
+
+
+def _joint_basis(x: np.ndarray, knot: float) -> np.ndarray:
+    """Columns (x, x^2 / 2[, max(x - knot, 0)^2 / 2]) of the axis shape: tangent, curvature[, curvature step]."""
+    cols = [x, 0.5 * x * x]
+    if knot > 0:
+        d = np.maximum(x - knot, 0.0)
+        cols.append(0.5 * d * d)
+    return np.stack(cols, axis=1)
+
+
+def joint_axis_fit(rails: RailsFit, boundaries: dict, prior: TrackModel, cfg: TrackConfig) -> Optional[dict]:
+    """Axis tangent, curvature and curvature step from one least-squares fit of the near rail pair and the tunnel
+    boundaries (19.10, ``axis_joint_fit``, card K2), or None.
+
+    Before: the rail tangent came from a line through the slab midpoints with the *prior* curvature held fixed, so
+    on a curve whose prior is too straight it is the tangent at ~17 m, not at the vehicle; the boundaries were then
+    fitted with that tangent fixed, which returns a curvature pulled back towards the prior (roundT_doubleT frames
+    124-164: rail tangent -0.057, driven path -0.028; curvature 2-4x too small), and the per-side curvatures
+    disagree for the same reason (the axis_disagree_range cap). Here the slab midpoints (``rails.xm`` /
+    ``rails.mids``: ``y = c + t x + k x^2 / 2``) and the boundary bins (``y = a_s + t x + k x^2 / 2``) share t and k.
+
+    * Each boundary (``estimate_axis_from_walls``' ``boundaries``) is cut into segments at gaps of more than
+      ``_DRIFT_GAP_BINS`` bins and at structure edges (a step of the offset from the prior axis that departs
+      from the neighbouring steps' slope by more than ``axis_joint_tolerance`` and than a curvature error of
+      ``_DRIFT_MAX_CURVATURE`` moves it between the two bins: a jump, not the smoothly growing slope of a curvature
+      error of the prior);
+      each segment of at least ``axis_joint_min_segment`` bins has its own offset ``a_s``: a wall is piecewise
+      parallel to the track (niches, gates, platform screens).
+    * The fit grows outward: the bins up to ``axis_joint_grow_start`` first, then ``axis_joint_grow_step`` further
+      each round, a bin joining only within ``axis_joint_tolerance`` of the current fit; then, nearest first, the
+      remaining bins of a segment (or a new segment) as a group, kept only when the refit (which may change the
+      step) keeps every bin used within the tolerance and the rail midpoints within 3 SD. So a far wall that bends
+      with a transition curve, or straightens where a curve ends, is followed, and a structure that is not
+      parallel never joins.
+    * With ``axis_joint_knot`` > 0 the axis may bend by a curvature step ``s (x - knot)^2 / 2`` beyond the knot
+      (C1: a transition curve, where the curvature grows with the distance), fitted only with at least
+      ``axis_joint_min_far_bins`` bins beyond it and drawn towards 0 with prior SD ``axis_joint_step_sigma``.
+
+    Returns ``{c, t, k, step, knot, x_max: {side: farthest bin used}, n_bins, rms}``."""
+    if (rails is None or rails.xm is None or rails.mids is None or len(rails.xm) < 2
+            or not (np.all(np.isfinite(rails.xm)) and np.all(np.isfinite(rails.mids)))):
+        return None
+    knot = float(cfg.axis_joint_knot)
+    knot = knot if knot > cfg.rails_range[1] else 0.0
+    xm = np.asarray(rails.xm, dtype=np.float64)
+    ym = np.asarray(rails.mids, dtype=np.float64)
+    rc = np.polyfit(xm, ym, 2 if xm.size >= 3 else 1)  # the rail-pair midpoints as a curve, for the parallel test
+
+    def mids_curve(x):
+        return np.polyval(rc, x)
+    segs = []                                        # (side, x, y) per boundary segment
+    for name, (x, y) in boundaries.items():
+        x = np.asarray(x, dtype=np.float64)
+        y = np.asarray(y, dtype=np.float64)
+        fin = np.isfinite(x) & np.isfinite(y)
+        x, y = x[fin], y[fin]
+        if x.size < cfg.axis_joint_min_segment:
+            continue
+        a = y - prior.center_y(x)
+        dx, da = np.diff(x), np.diff(a)
+        slope = da / dx
+        # the local slope of the offset from the neighbouring steps: a curvature error of the prior grows the slope
+        # smoothly (R 400 m against a straight prior: 0.01 per metre at 100 m), a structure edge is a jump
+        nb_ = np.stack([np.r_[slope[:1], slope[:-1]], np.r_[slope[1:], slope[-1:]]], axis=1)
+        local = np.where(np.arange(slope.size) == 0, nb_[:, 1],
+                         np.where(np.arange(slope.size) == slope.size - 1, nb_[:, 0], np.median(nb_, axis=1)))
+        cut = np.zeros(x.size, dtype=bool)
+        cut[1:] = (dx > _DRIFT_GAP_BINS * cfg.walls_bin) | (np.abs(da - local * dx)
+                                                             > np.maximum(cfg.axis_joint_tolerance,
+                                                                          _DRIFT_MAX_CURVATURE * x[1:] * dx))
+        sid = np.cumsum(cut)
+        for s in range(int(sid[-1]) + 1):
+            m = sid == s
+            if m.sum() < cfg.axis_joint_min_segment:
+                continue
+            # a segment in the rail range must run parallel to the rail pair there (its offset from the slab
+            # midpoints sloping at most _DRIFT_NEAR_SLOPE, as wall_drift_range's reference): a converging platform
+            # wall or hall end would otherwise turn the shared tangent (doubleT_platform)
+            near = m & (x <= cfg.rails_range[1] + cfg.walls_bin)
+            if int(near.sum()) >= 3:
+                off = y[near] - mids_curve(x[near])
+                if abs(float(np.polyfit(x[near], off, 1)[0])) > _DRIFT_NEAR_SLOPE:
+                    continue
+            segs.append((name, x[m], y[m]))
+    if not segs:
+        return None
+    nshape = 3 if knot > 0 else 2
+    wr, ww = 1.0 / cfg.axis_joint_rail_sigma, 1.0 / cfg.axis_joint_wall_sigma
+    Br = _joint_basis(xm, knot)
+    tol = float(cfg.axis_joint_tolerance)
+
+    def solve(masks: dict):
+        """(solution, segment order) of the fit of the rails and the masked bins of each segment."""
+        order = sorted(masks)
+        n = len(order)
+        rows = [np.concatenate([[1.0], Br[i], np.zeros(n)]) * wr for i in range(xm.size)]
+        rhs = list(ym * wr)
+        far = 0
+        for j, g in enumerate(order):
+            x, y = segs[g][1][masks[g]], segs[g][2][masks[g]]
+            e = np.zeros((x.size, n))
+            e[:, j] = 1.0
+            rows.extend(np.hstack([np.zeros((x.size, 1)), _joint_basis(x, knot), e]) * ww)
+            rhs.extend(y * ww)
+            far += int(np.count_nonzero(x > knot)) if knot > 0 else 0
+        if knot > 0:                                       # the step: ridge towards 0, or none without far data
+            reg = np.zeros(1 + nshape + n)
+            reg[nshape] = 1e6 if far < cfg.axis_joint_min_far_bins else 1.0 / cfg.axis_joint_step_sigma
+            rows.append(reg)
+            rhs.append(0.0)
+        return np.linalg.lstsq(np.array(rows), np.array(rhs), rcond=None)[0], order
+
+    def residual(sol, order, g, x, y):
+        return y - (sol[nshape + 1 + order.index(g)] + _joint_basis(x, knot) @ sol[1:nshape + 1])
+
+    def consistent(sol, order, masks) -> bool:
+        """every bin used within the tolerance, the rail midpoints within 3 SD"""
+        if np.any(np.abs(ym - (sol[0] + Br @ sol[1:nshape + 1])) > 3.0 * cfg.axis_joint_rail_sigma):
+            return False
+        return all(np.all(np.abs(residual(sol, order, g, segs[g][1][m], segs[g][2][m])) < tol)
+                   for g, m in masks.items())
+
+    lim = float(cfg.axis_joint_grow_start)
+    x_end = max(float(cfg.walls_range[1]), lim)
+    masks = {g: x <= lim for g, (_, x, _) in enumerate(segs)}
+    masks = {g: m for g, m in masks.items() if m.sum() >= cfg.axis_joint_min_segment}
+    if not masks:
+        return None
+    sol, order = solve(masks)
+    # the start is held to the same test: the segment with the largest residual leaves until the rest is
+    # consistent (a short converging structure at 28-44 m must not bend the shared curvature)
+    while masks and not consistent(sol, order, masks):
+        worst = max(masks, key=lambda g: float(np.max(np.abs(residual(sol, order, g, segs[g][1][masks[g]],
+                                                                         segs[g][2][masks[g]])))))
+        del masks[worst]
+        if not masks:
+            return None
+        sol, order = solve(masks)
+    step_m = max(float(cfg.axis_joint_grow_step), 1.0)
+    while lim < x_end:
+        lim += step_m
+        # single bins of the segments in the fit that lie within the tolerance of its extrapolation
+        for g in list(masks):
+            _, x, y = segs[g]
+            masks[g] = masks[g] | ((x <= lim) & (np.abs(residual(sol, order, g, x, y)) < tol))
+        sol, order = solve(masks)
+        # then, nearest first, a segment's remaining bins (or a new segment) as a group: kept only when the
+        # refit, which may bend beyond the knot, keeps every bin used within the tolerance (a curve that ends or
+        # tightens beyond the reach so far is followed; a structure that is not parallel is not)
+        for g in sorted(range(len(segs)), key=lambda g: float(segs[g][1][0])):
+            _, x, _ = segs[g]
+            add = (x <= lim) & ~masks.get(g, np.zeros(x.size, dtype=bool))
+            if add.sum() < (3 if g in masks else cfg.axis_joint_min_segment):
+                continue
+            trial = dict(masks)
+            trial[g] = masks.get(g, np.zeros(x.size, dtype=bool)) | add
+            s2, o2 = solve(trial)
+            if consistent(s2, o2, trial):
+                masks, sol, order = trial, s2, o2
+    x_max: dict = {}
+    res = []
+    for g in order:
+        name, x, y = segs[g]
+        x, y = x[masks[g]], y[masks[g]]
+        x_max[name] = max(x_max.get(name, 0.0), float(x.max()))
+        res.append(residual(sol, order, g, x, y))
+    r = np.concatenate(res)
+    if not np.all(np.isfinite(sol)):
+        return None
+    return {"c": float(sol[0]), "t": float(sol[1]), "k": float(sol[2]),
+            "step": float(sol[3]) if knot > 0 else 0.0, "knot": knot, "x_max": x_max,
+            "n_bins": int(r.size), "rms": float(np.sqrt(np.mean(r * r)))}
+
+
 def verify_floor_extrapolation(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig,
                                floor_z_all: Optional[np.ndarray] = None) -> float:
     """X up to which the linearly extrapolated bed is confirmed by the base of the side
@@ -575,7 +812,7 @@ def verify_floor_extrapolation(xyz: np.ndarray, model: TrackModel, cfg: TrackCon
     edges = np.arange(x0, cfg.floor_verify_max_range + cfg.floor_verify_bin, cfg.floor_verify_bin)
     nb = edges.size - 1
     fast = (_native.verify_profile(xyz, floor_z_all, x0, cfg.floor_verify_max_range, model.center_coefs(), b0, b1,
-                                   edges) if _native.enabled() and floor_z_all is not None else None)
+                                   edges) if _native.enabled() and floor_z_all is not None and not model.bent else None)
     if fast is not None:                                   # the selection and binning below in one pass
         n_sel, n_side, counts, base = fast
         if n_sel < 100 or n_side < 50:
@@ -698,7 +935,8 @@ def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
     half, step = cfg.rails_search_halfwidth, cfg.rails_bin
     kap = float(prior.curvature) if prior is not None else 0.0
     fast = (_native.rails_band(xyz, floor_z_all, x0, x1, None if prior is None else prior.center_coefs(),
-                               prior_center, half) if _native.enabled() and floor_z_all is not None else None)
+                               prior_center, half) if _native.enabled() and floor_z_all is not None
+            and not (prior is not None and prior.bent) else None)
     if fast is not None:                                   # the selection below in one pass (resense/_native.py)
         xs, y, hh = fast
     else:
@@ -708,6 +946,8 @@ def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
         h = Zn - (floor.floor_z(Xd) if floor_z_all is None else floor_z_all[near])
         if prior is not None:
             shape = np.tan(prior.yaw) * Xd + 0.5 * prior.curvature * Xd * Xd
+            if prior.bent:
+                shape = shape + prior._step_y(Xd)
             Yp = Yn - shape
         else:
             Yp = Yn
@@ -767,7 +1007,8 @@ def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
     if len(mids) < max(2, int(cfg.rails_yaw_min_slabs)):
         return RailsFit(best[0], best[1], best[2], len(mids), **heads)
     xm, mids, wts = np.array(xm), np.array(mids), np.array(wts)
-    mids_abs = mids + (np.tan(prior.yaw) * xm + 0.5 * kap * xm * xm if prior is not None else 0.0)
+    mids_abs = mids + (np.tan(prior.yaw) * xm + 0.5 * kap * xm * xm + (prior._step_y(xm) if prior.bent else 0.0)
+                       if prior is not None else 0.0)
     # line through the absolute midpoints with the prior curvature held fixed:
     # y - k x^2 / 2 = c + t x  ->  c = axis at X = 0, t = tangent at the vehicle
     w = np.sqrt(wts / max(float(wts.max()), 1e-6))
@@ -864,6 +1105,7 @@ def _check_far_rails(xyz: np.ndarray, model: TrackModel, cfg: TrackConfig, near:
             model.center = float(c)
             model.yaw = float(np.arctan(t))
             model.curvature = float(2 * a)
+            model.curv_step = 0.0
             model.axis_valid = min(model.axis_valid, end + cfg.axis_valid_margin)
 
 
@@ -908,7 +1150,22 @@ def rotate_track_model(model: TrackModel, dR: np.ndarray, n: int = 64) -> TrackM
     profile and on the axis are rotated and the model's polynomials refitted to them (same
     degrees); everything else - the rail offset, the rail and wall state, the age and the
     floor-shadow state - is kept, so the next frame has its previous model, its floor-shadow
-    reference and its rate limits as without the change. Meant for sub-degree changes."""
+    reference and its rate limits as without the change. Meant for sub-degree changes.
+    A v5 model (``.base`` set, ``axis_joint_min_curvature``): the carried base model and the joint shape are each
+    rotated and the output composed from them again (shape choice, range caps and wall drift kept)."""
+    if model.base is not None:
+        base_r = rotate_track_model(model.base, dR, n)
+        js = model.joint_shape
+        if js is not None:
+            jm = rotate_track_model(replace(model.base, center=js[0], yaw=js[1], curvature=js[2], curv_step=js[3],
+                                            curv_knot=js[4]), dR, n)
+            js = (jm.center, jm.yaw, jm.curvature, jm.curv_step, jm.curv_knot)
+        out = replace(base_r, base=base_r, joint_shape=js, joint_used=model.joint_used, joint_reach=model.joint_reach,
+                      axis_valid=model.axis_valid, axis_valid_both=model.axis_valid_both,
+                      axis_valid_bent=model.axis_valid_bent, wall_drift=model.wall_drift)
+        if model.joint_used and js is not None:
+            out.center, out.yaw, out.curvature, out.curv_step, out.curv_knot = (float(v) for v in js)
+        return out
     dR = np.asarray(dR, dtype=np.float64)
     coef = np.asarray(model.floor_coef, dtype=np.float64)
     x0, x1 = float(model.floor_range[0]), float(model.floor_range[1])
@@ -918,8 +1175,16 @@ def rotate_track_model(model: TrackModel, dR: np.ndarray, n: int = 64) -> TrackM
     fc = np.polyfit(bed[:, 0], bed[:, 2], deg)
     floor_coef = np.concatenate([np.zeros(3 - fc.size), fc]) if coef.size == 3 else fc
     frange = (float(bed[0, 0]), float(bed[-1, 0])) if x1 > x0 else tuple(model.floor_range)
-    xa = np.linspace(0.0, max(x1, 60.0), n)
+    xa = np.linspace(0.0, max(x1, 60.0, model.curv_knot + 100.0 if model.bent else 0.0), n)
     axis = np.stack([xa, model.center_y(xa), model.rail_z(xa)], axis=1) @ dR.T
+    if model.bent:
+        # 19.10: the same C1 piecewise shape, refitted with the knot kept
+        xr = axis[:, 0]
+        d = np.maximum(xr - model.curv_knot, 0.0)
+        sol, *_ = np.linalg.lstsq(np.stack([np.ones_like(xr), xr, 0.5 * xr * xr, 0.5 * d * d], axis=1), axis[:, 1],
+                                  rcond=None)
+        return replace(model, floor_coef=floor_coef, floor_range=frange, center=float(sol[0]),
+                       yaw=float(np.arctan(sol[1])), curvature=float(sol[2]), curv_step=float(sol[3]))
     if model.curvature != 0.0:
         k2, t, c = np.polyfit(axis[:, 0], axis[:, 1], 2)
     else:
@@ -930,7 +1195,7 @@ def rotate_track_model(model: TrackModel, dR: np.ndarray, n: int = 64) -> TrackM
 
 def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel] = None,
                    periods: int = 1, ring: Optional[np.ndarray] = None,
-                   axis_ring: Optional[np.ndarray] = None) -> TrackModel:
+                   axis_ring: Optional[np.ndarray] = None, travel: Optional[float] = None) -> TrackModel:
     """Fit floor + rails + boundary-based yaw/curvature for one frame, smoothing against the
     previous model. ``periods`` is the number of nominal frame periods since ``prev`` (1 at
     the nominal rate); with ``cfg.rates_per_period`` the yaw / curvature rate limits and the
@@ -940,9 +1205,30 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
     weights stay per processed frame: they average the per-frame noise (squaring them at 5 Hz
     made the bed fit noisy enough to lose the object on the rail, EXPERIMENTS.md section 1i).
     ``ring`` (per-point ring index of the uncorrected frame) is read only by the opt-in far rail
-    evidence (``cfg.rails_far_check_enabled`` with ``cfg.rails_far_rings``); None = unused."""
+    evidence (``cfg.rails_far_check_enabled`` with ``cfg.rails_far_rings``); None = unused.
+    ``travel`` (19.10, K1): metres travelled since ``prev`` (the previous frame's speed x the time), read only with
+    ``cfg.walls_smoothing_distance`` > 0: the yaw / curvature EMA exponent and the two axis rate limits then count
+    ``travel / walls_smoothing_distance`` (at least ``walls_smoothing_min_k``, at most the frame periods) instead of
+    frame periods, so a standing train averages its wall fits instead of following their noise; None = as before;
+    not during the warm-up (``axis_warmup_frames``) after a (re)seed.
+    With ``cfg.axis_joint_fit`` the tangent, curvature and curvature step come from :func:`joint_axis_fit`.
+    With ``cfg.axis_joint_min_curvature`` > 0 (v5; axis_joint_fit on, axis_joint_range off) the estimate without the
+    joint fit is made from its own carried state (``prev.base``) exactly as with the joint fit off, and the joint fit's
+    shape (its own carried state ``prev.joint_shape``) replaces its axis shape in the returned model only on frames
+    whose curvature is at least that (:func:`_joint_output`)."""
+    curves_only = cfg.axis_joint_fit and not cfg.axis_joint_range and cfg.axis_joint_min_curvature > 0
+    jprev: Optional[tuple] = None                 # v5: the joint fit's own shape state
+    jnew: Optional[list] = None
+    if curves_only and prev is not None and prev.base is not None:
+        jprev, prev = prev.joint_shape, prev.base
     k = max(1, int(periods)) if cfg.rates_per_period else 1
     kw = max(1, int(periods)) if cfg.walls_smoothing_per_period else 1
+    kr = k                                         # the rate-limit multiplier (19.10: per distance with K1)
+    if (cfg.walls_smoothing_distance > 0 and travel is not None and np.isfinite(travel)
+            and prev is not None and prev.age >= cfg.axis_warmup_frames):   # not during the warm-up after a (re)seed
+        kd = abs(float(travel)) / cfg.walls_smoothing_distance
+        kw = float(np.clip(kd, cfg.walls_smoothing_min_k, kw))
+        kr = float(np.clip(kd, cfg.walls_smoothing_min_k, k))
     prior = prev if prev is not None else default_track_model(cfg)
     if prior.rail_axis_support > 0:
         # A previous rail extension is not a wall observation and must never be held
@@ -961,7 +1247,7 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
     info: dict = {}
     fit = _fit_floor(xyz, cfg, prior, shadow_ref=shadow_ref, info=info, release=release)
     if fit is None:
-        return prior
+        return _joint_output(prior, jprev, cfg) if curves_only else prior
     coef, frange, n_bins, rms = fit
     if prev is not None and cfg.floor_smoothing > 0:
         a = cfg.floor_smoothing
@@ -969,6 +1255,7 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
     model = TrackModel(
         floor_coef=coef, floor_range=frange, center=prior.center, yaw=prior.yaw,
         curvature=prior.curvature, rail_offset=prior.rail_offset, n_bins=n_bins, residual=rms,
+        curv_step=prior.curv_step, curv_knot=prior.curv_knot,
         wall_quality=prior.wall_quality, axis_valid=prior.axis_valid,
         age=(prev.age + k) if prev is not None else 0,
         floor_shadow=float(info.get("shadow", 0.0)), floor_held=bool(info.get("hold", False)),
@@ -999,19 +1286,88 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
             model.rail_offset = a_r * prior.rail_offset + (1 - a_r) * rails.rail_offset
             if cfg.rails_yaw_enabled and rails.tan_yaw is not None:
                 t_fixed = float(np.clip(rails.tan_yaw, -cfg.walls_max_yaw, cfg.walls_max_yaw))
-    bounds: Optional[dict] = {} if cfg.walls_enabled and cfg.axis_wall_drift > 0 else None
+    bounds: Optional[dict] = {} if cfg.walls_enabled and (cfg.axis_wall_drift > 0 or cfg.axis_joint_fit) else None
     if cfg.walls_enabled:
         est = estimate_axis_from_walls(xyz, model, cfg, t_fixed, floor_z_all=zf, far_support_run=prior.far_support_run,
                                        boundaries=bounds)
-        if est is not None:
+        joint = None
+        if (est is not None and cfg.axis_joint_fit and t_fixed is not None and rails is not None
+                and rails.score >= cfg.rails_min_score):
+            joint = joint_axis_fit(rails, bounds, model, cfg)
+        one_wall = False
+        if joint is not None and curves_only:
+            # 19.10 (v5): the joint shape with its own EMA; the model itself stays the estimate without the joint fit
+            jp = jprev if jprev is not None else (prior.center, prior.yaw, prior.curvature, 0.0, 0.0)
+            k_max = 1.0 / cfg.walls_min_radius
+            kj = float(np.clip(joint["k"], -k_max, k_max))
+            step = float(np.clip(joint["k"] + joint["step"], -k_max, k_max)) - kj
+            js = (a_w * jp[3] + (1 - a_w) * step) if joint["knot"] > 0 else 0.0
+            jnew = [a_r * jp[0] + (1 - a_r) * joint["c"],
+                    a_w * jp[1] + (1 - a_w) * np.arctan(float(np.clip(joint["t"], -cfg.walls_max_yaw, cfg.walls_max_yaw))),
+                    a_w * jp[2] + (1 - a_w) * kj, js if abs(js) >= _STEP_ZERO else 0.0]
+        if joint is not None and not curves_only:
+            # 19.10 (K2): one fit; the side bookkeeping (count, disagreement, reach) from each side's own fit with
+            # the joint tangent, so a disagreement made only by a biased tangent no longer caps the range
+            fits = {}
+            for name, (xb_, yb_) in bounds.items():
+                f = _fit_side(np.asarray(xb_, dtype=np.float64), np.asarray(yb_, dtype=np.float64), cfg, 0.0, joint["t"])
+                if f is not None:
+                    fits[name] = f
+            n_sides = len(fits) or len(joint["x_max"])
+            # a side with fewer than walls_min_bins bins beyond the rail range (an inner wall hidden by the curve)
+            # has no curvature of its own to disagree with
+            far_ok = [n for n, f in fits.items() if f[5] >= cfg.walls_min_bins]
+            disagreement = abs(fits["left"][1] - fits["right"][1]) if len(far_ok) == 2 else 0.0
+            q = float(min(f[2] for f in fits.values())) if fits else joint["rms"]
+            one_wall = len(far_ok) < 2                     # the far range rests on one boundary at most
+            model.far_support_run = est[7]
+            model.center = a_r * prior.center + (1 - a_r) * joint["c"]
+            model.yaw = a_w * prior.yaw + (1 - a_w) * np.arctan(float(np.clip(joint["t"], -cfg.walls_max_yaw,
+                                                                                   cfg.walls_max_yaw)))
+            k_max = 1.0 / cfg.walls_min_radius
+            model.curvature = a_w * prior.curvature + (1 - a_w) * float(np.clip(joint["k"], -k_max, k_max))
+            step = float(np.clip(joint["k"] + joint["step"], -k_max, k_max)) - float(np.clip(joint["k"], -k_max, k_max))
+            model.curv_knot = joint["knot"]
+            model.curv_step = (a_w * prior.curv_step + (1 - a_w) * step) if joint["knot"] > 0 else 0.0
+            if abs(model.curv_step) < _STEP_ZERO:          # numerically no step: the quadratic (native kernels)
+                model.curv_step = 0.0
+            model.wall_quality = q
+            # the reach of each side against the final axis (smoothed; the one the corridor uses): as far as the
+            # boundary stays parallel to it, at least as far as the joint fit followed it this frame
+            reach = [max(joint["x_max"].get(n, 0.0), _followed_reach(xb_, yb_, model, cfg))
+                     for n, (xb_, yb_) in bounds.items() if len(xb_)]
+            reach = [r_ for r_ in reach if r_ > 0] or list(joint["x_max"].values())
+            x_valid, x_valid_min = float(max(reach)), float(min(reach))
+            if not cfg.axis_joint_range:
+                # 20.10 (v4, axis_joint_range off): the joint fit sets the axis shape only; the trusted range, the
+                # side count, the disagreement and the wall quality stay those of the per-side fits (as without the
+                # joint fit), so the range policy of the straight track is unchanged
+                _, curv_est, q, x_valid, n_sides, disagreement, x_valid_min, model.far_support_run = est
+                model.wall_quality = q
+                one_wall = False
+                model.curv_range = a_w * prior.curv_range + (1 - a_w) * curv_est
+        if (joint is None or curves_only) and est is not None:
             tan_yaw, curv, q, x_valid, n_sides, disagreement, x_valid_min, model.far_support_run = est
             model.yaw = a_w * prior.yaw + (1 - a_w) * np.arctan(tan_yaw)
             model.curvature = a_w * prior.curvature + (1 - a_w) * curv
+            if model.bent:                                  # 19.10: no joint fit this frame: the step decays
+                model.curv_step = a_w * prior.curv_step
+                if abs(model.curv_step) < _STEP_ZERO:
+                    model.curv_step = 0.0
             model.wall_quality = q
+        if est is not None:
             model.axis_sides = n_sides
             model.axis_valid = x_valid + cfg.axis_valid_margin
             agree = n_sides == 2 and (cfg.axis_sides_max_disagreement <= 0 or disagreement <= cfg.axis_sides_max_disagreement)
-            straight = abs(model.curvature) < 1e-4 and q < 0.2 and (agree or cfg.axis_one_side_range <= 0)
+            # 19.10: with a curvature step, "straight" is the same lateral bend at _STRAIGHT_X as |curvature| < 1e-4
+            bend = model.curvature + (model.curv_step * (max(_STRAIGHT_X - model.curv_knot, 0.0) / _STRAIGHT_X) ** 2
+                                      if model.bent else 0.0)
+            if joint is not None and not cfg.axis_joint_range and not curves_only:
+                bend = model.curv_range                      # v4: the straight test of the per-side fits, as before
+            lim = (1.5e-4 if (cfg.axis_joint_fit and cfg.axis_joint_range and prior.axis_straight)
+                   else 1e-4)                               # 19.10: hysteresis (joint fit with its own range)
+            straight = abs(bend) < lim and q < 0.2 and (agree or cfg.axis_one_side_range <= 0)
+            model.axis_straight = bool(straight)
             bonus = cfg.axis_valid_straight_bonus if straight else 0.0
             model.axis_valid += bonus
             # 25.09: the range both boundaries support (cluster.far_axis_both_sides); the caps
@@ -1019,7 +1375,7 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
             model.axis_valid_both = (x_valid_min + cfg.axis_valid_margin + bonus) if n_sides == 2 else model.axis_valid
             if n_sides == 2 and not straight:
                 model.axis_valid_bent = x_valid_min + cfg.axis_valid_margin
-            if n_sides == 1 and cfg.axis_one_side_range > 0:
+            if cfg.axis_one_side_range > 0 and (n_sides == 1 or (joint is not None and one_wall)):
                 # one boundary alone cannot tell a parallel wall from a diverging one
                 model.axis_valid = min(model.axis_valid, cfg.axis_one_side_range)
             if n_sides == 2 and cfg.axis_sides_max_disagreement > 0 and disagreement > cfg.axis_sides_max_disagreement:
@@ -1041,6 +1397,7 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
             if t_fixed is not None:
                 model.yaw = a_w * prior.yaw + (1 - a_w) * np.arctan(t_fixed)
                 model.curvature = a_w * prior.curvature
+                model.curv_step = a_w * prior.curv_step if abs(a_w * prior.curv_step) >= _STEP_ZERO else 0.0
                 floor_valid = cfg.rails_range[1] + cfg.axis_valid_margin
             model.axis_valid = max(floor_valid, prior.axis_valid - 20.0)
             model.axis_sides = 0            # axis_valid_both keeps its default: no second limit
@@ -1048,6 +1405,7 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
     else:
         model.yaw = np.radians(cfg.yaw_deg)
         model.curvature = cfg.curvature
+        model.curv_step = 0.0
         model.axis_valid = 1e9
     if prev is not None and prev.age >= cfg.axis_warmup_frames:
         # the vehicle cannot turn by more than a fraction of a degree per frame, nor can the
@@ -1057,17 +1415,76 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
         # wall fit clipped at 5 deg on a cold start mid-ride) would otherwise take 30+ frames
         # to unwind at 0.17 deg per frame.
         if cfg.axis_max_yaw_rate > 0:
-            r = k * cfg.axis_max_yaw_rate
+            r = kr * cfg.axis_max_yaw_rate
             model.yaw = float(np.clip(model.yaw, prev.yaw - r, prev.yaw + r))
         if cfg.axis_max_curvature_rate > 0:
-            r = k * cfg.axis_max_curvature_rate
+            r = kr * cfg.axis_max_curvature_rate
             model.curvature = float(np.clip(model.curvature, prev.curvature - r, prev.curvature + r))
+            if model.bent or prev.bent:
+                model.curv_step = float(np.clip(model.curv_step, prev.curv_step - r, prev.curv_step + r))
+    if curves_only:
+        # 19.10 (v5): without a joint fit this frame the joint shape follows this estimate and its step decays; its own
+        # rate limits against its previous state, as the model's above
+        jp = jprev if jprev is not None else (prior.center, prior.yaw, prior.curvature, 0.0, 0.0)
+        if jnew is None:
+            js = a_w * jp[3]
+            jnew = [model.center, model.yaw, model.curvature, js if abs(js) >= _STEP_ZERO else 0.0]
+        if jprev is not None and prev is not None and prev.age >= cfg.axis_warmup_frames:
+            if cfg.axis_max_yaw_rate > 0:
+                r = kr * cfg.axis_max_yaw_rate
+                jnew[1] = float(np.clip(jnew[1], jp[1] - r, jp[1] + r))
+            if cfg.axis_max_curvature_rate > 0:
+                r = kr * cfg.axis_max_curvature_rate
+                jnew[2] = float(np.clip(jnew[2], jp[2] - r, jp[2] + r))
+                if jnew[3] != 0.0 or jp[3] != 0.0:
+                    jnew[3] = float(np.clip(jnew[3], jp[3] - r, jp[3] + r))
+        knot = float(cfg.axis_joint_knot) if cfg.axis_joint_knot > cfg.rails_range[1] else 0.0
+        jnew = (float(jnew[0]), float(jnew[1]), float(jnew[2]), float(jnew[3]) if knot > 0 else 0.0, knot)
     if cfg.rails_far_check_enabled and rails is not None and cfg.walls_enabled:
         _check_far_rails(xyz, model, cfg, rails, ring)
     if cfg.walls_enabled:
         _extend_axis_from_rails(xyz, model, cfg, rails, axis_ring)
-    if bounds:
+    if bounds and cfg.axis_wall_drift > 0:
         # 15.10: against the final axis (smoothed, rate-limited), the one the corridor uses
         model.wall_drift = wall_drift_range(bounds, model, cfg)
     model.floor_verified = verify_floor_extrapolation(xyz, model, cfg, floor_z_all=zf)
+    if curves_only:
+        return _joint_output(model, jnew, cfg, bounds)
     return model
+
+
+def _joint_output(base: TrackModel, jshape: Optional[tuple], cfg: TrackConfig,
+                  bounds: Optional[dict] = None) -> TrackModel:
+    """The returned model with ``axis_joint_min_curvature`` > 0 (19.10, v5): ``base`` (the estimate without the joint
+    fit, carried as ``.base`` to the next frame as its state) with the joint fit's shape ``jshape`` (centre, yaw,
+    curvature, curv_step, curv_knot; carried as ``.joint_shape``) in place of its axis shape when ``base``'s curvature is
+    |k| >= ``axis_joint_min_curvature`` (``.joint_used``): on a straight section the output is ``base`` itself, on a curve
+    the corridor follows the joint shape and the trusted range stays ``base``'s; the wall drift is then measured against
+    that shape and, with ``axis_joint_reach_cap`` (v5b), the trusted range is also capped at the farthest boundary's
+    reach along it plus ``axis_valid_margin`` (both boundaries' nearer reach for ``axis_valid_both``; ``.joint_reach``).
+    ``axis_joint_reach_dual`` (20.10, v5c) > 0 moves that end out by as much (never past ``base``'s own range); beyond
+    ``.joint_reach`` an obstacle then also needs the base axis' gauge (``Detector._dual_zone``).
+    ``bounds``: :func:`estimate_axis_from_walls`' boundaries of this frame, or None (no re-measure, no cap)."""
+    use = jshape is not None and abs(base.curvature) >= cfg.axis_joint_min_curvature
+    out = replace(base, base=base, joint_shape=jshape, joint_used=bool(use), joint_reach=0.0)
+    if not use:
+        return out
+    out.center, out.yaw, out.curvature, out.curv_step, out.curv_knot = (float(v) for v in jshape)
+    if bounds and cfg.axis_wall_drift > 0:
+        out.wall_drift = wall_drift_range(bounds, out, cfg)
+    if bounds and cfg.axis_joint_reach_cap:
+        reach = [_followed_reach(x, y, out, cfg) for x, y in bounds.values() if len(x)]
+        reach = [r_ for r_ in reach if r_ > 0]
+        if reach:
+            cap = max(reach) + cfg.axis_valid_margin
+            both = (min(reach) + cfg.axis_valid_margin) if len(reach) == 2 else cap
+            if cap < out.axis_valid:
+                out.joint_reach = cap
+            # 20.10 (v5c, axis_joint_reach_dual): on a frame the cap shortened, the range goes on beyond it (never
+            # past base's), where the detector holds an obstacle to both gauges, the joint shape's and base's
+            ext = max(float(cfg.axis_joint_reach_dual), 0.0) if out.joint_reach > 0 else 0.0
+            out.axis_valid = min(out.axis_valid, cap + ext)
+            out.axis_valid_both = min(out.axis_valid_both, both + ext)
+            if out.axis_valid_bent < 1e9:
+                out.axis_valid_bent = min(out.axis_valid_bent, both + ext)
+    return out

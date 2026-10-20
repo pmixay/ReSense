@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import time
 
 import pytest
 from fastapi import FastAPI
@@ -77,6 +78,19 @@ def test_pause_seek_play(sim):
         assert _close_code(ws) == 1000
 
 
+def test_paused_connection_waits_for_delayed_client_commands(sim):
+    with sim.websocket_connect("/api/live/sim?run_id=run01&speed=10&paused=true") as ws:
+        # Longer than this entire six-frame recording at 10x: onopen may be
+        # delayed by rendering, but nothing may run ahead before its pause/seek.
+        time.sleep(0.2)
+        ws.send_json({"cmd": "seek", "pos": 4})
+        assert ws.receive_json()["pos"] == 4
+        time.sleep(0.2)
+        ws.send_json({"cmd": "play"})
+        assert ws.receive_json()["pos"] == 5
+        assert _close_code(ws) == 1000
+
+
 def test_speed_command_and_garbage_are_tolerated(sim):
     with sim.websocket_connect("/api/live/sim?run_id=run01&speed=0.25&loop=1") as ws:
         assert ws.receive_json()["pos"] == 0
@@ -95,7 +109,8 @@ def test_unknown_run_and_bad_query(sim):
                       ("/api/live/sim", 4400),
                       ("/api/live/sim?run_id=run01&speed=20", 4400),
                       ("/api/live/sim?run_id=run01&speed=abc", 4400),
-                      ("/api/live/sim?run_id=run01&loop=maybe", 4400)]:
+                      ("/api/live/sim?run_id=run01&loop=maybe", 4400),
+                      ("/api/live/sim?run_id=run01&paused=maybe", 4400)]:
         with sim.websocket_connect(url) as ws:
             assert _close_code(ws) == code, url
 

@@ -54,6 +54,10 @@ Running without the ride is accepted only on purpose, with
 Everything else (alarm frames, advisory frames, totals, held-from distances, latency) is printed
 as information. Exit codes: 0 pass, 1 a gated metric is worse or missing in this run, 2 usage, a
 missing required recording, or a set F run that failed although the ride is cached.
+
+Set F sustained medians are conditional on successful sequences. New reports retain each
+sequence and print success coverage / a paired baseline-success cohort when both reports
+have that evidence. These diagnostics leave the original metric values and gating unchanged.
 """
 from __future__ import annotations
 
@@ -86,6 +90,7 @@ for _p in (ROOT, HERE):
 
 import eval_real  # noqa: E402  (scripts/)
 from score_fake_objects import score as score_set_o  # noqa: E402  (scripts/)
+from scripts.set_f_comparison import compare_cohorts, comparison_lines, sequence_metrics  # noqa: E402
 
 SCHEMA = "resense-regression-gate-v1"
 SIX = list(eval_real.SIX)
@@ -271,12 +276,20 @@ def run_set_f_straight(cache, cfg_path, work, jobs) -> dict:
                 "reason": f"far_range_eval.py failed: {r.stderr.strip()[-400:]}"}
     with open(out, encoding="utf-8") as fh:
         rep = json.load(fh)
+    return set_f_entry(rep)
+
+
+def set_f_entry(rep) -> dict:
+    """Retain per-sequence evidence beside the historical conditional medians."""
     kinds = {}
+    sequences = sequence_metrics(rep['sequences'])
     for kind, s in rep["summary"]["per_kind"].items():
         kinds[kind] = {"sequences": s["sequences"], "detected": s["detected"],
                        "first_detection_median_m": s["first_detection_median"],
                        "sustained_median_m": s["sustained_median"], "false_detections": s["false_detections"],
-                       "recall_by_bin": s["recall_by_bin"]}
+                       "recall_by_bin": s["recall_by_bin"],
+                       "sustained_sequences": sum(v['sustained_m'] is not None for v in sequences[kind]),
+                       "sequence_metrics": sequences[kind]}
     return {"available": True, "parameters": dict(SET_F_STRAIGHT), "kinds": kinds}
 
 
@@ -640,7 +653,10 @@ def print_result(res: dict) -> None:
     if sf.get("available"):
         for kind, s in sf["kinds"].items():
             print(f"set F straight {kind:8s} detected {s['detected']}/{s['sequences']}, first median "
-                  f"{_fmt(s['first_detection_median_m'])} m, false {s['false_detections']}")
+                   f"{_fmt(s['first_detection_median_m'])} m, false {s['false_detections']}")
+            if 'sustained_sequences' in s:
+                print(f"   held90 successful sequences {s['sustained_sequences']}/{s['sequences']}, "
+                      f"conditional median {_fmt(s['sustained_median_m'])} m")
     else:
         print(f"set F straight: not available ({sf['reason']})")
 
@@ -679,6 +695,14 @@ def main(argv=None) -> int:
         print(f"baseline {a.baseline}: code {(base.get('code') or {}).get('commit')}, config "
               f"{((base.get('config') or {}).get('sha256') or '')[:12]}, {(base.get('native') or {}).get('status')}")
         print(table(rows, a.changed_only))
+        bf, nf = (r.get('set_F_straight') or {} for r in (base, res))
+        if bf.get('available') and nf.get('available'):
+            paired = {kind: compare_cohorts(bf.get('kinds', {}).get(kind, {}).get('sequence_metrics'),
+                                           nf.get('kinds', {}).get(kind, {}).get('sequence_metrics'))
+                      for kind in sorted(bf.get('kinds', {}).keys() | nf.get('kinds', {}).keys())}
+            res['set_F_sequence_comparison'] = paired
+            for line in comparison_lines(paired):
+                print('note:', line)
         for line in unavailable(base, res):
             print("note:", line)
         for line in missing_lines(rows, res):

@@ -1,0 +1,28 @@
+[
+  {
+    "name": "reference-Falcon",
+    "repo": "/tmp/opencode/r3-h1/reference",
+    "command": [
+      "/tmp/opencode/resense-b4-venv/bin/python",
+      "/home/aiops/resense/docs/evidence/judgement_2026-10-13/scripts/probe.py",
+      "/tmp/opencode/l16-s3/falcon-decoded",
+      "/tmp/opencode/r3-h1/supplement-falcon/reference-Falcon"
+    ],
+    "returncode": 0,
+    "started": "2026-10-19T14:54:30.786129+00:00",
+    "finished": "2026-10-19T14:58:10.209805+00:00"
+  },
+  {
+    "name": "candidate-Falcon",
+    "repo": "/home/aiops/resense",
+    "command": [
+      "/tmp/opencode/resense-b4-venv/bin/python",
+      "/home/aiops/resense/docs/evidence/judgement_2026-10-13/scripts/probe.py",
+      "/tmp/opencode/l16-s3/falcon-decoded",
+      "/tmp/opencode/r3-h1/supplement-falcon/candidate-Falcon"
+    ],
+    "returncode": 0,
+    "started": "2026-10-19T14:54:30.786608+00:00",
+    "finished": "2026-10-19T14:58:10.275778+00:00"
+  }
+]

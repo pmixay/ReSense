@@ -1,0 +1,34 @@
+{
+  "scope": "P3 uncommitted author full gate, not reseal",
+  "numpy_version": "1.26.4",
+  "reference": "/home/aiops/resense/docs/evidence/l16_s3_2026-10-19/gate-reference-v2.json",
+  "reference_scope": "Complete aec88d2 control measured before revision3, same native/Haswell/NumPy 1.26.4",
+  "runs": [
+    {
+      "name": "candidate",
+      "command": [
+        "/tmp/opencode/resense-b4-venv/bin/python",
+        "/home/aiops/resense/scripts/regression_gate.py",
+        "--cache",
+        "/tmp/opencode/resense-b4-data/cache",
+        "--jobs",
+        "4",
+        "--baseline",
+        "/home/aiops/resense/docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+        "--out",
+        "/home/aiops/resense/docs/evidence/l16_s3_2026-10-19/gate-candidate-v4.json",
+        "--work",
+        "/tmp/opencode/l16-s3/run4/gate-candidate-work"
+      ],
+      "source_sha256": {
+        "resense/calibration.py": "029243c62f541a206aeb5ec1fe457e9f25c4e5d7966c9e00561f6dc787293dfd",
+        "resense/detector.py": "95923690e187918010499fe599f52cde1dcdb9b7315f82b89c96205efc7b3f3f"
+      },
+      "started": "2026-10-19T10:21:13.514498+00:00",
+      "returncode": 0,
+      "finished": "2026-10-19T10:33:46.915582+00:00",
+      "source_unchanged": true,
+      "log_sha256": "bab141d0b359e50bfb4c22e6bdfb535fed5e4827121fe7ab549291e6c9ce897b"
+    }
+  ]
+}

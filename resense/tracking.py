@@ -58,7 +58,7 @@ from resense.opinion import OBS_KEEP, load_opinion, observation, track_features
 
 # 26.09: demotions a near escalation never overrides (Tracker._near): a column, and a cluster outside
 # the range where the corridor's axis or height reference is trusted
-_NOT_ESCALATED = ("column", "beyond_axis", "beyond_height_ref", "diffuse_low_support")
+_NOT_ESCALATED = ("column", "beyond_axis", "beyond_height_ref", "diffuse_low_support", "height_conflict")
 
 
 @dataclass
@@ -96,6 +96,12 @@ class Track:
     thin_hist: List[bool] = field(default_factory=list)  # 27.09 (thin_far_min_distance): last zone_window hits: a far scan line?
     approach: List[tuple] = field(default_factory=list)  # 27.09: (sensor time s, distance m) of the last hits (approach_*)
     far_evidence: bool = False      # 27.09: the track was ever matched by a far scan line / weak far cluster (thin_far_min_distance)
+    cable_kind: int = 0             # 1 = resolved tall body, 2 = narrow hanging group; current run only
+    cable_hits: int = 0
+    cable_span_s: float = 0.0
+    collision_core_hits: int = 0    # uninterrupted current positive-core evidence
+    collision_core_span_s: float = 0.0
+    collision_core_ready: bool = False  # suspends only column hold; never erases measured history
     was_stop: bool = False          # 27.09: reported in zone gauge (a STOP) after the previous update (thin_far_min_distance only)
     approach_block: bool = False    # 27.09: far evidence without an approach holds a reported advisory track advisory (zone)
     evidence_hist: List[str] = field(default_factory=list)  # opt-in fresh_stop_evidence: recent hit provenance
@@ -107,6 +113,9 @@ class Track:
     provisional_explained_hist: List[bool] = field(default_factory=list)  # imputed columns awaiting free-top corroboration and a clean run
     clean_run: int = 0              # 29.09 (explained_run): consecutive clean strict-gauge hits, broken by a miss
     odo: List[tuple] = field(default_factory=list)  # 29.09 (ego_veto_*): (odometry segment, train travel m, distance m) of the last hits
+    settle_hist: List[bool] = field(default_factory=list)  # 19.10 (settle_*): last settle_window ordinary hits: inside the strict gauge?
+    settle_cen: List[np.ndarray] = field(default_factory=list)  # 19.10 (settle_*): their cluster centroids (sensor frame)
+    settled_out: bool = False       # 19.10 (settle_*): a settled static track mostly outside the gauge (Tracker._settle)
 
     @property
     def near_escalated(self) -> bool:
@@ -117,7 +126,8 @@ class Track:
 
     @property
     def column_held(self) -> bool:
-        return self.column_hold > 0 and sum(self.column_hist) >= self.column_hold
+        return (self.column_hold > 0 and sum(self.column_hist) >= self.column_hold
+                and not self.collision_core_ready)
 
     @property
     def vote_zone(self) -> str:
@@ -138,6 +148,8 @@ class Track:
             return "warning"
         if self.near_escalated:
             return "gauge"
+        if self.settled_out:
+            return "warning"
         return self.vote_zone
 
     @property
@@ -291,6 +303,7 @@ class Tracker:
         # 26.09 (stop_keep_max_s): the sensor time of this frame for the keep cap (the nominal period
         # when the caller gives no interval), so that the cap is in seconds at any input rate
         kdt = dt if dt > 0 else float(c.frame_dt)
+        self._cable_dt = kdt
         low_dt = float(low_frame_dt) if low_frame_dt is not None and low_frame_dt > 0 else kdt
         for t in self.tracks:
             t.low_since_clean += low_dt
@@ -337,6 +350,10 @@ class Tracker:
                 t.hit_hist = (t.hit_hist + [True])[-hw:]
                 if nk:
                     t.near_hist = (t.near_hist + [self._near(cl)])[-nk:]
+                if c.settle_min_hits > 0:
+                    sw = max(1, int(c.settle_window))
+                    t.settle_hist = (t.settle_hist + [g])[-sw:]
+                    t.settle_cen = (t.settle_cen + [np.asarray(cl.centroid, dtype=np.float64)])[-sw:]
                 self._note(t, cl, False, zw, "ordinary")
                 t.history.append(cl.distance)
                 matched_t[i] = matched_c[j] = True
@@ -354,6 +371,8 @@ class Tracker:
         # unmatched tracks
         for i, t in enumerate(self.tracks):
             if not matched_t[i]:
+                t.cable_kind, t.cable_hits, t.cable_span_s = 0, 0, 0.0
+                t.collision_core_hits, t.collision_core_span_s, t.collision_core_ready = 0, 0.0, False
                 t.since_clean += kdt
                 t.misses += 1
                 t.age += 1
@@ -380,6 +399,8 @@ class Tracker:
                     since_clean=0.0 if cl.zone == "gauge" else float("inf"),
                     obs=[observation(cl)] if self.record else [],
                     low_clean=cl if cl.kind == "low" else None,
+                    settle_hist=[cl.zone == "gauge"] if c.settle_min_hits > 0 else [],
+                    settle_cen=[np.asarray(cl.centroid, dtype=np.float64)] if c.settle_min_hits > 0 else [],
                 ))
                 self._note(self.tracks[-1], cl, False, zw, "ordinary")
                 self._next_id += 1
@@ -394,6 +415,8 @@ class Tracker:
             self._note(t, cl, True, zw, "far_thin")
             self.tracks.append(t)
             self._next_id += 1
+        if c.settle_min_hits > 0:
+            self._settle()
         # reported: confirmed now, or reported in the previous frame and missed for at most
         # hold_misses frames (a single missed frame does not drop a STOP; review 23.09), or inside
         # a re-seed hold window (reseed; matched or not)
@@ -480,6 +503,27 @@ class Tracker:
             for t in self.tracks:
                 t.was_stop = t.reported and t.zone == "gauge"
         return self.tracks
+
+    def _settle(self) -> None:
+        """19.10 (``settle_min_hits`` > 0, off by default): ``Track.settled_out`` for every track whose
+        last ``settle_window`` ordinary hits (at least ``settle_min_hits``) kept the cluster centroid
+        within ``settle_max_spread`` m per axis (a static object seen from a standing train: its gauge
+        verdict can change only with the reference, not with the object) and were inside the strict gauge
+        in less than ``settle_min_share`` of them. Such a track is advisory (``Track.rule_zone``) whatever
+        its last ``zone_window`` votes; near escalation wins. A moving object or a moving train breaks the
+        spread at once; an object that really enters the gauge moves."""
+        c = self.cfg
+        for t in self.tracks:
+            n = len(t.settle_hist)
+            t.settled_out = False
+            if n < c.settle_min_hits or n != len(t.settle_cen):
+                continue
+            if sum(t.settle_hist) >= c.settle_min_share * n - 1e-9:
+                continue
+            spread = np.ptp(np.stack(t.settle_cen), axis=0)
+            if not c.settle_check_z:
+                spread = spread[:2]          # the ground-plane position only (a tall object's sampled part varies)
+            t.settled_out = bool(np.all(spread <= c.settle_max_spread))
 
     @staticmethod
     def _low_height_agrees(t: Track, cl: Cluster, predicted: np.ndarray) -> bool:
@@ -680,6 +724,22 @@ class Tracker:
         continuation source supplies fresh evidence for a new STOP onset.
         """
         c = self.cfg
+        if source == "ordinary" and cl.collision_core and cl.zone == "gauge" and not cl.reason:
+            t.collision_core_hits += 1
+            t.collision_core_span_s += self._cable_dt
+            t.collision_core_ready = (t.collision_core_hits >= c.confirm_hits
+                                      and t.collision_core_span_s >= c.confirm_time_s - 1e-9)
+        else:
+            t.collision_core_hits, t.collision_core_span_s, t.collision_core_ready = 0, 0.0, False
+        cable_kind = self._cable_kind(cl) if source == "ordinary" else 0
+        if cable_kind:
+            if t.cable_kind != cable_kind:
+                t.cable_hits, t.cable_span_s = 0, 0.0
+            t.cable_kind = cable_kind
+            t.cable_hits += 1
+            t.cable_span_s += self._cable_dt
+        else:
+            t.cable_kind, t.cable_hits, t.cable_span_s = 0, 0, 0.0
         if c.ego_veto_min_speed > 0 and source in ("ordinary", "far_thin"):
             t.odo = (t.odo + [(self._odo_seg, self._odo_x, float(cl.distance))])[-10:]
         if c.explained_run > 0 and source == "ordinary":
@@ -863,6 +923,24 @@ class Tracker:
             d[:, b] = np.inf
         return [thin[j] for j in free]
 
+    def _cable_kind(self, cl: Cluster) -> int:
+        """Positive current-frame vertical support, never a shape-demoted or sparse continuation.
+
+        Hanging groups already carry independent below/above-envelope support from
+        find_hanging. A tall body needs many strict voxels; a flat/weak scan line,
+        low object or a column signature cannot shorten ordinary confirmation.
+        """
+        c = self.cfg
+        if (c.cable_confirm_time_s <= 0 or cl.zone != "gauge" or cl.reason or cl.thin
+                or cl.weak or cl.low_height_weak or cl.kind not in ("", "hanging")
+                or cl.n_raw != len(cl.points_idx)
+                or max(float(cl.size[0]), float(cl.size[1])) > c.cable_max_footprint):
+            return 0
+        height = cl.height_max - cl.height_min
+        if cl.kind == "hanging":
+            return 2 if (height >= c.hanging_confirm_min_height and cl.n >= 2 and cl.n_gauge >= 1) else 0
+        return 1 if height >= c.cable_min_height and cl.n_gauge >= c.cable_min_voxels else 0
+
     def _qualifies(self, t: Track) -> bool:
         c = self.cfg
         if (c.low_min_seen_distance > 0 and t.last is not None and t.last.kind == "low" and t.history
@@ -871,7 +949,19 @@ class Tracker:
             # starts (the rail heads just ahead of a standing train under a young model)
             return False
         need_span = c.confirm_time_s if (self._timed and c.confirm_time_s > 0) else 0.0
-        return (t.hits >= (c.low_confirm_hits if (t.last is not None and t.last.kind == "low") else c.confirm_hits)
+        need_hits = c.low_confirm_hits if (t.last is not None and t.last.kind == "low") else c.confirm_hits
+        if c.cable_confirm_time_s > 0 and t.cable_kind:
+            fast_span = c.hanging_confirm_time_s if t.cable_kind == 2 else c.cable_confirm_time_s
+            fast_hits = max(2, c.hanging_confirm_hits) if t.cable_kind == 2 else c.confirm_hits
+            # Sensor stamps jitter by microseconds around a nominal frame period.
+            # Slack is bounded to 1 ms and 1% of both period and requested duration;
+            # it never substitutes for a missing geometry-qualified hit.
+            slack = max(0.0, min(0.001, 0.01 * c.frame_dt, 0.01 * fast_span))
+            if (fast_span > 0 and t.cable_hits >= fast_hits
+                    and (not self._timed or t.cable_span_s >= fast_span - slack - 1e-9)):
+                need_hits = min(need_hits, fast_hits)
+                need_span = min(need_span, fast_span - slack)
+        return (t.hits >= need_hits
                 and t.confidence >= c.conf_threshold and t.misses == 0
                 and t.span_s >= need_span - 1e-9
                 and (c.min_hit_fraction <= 0 or t.hit_fraction >= c.min_hit_fraction - 1e-9))

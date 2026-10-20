@@ -1,0 +1,56 @@
+{
+ "schema": "resense-p4-linux-decoded-intake-v1",
+ "reference": "docs/evidence/p4_start_2026-10-15/intake.json",
+ "reference_sha256": "40f01bd4d2c26e7395a2d2292c169dda07efe3e88180e67b9c6b1b8b78bb004f",
+ "tool_sha256": "843ed53d6289eca4f4cc5cc122436262665e2a111267d667462adbff1d3ed0c9",
+ "runtime": {
+  "platform": "Linux-6.8.0-142-generic-x86_64-with-glibc2.39",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "numpy": "1.26.4"
+ },
+ "bags": {
+  "squareT_platform_squareT_switch": {
+   "path": "/tmp/opencode/resense-b4-data/decoded/squareT_platform_squareT_switch",
+   "frames": 877,
+   "meta_sha256": "b3996437b21104398ba19ae80c05f9183935174b76ec1960eb561756476aa361",
+   "reference_meta_sha256": "b3996437b21104398ba19ae80c05f9183935174b76ec1960eb561756476aa361",
+   "arrays_checked": 877,
+   "mismatches": [],
+   "linux_payload_sha256": "b3acb2c802f1761097382dc93cda8786c6d3b3a4b81d48c252b0d54649f81e50",
+   "reference_payload_sha256": "f1ca5c49f2d79503d644dbd5d246db06aa9cecc394173a802d02ad7c6f715b60"
+  },
+  "doubleT_obstacle": {
+   "path": "/tmp/opencode/resense-b4-data/decoded/doubleT_obstacle",
+   "frames": 201,
+   "meta_sha256": "67358d464c52a242eac4ce8777b9ba8d833755395019581fee58db1e9eef34c9",
+   "reference_meta_sha256": "67358d464c52a242eac4ce8777b9ba8d833755395019581fee58db1e9eef34c9",
+   "arrays_checked": 201,
+   "mismatches": [],
+   "linux_payload_sha256": "db6519f6eb635cea55f5f33924c727617cf8235ccb9f113e0824e6990cda4b6b",
+   "reference_payload_sha256": "5ffaad874e227249302fd9f278df4e9a2acd3d92824f46007d4b9213529fea5b"
+  },
+  "roundT_squareT_pressureGate_squareT": {
+   "path": "/tmp/opencode/resense-b4-data/decoded/roundT_squareT_pressureGate_squareT",
+   "frames": 545,
+   "meta_sha256": "ad930fe594c02da7e26260d66e53c19bd9d864abbfe8e6784e4f15f0aa4b7438",
+   "reference_meta_sha256": "ad930fe594c02da7e26260d66e53c19bd9d864abbfe8e6784e4f15f0aa4b7438",
+   "arrays_checked": 545,
+   "mismatches": [],
+   "linux_payload_sha256": "d580719b493b9c91708fafed1e55457553c001b4102091c2618c4764741e1036",
+   "reference_payload_sha256": "60b00337374519fa01adfd0bf2e3857f95e262d299e830e493dd4336fecb8b0c"
+  },
+  "cloud_with_fake_obj": {
+   "path": "/tmp/opencode/resense-b4-data/decoded/cloud_with_fake_obj",
+   "frames": 1510,
+   "meta_sha256": "479122b72837d7b220a984d114da6778cf2a2816f848f0dfa621d02074af0115",
+   "reference_meta_sha256": "479122b72837d7b220a984d114da6778cf2a2816f848f0dfa621d02074af0115",
+   "arrays_checked": 1510,
+   "mismatches": [
+    "f_00332.npz: canonical bytes differ from reference"
+   ],
+   "linux_payload_sha256": "de1d26adf309fb9d1be52b1446d5ce0c7464a03d3c9011606c87db6f07c5ceb4",
+   "reference_payload_sha256": "691782a242382ee89028339258b1ac27144847a2aeabba4d8e8f47a3ca3615f9"
+  }
+ },
+ "status": "DIFFERENT"
+}

@@ -1,0 +1,304 @@
+{
+ "marker_objects": [
+  {
+   "object": 1,
+   "ids": [
+    12
+   ],
+   "frames": [
+    0,
+    255
+   ],
+   "marked_frames": 256,
+   "marked_frames_2.5_250m": 255,
+   "with_n5_match": 256,
+   "n5_names": {
+    "box_right_1": 256
+   },
+   "median_n5_minus_marker_m": 0.02,
+   "first_marked_fwd": 161.77,
+   "size_fwd_lat_up": [
+    0.48,
+    0.47,
+    0.36
+   ],
+   "lat_centre_first_last": [
+    0.09,
+    -1.39
+   ],
+   "frames_with_any_n5_row": 256
+  },
+  {
+   "object": 2,
+   "ids": [
+    0
+   ],
+   "frames": [
+    13,
+    353
+   ],
+   "marked_frames": 111,
+   "marked_frames_2.5_250m": 102,
+   "with_n5_match": 100,
+   "n5_names": {
+    "box_left_2": 100
+   },
+   "median_n5_minus_marker_m": 0.01,
+   "first_marked_fwd": 298.5,
+   "size_fwd_lat_up": [
+    0.35,
+    0.35,
+    0.3
+   ],
+   "lat_centre_first_last": [
+    11.32,
+    0.79
+   ],
+   "frames_with_any_n5_row": 111
+  },
+  {
+   "object": 3,
+   "ids": [
+    1
+   ],
+   "frames": [
+    181,
+    415
+   ],
+   "marked_frames": 140,
+   "marked_frames_2.5_250m": 139,
+   "with_n5_match": 139,
+   "n5_names": {
+    "hanging_3": 139
+   },
+   "median_n5_minus_marker_m": 0.04,
+   "first_marked_fwd": 318.88,
+   "size_fwd_lat_up": [
+    0.62,
+    0.49,
+    2.36
+   ],
+   "lat_centre_first_last": [
+    18.25,
+    0.26
+   ],
+   "frames_with_any_n5_row": 140
+  },
+  {
+   "object": 4,
+   "ids": [
+    13
+   ],
+   "frames": [
+    365,
+    554
+   ],
+   "marked_frames": 57,
+   "marked_frames_2.5_250m": 51,
+   "with_n5_match": 45,
+   "n5_names": {
+    "box_left_4": 45
+   },
+   "median_n5_minus_marker_m": 0.0,
+   "first_marked_fwd": 296.82,
+   "size_fwd_lat_up": [
+    0.44,
+    0.48,
+    0.48
+   ],
+   "lat_centre_first_last": [
+    16.77,
+    1.38
+   ],
+   "frames_with_any_n5_row": 57
+  },
+  {
+   "object": 5,
+   "ids": [
+    14
+   ],
+   "frames": [
+    505,
+    684
+   ],
+   "marked_frames": 143,
+   "marked_frames_2.5_250m": 140,
+   "with_n5_match": 141,
+   "n5_names": {
+    "box_right_5": 141
+   },
+   "median_n5_minus_marker_m": 0.01,
+   "first_marked_fwd": 274.07,
+   "size_fwd_lat_up": [
+    0.49,
+    0.45,
+    0.4
+   ],
+   "lat_centre_first_last": [
+    33.13,
+    -1.45
+   ],
+   "frames_with_any_n5_row": 142
+  }
+ ],
+ "n5_tracks": {
+  "box_left_2": {
+   "rows": 102,
+   "matched_to_a_marker": 100,
+   "unmatched": [
+    {
+     "frame": 328,
+     "n5_distance": 39.4,
+     "n5_lateral": 1.49,
+     "n5_points": 1,
+     "nearest_marker": {
+      "ids": [
+       0
+      ],
+      "fwd": 37.02,
+      "lat": 1.06
+     }
+    },
+    {
+     "frame": 330,
+     "n5_distance": 36.44,
+     "n5_lateral": 1.64,
+     "n5_points": 2,
+     "nearest_marker": {
+      "ids": [
+       0
+      ],
+      "fwd": 34.14,
+      "lat": 1.02
+     }
+    }
+   ]
+  },
+  "box_left_4": {
+   "rows": 54,
+   "matched_to_a_marker": 45,
+   "unmatched": [
+    {
+     "frame": 510,
+     "n5_distance": 69.47,
+     "n5_lateral": 6.38,
+     "n5_points": 1,
+     "nearest_marker": null
+    },
+    {
+     "frame": 521,
+     "n5_distance": 48.88,
+     "n5_lateral": 4.5,
+     "n5_points": 1,
+     "nearest_marker": {
+      "ids": [
+       13
+      ],
+      "fwd": 52.41,
+      "lat": 4.33
+     }
+    },
+    {
+     "frame": 523,
+     "n5_distance": 44.38,
+     "n5_lateral": 4.1,
+     "n5_points": 4,
+     "nearest_marker": {
+      "ids": [
+       13
+      ],
+      "fwd": 49.28,
+      "lat": 3.92
+     }
+    },
+    {
+     "frame": 524,
+     "n5_distance": 43.2,
+     "n5_lateral": 3.67,
+     "n5_points": 1,
+     "nearest_marker": {
+      "ids": [
+       13
+      ],
+      "fwd": 48.16,
+      "lat": 3.72
+     }
+    },
+    {
+     "frame": 525,
+     "n5_distance": 42.34,
+     "n5_lateral": 3.98,
+     "n5_points": 1,
+     "nearest_marker": {
+      "ids": [
+       13
+      ],
+      "fwd": 46.86,
+      "lat": 3.54
+     }
+    },
+    {
+     "frame": 526,
+     "n5_distance": 40.1,
+     "n5_lateral": 3.53,
+     "n5_points": 1,
+     "nearest_marker": {
+      "ids": [
+       14
+      ],
+      "fwd": 242.81,
+      "lat": 11.49
+     }
+    },
+    {
+     "frame": 527,
+     "n5_distance": 38.57,
+     "n5_lateral": 3.33,
+     "n5_points": 1,
+     "nearest_marker": null
+    },
+    {
+     "frame": 528,
+     "n5_distance": 38.65,
+     "n5_lateral": 3.06,
+     "n5_points": 1,
+     "nearest_marker": {
+      "ids": [
+       13
+      ],
+      "fwd": 42.11,
+      "lat": 3.03
+     }
+    },
+    {
+     "frame": 529,
+     "n5_distance": 37.11,
+     "n5_lateral": 2.96,
+     "n5_points": 1,
+     "nearest_marker": {
+      "ids": [
+       13
+      ],
+      "fwd": 40.52,
+      "lat": 2.86
+     }
+    }
+   ]
+  },
+  "box_right_1": {
+   "rows": 256,
+   "matched_to_a_marker": 256,
+   "unmatched": []
+  },
+  "box_right_5": {
+   "rows": 141,
+   "matched_to_a_marker": 141,
+   "unmatched": []
+  },
+  "hanging_3": {
+   "rows": 139,
+   "matched_to_a_marker": 139,
+   "unmatched": []
+  }
+ }
+}

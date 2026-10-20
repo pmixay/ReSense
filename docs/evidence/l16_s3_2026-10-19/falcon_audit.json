@@ -1,0 +1,303 @@
+[
+  {
+    "frame": 0,
+    "points": 94831,
+    "has_ring": false,
+    "input_sha256": "dfede99d3da2250038ea16b6810c735da3b99b0496b01b45129e95e429d646ab",
+    "positive_fraction": [
+      0.4432493989624193,
+      1.0,
+      0.4703909907630014
+    ],
+    "forward_axis": 1,
+    "forward_sign": 1,
+    "transverse_angles_q": [
+      [
+        -54.5651757044523,
+        -12.61712159328751
+      ],
+      [
+        -52.693019984466176,
+        -11.848159760645107
+      ],
+      [
+        -41.005388910918256,
+        -8.077947164756694
+      ],
+      [
+        -4.910359545197113,
+        -0.2938917495597039
+      ],
+      [
+        41.231941747691096,
+        9.14521094634722
+      ],
+      [
+        52.65736982543462,
+        13.883782939873868
+      ],
+      [
+        54.46892582355301,
+        15.255128483279414
+      ]
+    ],
+    "observations": [
+      {
+        "rotation": 0,
+        "observation": {
+          "ok": false,
+          "rail_score": -1.0,
+          "roll": NaN,
+          "pitch": NaN,
+          "yaw": NaN,
+          "height": NaN,
+          "lateral": NaN,
+          "forward_ratio": 0.0
+        },
+        "accepted": false,
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "orientation_confirmed": false,
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": "",
+          "orientation_conflict": false
+        }
+      },
+      {
+        "rotation": 4,
+        "observation": {
+          "ok": false,
+          "rail_score": -1.0,
+          "roll": NaN,
+          "pitch": NaN,
+          "yaw": NaN,
+          "height": NaN,
+          "lateral": NaN,
+          "forward_ratio": 0.0
+        },
+        "accepted": false,
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "orientation_confirmed": false,
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": "",
+          "orientation_conflict": false
+        }
+      },
+      {
+        "rotation": 5,
+        "observation": {
+          "ok": false,
+          "rail_score": -1.0,
+          "roll": NaN,
+          "pitch": NaN,
+          "yaw": NaN,
+          "height": NaN,
+          "lateral": NaN,
+          "forward_ratio": 0.0
+        },
+        "accepted": false,
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "orientation_confirmed": false,
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": "",
+          "orientation_conflict": false
+        }
+      }
+    ]
+  },
+  {
+    "frame": 50,
+    "points": 94789,
+    "has_ring": false,
+    "input_sha256": "438eb0a197226e9e57b3026173514a46b9caf3d318250fa8476c5a797e4556fb",
+    "positive_fraction": [
+      0.4433191974175581,
+      1.0,
+      0.4609785429457561
+    ],
+    "forward_axis": 1,
+    "forward_sign": 1,
+    "transverse_angles_q": [
+      [
+        -54.56010784882493,
+        -12.659352008036551
+      ],
+      [
+        -52.59074163224108,
+        -12.111224107451386
+      ],
+      [
+        -40.92918462616925,
+        -7.998614229829129
+      ],
+      [
+        -4.867430041267598,
+        -0.4097388924614294
+      ],
+      [
+        41.37634468287917,
+        9.185074463708343
+      ],
+      [
+        52.835476968502604,
+        13.74422225443163
+      ],
+      [
+        54.64054772863731,
+        14.904918886524975
+      ]
+    ]
+  },
+  {
+    "frame": 100,
+    "points": 95057,
+    "has_ring": false,
+    "input_sha256": "3ab417a47e21595283696b8f4a0974c986a38a8aad27e6ce78873e765df6cf38",
+    "positive_fraction": [
+      0.4430347787666477,
+      1.0,
+      0.464495360727135
+    ],
+    "forward_axis": 1,
+    "forward_sign": 1,
+    "transverse_angles_q": [
+      [
+        -54.63294354385082,
+        -12.571767729728622
+      ],
+      [
+        -52.666570547913125,
+        -11.961122733279119
+      ],
+      [
+        -40.89345873259356,
+        -8.37956552623063
+      ],
+      [
+        -4.8020167091746,
+        -0.3619459874176611
+      ],
+      [
+        41.190009732068766,
+        9.280624739842503
+      ],
+      [
+        52.71520752446946,
+        13.42928335954104
+      ],
+      [
+        54.61086487630979,
+        14.821737425710872
+      ]
+    ]
+  },
+  {
+    "frame": 3000,
+    "points": 95196,
+    "has_ring": false,
+    "input_sha256": "b4fcf56f953168dbdaa44f4d873d3e1ea960be40b5b1abbfb38fb0167895de37",
+    "positive_fraction": [
+      0.44302281608470945,
+      1.0,
+      0.4687381822765662
+    ],
+    "forward_axis": 1,
+    "forward_sign": 1,
+    "transverse_angles_q": [
+      [
+        -54.63150208414506,
+        -12.784305503514483
+      ],
+      [
+        -52.66183840082244,
+        -12.316028738265937
+      ],
+      [
+        -40.986270554885806,
+        -8.000337655830583
+      ],
+      [
+        -4.77436941536938,
+        -0.35387773847655535
+      ],
+      [
+        41.08118391868972,
+        9.024800226795625
+      ],
+      [
+        52.508339611264184,
+        13.601685633716032
+      ],
+      [
+        54.317560614208446,
+        15.072774926063946
+      ]
+    ]
+  },
+  {
+    "frame": 4200,
+    "points": 95148,
+    "has_ring": false,
+    "input_sha256": "08c47c3c30811551f9a4c7eaba48eebe722e75a3abf92d5bd10654a2aabec9ab",
+    "positive_fraction": [
+      0.4430571320469164,
+      1.0,
+      0.4697944255265481
+    ],
+    "forward_axis": 1,
+    "forward_sign": 1,
+    "transverse_angles_q": [
+      [
+        -54.48204482491084,
+        -12.805366497722082
+      ],
+      [
+        -52.576857031688974,
+        -12.423251120646643
+      ],
+      [
+        -40.81951880425804,
+        -8.283499445676734
+      ],
+      [
+        -4.779692903695125,
+        -0.35418210394087746
+      ],
+      [
+        41.305472670184685,
+        9.218131633495155
+      ],
+      [
+        52.785565036526854,
+        13.544580569019649
+      ],
+      [
+        54.64062187492908,
+        14.765213114130793
+      ]
+    ]
+  }
+]

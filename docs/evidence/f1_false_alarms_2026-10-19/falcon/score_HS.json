@@ -1,0 +1,27 @@
+{
+ "base_stop": 1372,
+ "cand_stop": 1361,
+ "false_attributed_base": 12,
+ "false_attributed_remaining": [
+  159
+ ],
+ "person_ref": 1360,
+ "person_kept": 1360,
+ "person_lost": [],
+ "n_person_lost": 0,
+ "new_stop_frames": [],
+ "n_new_stop": 0,
+ "first_person_stop_base": [
+  2972,
+  124.84
+ ],
+ "first_person_stop_cand": [
+  2972,
+  124.84
+ ],
+ "decision_transitions": {
+  "STOP->CAUTION": 11
+ },
+ "caution_base": 3062,
+ "caution_cand": 3073
+}

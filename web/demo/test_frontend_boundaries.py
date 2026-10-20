@@ -60,11 +60,14 @@ def test_result_import_rejects_bad_shapes_and_accepts_unknown_stop_distance(page
         {**clear, "detections": {}},
         {**clear, "detections": [{}]},
         {**clear, "track": {"axis_valid": "120"}},
+        {**clear, "track": {"curv_step": "-0.001"}},
+        {**clear, "track": {"curv_knot": []}},
         {**clear, "health": {"messages": "broken"}},
         {**clear, "timing_ms": {"total": "12"}},
         {**clear, "decision": "NOT_A_DECISION"},
     ]
     stop = {**clear, "obstacle": True, "decision": "STOP", "nearest_distance": None}
+    clear = {**clear, "track": {"curv_step": -0.001, "curv_knot": 60}}
     text = "\n".join(json.dumps(frame) for frame in [*bad, clear, stop])
     assert page.evaluate("t => resense.loadText(t, 'mixed.jsonl')", text) == 2
     page.evaluate("resense.seek(1)")

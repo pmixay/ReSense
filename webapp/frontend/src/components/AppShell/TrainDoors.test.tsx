@@ -5,8 +5,8 @@ import { createMemoryRouter, RouterProvider, useLocation, useNavigate } from 're
 import { TrainDoors, useTrainDoors } from './TrainDoors';
 vi.mock('../../sectionPages', () => ({ preloadSections: vi.fn() }));
 
-function Harness() {
-  const doors = useTrainDoors();
+function Harness({ isPrepared }: { isPrepared?: () => boolean }) {
+  const doors = useTrainDoors({ isPrepared });
   const location = useLocation();
   const navigate = useNavigate();
   return <>
@@ -21,7 +21,7 @@ function Harness() {
   </>;
 }
 
-function setup(reduced = false, initial = '/player/first?pos=4') {
+function setup(reduced = false, initial = '/player/first?pos=4', isPrepared?: () => boolean) {
   vi.useFakeTimers();
   // Node's Request rejects jsdom's AbortSignal. There are no loaders/fetches here.
   const NativeRequest = globalThis.Request;
@@ -31,7 +31,7 @@ function setup(reduced = false, initial = '/player/first?pos=4') {
   const listeners = new Set<() => void>();
   const media = { matches: reduced, addEventListener(_type: string, listener: () => void) { listeners.add(listener); }, removeEventListener(_type: string, listener: () => void) { listeners.delete(listener); } };
   vi.stubGlobal('matchMedia', () => media);
-  const router = createMemoryRouter([{ path: '*', element: <Harness /> }], { initialEntries: [initial] });
+  const router = createMemoryRouter([{ path: '*', element: <Harness isPrepared={isPrepared} /> }], { initialEntries: [initial] });
   const view = render(<RouterProvider router={router} />);
   return { router, overlay: view.container.querySelector('[data-train-doors]')!, reduceMotion() { media.matches = true; listeners.forEach(listener => listener()); } };
 }
@@ -45,6 +45,25 @@ async function finishTransition() {
 afterEach(() => { cleanup(); vi.useRealTimers(); vi.unstubAllGlobals(); });
 
 describe('train door navigation', () => {
+  it('does not restart travel when preparation completes after the watchdog releases it', async () => {
+    let ready = false;
+    const { router, overlay } = setup(false, '/player/first', () => ready);
+    fireEvent.click(screen.getByText('Runs'));
+    await advance(270);
+    await advance(11700);
+    expect(overlay.getAttribute('data-phase')).toBe('covered');
+    // Model a blocked main thread: the watchdog and the already queued readiness
+    // poll run in one batch, before React can clean up the covered-phase effect.
+    window.setTimeout(() => { ready = true; }, 31);
+    await advance(100);
+    expect(router.state.location.pathname).toBe('/runs');
+    expect(overlay.getAttribute('data-phase')).toBe('idle');
+    fireEvent.click(screen.getByText('Upload'));
+    await finishTransition();
+    expect(router.state.location.pathname).toBe('/upload');
+    expect(overlay.getAttribute('data-phase')).toBe('idle');
+  });
+
   it('closes before committing, then glides into the destination before opening', async () => {
     const { router, overlay } = setup();
     fireEvent.click(screen.getByText('Runs'));

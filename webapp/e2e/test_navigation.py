@@ -1,4 +1,6 @@
 """The site chrome stays pinned while every category scrolls, including player/error routes."""
+import re
+
 import pytest
 
 pw = pytest.importorskip("playwright.sync_api")
@@ -205,12 +207,10 @@ def test_resize_finishes_travel_without_leaving_a_stale_strip(app):
     page.clock.run_for(270)
     prepare_travel(page)
     page.set_viewport_size({'width': 1280, 'height': 720})
-    # Native resize dispatch is real browser work; drive its subsequent painted-frame checks.
-    for _ in range(20):
-        page.clock.run_for(50)
-        if page.locator('[data-train-doors]').get_attribute('data-phase') == 'opening':
-            break
-        page.wait_for_timeout(20)
+    # Resize/ResizeObserver delivery uses the native browser clock. Wait for the
+    # handler's inline width before driving the two virtual painted-frame checks.
+    expect(page.locator('[data-destination-snapshot]')).to_have_attribute('style', re.compile(r'.*width: 1280px.*'))
+    page.clock.run_for(100)
     expect(page.locator('[data-train-doors]')).to_have_attribute('data-phase', 'opening')
     page.clock.run_for(330)
     expect(page.locator('[data-train-doors]')).to_be_hidden()

@@ -169,7 +169,8 @@ function drawTop(res) {
   }
   for (const y of [-4, -2, 2, 4]) { ctx.beginPath(); ctx.moveTo(0, cy - y * sy); ctx.lineTo(c.width, cy - y * sy); ctx.stroke(); }
   const t = res.track || {}; const c0 = t.center || 0, yaw = t.yaw || 0, k = t.curvature || 0;
-  const axis = X => c0 + Math.tan(yaw) * X + 0.5 * k * X * X;
+  const ks = t.curv_step || 0, kn = t.curv_knot || 0;   // C1 piecewise axis (track.axis_joint_fit); 0 = quadratic
+  const axis = X => c0 + Math.tan(yaw) * X + 0.5 * k * X * X + (ks ? 0.5 * ks * Math.max(X - kn, 0) ** 2 : 0);
   // sensor / train nose
   ctx.fillStyle = '#e4000d'; ctx.beginPath(); ctx.moveTo(0, cy - 12); ctx.lineTo(14, cy); ctx.lineTo(0, cy + 12); ctx.closePath(); ctx.fill();
   // Strict 2.1 m envelope, plus the separate 0.35 m advisory margin on each side.
@@ -237,7 +238,8 @@ function trackModel(t) {
   const slope = X => coef.slice(0, -1).reduce((a, c, i) => a * X + c * (n - i), 0);
   const floor = X => { const Xc = Math.min(Math.max(X, x0), x1); return poly(Xc) + slope(Xc) * (X - Xc); };
   // without a bed fit (older results, the built-in demo) the rail head is the z = 0 plane
-  return { y: X => c0 + tyaw * X + 0.5 * k * X * X, z: coef ? X => floor(X) + (t.rail_offset ?? 0.35) : () => 0 };
+  const ks = t.curv_step || 0, kn = t.curv_knot || 0;   // C1 piecewise axis (track.axis_joint_fit); 0 = quadratic
+  return { y: X => c0 + tyaw * X + 0.5 * k * X * X + (ks ? 0.5 * ks * Math.max(X - kn, 0) ** 2 : 0), z: coef ? X => floor(X) + (t.rail_offset ?? 0.35) : () => 0 };
 }
 function cabSteps(from, to) {
   const xs = [];

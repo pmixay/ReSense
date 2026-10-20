@@ -1,0 +1,6 @@
+pandar-empty-ringfree Counter({0: 24})
+pandar-positive-ringfree Counter({191: 7, 196: 6, 0: 6, 193: 2, 197: 2, 190: 1})
+falcon Counter({1387: 17, 1372: 7})
+pandar-positive-ring Counter({193: 17, 191: 7})
+pandar-empty-ring Counter({0: 24})
+PASSED True failures 0

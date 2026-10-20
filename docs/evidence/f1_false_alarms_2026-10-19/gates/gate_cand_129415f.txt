@@ -1,0 +1,60 @@
+set_F_straight.person.recall_0-50                                                  106        106  same
+set_F_straight.person.recall_50-100                                                125        125  same
+set_F_straight.person.recall_100-150                                               120        120  same
+set_F_straight.person.recall_150-200                                                13         13  same
+set_F_straight.person.recall_200-250                                                 0          0  same
+set_F_straight.box1.0.detected                                          yes          6          6  same
+set_F_straight.box1.0.first_detection_median_m                          yes      123.9      123.9  same
+set_F_straight.box1.0.false_detections                                  yes         12         12  same
+set_F_straight.box1.0.sustained_median_m                                         119.0      119.0  same
+set_F_straight.box1.0.recall_0-50                                                  106        106  same
+set_F_straight.box1.0.recall_50-100                                                123        123  same
+set_F_straight.box1.0.recall_100-150                                                47         47  same
+set_F_straight.box1.0.recall_150-200                                                 0          0  same
+set_F_straight.box1.0.recall_200-250                                                 0          0  same
+set_F_straight.box0.5.detected                                          yes          2          2  same
+set_F_straight.box0.5.first_detection_median_m                          yes       64.4       64.4  same
+set_F_straight.box0.5.false_detections                                  yes          0          0  same
+set_F_straight.box0.5.sustained_median_m                                          55.6       55.6  same
+set_F_straight.box0.5.recall_0-50                                                   18         18  same
+set_F_straight.box0.5.recall_50-100                                                  5          5  same
+set_F_straight.box0.5.recall_100-150                                                 0          0  same
+set_F_straight.box0.5.recall_150-200                                                 0          0  same
+set_F_straight.box0.5.recall_200-250                                                 0          0  same
+set_F_straight.trolley.detected                                         yes          6          6  same
+set_F_straight.trolley.first_detection_median_m                         yes      151.4      151.4  same
+set_F_straight.trolley.false_detections                                 yes          5          5  same
+set_F_straight.trolley.sustained_median_m                                        120.9      120.9  same
+set_F_straight.trolley.recall_0-50                                                 106        106  same
+set_F_straight.trolley.recall_50-100                                               124        124  same
+set_F_straight.trolley.recall_100-150                                               60         60  same
+set_F_straight.trolley.recall_150-200                                                9          9  same
+set_F_straight.trolley.recall_200-250                                                0          0  same
+set_F_straight.cable.detected                                           yes          6          6  same
+set_F_straight.cable.first_detection_median_m                           yes       98.9       98.9  same
+set_F_straight.cable.false_detections                                   yes          0          0  same
+set_F_straight.cable.sustained_median_m                                           34.2       34.2  same
+set_F_straight.cable.recall_0-50                                                    43         43  same
+set_F_straight.cable.recall_50-100                                                  47         47  same
+set_F_straight.cable.recall_100-150                                                 12         12  same
+set_F_straight.cable.recall_150-200                                                  0          0  same
+set_F_straight.cable.recall_200-250                                                  0          0  same
+latency_ms.doubleT_obstacle.mean                                                  43.2       48.8  worse
+latency_ms.doubleT_obstacle.p95                                                   84.4       68.1  better
+latency_ms.doubleT_platform.mean                                                  57.2       47.0  better
+latency_ms.doubleT_platform.p95                                                  100.3       71.1  better
+latency_ms.roundT_doubleT.mean                                                    55.4       38.0  better
+latency_ms.roundT_doubleT.p95                                                     85.0       60.0  better
+latency_ms.roundT_pressureGate_roundT.mean                                        52.2       36.2  better
+latency_ms.roundT_pressureGate_roundT.p95                                         80.5       49.1  better
+latency_ms.roundT_squareT_pressureGate_squareT.mean                               41.8       34.4  better
+latency_ms.roundT_squareT_pressureGate_squareT.p95                                71.6       46.9  better
+latency_ms.squareT_platform_squareT_switch.mean                                   43.7       32.8  better
+latency_ms.squareT_platform_squareT_switch.p95                                    72.5       45.9  better
+latency_ms.cloud_with_fake_obj.mean                                               60.9       36.0  better
+latency_ms.cloud_with_fake_obj.p95                                               138.0       52.6  better
+latency_ms.new_data.mean                                                          48.3       36.2  better
+latency_ms.new_data.p95                                                          118.0       53.9  better
+GATE PASS: no gated metric worse (4 gated better, 0 worse but allowed, 22 information rows changed)
+wrote /tmp/claude-0/-home-user-ReSense/314e4672-57bf-5bc8-aad1-a40ec29bc1c0/scratchpad/f1/gates/gate_cand_129415f.json
+GATE_EXIT 0

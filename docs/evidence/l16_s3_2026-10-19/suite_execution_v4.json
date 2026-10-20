@@ -1,0 +1,161 @@
+{
+  "scope": "uncommitted P3 author source; not formal committed-source acceptance",
+  "reference": "Reused complete same-runtime aec88d2 / NumPy 1.26.4 controls from run2, linked explicitly.",
+  "runs": [
+    {
+      "name": "falcon-candidate",
+      "command": [
+        "/tmp/opencode/resense-b4-venv/bin/python",
+        "/home/aiops/resense/docs/evidence/l16_s3_2026-10-19/replay.py",
+        "--repo",
+        "/home/aiops/resense",
+        "--cache",
+        "/tmp/opencode/l16-s3/falcon-decoded",
+        "--out",
+        "/tmp/opencode/l16-s3/run4/falcon-candidate",
+        "--cases",
+        "0,4,5,12,1,2,3,6,7,8,9,10,11,13,14,15,16,17,18,19,20,21,22,23",
+        "--jobs",
+        "4"
+      ],
+      "started": "2026-10-19T10:21:13.447046+00:00",
+      "returncode": 0,
+      "finished": "2026-10-19T10:44:18.165293+00:00",
+      "log_sha256": "667bb7b4b4ea26e9b99c680f47f29abf7bd4509c99936cc17c4bdf1653cf6c9b"
+    },
+    {
+      "name": "pandar-empty-ringfree-candidate",
+      "command": [
+        "/tmp/opencode/resense-b4-venv/bin/python",
+        "/home/aiops/resense/docs/evidence/l16_s3_2026-10-19/replay.py",
+        "--repo",
+        "/home/aiops/resense",
+        "--cache",
+        "/tmp/opencode/resense-b4-data/decoded/roundT_squareT_pressureGate_squareT",
+        "--out",
+        "/tmp/opencode/l16-s3/run4/pandar-empty-ringfree-candidate",
+        "--cases",
+        "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23",
+        "--jobs",
+        "4"
+      ],
+      "started": "2026-10-19T10:44:18.166184+00:00",
+      "returncode": 0,
+      "finished": "2026-10-19T10:47:46.539193+00:00",
+      "log_sha256": "966bc1d7584d8476b653ffd20675eb2d1970b7fe4e5c3cce8d0ad226b40a1ea7"
+    },
+    {
+      "name": "pandar-positive-ringfree-candidate",
+      "command": [
+        "/tmp/opencode/resense-b4-venv/bin/python",
+        "/home/aiops/resense/docs/evidence/l16_s3_2026-10-19/replay.py",
+        "--repo",
+        "/home/aiops/resense",
+        "--cache",
+        "/tmp/opencode/resense-b4-data/decoded/doubleT_obstacle",
+        "--out",
+        "/tmp/opencode/l16-s3/run4/pandar-positive-ringfree-candidate",
+        "--cases",
+        "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23",
+        "--jobs",
+        "4"
+      ],
+      "started": "2026-10-19T10:47:46.539766+00:00",
+      "returncode": 0,
+      "finished": "2026-10-19T10:51:14.789621+00:00",
+      "log_sha256": "b6f9338efa5ef28e34ee022250331f25d41eec1a741025cddf308e8b55e9aef1"
+    },
+    {
+      "name": "pandar-positive-ring-candidate",
+      "command": [
+        "/tmp/opencode/resense-b4-venv/bin/python",
+        "/home/aiops/resense/docs/evidence/l16_s3_2026-10-19/replay.py",
+        "--repo",
+        "/home/aiops/resense",
+        "--cache",
+        "/tmp/opencode/resense-b4-data/decoded/doubleT_obstacle",
+        "--out",
+        "/tmp/opencode/l16-s3/run4/pandar-positive-ring-candidate",
+        "--cases",
+        "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23",
+        "--jobs",
+        "4",
+        "--keep-ring"
+      ],
+      "started": "2026-10-19T10:51:14.790212+00:00",
+      "returncode": 0,
+      "finished": "2026-10-19T10:53:06.660564+00:00",
+      "log_sha256": "4cd0348754e553f8cb8f09e0cbb768e35ba67c8b7227e1ee6b53d565fbda8ef9"
+    },
+    {
+      "name": "pandar-empty-ring-candidate",
+      "command": [
+        "/tmp/opencode/resense-b4-venv/bin/python",
+        "/home/aiops/resense/docs/evidence/l16_s3_2026-10-19/replay.py",
+        "--repo",
+        "/home/aiops/resense",
+        "--cache",
+        "/tmp/opencode/resense-b4-data/decoded/roundT_squareT_pressureGate_squareT",
+        "--out",
+        "/tmp/opencode/l16-s3/run4/pandar-empty-ring-candidate",
+        "--cases",
+        "0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23",
+        "--jobs",
+        "4",
+        "--keep-ring"
+      ],
+      "started": "2026-10-19T10:53:06.661238+00:00",
+      "returncode": 0,
+      "finished": "2026-10-19T10:56:30.920967+00:00",
+      "log_sha256": "414e604ab97d121f6d9aa9f9453969989a9da49702f5e8b8137778660d962984"
+    },
+    {
+      "name": "instrumentation-plain",
+      "command": [
+        "/tmp/opencode/resense-b4-venv/bin/python",
+        "/home/aiops/resense/docs/evidence/l16_s3_2026-10-19/replay.py",
+        "--repo",
+        "/home/aiops/resense",
+        "--cache",
+        "/tmp/opencode/l16-s3/falcon-decoded",
+        "--out",
+        "/tmp/opencode/l16-s3/run4/instrumentation-plain",
+        "--cases",
+        "0,4",
+        "--end",
+        "100",
+        "--jobs",
+        "2"
+      ],
+      "started": "2026-10-19T10:56:30.921629+00:00",
+      "returncode": 0,
+      "finished": "2026-10-19T10:56:34.812075+00:00",
+      "log_sha256": "122608015f5b182eeb72333f31b9a54dcd4f2c2a2067eb19d1e596284c2dd048"
+    },
+    {
+      "name": "instrumentation-traced",
+      "command": [
+        "/tmp/opencode/resense-b4-venv/bin/python",
+        "/home/aiops/resense/docs/evidence/l16_s3_2026-10-19/replay.py",
+        "--repo",
+        "/home/aiops/resense",
+        "--cache",
+        "/tmp/opencode/l16-s3/falcon-decoded",
+        "--out",
+        "/tmp/opencode/l16-s3/run4/instrumentation-traced",
+        "--cases",
+        "0,4",
+        "--end",
+        "100",
+        "--jobs",
+        "2",
+        "--trace"
+      ],
+      "started": "2026-10-19T10:56:34.817398+00:00",
+      "returncode": 0,
+      "finished": "2026-10-19T10:56:38.745134+00:00",
+      "log_sha256": "21926075019c0cbd372f5e3dfa6df39325bc30ed38b1e50d1a682f51ef32e50a"
+    }
+  ],
+  "calibration_sha256": "029243c62f541a206aeb5ec1fe457e9f25c4e5d7966c9e00561f6dc787293dfd"
+}

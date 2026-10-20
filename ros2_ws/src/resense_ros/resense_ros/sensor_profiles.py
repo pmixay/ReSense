@@ -41,4 +41,13 @@ def apply_sensor_profile(cfg, profile: str):
     resolved.sensor.roll_deg = resolved.sensor.pitch_deg = resolved.sensor.yaw_deg = 0.0
     resolved.calibration.enabled = True
     resolved.calibration.keep_up_axis = True
+    far = getattr(resolved, "farrange", None)
+    if range_model == "falcon_prime" and far is not None and far.with_falcon_profile:
+        # 19.10 (Falcon long range): the far straight axis and the range crop beyond 250 m
+        far.enabled = True
+        resolved.sensor.max_range = far.max_range
+        resolved.gauge.range_max = far.max_range
+        resolved.track.floor_verify_max_range = far.max_range
+        resolved.cluster.far_min_height = far.far_min_height
+        resolved.cluster.far_max_length = far.far_max_length
     return resolved, range_model

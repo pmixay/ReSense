@@ -6,13 +6,15 @@ export interface LiveSimParams {
   runId: string;
   speed?: number; // 0.25..10
   loop?: boolean;
+  paused?: boolean; // establish pause before the browser's onopen callback can run
 }
 
 /** ws(s)://<page host>/api/live/sim?run_id=…&speed=…&loop=… (relative to the page origin, so the
  *  Vite proxy and the production server both work). */
-export function liveSimUrl({ runId, speed = 1, loop = false }: LiveSimParams, origin: Location | URL = window.location): string {
+export function liveSimUrl({ runId, speed = 1, loop = false, paused = false }: LiveSimParams, origin: Location | URL = window.location): string {
   const proto = origin.protocol === 'https:' ? 'wss:' : 'ws:';
   const qs = new URLSearchParams({ run_id: runId, speed: String(clampSpeed(speed)), loop: String(loop) });
+  if (paused) qs.set('paused', 'true');
   return `${proto}//${origin.host}/api/live/sim?${qs.toString()}`;
 }
 

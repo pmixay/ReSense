@@ -1,0 +1,12 @@
+{"tag": "base", "K1-3 squareT_platform STOP episodes": 3, "onsets": [[313, 147.62], [489, 82.9], [693, 139.93]], "squareT STOP frames": 11, "K1-4 doubleT_obstacle STOP frames": 193, "first STOP frame": 8, "frames": [877, 201]}
+{"tag": "v5b", "K1-3 squareT_platform STOP episodes": 0, "onsets": [], "squareT STOP frames": 0, "K1-4 doubleT_obstacle STOP frames": 193, "first STOP frame": 8, "frames": [877, 201]}
+{"tag": "base", "K1-5 first visible frame": 450, "first STOP frame": 478, "frames to STOP": 28}
+{"tag": "base", "job": "A_person", "first_stop_X": 218.38, "held_from_X": 221.78, "stop_frames": 158, "visible_frames": 185, "decisions": {"GO": 5, "CAUTION": 22, "STOP": 158, "FAULT": 0}}
+{"tag": "base", "job": "S_person_60", "first_stop_X": 60.0, "held_from_X": 60.0, "stop_frames": 255, "visible_frames": 260, "decisions": {"GO": 0, "CAUTION": 5, "STOP": 255, "FAULT": 0}}
+{"tag": "base", "job": "S_person_100", "first_stop_X": 100.0, "held_from_X": 99.99, "stop_frames": 82, "visible_frames": 260, "decisions": {"GO": 11, "CAUTION": 166, "STOP": 83, "FAULT": 0}}
+{"tag": "base", "job": "S_person_150", "first_stop_X": 150.0, "held_from_X": null, "stop_frames": 90, "visible_frames": 259, "decisions": {"GO": 5, "CAUTION": 162, "STOP": 92, "FAULT": 0}}
+{"tag": "v5b", "K1-5 first visible frame": 450, "first STOP frame": 455, "frames to STOP": 5}
+{"tag": "v5b", "job": "A_person", "first_stop_X": 218.38, "held_from_X": 221.78, "stop_frames": 158, "visible_frames": 185, "decisions": {"GO": 10, "CAUTION": 17, "STOP": 158, "FAULT": 0}}
+{"tag": "v5b", "job": "S_person_60", "first_stop_X": 60.0, "held_from_X": 60.0, "stop_frames": 255, "visible_frames": 260, "decisions": {"GO": 5, "CAUTION": 0, "STOP": 255, "FAULT": 0}}
+{"tag": "v5b", "job": "S_person_100", "first_stop_X": 100.0, "held_from_X": 100.0, "stop_frames": 255, "visible_frames": 260, "decisions": {"GO": 5, "CAUTION": 0, "STOP": 255, "FAULT": 0}}
+{"tag": "v5b", "job": "S_person_150", "first_stop_X": null, "held_from_X": null, "stop_frames": 0, "visible_frames": 260, "decisions": {"GO": 119, "CAUTION": 141, "STOP": 0, "FAULT": 0}}

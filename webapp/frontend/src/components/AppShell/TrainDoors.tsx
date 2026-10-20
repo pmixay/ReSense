@@ -60,7 +60,10 @@ export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () =
       const preparing = !reduced && latest.current.isPrepared?.() === false;
       if (preparing || (document.querySelector('[data-page-fallback]') && performance.now() - started < 5000)) {
         timer = window.setTimeout(reveal, 50);
-      } else setPhase(reduced ? 'opening' : 'travelling');
+      } else {
+        // The watchdog may have released this journey while the poll was queued.
+        setPhase(current => current === 'covered' ? (reduced ? 'opening' : 'travelling') : current);
+      }
     };
     let timer = window.setTimeout(reveal, 25);
     return () => window.clearTimeout(timer);

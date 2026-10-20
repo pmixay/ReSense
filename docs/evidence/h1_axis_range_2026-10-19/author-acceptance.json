@@ -1,0 +1,748 @@
+{
+  "status": "P3_BOUNDED_AUTHOR_CHECKS_COMPLETE_H1_OVERALL_OPEN",
+  "source_commit": "8fce584106809cd04d6932ee129d8bd7d128b4da",
+  "source_files": {
+    "configs/default.yaml": "508dd51ecb5aef96a354a7383f2282b8b2bf2b6a688fae791a180321db3b8f53",
+    "configs/experimental_cross_ring.yaml": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c",
+    "configs/experimental_far_rail_rings.yaml": "addfc504f36a7cbc9156f8200a2dc865e38ea62eb8978c9358441486f04dbc77",
+    "configs/experimental_fresh_stop_evidence.yaml": "2da969791562aeeda0fb180b83579f45a7f4871eb505b1129d3cfe83c2095eeb",
+    "configs/experimental_low_local_support.yaml": "49e9058704f60c2bf2897bb2249fd6a97bc21e3df4ae73a06f6fb7131d54081b",
+    "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+    "pyproject.toml": "bd429ed92c6c9606ee933607c3361548f15e3ba18c6a5415611195ce320b5866",
+    "resense/__init__.py": "0afadc11f9d78b09e83b15805b3b1cb3281e77b51013d74c837781df144bc27a",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "029243c62f541a206aeb5ec1fe457e9f25c4e5d7966c9e00561f6dc787293dfd",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "c7a8cc08bcb134e8906e18ec483f9726c71e0f92179ef0b0113bb237d29ac5dd",
+    "resense/config.py": "eb74016183118b767ff82849ffc7a7e34becccf05171c494b3fec8bc9a031321",
+    "resense/detector.py": "98c28abc42a191512d7a49376bf4c82cb0e33638ada43167ad4471778aa4fb9e",
+    "resense/dust.py": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+    "resense/dust_health.py": "2fc9c54f491f4f23479c70df058e48032c2afc961a2317f80d71b755a0a69ef0",
+    "resense/egomotion.py": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284",
+    "resense/evidence.py": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
+    "resense/farrails.py": "5d936c3ea96e0a1849191cf04f9ffee6a69dd2f25a79fe73b4e7c35c62b9b14b",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "cc99caee4926038ba888b0bad50812a5420a02fd75ad429e303b972af28fee68",
+    "resense/health.py": "92f56f03552fc51054b6d6f380bfa769f41eb90d6793e5631cd71278a9676f62",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "fc02085b1e6e80f37b3eaac33209c1d88e077e336de84ded0ac3555a0f11aa12",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/models/track_opinion.json": "950da3654d1e0fbccbd903aae7300fccae440c9e2d0f7a942c3ff9c17145c5d6",
+    "resense/models/track_opinion_report.json": "eeaae172a9e232e547c61b6b3b0457a6d7a2b785ac5506315a7f39a0c70216fa",
+    "resense/opinion.py": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "0c5acd4d937d2c6946422018a2a394c71f4de351d338899e436bc1b2a34115b0",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "147920851b61160bcbe2bb0027466fc1b2e2696ed18e5b63dfe54d5e9a573fe2",
+    "resense/tracking.py": "3d896a3ea99ecbfe5940f0386fe1607ba26f1854f96fc9ce90427901b0d1a5e5",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+    "ros2_ws/src/resense_ros/config/detector.yaml": "508dd51ecb5aef96a354a7383f2282b8b2bf2b6a688fae791a180321db3b8f53",
+    "scripts/build_native.sh": "af7e559867082b2df45edea7a730b2641957a4acc9df929cbab01776f7f99aea",
+    "setup.py": "73a030dd50b47b1b43b02d72a9892ee4ed26106b686afa6cd39584222a721ee7"
+  },
+  "source_fingerprint": "9e10df08a7d18b370ac96ed4b3042382e2b8f99f058e7c2b4cb5736068b2c169",
+  "run_source_continuity": {
+    "gate-d-candidate": {
+      "commit": "f47a090c8376e9ac3ea4bc99ff3d60e260f8d041",
+      "source_bytes_match": true
+    },
+    "probes-d-candidate-A-axis": {
+      "commit": "f47a090c8376e9ac3ea4bc99ff3d60e260f8d041",
+      "source_bytes_match": true
+    },
+    "probes-d-candidate-C-person": {
+      "commit": "f47a090c8376e9ac3ea4bc99ff3d60e260f8d041",
+      "source_bytes_match": true
+    },
+    "probes-d-candidate-E6": {
+      "commit": "f47a090c8376e9ac3ea4bc99ff3d60e260f8d041",
+      "source_bytes_match": true
+    },
+    "probes-d-candidate-Falcon": {
+      "commit": "f47a090c8376e9ac3ea4bc99ff3d60e260f8d041",
+      "source_bytes_match": true
+    },
+    "trace-d-candidate": {
+      "commit": "f47a090c8376e9ac3ea4bc99ff3d60e260f8d041",
+      "source_bytes_match": true
+    },
+    "x3-d2-candidate": {
+      "commit": "8fce584106809cd04d6932ee129d8bd7d128b4da",
+      "source_bytes_match": true
+    }
+  },
+  "full_gate": {
+    "ordinary_rows": 15269,
+    "set_F_rows": 3060,
+    "non_timing_equal": true,
+    "metrics": {
+      "same": 208
+    }
+  },
+  "X3": {
+    "cases": 40,
+    "rows": 29765,
+    "non_timing_equal": true
+  },
+  "physical": {
+    "previous_matched": 230,
+    "matched": 293,
+    "lost": 0,
+    "entirely_missed": [],
+    "outside_cases": 160,
+    "false_cores": 0,
+    "false_stops": 0
+  },
+  "moving_nominal": [
+    {
+      "lateral": -0.68,
+      "matched": 43,
+      "continuous_from": 126.4,
+      "first": 126.4
+    },
+    {
+      "lateral": 0.68,
+      "matched": 45,
+      "continuous_from": 130.8,
+      "first": 130.8
+    }
+  ],
+  "critical_probes": {
+    "revision": "d",
+    "phase": "probes",
+    "ranges": {
+      "A-axis": {
+        "previous": {
+          "cache": "roundT_squareT_pressureGate_squareT",
+          "obj": [
+            0.3,
+            0.3,
+            2.8
+          ],
+          "lat": 0.0,
+          "base": 0.0,
+          "start": 150,
+          "d0": 230.0,
+          "first_visible_X": 228.36,
+          "first_stop_X": 218.38,
+          "held_from_X": 9.58,
+          "visible_frames": 177,
+          "stop_frames": 105,
+          "bins": {
+            "3-30": "5/18",
+            "30-60": "7/21",
+            "60-100": "27/27",
+            "100-150": "20/39",
+            "150-200": "35/42",
+            "200-260": "11/30"
+          },
+          "decisions_while_visible": {
+            "GO": 5,
+            "CAUTION": 67,
+            "STOP": 105,
+            "FAULT": 0
+          },
+          "go_within_60m": 0,
+          "n_obj_at": {
+            "200": 6,
+            "150": 16,
+            "100": 26,
+            "60": 63,
+            "30": 228
+          }
+        },
+        "candidate": {
+          "cache": "roundT_squareT_pressureGate_squareT",
+          "obj": [
+            0.3,
+            0.3,
+            2.8
+          ],
+          "lat": 0.0,
+          "base": 0.0,
+          "start": 150,
+          "d0": 230.0,
+          "first_visible_X": 228.36,
+          "first_stop_X": 218.38,
+          "held_from_X": 11.02,
+          "visible_frames": 177,
+          "stop_frames": 109,
+          "bins": {
+            "3-30": "6/18",
+            "30-60": "10/21",
+            "60-100": "27/27",
+            "100-150": "20/39",
+            "150-200": "35/42",
+            "200-260": "11/30"
+          },
+          "decisions_while_visible": {
+            "GO": 5,
+            "CAUTION": 63,
+            "STOP": 109,
+            "FAULT": 0
+          },
+          "go_within_60m": 0,
+          "n_obj_at": {
+            "200": 6,
+            "150": 16,
+            "100": 26,
+            "60": 63,
+            "30": 228
+          }
+        },
+        "lost_matches": [],
+        "added_matches": [
+          303,
+          304,
+          305,
+          329
+        ],
+        "added_unmatched": []
+      },
+      "C-person": {
+        "previous": {
+          "cache": "roundT_pressureGate_roundT",
+          "obj": [
+            0.5,
+            0.5,
+            1.75
+          ],
+          "lat": 0.0,
+          "base": 0.0,
+          "start": 0,
+          "d0": 230.0,
+          "first_visible_X": 230.0,
+          "first_stop_X": 82.77,
+          "held_from_X": 91.63,
+          "visible_frames": 153,
+          "stop_frames": 55,
+          "bins": {
+            "3-30": "19/19",
+            "30-60": "20/20",
+            "60-100": "16/27",
+            "100-150": "0/34",
+            "150-200": "0/33",
+            "200-260": "0/20"
+          },
+          "decisions_while_visible": {
+            "GO": 42,
+            "CAUTION": 56,
+            "STOP": 55,
+            "FAULT": 0
+          },
+          "go_within_60m": 0,
+          "n_obj_at": {
+            "200": 4,
+            "150": 5,
+            "100": 24,
+            "60": 70,
+            "30": 260
+          }
+        },
+        "candidate": {
+          "cache": "roundT_pressureGate_roundT",
+          "obj": [
+            0.5,
+            0.5,
+            1.75
+          ],
+          "lat": 0.0,
+          "base": 0.0,
+          "start": 0,
+          "d0": 230.0,
+          "first_visible_X": 230.0,
+          "first_stop_X": 82.77,
+          "held_from_X": 91.63,
+          "visible_frames": 153,
+          "stop_frames": 55,
+          "bins": {
+            "3-30": "19/19",
+            "30-60": "20/20",
+            "60-100": "16/27",
+            "100-150": "0/34",
+            "150-200": "0/33",
+            "200-260": "0/20"
+          },
+          "decisions_while_visible": {
+            "GO": 42,
+            "CAUTION": 56,
+            "STOP": 55,
+            "FAULT": 0
+          },
+          "go_within_60m": 0,
+          "n_obj_at": {
+            "200": 4,
+            "150": 5,
+            "100": 24,
+            "60": 70,
+            "30": 260
+          }
+        },
+        "lost_matches": [],
+        "added_matches": [],
+        "added_unmatched": []
+      },
+      "E6": {
+        "previous": {
+          "cache": "roundT_squareT_pressureGate_squareT",
+          "obj": [
+            0.05,
+            0.05,
+            2.6
+          ],
+          "lat": 0.0,
+          "base": 0.2,
+          "start": 150,
+          "d0": 230.0,
+          "first_visible_X": 222.61,
+          "first_stop_X": 86.25,
+          "held_from_X": 61.28,
+          "visible_frames": 59,
+          "stop_frames": 34,
+          "bins": {
+            "3-30": "18/18",
+            "30-60": "13/15",
+            "60-100": "3/10",
+            "100-150": "0/6",
+            "150-200": "0/4",
+            "200-260": "0/6"
+          },
+          "decisions_while_visible": {
+            "GO": 22,
+            "CAUTION": 3,
+            "STOP": 34,
+            "FAULT": 0
+          },
+          "go_within_60m": 1,
+          "n_obj_at": {
+            "200": 6,
+            "150": 9,
+            "100": 13,
+            "60": 20,
+            "30": 35
+          }
+        },
+        "candidate": {
+          "cache": "roundT_squareT_pressureGate_squareT",
+          "obj": [
+            0.05,
+            0.05,
+            2.6
+          ],
+          "lat": 0.0,
+          "base": 0.2,
+          "start": 150,
+          "d0": 230.0,
+          "first_visible_X": 222.61,
+          "first_stop_X": 86.25,
+          "held_from_X": 61.28,
+          "visible_frames": 59,
+          "stop_frames": 34,
+          "bins": {
+            "3-30": "18/18",
+            "30-60": "13/15",
+            "60-100": "3/10",
+            "100-150": "0/6",
+            "150-200": "0/4",
+            "200-260": "0/6"
+          },
+          "decisions_while_visible": {
+            "GO": 22,
+            "CAUTION": 3,
+            "STOP": 34,
+            "FAULT": 0
+          },
+          "go_within_60m": 1,
+          "n_obj_at": {
+            "200": 6,
+            "150": 9,
+            "100": 13,
+            "60": 20,
+            "30": 35
+          }
+        },
+        "lost_matches": [],
+        "added_matches": [],
+        "added_unmatched": []
+      }
+    },
+    "Falcon": {
+      "frames": 4443,
+      "previous_STOP": 1372,
+      "candidate_STOP": 1372,
+      "lost_STOP": [],
+      "added_STOP": [],
+      "lost_payloads": [],
+      "changed_non_timing_rows": []
+    },
+    "PASS": true
+  },
+  "added_axis_states": [
+    {
+      "frame": 303,
+      "info": {
+        "k": 303,
+        "X": 49.32,
+        "n_obj": 104,
+        "lat": 0.0,
+        "Y": -0.26,
+        "Zb": -1.25,
+        "axis_valid": 205.0
+      },
+      "detections": [
+        {
+          "id": 2,
+          "zone": "gauge",
+          "distance": 49.3,
+          "lateral": 0.01,
+          "center": [
+            49.32,
+            -0.25,
+            0.22
+          ],
+          "size": [
+            0.06,
+            0.3,
+            2.54
+          ],
+          "n_points": 78,
+          "confidence": 1.0,
+          "age": 133,
+          "height_min": 0.12,
+          "intensity": 30.0,
+          "reason": "",
+          "kind": ""
+        }
+      ],
+      "executed_assignment_snapshots": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 304,
+      "info": {
+        "k": 304,
+        "X": 47.83,
+        "n_obj": 104,
+        "lat": 0.0,
+        "Y": -0.23,
+        "Zb": -1.28,
+        "axis_valid": 205.0
+      },
+      "detections": [
+        {
+          "id": 2,
+          "zone": "gauge",
+          "distance": 47.8,
+          "lateral": -0.02,
+          "center": [
+            47.83,
+            -0.25,
+            0.19
+          ],
+          "size": [
+            0.06,
+            0.3,
+            2.54
+          ],
+          "n_points": 77,
+          "confidence": 1.0,
+          "age": 134,
+          "height_min": 0.12,
+          "intensity": 30.0,
+          "reason": "column",
+          "kind": ""
+        }
+      ],
+      "executed_assignment_snapshots": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 305,
+      "info": {
+        "k": 305,
+        "X": 46.34,
+        "n_obj": 81,
+        "lat": 0.0,
+        "Y": -0.2,
+        "Zb": -1.26,
+        "axis_valid": 205.0
+      },
+      "detections": [
+        {
+          "id": 2,
+          "zone": "gauge",
+          "distance": 46.32,
+          "lateral": 0.02,
+          "center": [
+            46.34,
+            -0.2,
+            0.21
+          ],
+          "size": [
+            0.05,
+            0.2,
+            2.59
+          ],
+          "n_points": 55,
+          "confidence": 1.0,
+          "age": 135,
+          "height_min": 0.14,
+          "intensity": 30.0,
+          "reason": "",
+          "kind": ""
+        }
+      ],
+      "executed_assignment_snapshots": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "last_core": false,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 329,
+      "info": {
+        "k": 329,
+        "X": 11.02,
+        "n_obj": 1140,
+        "lat": 0.0,
+        "Y": -0.09,
+        "Zb": -1.15,
+        "axis_valid": 127.0
+      },
+      "detections": [
+        {
+          "id": 2,
+          "zone": "gauge",
+          "distance": 10.99,
+          "lateral": -0.0,
+          "center": [
+            11.02,
+            -0.09,
+            -0.05
+          ],
+          "size": [
+            0.06,
+            0.32,
+            2.64
+          ],
+          "n_points": 238,
+          "confidence": 1.0,
+          "age": 159,
+          "height_min": 0.12,
+          "intensity": 30.0,
+          "reason": "",
+          "kind": ""
+        }
+      ],
+      "executed_assignment_snapshots": [
+        {
+          "id": 2,
+          "q": true,
+          "reported_before": true,
+          "misses": 0,
+          "hold_misses": 1,
+          "last_core": true,
+          "column_hist": [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "zone_hist": [
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ]
+    }
+  ],
+  "tests": {
+    "affected-d.xml": {
+      "tests": 256,
+      "skipped": 0,
+      "failures": [
+        {
+          "classname": "tests.test_algorithm",
+          "name": "test_timing_with_accumulation"
+        }
+      ]
+    },
+    "full-tests-d-final.xml": {
+      "tests": 2197,
+      "skipped": 0,
+      "failures": [
+        {
+          "classname": "tests.test_lidar_proxy_hook",
+          "name": "test_child_process_inherits_hook_and_bad_source_fails_closed"
+        }
+      ]
+    },
+    "full-tests-d.xml": {
+      "tests": 2197,
+      "skipped": 0,
+      "failures": [
+        {
+          "classname": "tests.test_late_candidates",
+          "name": "test_free_standing_post_is_a_stop"
+        },
+        {
+          "classname": "tests.test_lidar_proxy_hook",
+          "name": "test_child_process_inherits_hook_and_bad_source_fails_closed"
+        }
+      ]
+    },
+    "proxy-base-control.xml": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": [
+        {
+          "classname": "tests.test_lidar_proxy_hook",
+          "name": "test_child_process_inherits_hook_and_bad_source_fails_closed"
+        }
+      ]
+    },
+    "timing-d-isolated.xml": {
+      "tests": 1,
+      "skipped": 0,
+      "failures": []
+    },
+    "units-d-after-isolation.xml": {
+      "tests": 129,
+      "skipped": 0,
+      "failures": []
+    }
+  },
+  "full_suite_all_green": false,
+  "source_archive": {
+    "file": "final-source.tar.gz",
+    "sha256": "67a25aada6a75ee09a95fda7e65299eeb1e4d2539817679fec2cc9d2a58cb837",
+    "bytes": 1038894,
+    "every_member_reopened_and_verified": true
+  },
+  "raw_archive": {
+    "file": "raw-evidence.tar.gz",
+    "sha256": "3295c4f171c20465533d1d02a620a8d6ece28ca0b2a82316e621e661a7e99a63",
+    "bytes": 9113546,
+    "every_member_reopened_and_verified": true
+  },
+  "independent_P4_review": "PENDING",
+  "P1_selection_reseal": "PENDING",
+  "H1_overall": "OPEN",
+  "limitations": [
+    "Observed consistency interval is not a calibrated real-world true-axis bound.",
+    "The ordinary rail finder can share wrong-pair/route or floor-reference errors with the track model.",
+    "No-rail case45 no longer supplies an absolute collision proof; raw hash/shape control is retained.",
+    "Three left-137m standing opaque cases have only one matched scan in the fixed 14-scan window.",
+    "A-axis injected-body pooled held90 is only 11.02m despite early isolated matches.",
+    "Ideal physical scenes establish no real-data 100m braking sufficiency.",
+    "Full pytest retains the independently reproduced base proxy-hook assertion failure."
+  ]
+}

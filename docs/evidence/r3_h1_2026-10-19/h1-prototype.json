@@ -1,0 +1,1054 @@
+{
+  "scope": "Read-only component prototype; true axis / supplied uncertainty, not runtime acceptance",
+  "rows": [
+    {
+      "distance": 37.0,
+      "lateral": -1.5,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 264,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 37.0,
+      "lateral": -1.5,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 304,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 37.0,
+      "lateral": -1.5,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 328,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 37.0,
+      "lateral": -1.5,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": false,
+      "raw_object_points": 248,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 37.0,
+      "lateral": -0.68,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 238,
+      "observed_height": [
+        0.16238462924957275,
+        2.6807212829589844
+      ],
+      "n_gauge": 138,
+      "observed_y": [
+        -0.8748806118965149,
+        -0.48968997597694397
+      ],
+      "max_axis_uncertainty_m": 0.02511938810348513,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 37.0,
+      "lateral": -0.68,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 273,
+      "observed_height": [
+        0.16238462924957275,
+        2.9312546253204346
+      ],
+      "n_gauge": 153,
+      "observed_y": [
+        -0.8748806118965149,
+        -0.48968997597694397
+      ],
+      "max_axis_uncertainty_m": 0.02511938810348513,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 37.0,
+      "lateral": -0.68,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 294,
+      "observed_height": [
+        0.16238462924957275,
+        2.9312546253204346
+      ],
+      "n_gauge": 153,
+      "observed_y": [
+        -0.8748806118965149,
+        -0.48968997597694397
+      ],
+      "max_axis_uncertainty_m": 0.02511938810348513,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 37.0,
+      "lateral": -0.68,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": true,
+      "raw_object_points": 224,
+      "observed_height": [
+        0.16238462924957275,
+        2.5086066722869873
+      ],
+      "n_gauge": 133,
+      "observed_y": [
+        -0.8748806118965149,
+        -0.48968997597694397
+      ],
+      "max_axis_uncertainty_m": 0.02511938810348513,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 37.0,
+      "lateral": 0.68,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 238,
+      "observed_height": [
+        0.16240239143371582,
+        2.6807119846343994
+      ],
+      "n_gauge": 136,
+      "observed_y": [
+        0.4730014204978943,
+        0.8581856489181519
+      ],
+      "max_axis_uncertainty_m": 0.04181435108184817,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 37.0,
+      "lateral": 0.68,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 273,
+      "observed_height": [
+        0.16240239143371582,
+        2.9312429428100586
+      ],
+      "n_gauge": 151,
+      "observed_y": [
+        0.4730014204978943,
+        0.8581856489181519
+      ],
+      "max_axis_uncertainty_m": 0.04181435108184817,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 37.0,
+      "lateral": 0.68,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 294,
+      "observed_height": [
+        0.16240239143371582,
+        2.9312429428100586
+      ],
+      "n_gauge": 151,
+      "observed_y": [
+        0.4730014204978943,
+        0.8581856489181519
+      ],
+      "max_axis_uncertainty_m": 0.04181435108184817,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 37.0,
+      "lateral": 0.68,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": true,
+      "raw_object_points": 224,
+      "observed_height": [
+        0.16240239143371582,
+        2.5085995197296143
+      ],
+      "n_gauge": 131,
+      "observed_y": [
+        0.4730014204978943,
+        0.8581856489181519
+      ],
+      "max_axis_uncertainty_m": 0.04181435108184817,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 37.0,
+      "lateral": 1.5,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 231,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 37.0,
+      "lateral": 1.5,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 266,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 37.0,
+      "lateral": 1.5,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 287,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 37.0,
+      "lateral": 1.5,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": false,
+      "raw_object_points": 217,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 67.0,
+      "lateral": -1.5,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 72,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 67.0,
+      "lateral": -1.5,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 84,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 67.0,
+      "lateral": -1.5,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 108,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 67.0,
+      "lateral": -1.5,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": false,
+      "raw_object_points": 68,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 67.0,
+      "lateral": -0.68,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 72,
+      "observed_height": [
+        0.16188037395477295,
+        2.648193597793579
+      ],
+      "n_gauge": 54,
+      "observed_y": [
+        -0.8892194628715515,
+        -0.5395717024803162
+      ],
+      "max_axis_uncertainty_m": 0.010780537128448509,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 67.0,
+      "lateral": -0.68,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 84,
+      "observed_height": [
+        0.16188037395477295,
+        2.939619779586792
+      ],
+      "n_gauge": 60,
+      "observed_y": [
+        -0.8892194628715515,
+        -0.5395717024803162
+      ],
+      "max_axis_uncertainty_m": 0.010780537128448509,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 67.0,
+      "lateral": -0.68,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 108,
+      "observed_height": [
+        0.16188037395477295,
+        2.939619779586792
+      ],
+      "n_gauge": 60,
+      "observed_y": [
+        -0.8892194628715515,
+        -0.5395717024803162
+      ],
+      "max_axis_uncertainty_m": 0.010780537128448509,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 67.0,
+      "lateral": -0.68,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": true,
+      "raw_object_points": 68,
+      "observed_height": [
+        0.16188037395477295,
+        2.5188112258911133
+      ],
+      "n_gauge": 51,
+      "observed_y": [
+        -0.8892194628715515,
+        -0.5395717024803162
+      ],
+      "max_axis_uncertainty_m": 0.010780537128448509,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 67.0,
+      "lateral": 0.68,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 72,
+      "observed_height": [
+        0.16189026832580566,
+        2.648188829421997
+      ],
+      "n_gauge": 72,
+      "observed_y": [
+        0.5092706084251404,
+        0.8589149713516235
+      ],
+      "max_axis_uncertainty_m": 0.04108502864837649,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 67.0,
+      "lateral": 0.68,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 84,
+      "observed_height": [
+        0.16189026832580566,
+        2.9396133422851562
+      ],
+      "n_gauge": 80,
+      "observed_y": [
+        0.5092706084251404,
+        0.8589149713516235
+      ],
+      "max_axis_uncertainty_m": 0.04108502864837649,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 67.0,
+      "lateral": 0.68,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 108,
+      "observed_height": [
+        0.16189026832580566,
+        2.9396133422851562
+      ],
+      "n_gauge": 80,
+      "observed_y": [
+        0.5092706084251404,
+        0.8589149713516235
+      ],
+      "max_axis_uncertainty_m": 0.04108502864837649,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 67.0,
+      "lateral": 0.68,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": true,
+      "raw_object_points": 68,
+      "observed_height": [
+        0.16189026832580566,
+        2.5188069343566895
+      ],
+      "n_gauge": 68,
+      "observed_y": [
+        0.5092706084251404,
+        0.8589149713516235
+      ],
+      "max_axis_uncertainty_m": 0.04108502864837649,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 67.0,
+      "lateral": 1.5,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 72,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 67.0,
+      "lateral": 1.5,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 84,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 67.0,
+      "lateral": 1.5,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 108,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 67.0,
+      "lateral": 1.5,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": false,
+      "raw_object_points": 68,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 109.0,
+      "lateral": -1.5,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 22,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 109.0,
+      "lateral": -1.5,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 26,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 109.0,
+      "lateral": -1.5,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 32,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 109.0,
+      "lateral": -1.5,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": false,
+      "raw_object_points": 20,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 109.0,
+      "lateral": -0.68,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 33,
+      "observed_height": [
+        0.30164194107055664,
+        2.659641742706299
+      ],
+      "n_gauge": 33,
+      "observed_y": [
+        -0.8789758682250977,
+        -0.49928128719329834
+      ],
+      "max_axis_uncertainty_m": 0.021024131774902366,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 109.0,
+      "lateral": -0.68,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 39,
+      "observed_height": [
+        0.30164194107055664,
+        2.9520277976989746
+      ],
+      "n_gauge": 36,
+      "observed_y": [
+        -0.8789758682250977,
+        -0.49928128719329834
+      ],
+      "max_axis_uncertainty_m": 0.021024131774902366,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 109.0,
+      "lateral": -0.68,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 48,
+      "observed_height": [
+        0.30164194107055664,
+        2.9520277976989746
+      ],
+      "n_gauge": 36,
+      "observed_y": [
+        -0.8789758682250977,
+        -0.49928128719329834
+      ],
+      "max_axis_uncertainty_m": 0.021024131774902366,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 109.0,
+      "lateral": -0.68,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": true,
+      "raw_object_points": 30,
+      "observed_height": [
+        0.30164194107055664,
+        2.4432079792022705
+      ],
+      "n_gauge": 30,
+      "observed_y": [
+        -0.8789758682250977,
+        -0.49928128719329834
+      ],
+      "max_axis_uncertainty_m": 0.021024131774902366,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "gauge",
+      "default_reason": ""
+    },
+    {
+      "distance": 109.0,
+      "lateral": 0.68,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 33,
+      "observed_height": [
+        0.3014141321182251,
+        2.6597652435302734
+      ],
+      "n_gauge": 33,
+      "observed_y": [
+        0.44999998807907104,
+        0.829614520072937
+      ],
+      "max_axis_uncertainty_m": 0.07038547992706301,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 109.0,
+      "lateral": 0.68,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 39,
+      "observed_height": [
+        0.3014141321182251,
+        2.952194929122925
+      ],
+      "n_gauge": 36,
+      "observed_y": [
+        0.44999998807907104,
+        0.829614520072937
+      ],
+      "max_axis_uncertainty_m": 0.07038547992706301,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 109.0,
+      "lateral": 0.68,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 48,
+      "observed_height": [
+        0.3014141321182251,
+        2.952194929122925
+      ],
+      "n_gauge": 36,
+      "observed_y": [
+        0.44999998807907104,
+        0.829614520072937
+      ],
+      "max_axis_uncertainty_m": 0.07038547992706301,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 109.0,
+      "lateral": 0.68,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": true,
+      "raw_object_points": 30,
+      "observed_height": [
+        0.3014141321182251,
+        2.4432992935180664
+      ],
+      "n_gauge": 30,
+      "observed_y": [
+        0.44999998807907104,
+        0.829614520072937
+      ],
+      "max_axis_uncertainty_m": 0.07038547992706301,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "gauge",
+      "default_reason": ""
+    },
+    {
+      "distance": 109.0,
+      "lateral": 1.5,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 22,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 109.0,
+      "lateral": 1.5,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 26,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 109.0,
+      "lateral": 1.5,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 32,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 109.0,
+      "lateral": 1.5,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": false,
+      "raw_object_points": 20,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 137.0,
+      "lateral": -1.5,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 18,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 137.0,
+      "lateral": -1.5,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 20,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 137.0,
+      "lateral": -1.5,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 28,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 137.0,
+      "lateral": -1.5,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": false,
+      "raw_object_points": 16,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 137.0,
+      "lateral": -0.68,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 18,
+      "observed_height": [
+        0.18279743194580078,
+        2.601052761077881
+      ],
+      "n_gauge": 9,
+      "observed_y": [
+        -0.8665241003036499,
+        -0.6278082132339478
+      ],
+      "max_axis_uncertainty_m": 0.03347589969635012,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 137.0,
+      "lateral": -0.68,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 20,
+      "observed_height": [
+        0.18279743194580078,
+        2.8731980323791504
+      ],
+      "n_gauge": 10,
+      "observed_y": [
+        -0.8665241003036499,
+        -0.6278082132339478
+      ],
+      "max_axis_uncertainty_m": 0.03347589969635012,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 137.0,
+      "lateral": -0.68,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 28,
+      "observed_height": [
+        0.18279743194580078,
+        2.8731980323791504
+      ],
+      "n_gauge": 10,
+      "observed_y": [
+        -0.8665241003036499,
+        -0.6278082132339478
+      ],
+      "max_axis_uncertainty_m": 0.03347589969635012,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 137.0,
+      "lateral": -0.68,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": true,
+      "raw_object_points": 16,
+      "observed_height": [
+        0.18279743194580078,
+        2.3145904541015625
+      ],
+      "n_gauge": 8,
+      "observed_y": [
+        -0.8665241003036499,
+        -0.6278082132339478
+      ],
+      "max_axis_uncertainty_m": 0.03347589969635012,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "gauge",
+      "default_reason": ""
+    },
+    {
+      "distance": 137.0,
+      "lateral": 0.68,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 18,
+      "observed_height": [
+        0.1828019618988037,
+        2.601050615310669
+      ],
+      "n_gauge": 18,
+      "observed_y": [
+        0.5657427906990051,
+        0.8044575452804565
+      ],
+      "max_axis_uncertainty_m": 0.09554245471954348,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 137.0,
+      "lateral": 0.68,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 20,
+      "observed_height": [
+        0.1828019618988037,
+        2.873195171356201
+      ],
+      "n_gauge": 20,
+      "observed_y": [
+        0.5657427906990051,
+        0.8044575452804565
+      ],
+      "max_axis_uncertainty_m": 0.09554245471954348,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 137.0,
+      "lateral": 0.68,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": true,
+      "raw_object_points": 28,
+      "observed_height": [
+        0.1828019618988037,
+        2.873195171356201
+      ],
+      "n_gauge": 20,
+      "observed_y": [
+        0.5657427906990051,
+        0.8044575452804565
+      ],
+      "max_axis_uncertainty_m": 0.09554245471954348,
+      "positive_core_with_supplied_3cm_bound": true,
+      "default_zone": "warning",
+      "default_reason": "column"
+    },
+    {
+      "distance": 137.0,
+      "lateral": 0.68,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": true,
+      "raw_object_points": 16,
+      "observed_height": [
+        0.1828019618988037,
+        2.314589023590088
+      ],
+      "n_gauge": 16,
+      "observed_y": [
+        0.5657427906990051,
+        0.8044575452804565
+      ],
+      "max_axis_uncertainty_m": 0.09554245471954348,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_zone": "gauge",
+      "default_reason": ""
+    },
+    {
+      "distance": 137.0,
+      "lateral": 1.5,
+      "physical_top": 2.72,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 18,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 137.0,
+      "lateral": 1.5,
+      "physical_top": 3.22,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 20,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 137.0,
+      "lateral": 1.5,
+      "physical_top": 4.12,
+      "absorbing": null,
+      "truth_enters_envelope": false,
+      "raw_object_points": 28,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    },
+    {
+      "distance": 137.0,
+      "lateral": 1.5,
+      "physical_top": 4.12,
+      "absorbing": [
+        2.54,
+        4.12
+      ],
+      "truth_enters_envelope": false,
+      "raw_object_points": 16,
+      "positive_core_with_supplied_3cm_bound": false,
+      "default_reason": "no_cluster"
+    }
+  ],
+  "cases": 64,
+  "positive_core": 17,
+  "outside_controls": 32,
+  "outside_core": 0,
+  "blockers": [
+    "No independently calibrated runtime uncertainty tube exists in this patch.",
+    "The maximum geometric axis error allowed by case45 observed points is only about 4 cm.",
+    "No real-ride false-positive or full-detector H1 acceptance is claimed."
+  ]
+}

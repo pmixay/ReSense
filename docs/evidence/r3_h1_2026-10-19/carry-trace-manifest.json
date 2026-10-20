@@ -1,0 +1,16 @@
+{
+  "archive": "carry-trace.tar.gz",
+  "bytes": 68942,
+  "sha256": "1d62e466eee4111011efcec6db96c56a45495c11075b48c5ff4618869c24461e",
+  "all_members_reopened_and_verified": true,
+  "members": {
+    "carry-final.attrib.json": {
+      "bytes": 135566,
+      "sha256": "0a84e0fd179904afc458c1ff6f83761c4b70581f8bbddb19daae6ed27ec02023"
+    },
+    "carry-final.on.jsonl": {
+      "bytes": 515268,
+      "sha256": "7b6e035e60d4c28b7378522f9b0ae55e660beef5d44c78276c83d94b1df91bb8"
+    }
+  }
+}

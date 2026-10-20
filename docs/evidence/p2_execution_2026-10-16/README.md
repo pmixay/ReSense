@@ -8,7 +8,7 @@ See [owner handoffs](HANDOFFS.md) for inputs, provenance and dependencies.
 
 P4 `6d6aaca` received: [independent intake](P4_INTAKE.md) confirms the register,
 numeric export and durable archive. Export format accepted by P2. The new
-[18-slide draft deck and charts](../../presentation/draft_2026-10-16/README.md)
+18-slide draft deck and charts (folder `docs/presentation/draft_2026-10-16/`, removed 19.10; git history keeps it)
 use those verified sources; source-backed X1/range, X3 and attribution charts,
 corrected object captions, PPTX and rendered PDF are prepared for owner review.
 Full browser acceptance passed **47/47** on a frozen frontend build.

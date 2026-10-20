@@ -1,0 +1,16 @@
+{"leaves_compared": 545, "differences": 15}
+  /five_empty/advisory_frames: 1006 -> 1004
+  /five_empty/alarm_events: 8 -> 7
+  /five_empty/alarm_frames: 39 -> 37
+  /five_empty/stop_episodes: 12 -> 11
+  /recordings/doubleT_platform/advisory_frames: 182 -> 180
+  /recordings/doubleT_platform/alarm_dist: [37.9, 38.1] -> None
+  /recordings/doubleT_platform/alarm_events: 1 -> 0
+  /recordings/doubleT_platform/alarm_frames: 2 -> 0
+  /recordings/doubleT_platform/first_alarm_frame: 36 -> None
+  /recordings/doubleT_platform/stop_episodes: 1 -> 0
+  /ride/advisory_frames: 4766 -> 4765
+  /ride/alarm_dist: [20.7, 155.4] -> [27.6, 155.4]
+  /ride/alarm_events: 27 -> 18
+  /ride/alarm_frames: 126 -> 102
+  /ride/stop_episodes: 30 -> 24

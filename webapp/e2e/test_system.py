@@ -288,6 +288,14 @@ def test_live_simulation_transport(app, seeded):
     # speed and loop, then to the end: the record ends and «Запустить» comes back
     page.get_by_role("radio", name="10×").click()
     expect(page.get_by_role("radio", name="10×")).to_have_attribute("aria-checked", "true")
+    # Delay browser startup handling longer than this short run at 10x. The
+    # reconnect must be paused on the server before onopen can send commands.
+    page.evaluate('''() => {
+        const open = Object.getOwnPropertyDescriptor(WebSocket.prototype, 'onopen');
+        Object.defineProperty(WebSocket.prototype, 'onopen', {...open, set(handler) {
+            open.set.call(this, event => setTimeout(() => handler.call(this, event), 1000));
+        }});
+    }''')
     page.get_by_role("button", name="По кругу: вкл.").click()  # loop is a socket parameter: it reconnects, still paused
     expect(page.get_by_role("button", name="По кругу: выкл.")).to_have_attribute("aria-pressed", "false")
     expect(chips(page)).to_have_text("пауза")

@@ -12,15 +12,18 @@ from resense.accumulate import CandidateBuffer
 from resense.calibration import MountCalibrator, OrientationReplayBuffer
 from resense.clustering import Cluster, find_clusters, find_hanging
 from resense.config import DetectorConfig
+from resense.dust_guard import DustGuard, degraded_health
 from resense.egomotion import EgoSpeedEstimate, EgoSpeedEstimator
 from resense.evidence import PersistentEvidence
+from resense.farline import FarAxisTracker, FarConfirm
 from resense.farrails import ring_index
 from resense.frame import Frame
 from resense.gauge import (has_edge_margin, axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
                            corridor_mask, gauge_core_mask, point_in_polygon, reference_offset, union_shift,
                            widened_profile)
 from resense.health import HealthMonitor
-from resense.lowobj import BedTemplate, low_candidates, mark_rail_line
+from resense.lowobj import (BedTemplate, low_candidates, low_free_mask, mark_rail_line, no_rail_advisory,
+                            rail_reference_check)
 from resense.track import TrackModel, estimate_track, rotate_track_model
 from resense.tracking import Tracker
 
@@ -198,6 +201,12 @@ class Detector:
         self._evidence_dt: Optional[float] = None  # validated sensor interval for sparse clear-distance evidence
         self._gaps: deque = deque(maxlen=14)  # the last stamp intervals within [0, stamp_dt_range[1]] (s): the input rate
         self._orientation_replay = OrientationReplayBuffer(self.cfg.calibration.orientation_replay_frames)
+        # 19.10 (farrange, Falcon profiles only): the far straight axis beyond farrange.axis_join
+        fr = self.cfg.farrange
+        self.far = FarAxisTracker(fr) if fr.enabled and fr.axis_enabled else None
+        self._far_axis = None
+        self.far_confirm = FarConfirm(fr) if fr.enabled and fr.confirm_enabled else None
+        self.dust_guard = DustGuard(self.cfg.dust) if self.cfg.dust.enabled else None  # 19.10 N3, off by default
 
     @property
     def mount_rotation(self) -> np.ndarray:
@@ -225,6 +234,13 @@ class Detector:
         self._evidence_dt = None
         self._gaps.clear()
         self._orientation_replay.stop("scene_reset")
+        if self.far is not None:
+            self.far.reset()
+        self._far_axis = None
+        if self.far_confirm is not None:
+            self.far_confirm.reset()
+        if self.dust_guard is not None:
+            self.dust_guard.reset()
 
     def _frame_dt(self, stamp: float) -> float:
         """Time since the previous frame from the stamps when they are sane, else the nominal
@@ -249,7 +265,16 @@ class Detector:
 
     def process(self, frame: Frame, ego_speed: Optional[float] = None) -> FrameResult:
         """Process one current input; optional bounded startup replay never publishes old inputs."""
+        if (type(self) is Detector and self.cfg.calibration.orientation_replay_frames == 0
+                and self._orientation_replay.reason == "disabled"
+                and self.calib.directional_startup_history(frame.xyz, frame.ring)):
+            # A newly recoverable ring-free side mapping has no valid prior
+            # model in the old coordinates. Rebuild only this startup; existing
+            # supported mappings retain their default-off history semantics.
+            self._orientation_replay = OrientationReplayBuffer(4)
+            self.calib._canonical_axes = True
         pending = self._orientation_replay
+        directional_history = self.cfg.calibration.orientation_replay_frames == 0 and pending.max_frames > 0
         if pending.finished or not self.cfg.calibration.enabled or self.calib._config_passed:
             return self._process_once(frame, ego_speed)
         wall_start, cpu_start = time.perf_counter(), time.process_time()
@@ -273,6 +298,7 @@ class Detector:
             fresh.calib.state.orientation = orientation
             fresh.calib.state.orientation_confirmed = True
             fresh.calib._config_passed = True
+            fresh.calib._canonical_axes = directional_history
             fresh.calib.state.message = f"sensor orientation found from the data: {orientation}"
             for saved, speed in pending.frames:
                 replayed = fresh._process_once(saved, speed)
@@ -296,6 +322,8 @@ class Detector:
         self._previous_latency_ms = elapsed
         result.timing_ms["total"] = elapsed
         if event is not None:
+            if directional_history:
+                event["trigger"] = "directional_up_axis"
             event["physical_call_ms"] = elapsed
             event["physical_cpu_ms"] = (time.process_time() - cpu_start) * 1000
             result.mount["orientation_replay"] = event
@@ -324,7 +352,17 @@ class Detector:
         frame = _finite_only(frame)
         self._frame_ring = frame.ring
         dt = self._frame_dt(frame.stamp)
+        self._travel_m = self._travel(dt)        # 19.10 (K1): read by _fit_track; None unless walls_smoothing_distance > 0
         xyz = self._fit_track(frame.xyz, self._periods())
+        if self.far is not None:
+            prev = self._far_axis
+            self._far_axis = self.far.update(xyz, self.track, cfg.gauge.range_max)
+            # buffered corridor points carry laterals from the axis of their frame: when the far axis
+            # appears, disappears or moves (0.2 m at the far end), the buffer is not comparable
+            if (prev is None) != (self._far_axis is None) or (
+                    prev is not None and abs((self._far_axis.y_join + self._far_axis.slope * (cfg.gauge.range_max - self._far_axis.join))
+                                             - (prev.y_join + prev.slope * (cfg.gauge.range_max - prev.join))) > 0.2):
+                self.buffer.clear()
         self._frame_xyz = xyz
         t1 = time.perf_counter()
         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)
@@ -338,6 +376,9 @@ class Detector:
                           if self.track.rail_axis_support > 0 else axis_valid)
         cand, straddle, near = self._low_stage(xyz, frame.intensity, dy_rail, h_all, mask, cand,
                                                min(low_axis_valid, floor_valid))
+        dust_removed = None
+        if self.dust_guard is not None:
+            cand, straddle, near, dust_removed = self._dust_qualify(xyz, dy_rail, h_all, cand, straddle, near)
         t2 = time.perf_counter()
         speed, source, est = self._speed(xyz, dy_rail, h_all, dt, ego_speed)
         if cfg.tracking.ego_veto_min_speed > 0 and est is None and ego_speed is None:
@@ -346,10 +387,13 @@ class Detector:
             est = self.ego.estimate(xyz, self.track, dt, self.tracker.tracks, dy_rail, h_all)
         self._odo_speed = (float(ego_speed) if ego_speed is not None
                            else (float(est.speed) if est is not None and est.speed is not None else None))
+        self._ego_last = est                     # 19.10 (K1): read by _travel on the next frame
         t3 = time.perf_counter()
         merged, n_acc = self._accumulate(cand, speed, dt)
         t4 = time.perf_counter()
         clusters = self._cluster(merged, n_acc, valid, floor_valid, straddle, near)
+        if cfg.track.axis_joint_reach_dual > 0:
+            self._dual_zone(clusters)
         if cfg.cluster.far_axis_both_sides == 2:
             valid = self._far_both_sides(clusters, valid, floor_valid)
         if cfg.cluster.hanging_enabled and (not cfg.cluster.hanging_needs_rails or self.track.rail_slabs > 0):
@@ -361,6 +405,14 @@ class Detector:
             # are at the axis +- rails_spacing / 2 of the rail coordinate (dy_rail, as the low stage)
             mark_rail_line(clusters + self._low_height, xyz[:, 0], dy_rail, h_all, cfg.lowobj,
                            cfg.track.rails_spacing, cfg.gauge.range_min)
+        if cfg.lowobj.local_rail_margin > 0 or cfg.lowobj.rail_band_range > 0:
+            clusters = self._rail_reference(clusters, xyz, dy_rail, h_all)
+        if cfg.lowobj.no_rail_low_within > 0 and self.track.rail_slabs == 0:
+            # 19.10 (F1 c, off by default): without the rail pair in the near range a low cluster beyond
+            # no_rail_low_within is advisory; a signature, so an earned STOP is kept by the stop-keep rule
+            no_rail_advisory(clusters, cfg.lowobj.no_rail_low_within)
+        if cfg.cluster.mount_cross_tol > 0:
+            self._mount_cross_check(clusters, xyz)
         t5 = time.perf_counter()
         gauge, warn = self._confirm(clusters, speed, dt)
         cap = self._clear_cap(clusters, cand, dy_all, h_all, trust, n_acc) if cfg.health.clear_cap else None
@@ -372,6 +424,8 @@ class Detector:
                                     wall_drift=drift if drift < 1e9 else None)
         health["latency_basis"] = "previous_complete_process"
         health["latency_sample_age_frames"] = 1 if previous_latency_ms is not None else None
+        if dust_removed is not None:
+            health = degraded_health(health, self.dust_guard.last, dust_removed)
         t7 = time.perf_counter()
 
         result = FrameResult(
@@ -413,6 +467,25 @@ class Detector:
         return min(5, max(1, int(round(float(np.mean(self._gaps)) / nominal))))
 
     # -- 1, 1b ---------------------------------------------------------------------------------
+    def _travel(self, dt: float) -> Optional[float]:
+        """Metres travelled since the previous frame from that frame's speed (given or the LiDAR estimate), for
+        the per-distance axis smoothing (19.10, ``track.walls_smoothing_distance``); None when it is off or the speed
+        is unknown."""
+        tc = self.cfg.track
+        if tc.walls_smoothing_distance <= 0 or self.track is None:
+            return None
+        v = getattr(self, "_odo_speed", None)
+        est = getattr(self, "_ego_last", None)
+        still = (v is None and est is not None and est.speed is None and est.speed_profile == 0.0 and est.corr == 0.0
+                 and self.ego.last_speed is not None and self.ego.last_speed <= tc.walls_smoothing_standstill_speed)
+        # the texture profile saw no change at all (zero energy) after the last confident speed was a crawl:
+        # standing (squareT_platform frames 320-690: 0.0, then no estimate); at most walls_smoothing_standstill_max
+        # seconds in a row (no texture can also mean a featureless tunnel)
+        self._still_s = (getattr(self, "_still_s", 0.0) + float(dt)) if still else 0.0
+        if still and self._still_s <= tc.walls_smoothing_standstill_max:
+            v = 0.0
+        return None if v is None else abs(float(v)) * float(dt)
+
     def _fit_track(self, xyz_cfg: np.ndarray, periods: int = 1) -> np.ndarray:
         """Track model (bed profile, rail-head level, axis) and the mount calibration (first
         frames, then a drift check every few seconds). Returns the cloud in the corrected frame."""
@@ -425,7 +498,18 @@ class Detector:
         # N6 uses supplied scan-line IDs only, never a Pandar table inferred for an
         # unknown sensor. Keep the older experimental curvature-refit path separate.
         rail_args = {"axis_ring": self._frame_ring} if cfg.track.rails_axis_extension else {}
-        self.track = estimate_track(xyz, cfg.track, prev=self.track, periods=periods, ring=ring, **rail_args)
+        fit_xyz = xyz
+        guard = self.dust_guard
+        if guard is not None and (guard.active or guard.light) and cfg.dust.track_filter:
+            # 19.10 N3 (dust.track_filter): diffuse returns must not move the bed / rail / axis fits
+            keep = guard.track_input(xyz, self.track)
+            if not keep.all():
+                fit_xyz = xyz[keep]
+                ring = None if ring is None else ring[keep]
+                if rail_args.get("axis_ring") is not None:
+                    rail_args = {"axis_ring": rail_args["axis_ring"][keep]}
+        self.track = estimate_track(fit_xyz, cfg.track, prev=self.track, periods=periods, ring=ring,
+                                    travel=getattr(self, "_travel_m", None), **rail_args)
         R_old = self.calib.R.copy()
         if self.calib.update(xyz_cfg, xyz, self.track, periods=periods, ring=self._frame_ring):
             xyz = self.calib.apply(xyz_cfg)
@@ -465,6 +549,10 @@ class Detector:
         (``clustering.find_clusters``, ``far_min_height``)."""
         cfg = self.cfg
         dy_all, h_all = corridor_coordinates(xyz, self.track)
+        far = self._far_axis
+        if far is not None:
+            # 19.10 (farrange): beyond the join the lateral is measured from the far straight axis
+            dy_all = dy_all - far.offset(xyz[:, 0], self.track)
         self._dy_rail = dy_all
         if cfg.gauge.axis_union == 2:
             # 26.09 (candidate B, off by default): the corridor coordinate re-measured so that the strict
@@ -510,6 +598,10 @@ class Detector:
                                 edge_margin_per_100m2=cfg.gauge.edge_margin_per_100m2 * s)
                     core[ok] = gauge_core_mask(cand.dy[ok], cand.h[ok], cand.xyz[ok, 0], g)
             cand.in_gauge = cand.in_gauge & core
+        if far is not None and cfg.farrange.axis_core_margin:
+            # 19.10 (farrange): the strict gauge shrinks by the far axis' lateral uncertainty
+            half = float(np.max(np.abs(np.asarray(cfg.gauge.profile, dtype=np.float64)[:, 0])))
+            cand.in_gauge = cand.in_gauge & (np.abs(cand.dy) <= half - far.sigma(cand.xyz[:, 0]))
         if cfg.gauge.axis_union in (1, 3):
             # 26.09 (candidates A and B2, off by default): also inside when inside the envelope measured
             # from the sensor axis (near field, straight track, the two axes within axis_union_max_offset)
@@ -519,6 +611,11 @@ class Detector:
                 cand.in_gauge = cand.in_gauge | ax
         floor_valid = max(self.track.floor_range[1] + cfg.track.floor_valid_margin, self.track.floor_verified)
         axis_valid = min(self.track.axis_valid, cfg.gauge.range_max)
+        if far is not None:
+            # never below the near model's trust (review R3). Beyond the far line's end the near model gives the
+            # laterals as before: extending the far line with its growing sigma there emptied the strict gauge
+            # and lost baseline STOPs at 80-90 m (re-review R2 is a measured residual, see the report)
+            axis_valid = max(axis_valid, min(far.valid, cfg.gauge.range_max))
         valid = min(axis_valid, floor_valid) if cfg.cluster.far_min_height <= 0 else axis_valid
         if cfg.cluster.far_axis_both_sides == 1:
             # 25.09 (far_switch), opt-in, mode 1: beyond the height reference only as far as both
@@ -575,6 +672,30 @@ class Detector:
                               ring=None if self._frame_ring is None else self._frame_ring[nidx])
         return cand, straddle, near
 
+    # -- 2c ------------------------------------------------------------------------------------
+    def _dust_qualify(self, xyz, dy_all, h_all, cand: Candidates, straddle: Optional[Candidates],
+                      near: Optional[Candidates]):
+        """19.10 N3 (``dust.enabled``, off by default; resense/dust_guard.py): while diffuse volumetric
+        returns are observed in the gauge interior, keep only locally supported returns as obstacle
+        candidates (corridor, low, straddle, near). Returns the sets and the number of candidate
+        returns kept out, or ``None`` for that number when the guard is inactive (nothing changes)."""
+        guard = self.dust_guard
+        guard.assess(xyz, dy_all, h_all)
+        if not guard.active:
+            return cand, straddle, near, None
+        removed = 0
+        out = []
+        for c in (cand, straddle, near):
+            if c is None or not len(c):
+                out.append(c)
+                continue
+            keep = guard.supported(xyz, c.idx, dy_all, h_all)
+            if c is cand:
+                removed = int((~keep).sum())
+            out.append(c if keep.all() else c.subset(keep))
+        straddle = out[1] if out[1] is None or len(out[1]) >= 3 else None
+        return out[0], straddle, out[2], removed
+
     # -- 3 -------------------------------------------------------------------------------------
     def _speed(self, xyz, dy_all, h_all, dt: float, ego_speed: Optional[float]):
         """Ego speed: given > estimated > unknown. The estimator costs 7-12 ms on real frames
@@ -617,6 +738,8 @@ class Detector:
                 else:
                     dro = dyo - ref[1]
             yo = self.track.center_y(Xo64) + (dyo if dro is None else dro)
+            if self._far_axis is not None:
+                yo = yo + self._far_axis.offset(Xo64, self.track)       # 19.10 (farrange)
             xyz_o = np.stack([Xo64, yo, self.track.rail_z(Xo64) + ho], axis=1).astype(np.float32)
             merged = cand.concat(Candidates(xyz=xyz_o, dy=dyo, h=ho, in_gauge=go, intensity=io,
                                             idx=np.full(Xo.size, -1, dtype=cand.idx.dtype),
@@ -639,6 +762,7 @@ class Detector:
         cfg = self.cfg
         acc = cfg.accumulation
         self._low_height = []
+        self._near_low = []                     # 19.10: the opt-in near-bed path's clusters (exempt from F1a)
         factor = max(1.0, n_acc * acc.min_points_scale) if n_acc > 1 else 1.0
         corr = cand.subset(~cand.low)
         dy_alt = None
@@ -657,8 +781,10 @@ class Detector:
                                 dy_alt=dy_alt, keep_thin=keep_thin,
                                 weak_from=cfg.tracking.thin_far_min_distance
                                 if cfg.cluster.weak_min_points > 0 or cfg.cluster.weak_min_rings > 0 else 0.0,
-                                frame_xyz=self._frame_xyz if cfg.cluster.column_free_max_top > 0 else None,
-                                frame_ring=self._frame_ring, frame_dy=hd[0], frame_h=hd[1])
+                                frame_xyz=self._frame_xyz if cfg.cluster.column_free_max_top > 0
+                                or cfg.cluster.column_core_margin > 0 else None,
+                                 frame_ring=self._frame_ring, frame_dy=hd[0], frame_h=hd[1],
+                                 frame_track=self.track, frame_track_cfg=cfg.track)
         if keep_thin:
             # 26.09 (tracking.stop_keep_thin, on since 26.09): the clusters flatter than min_height go
             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them
@@ -694,6 +820,7 @@ class Detector:
             # second track for anything already accepted by the rail/straddle policies.
             central = [c for c in central if not any(_overlap(c, k) for k in lows)]
             lows += central
+            self._near_low = central
         if lows:
             keep = self._not_part_of_corridor_objects(lows, straddling, clusters, corr)
             clusters = sorted(clusters + keep, key=lambda c: c.distance)
@@ -703,6 +830,32 @@ class Detector:
             self._low_height = self._not_part_of_corridor_objects(
                 self._low_height, self._low_height, clusters, corr)
         return clusters
+
+    def _dual_zone(self, clusters: List[Cluster]) -> None:
+        """20.10 (v5c, ``track.axis_joint_reach_dual``): on a frame whose trusted range the K2 reach cap shortened
+        (``track.joint_reach`` > 0), the range goes on beyond the cap (``track._joint_output``), where the walls no
+        longer confirm the joint shape. An obstacle there whose nearest point lies beyond the cap stays one only
+        when its lateral extent also reaches into the strict gauge measured from the base axis, which the
+        estimator without K2 trusts that far; otherwise it is advisory ``beyond_axis``, as with the cap alone
+        (v5b). A cluster that starts before the cap is left as it is, so nothing v5b keeps is demoted. The
+        extent is the cluster's box (accumulated points included) at its centroid's distance."""
+        tr, g = self.track, self.cfg.gauge
+        if tr is None or tr.joint_reach <= 0 or tr.base is None:
+            return
+        prof = np.asarray(g.profile, dtype=np.float64)
+        hlo, hhi = float(prof[:, 1].min()), float(prof[:, 1].max())
+        for c in clusters:
+            if c.zone != "gauge" or c.reason or float(c.bbox_min[0]) <= tr.joint_reach:
+                continue
+            x = float(c.centroid[0])
+            yb = float(tr.base.center_y(np.array([x]))[0])
+            lo, hi = float(c.bbox_min[1]) - yb, float(c.bbox_max[1]) - yb
+            near = 0.0 if lo <= 0.0 <= hi else (lo if lo > 0.0 else hi)   # its point nearest the base axis
+            h = float(np.clip(0.5 * (c.height_min + c.height_max), hlo + 0.01, hhi - 0.01))
+            dy, hh, xx = np.array([near]), np.array([h]), np.array([x])
+            inside = gauge_core_mask(dy, hh, xx, g) if has_edge_margin(g) else point_in_polygon(dy, hh, g.profile)
+            if not bool(inside[0]):
+                c.zone, c.reason = "warning", "beyond_axis"
 
     def _far_both_sides(self, clusters: List[Cluster], valid: float, floor_valid: float) -> float:
         """``cluster.far_axis_both_sides`` 2 (25.09, far_switch, opt-in): on a bent axis (no
@@ -798,6 +951,60 @@ class Detector:
             if float(h_all[m].min()) - top <= touch:
                 cl.reason, cl.zone, cl.demoted = "shell", "warning", True
 
+    def _rail_reference(self, clusters: List[Cluster], xyz: np.ndarray, dy_rail: np.ndarray,
+                        h_all: np.ndarray) -> List[Cluster]:
+        """19.10 (F1 a/b; ``lowobj.local_rail_margin`` / ``rail_band_range`` > 0): low clusters that do not rise
+        above the frame's own rail returns around them (``lowobj.rail_reference_check``; the lines measured on the
+        returns of no low cluster with ``local_rail_exclude_low``; the opt-in near-bed path's clusters, which report
+        objects below the rail head by design, are exempt) are advisory, reason ``below_rail_ref`` (a
+        signature: an earned STOP is kept by the stop-keep rule) with ``local_rail_advisory``, or else weak low
+        evidence handed to the tracker separately (it may continue a reported low STOP, never start one).
+        Returns the clusters to confirm."""
+        low = self.cfg.lowobj
+        free = low_free_mask(xyz.shape[0], clusters + self._low_height) if low.local_rail_exclude_low else None
+        # the opt-in near-bed path (lowobj.near_enabled) reports objects below the rail head by design: exempt
+        near = getattr(self, "_near_low", [])
+        check = [c for c in clusters if not any(c is k for k in near)] if near else clusters
+        weak = rail_reference_check(check, xyz[:, 0], dy_rail, h_all, low, self.cfg.track.rails_spacing, free)
+        if not weak:
+            return clusters
+        if low.local_rail_advisory:
+            for c in weak:
+                c.zone, c.reason, c.demoted = "warning", "below_rail_ref", True
+            return clusters
+        for c in weak:
+            c.low_height_weak = True
+        self._low_height = self._low_height + weak
+        return [c for c in clusters if not c.low_height_weak]
+
+    def _mount_cross_check(self, clusters: List[Cluster], xyz: np.ndarray) -> None:
+        """19.10 (``cluster.mount_cross_tol`` > 0, off by default; F1 lane, Falcon frame 4394): a second
+        height reference in the near field. The calibrated mount puts the rail-head plane at
+        ``z = -height`` (``MountCalibration.height``, frozen with the final tilt). Where the track model's
+        rail head at a gauge cluster's distance X differs from it by more than ``mount_cross_tol`` +
+        ``mount_cross_grade`` * X (a model that lost the bed: the Falcon floor fit that climbed to the
+        ceiling behind a near person), the cluster stays an obstacle only if the mount reference also puts
+        some of its points inside the envelope's height band (0 .. the profile top above the rail head);
+        otherwise it is advisory, reason ``height_conflict`` (a signature: an earned STOP is kept by the
+        stop-keep rule; never near-escalated). Only within ``mount_cross_range`` and once the mount
+        calibration is final; corridor and low clusters alike."""
+        cc = self.cfg.cluster
+        st = self.calib.state
+        if st.height is None or st.status not in ("ok", "identity") or not np.isfinite(st.height):
+            return
+        plane = -float(st.height)
+        top = float(np.asarray(self.cfg.gauge.profile, dtype=np.float64)[:, 1].max())
+        for cl in clusters:
+            if (cl.zone != "gauge" or cl.reason or cl.distance > cc.mount_cross_range
+                    or not cl.points_idx.size):
+                continue
+            x = float(cl.distance)
+            if abs(float(self.track.rail_z(x)) - plane) <= cc.mount_cross_tol + cc.mount_cross_grade * x:
+                continue
+            hm = xyz[cl.points_idx, 2].astype(np.float64) - plane
+            if np.all(hm > top) if cc.mount_cross_above_only else not np.any((hm >= 0.0) & (hm <= top)):
+                cl.reason, cl.zone, cl.demoted = "height_conflict", "warning", True
+
     # -- 6 -------------------------------------------------------------------------------------
     def _confirm(self, clusters: List[Cluster], speed: Optional[float], dt: float):
         """Temporal persistence (in seconds: the tracker gets the measured frame interval).
@@ -831,6 +1038,12 @@ class Detector:
             if pending and d.kind == "low" and d.zone == "gauge" and d.distance > low.pending_advisory_within:
                 # 26.09 (P3 start-up, candidate a, off): a low track is advisory while the calibration is pending
                 d.zone, d.reason = "warning", "calibration_pending"
+        if self.far_confirm is not None:
+            # 19.10 (farrange.confirm_*): far STOPs need range-consistent evidence over frames
+            self.far_confirm.update(self.tracker.tracks)
+            for d in dets:
+                if d.zone == "gauge" and d.distance > self.cfg.farrange.confirm_from and not self.far_confirm.ok(d.id):
+                    d.zone, d.reason = "warning", "far_unconfirmed"
         dets.sort(key=lambda d: d.distance)
         return [d for d in dets if d.zone == "gauge"], [d for d in dets if d.zone != "gauge"]
 

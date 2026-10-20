@@ -1,7 +1,7 @@
 # Extended dataset and the second lidar — organizers' files of 16.10
 
 > **Source:** organizers' chat, 16.10.2026 (relayed by the team). **Owner:** P1 (distribution), P4 (intake).
-> **Status:** links and documents recorded 17.10; analysis in progress
+> **Status:** links and documents recorded 17.10; marked bags and `obstacles.md` added 19.10; analysis in progress
 > ([evidence/extended_data_2026-10-17/](../evidence/extended_data_2026-10-17/README.md),
 > [sensor/falcon_prime/](../sensor/falcon_prime/README.md)).
 
@@ -30,6 +30,13 @@ recording from another lidar ("account for the different axis directions").
 | | `new_synth_data.zst` | 2,532,818,915 | 2026-10-16 18:43 | **new** synthetic set (person, dust / suspension per the experts' message) |
 | | `cloud_with_fake_obj.zst` | 1,746,145,824 | 2026-09-24 13:07 | Set O, unchanged (same size and date as our intake, SHA-256 `d41c2fb2…`) |
 | | `new_data.zst` | 17,078,961,996 | 2026-09-17 12:51 | the 20-minute ride, unchanged (same size and date) |
+
+**Added 19.10** (listing of 19.10; [`answers.md`](answers.md) §12): `new_synth_data_with_markers.zst`
+2,533,631,921 B, 10:21 UTC, the same three synthetic bags plus a `/synthetic_obstacle_markers` topic, and
+`obstacles.md` 1,024 B, 10:57 UTC, the order of appearance ([verbatim](obstacles_2026-10-19.md)). Checked in
+[`../evidence/synth_markers_2026-10-19/`](../evidence/synth_markers_2026-10-19/README.md): same clouds; the dust
+announced above **is** in the synthetic bags (1–14 points per burst, one or two frames), which corrects our 17.10
+"no dust" finding.
 
 Download: `python scripts/unpack_dataset.py https://disk.yandex.ru/d/SfBeRHbs8bNJAQ --member new_synth_data.zst --list`
 (or `--member falcon_test.zst`); the script streams zstd → tar and writes only what is asked for.

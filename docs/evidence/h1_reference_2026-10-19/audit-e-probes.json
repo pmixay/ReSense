@@ -1,0 +1,270 @@
+{
+  "phase": "probes",
+  "ranges": {
+    "A-axis": {
+      "previous": {
+        "cache": "roundT_squareT_pressureGate_squareT",
+        "obj": [
+          0.3,
+          0.3,
+          2.8
+        ],
+        "lat": 0.0,
+        "base": 0.0,
+        "start": 150,
+        "d0": 230.0,
+        "first_visible_X": 228.36,
+        "first_stop_X": 218.38,
+        "held_from_X": 11.02,
+        "visible_frames": 177,
+        "stop_frames": 109,
+        "bins": {
+          "3-30": "6/18",
+          "30-60": "10/21",
+          "60-100": "27/27",
+          "100-150": "20/39",
+          "150-200": "35/42",
+          "200-260": "11/30"
+        },
+        "decisions_while_visible": {
+          "GO": 5,
+          "CAUTION": 63,
+          "STOP": 109,
+          "FAULT": 0
+        },
+        "go_within_60m": 0,
+        "n_obj_at": {
+          "200": 6,
+          "150": 16,
+          "100": 26,
+          "60": 63,
+          "30": 228
+        }
+      },
+      "candidate": {
+        "cache": "roundT_squareT_pressureGate_squareT",
+        "obj": [
+          0.3,
+          0.3,
+          2.8
+        ],
+        "lat": 0.0,
+        "base": 0.0,
+        "start": 150,
+        "d0": 230.0,
+        "first_visible_X": 228.36,
+        "first_stop_X": 218.38,
+        "held_from_X": 19.75,
+        "visible_frames": 177,
+        "stop_frames": 114,
+        "bins": {
+          "3-30": "11/18",
+          "30-60": "10/21",
+          "60-100": "27/27",
+          "100-150": "20/39",
+          "150-200": "35/42",
+          "200-260": "11/30"
+        },
+        "decisions_while_visible": {
+          "GO": 5,
+          "CAUTION": 58,
+          "STOP": 114,
+          "FAULT": 0
+        },
+        "go_within_60m": 0,
+        "n_obj_at": {
+          "200": 6,
+          "150": 16,
+          "100": 26,
+          "60": 63,
+          "30": 228
+        }
+      },
+      "lost": [],
+      "added": [
+        324,
+        325,
+        326,
+        327,
+        328
+      ],
+      "new_unmatched": []
+    },
+    "C-person": {
+      "previous": {
+        "cache": "roundT_pressureGate_roundT",
+        "obj": [
+          0.5,
+          0.5,
+          1.75
+        ],
+        "lat": 0.0,
+        "base": 0.0,
+        "start": 0,
+        "d0": 230.0,
+        "first_visible_X": 230.0,
+        "first_stop_X": 82.77,
+        "held_from_X": 91.63,
+        "visible_frames": 153,
+        "stop_frames": 55,
+        "bins": {
+          "3-30": "19/19",
+          "30-60": "20/20",
+          "60-100": "16/27",
+          "100-150": "0/34",
+          "150-200": "0/33",
+          "200-260": "0/20"
+        },
+        "decisions_while_visible": {
+          "GO": 42,
+          "CAUTION": 56,
+          "STOP": 55,
+          "FAULT": 0
+        },
+        "go_within_60m": 0,
+        "n_obj_at": {
+          "200": 4,
+          "150": 5,
+          "100": 24,
+          "60": 70,
+          "30": 260
+        }
+      },
+      "candidate": {
+        "cache": "roundT_pressureGate_roundT",
+        "obj": [
+          0.5,
+          0.5,
+          1.75
+        ],
+        "lat": 0.0,
+        "base": 0.0,
+        "start": 0,
+        "d0": 230.0,
+        "first_visible_X": 230.0,
+        "first_stop_X": 82.77,
+        "held_from_X": 91.63,
+        "visible_frames": 153,
+        "stop_frames": 55,
+        "bins": {
+          "3-30": "19/19",
+          "30-60": "20/20",
+          "60-100": "16/27",
+          "100-150": "0/34",
+          "150-200": "0/33",
+          "200-260": "0/20"
+        },
+        "decisions_while_visible": {
+          "GO": 42,
+          "CAUTION": 56,
+          "STOP": 55,
+          "FAULT": 0
+        },
+        "go_within_60m": 0,
+        "n_obj_at": {
+          "200": 4,
+          "150": 5,
+          "100": 24,
+          "60": 70,
+          "30": 260
+        }
+      },
+      "lost": [],
+      "added": [],
+      "new_unmatched": []
+    },
+    "E6": {
+      "previous": {
+        "cache": "roundT_squareT_pressureGate_squareT",
+        "obj": [
+          0.05,
+          0.05,
+          2.6
+        ],
+        "lat": 0.0,
+        "base": 0.2,
+        "start": 150,
+        "d0": 230.0,
+        "first_visible_X": 222.61,
+        "first_stop_X": 86.25,
+        "held_from_X": 61.28,
+        "visible_frames": 59,
+        "stop_frames": 34,
+        "bins": {
+          "3-30": "18/18",
+          "30-60": "13/15",
+          "60-100": "3/10",
+          "100-150": "0/6",
+          "150-200": "0/4",
+          "200-260": "0/6"
+        },
+        "decisions_while_visible": {
+          "GO": 22,
+          "CAUTION": 3,
+          "STOP": 34,
+          "FAULT": 0
+        },
+        "go_within_60m": 1,
+        "n_obj_at": {
+          "200": 6,
+          "150": 9,
+          "100": 13,
+          "60": 20,
+          "30": 35
+        }
+      },
+      "candidate": {
+        "cache": "roundT_squareT_pressureGate_squareT",
+        "obj": [
+          0.05,
+          0.05,
+          2.6
+        ],
+        "lat": 0.0,
+        "base": 0.2,
+        "start": 150,
+        "d0": 230.0,
+        "first_visible_X": 222.61,
+        "first_stop_X": 86.25,
+        "held_from_X": 61.28,
+        "visible_frames": 59,
+        "stop_frames": 34,
+        "bins": {
+          "3-30": "18/18",
+          "30-60": "13/15",
+          "60-100": "3/10",
+          "100-150": "0/6",
+          "150-200": "0/4",
+          "200-260": "0/6"
+        },
+        "decisions_while_visible": {
+          "GO": 22,
+          "CAUTION": 3,
+          "STOP": 34,
+          "FAULT": 0
+        },
+        "go_within_60m": 1,
+        "n_obj_at": {
+          "200": 6,
+          "150": 9,
+          "100": 13,
+          "60": 20,
+          "30": 35
+        }
+      },
+      "lost": [],
+      "added": [],
+      "new_unmatched": []
+    }
+  },
+  "Falcon": {
+    "frames": 4443,
+    "previous_STOP": 1372,
+    "candidate_STOP": 1372,
+    "lost_STOP": [],
+    "added_STOP": [],
+    "lost_payloads": [],
+    "changed_non_timing_rows": []
+  },
+  "PASS": true
+}

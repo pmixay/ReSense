@@ -1,0 +1,3104 @@
+{
+  "status": "H1_OPEN_REFERENCE_NOT_VALIDATED",
+  "source_files": {
+    "configs/default.yaml": "a262e8bd32f2ad0cdd45926922675a985c5adf30807bd873182a86d452800d9a",
+    "configs/experimental_cross_ring.yaml": "50635961eb7e504c35616aa92aece09f4bb338e1a419cd47e3a0ba17e714790c",
+    "configs/experimental_far_rail_rings.yaml": "addfc504f36a7cbc9156f8200a2dc865e38ea62eb8978c9358441486f04dbc77",
+    "configs/experimental_fresh_stop_evidence.yaml": "2da969791562aeeda0fb180b83579f45a7f4871eb505b1129d3cfe83c2095eeb",
+    "configs/experimental_low_local_support.yaml": "49e9058704f60c2bf2897bb2249fd6a97bc21e3df4ae73a06f6fb7131d54081b",
+    "native/resense_native.cpp": "85688be18c41c68111f30e2bc45b83186650c1eead8b24a254d15c97cb2592f1",
+    "pyproject.toml": "bd429ed92c6c9606ee933607c3361548f15e3ba18c6a5415611195ce320b5866",
+    "resense/__init__.py": "0afadc11f9d78b09e83b15805b3b1cb3281e77b51013d74c837781df144bc27a",
+    "resense/_native.py": "7417a55c2b0ddc9b95a5d46d78b6af9b724203475890a59a0be4a022c6d4fd58",
+    "resense/_resense_native.so": "67fa0887e5480e24ca67138ec5271969742917a5c5869d9ab4e634599d8c7394",
+    "resense/accumulate.py": "5cc507d81e330b9e23b909e06cfbdb14cebdb553af179d512e34fb7c22e5b0bd",
+    "resense/calibration.py": "029243c62f541a206aeb5ec1fe457e9f25c4e5d7966c9e00561f6dc787293dfd",
+    "resense/cli.py": "1fd89acade866a2babe0566d15666bcdd50b167a26664d91880ec2504138b33f",
+    "resense/clustering.py": "cd905d05b30dbc0953f914bf6ada69a49d922e4cd371c5a2cd84b3267d3244c3",
+    "resense/config.py": "86e6c174ffd9659dfbe732e814e640ce449eb0de5bd707228abfa9aece098412",
+    "resense/detector.py": "836b773a48fd6a7b3dcedda57bec4367447014a71afa8f9f52d219677f216793",
+    "resense/dust.py": "723e2a22ec2f6ab0f1ae6e2d0a9bda163708b2d30e1975589a7b57aaf59e46d9",
+    "resense/dust_guard.py": "0198978ca5931d4ba9032842d7cc420ed1ea618679b231b580c5cc4b786950f1",
+    "resense/dust_health.py": "2fc9c54f491f4f23479c70df058e48032c2afc961a2317f80d71b755a0a69ef0",
+    "resense/egomotion.py": "3a52651365db0bfce0af00feb54c02d81cff78c85bad3805501c113269dc4284",
+    "resense/evidence.py": "0060dc9008d7bb4a12f3f3499301a5ce1e5baca97cc55ccbebe74a1a44ffb5f5",
+    "resense/farline.py": "a7edb0956f6544f658c1ea62cc5f24bf58a8cb1000ac8cf0854840705a45dfe0",
+    "resense/farrails.py": "5d936c3ea96e0a1849191cf04f9ffee6a69dd2f25a79fe73b4e7c35c62b9b14b",
+    "resense/frame.py": "50b905cd7101e15d10e0453152f79fbcb0201105f40a40fb0db56bdc1f7e49b9",
+    "resense/gauge.py": "54870e9998584f5d8fcf1d1d50e76fe8685e95aad40e2da7f371c600f354d16a",
+    "resense/health.py": "c1708e456b096cfb4d60333211697dec70cccc7fba584ba5bd0a7dcddc7d579f",
+    "resense/io.py": "032def133b9148dc43a0714f6ff8c84e049e4be11640093bdd8fe70bf9756b34",
+    "resense/lowobj.py": "bd6cda1c95ec790cc6a6bbf35d32c9c502b4aa349f2928389c46e8015455284d",
+    "resense/metrics.py": "b09220c134a34690bafabde598509f969392a3bb5b9260d459be6c4a45ec7f6a",
+    "resense/opinion.py": "34dc6d6d5b0471158954a6833322683ef57e879e86fd0870d28ec66d562ffec8",
+    "resense/pointcloud.py": "2f20a0e6aa3ceab96b625fc85eff3ea24cb0a7ae6675467415f53f8cd464a053",
+    "resense/sensor.py": "cfbc2684877faafc2b4b84a524021524f6fe8796d877851984a292524a6a5948",
+    "resense/synthetic.py": "6f6c86fefd70b26b6c6b2f51f01a6de43def587a8ae49f2eb2523e830a30c747",
+    "resense/track.py": "e125696a41d8fbe443e5aebe41eabc02b6e75eb69af521aafc597ec5c11f259c",
+    "resense/tracking.py": "c0ce26c693ce41410411c2841e9786a525c0ae83451bd2c7a3b3b97be73b4ed2",
+    "resense/viz.py": "3a5df9d0acb1a0d0f0dc9568131c17906bda49ac2dba65f5eb49343abe3d36db",
+    "ros2_ws/src/resense_ros/config/detector.yaml": "a262e8bd32f2ad0cdd45926922675a985c5adf30807bd873182a86d452800d9a",
+    "ros2_ws/src/resense_ros/launch/detector.launch.py": "805bce047394041039a54b4a9e58bc97a09f0bc6dbb38d8d0e4dd484377d9fb2",
+    "ros2_ws/src/resense_ros/package.xml": "5c7cc14ac93aaf5692d5e55e02bcaee5bd5ff76b1995ebc958fe63e5c057bf1d",
+    "ros2_ws/src/resense_ros/resense_ros/__init__.py": "dcf728222a541706e7746a50f13c25bf8b3a5d8b3c9530b5b66addfc4187462c",
+    "ros2_ws/src/resense_ros/resense_ros/decision_policy.py": "7f18a9eccd7245fb1d04bff03b0e2a15ff6d3f6cdd4f5b57994964d830d455b1",
+    "ros2_ws/src/resense_ros/resense_ros/detector_node.py": "828377a2cf7e677b4677cf5411784e972f2c864dcfba96db14d2dd48a1c07690",
+    "ros2_ws/src/resense_ros/resense_ros/fastcloud.py": "22133bffa0e54654f6798501da1f5102c1fa4680c286f671b0c589ccb0eaa98e",
+    "ros2_ws/src/resense_ros/resense_ros/gauge_display.py": "fb11fbe9ac4264857d0d6711e00a1de8a5920b5e9ce13b7097bf3e0fced9c42b",
+    "ros2_ws/src/resense_ros/resense_ros/sensor_profiles.py": "d5bf5f45613c3cc720a22a745323b12abf3d72ce7ed6e2c81acf20b5798bf218",
+    "ros2_ws/src/resense_ros/setup.py": "a5fa427eadb38402e22a22f887e0c565f8e34e506e93a828b56929013230f162",
+    "setup.py": "73a030dd50b47b1b43b02d72a9892ee4ed26106b686afa6cd39584222a721ee7"
+  },
+  "source_fingerprint": "9941781328d5197c75db32d8cf488b324970d606c72f6fdfe037c94ab8cef3e9",
+  "source_receipts_verified": [
+    "merged-gate-execution.json",
+    "merged-tests-execution.json",
+    "probes-merged-candidate-A-axis-execution.json",
+    "probes-merged-candidate-C-person-execution.json",
+    "probes-merged-candidate-E6-execution.json",
+    "probes-merged-candidate-Falcon-execution.json"
+  ],
+  "direct_validation": {
+    "rows": [
+      {
+        "sequence": "A",
+        "frame": 50,
+        "station": 60.0,
+        "branch": "reverse_rotation",
+        "projected_disagreement_m": 1.0515661890109561e-11,
+        "reverse_translation_m": 0.062382651699149735,
+        "reverse_rotation_deg": 1.1593625191256283,
+        "min_fitness": 0.6996714323772312
+      },
+      {
+        "sequence": "A",
+        "frame": 50,
+        "station": 100.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 3.885685063010931e-12,
+        "reverse_translation_m": 0.14065672481654845,
+        "reverse_rotation_deg": 2.5868638597400277,
+        "min_fitness": 0.407646123962564
+      },
+      {
+        "sequence": "A",
+        "frame": 50,
+        "station": 140.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 6.896852554516633e-12,
+        "reverse_translation_m": 4.162078973717373,
+        "reverse_rotation_deg": 6.236788164360056,
+        "min_fitness": 0.027752176139272913
+      },
+      {
+        "sequence": "A",
+        "frame": 100,
+        "station": 60.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 4.638125009667975e-13,
+        "reverse_translation_m": 0.18690894670749836,
+        "reverse_rotation_deg": 1.7923765220500303,
+        "min_fitness": 0.7865865477805777
+      },
+      {
+        "sequence": "A",
+        "frame": 100,
+        "station": 100.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 2.5176696611804098e-12,
+        "reverse_translation_m": 0.3563446550656376,
+        "reverse_rotation_deg": 1.9003137567745263,
+        "min_fitness": 0.19214265280823878
+      },
+      {
+        "sequence": "A",
+        "frame": 100,
+        "station": 140.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 2.0399665487735144e-11,
+        "reverse_translation_m": 4.644335609989799,
+        "reverse_rotation_deg": 1.8536919238798568,
+        "min_fitness": 0.05323785803237858
+      },
+      {
+        "sequence": "A",
+        "frame": 150,
+        "station": 60.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 4.8645127902553195e-12,
+        "reverse_translation_m": 0.5668195947010066,
+        "reverse_rotation_deg": 0.6792673913860565,
+        "min_fitness": 0.6004530234390388
+      },
+      {
+        "sequence": "A",
+        "frame": 150,
+        "station": 100.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 8.546352061208095e-12,
+        "reverse_translation_m": 0.3545688660088822,
+        "reverse_rotation_deg": 1.0170382161903802,
+        "min_fitness": 0.2113618974751339
+      },
+      {
+        "sequence": "A",
+        "frame": 150,
+        "station": 140.0,
+        "branch": "seed_disagreement",
+        "projected_disagreement_m": 2.753281084495171,
+        "reverse_translation_m": 0.8034460021275946,
+        "reverse_rotation_deg": 1.1156378847867983,
+        "min_fitness": 0.039617969579059074
+      },
+      {
+        "sequence": "A",
+        "frame": 180,
+        "station": 60.0,
+        "branch": "reverse_rotation",
+        "projected_disagreement_m": 7.0456130518276936e-12,
+        "reverse_translation_m": 0.04977237580986323,
+        "reverse_rotation_deg": 1.0812927334846365,
+        "min_fitness": 0.5494452945677123
+      },
+      {
+        "sequence": "A",
+        "frame": 180,
+        "station": 100.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 1.1460481014248843e-11,
+        "reverse_translation_m": 0.15058683972566608,
+        "reverse_rotation_deg": 1.5130222666327857,
+        "min_fitness": 0.27135963667328983
+      },
+      {
+        "sequence": "A",
+        "frame": 180,
+        "station": 140.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 1.7189376672018942e-11,
+        "reverse_translation_m": 1.201364663367566,
+        "reverse_rotation_deg": 1.661938437697822,
+        "min_fitness": 0.12334082091076169
+      },
+      {
+        "sequence": "A",
+        "frame": 220,
+        "station": 60.0,
+        "branch": "reverse_rotation",
+        "projected_disagreement_m": 5.84949504781682e-12,
+        "reverse_translation_m": 0.06935366866603553,
+        "reverse_rotation_deg": 0.9858964842179487,
+        "min_fitness": 0.6710121985287271
+      },
+      {
+        "sequence": "A",
+        "frame": 220,
+        "station": 100.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 8.436154962162593e-12,
+        "reverse_translation_m": 0.571810660203092,
+        "reverse_rotation_deg": 2.2383889094400007,
+        "min_fitness": 0.29691629955947135
+      },
+      {
+        "sequence": "A",
+        "frame": 220,
+        "station": 140.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 1.0249947235210211e-11,
+        "reverse_translation_m": 2.4342278467415195,
+        "reverse_rotation_deg": 2.6681959857681306,
+        "min_fitness": 0.13783962889330684
+      },
+      {
+        "sequence": "A",
+        "frame": 260,
+        "station": 60.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 4.560835129282542e-12,
+        "reverse_translation_m": 0.1641214747890192,
+        "reverse_rotation_deg": 0.2517580986743093,
+        "min_fitness": 0.6736611337300344
+      },
+      {
+        "sequence": "A",
+        "frame": 260,
+        "station": 100.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 6.7008810154194906e-12,
+        "reverse_translation_m": 1.8682181368067132,
+        "reverse_rotation_deg": 1.1152007153840549,
+        "min_fitness": 0.19860152560842717
+      },
+      {
+        "sequence": "A",
+        "frame": 260,
+        "station": 140.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 1.2256503118452465e-11,
+        "reverse_translation_m": 0.5252296475029735,
+        "reverse_rotation_deg": 0.35614167221473764,
+        "min_fitness": 0.13293757870120526
+      },
+      {
+        "sequence": "C",
+        "frame": 0,
+        "station": 60.0,
+        "branch": "reverse_rotation",
+        "projected_disagreement_m": 8.342443935980994e-12,
+        "reverse_translation_m": 0.03343800025948347,
+        "reverse_rotation_deg": 0.19868333675122213,
+        "min_fitness": 0.789022782903408
+      },
+      {
+        "sequence": "C",
+        "frame": 0,
+        "station": 100.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 2.1114786568821817e-12,
+        "reverse_translation_m": 0.26633546078523324,
+        "reverse_rotation_deg": 1.6252581247446336,
+        "min_fitness": 0.33136418334974294
+      },
+      {
+        "sequence": "C",
+        "frame": 0,
+        "station": 140.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 1.1471942694802954e-11,
+        "reverse_translation_m": 0.7034083381834945,
+        "reverse_rotation_deg": 5.685715882422619,
+        "min_fitness": 0.04481361426256078
+      },
+      {
+        "sequence": "C",
+        "frame": 25,
+        "station": 60.0,
+        "branch": "reverse_rotation",
+        "projected_disagreement_m": 3.174089870761517e-12,
+        "reverse_translation_m": 0.07335755495117599,
+        "reverse_rotation_deg": 0.8946907535216108,
+        "min_fitness": 0.4466135892681863
+      },
+      {
+        "sequence": "C",
+        "frame": 25,
+        "station": 100.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 2.213938155061382e-11,
+        "reverse_translation_m": 0.40295064632748845,
+        "reverse_rotation_deg": 4.46155623146601,
+        "min_fitness": 0.1212676168484752
+      },
+      {
+        "sequence": "C",
+        "frame": 25,
+        "station": 140.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 1.7859377761651522e-11,
+        "reverse_translation_m": 1.383360878667428,
+        "reverse_rotation_deg": 4.745370421210533,
+        "min_fitness": 0.05236928794661711
+      },
+      {
+        "sequence": "C",
+        "frame": 50,
+        "station": 60.0,
+        "branch": "reverse_rotation",
+        "projected_disagreement_m": 9.768704436001769e-12,
+        "reverse_translation_m": 0.06914255671600933,
+        "reverse_rotation_deg": 1.0017902448550484,
+        "min_fitness": 0.7113623696154152
+      },
+      {
+        "sequence": "C",
+        "frame": 50,
+        "station": 100.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 1.492387025628539e-11,
+        "reverse_translation_m": 1.3670545634616709,
+        "reverse_rotation_deg": 13.91425725735775,
+        "min_fitness": 0.2880135878356519
+      },
+      {
+        "sequence": "C",
+        "frame": 50,
+        "station": 140.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 0.0022462096641075744,
+        "reverse_translation_m": 1.7088885074992528,
+        "reverse_rotation_deg": 4.036577632372656,
+        "min_fitness": 0.15893261726944702
+      },
+      {
+        "sequence": "C",
+        "frame": 75,
+        "station": 60.0,
+        "branch": "reverse_rotation",
+        "projected_disagreement_m": 7.065537626567569e-12,
+        "reverse_translation_m": 0.03345500890161009,
+        "reverse_rotation_deg": 0.5086226456833716,
+        "min_fitness": 0.6620239916270831
+      },
+      {
+        "sequence": "C",
+        "frame": 75,
+        "station": 100.0,
+        "branch": "seed_disagreement",
+        "projected_disagreement_m": 2.2269521821115275,
+        "reverse_translation_m": 0.8984873633777031,
+        "reverse_rotation_deg": 6.294608004762527,
+        "min_fitness": 0.31226675320460817
+      },
+      {
+        "sequence": "C",
+        "frame": 75,
+        "station": 140.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 4.1060211686618875e-12,
+        "reverse_translation_m": 17.416123962150234,
+        "reverse_rotation_deg": 7.97184460929961,
+        "min_fitness": 0.1077144029544522
+      },
+      {
+        "sequence": "C",
+        "frame": 100,
+        "station": 60.0,
+        "branch": "common_fitness",
+        "projected_disagreement_m": 6.795906479158507e-12,
+        "reverse_translation_m": 0.0692857664241529,
+        "reverse_rotation_deg": 0.04223470268018342,
+        "min_fitness": 0.6193952033368092
+      },
+      {
+        "sequence": "C",
+        "frame": 100,
+        "station": 100.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 0.02716274319723741,
+        "reverse_translation_m": 0.3979871224204511,
+        "reverse_rotation_deg": 2.182954265713583,
+        "min_fitness": 0.36981757877280264
+      },
+      {
+        "sequence": "C",
+        "frame": 100,
+        "station": 140.0,
+        "branch": "seed_disagreement",
+        "projected_disagreement_m": 0.8687972404401895,
+        "reverse_translation_m": 70.47451370746771,
+        "reverse_rotation_deg": 112.63600866970616,
+        "min_fitness": 0.13452655889145496
+      },
+      {
+        "sequence": "C",
+        "frame": 125,
+        "station": 60.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 2.81040828138026e-11,
+        "reverse_translation_m": 0.16524137414627757,
+        "reverse_rotation_deg": 1.1222928522134263,
+        "min_fitness": 0.5768590698081808
+      },
+      {
+        "sequence": "C",
+        "frame": 125,
+        "station": 100.0,
+        "branch": "reverse_translation",
+        "projected_disagreement_m": 8.073717172683294e-12,
+        "reverse_translation_m": 0.28291944080334364,
+        "reverse_rotation_deg": 4.341492116128822,
+        "min_fitness": 0.6071824078468597
+      },
+      {
+        "sequence": "C",
+        "frame": 125,
+        "station": 140.0,
+        "branch": "seed_disagreement",
+        "projected_disagreement_m": 0.6855958259368995,
+        "reverse_translation_m": 1.831026719408895e-15,
+        "reverse_rotation_deg": 0.0,
+        "min_fitness": 0.0
+      }
+    ],
+    "counts": {
+      "reverse_rotation": 7,
+      "reverse_translation": 24,
+      "seed_disagreement": 4,
+      "common_fitness": 1
+    }
+  },
+  "positive_control": {
+    "known_partial_overlap_80m_accepted": true,
+    "corrupted_half_metre_rejected": true
+  },
+  "landmark_validation": {
+    "A": {
+      "training_landmarks": 109,
+      "validation_tracks": [
+        {
+          "id": 14,
+          "frames": 33,
+          "baseline": 43.57890474181207,
+          "p95": 0.12647543603101494,
+          "maximum": 0.15113402936266226
+        },
+        {
+          "id": 87,
+          "frames": 15,
+          "baseline": 24.57476398586237,
+          "p95": 0.05330808187592226,
+          "maximum": 0.06226411254653053
+        },
+        {
+          "id": 120,
+          "frames": 12,
+          "baseline": 17.788008851371224,
+          "p95": 0.0791692340109256,
+          "maximum": 0.09147785936491513
+        },
+        {
+          "id": 136,
+          "frames": 12,
+          "baseline": 24.63967149346907,
+          "p95": 0.24159681771416505,
+          "maximum": 0.2874150121710844
+        },
+        {
+          "id": 156,
+          "frames": 15,
+          "baseline": 21.899565896977073,
+          "p95": 0.25770495795277604,
+          "maximum": 0.265461444608882
+        },
+        {
+          "id": 180,
+          "frames": 8,
+          "baseline": 21.86876469902642,
+          "p95": 0.10974165873616261,
+          "maximum": 0.1321070644338808
+        },
+        {
+          "id": 195,
+          "frames": 45,
+          "baseline": 60.74043388939265,
+          "p95": 0.11877605524053117,
+          "maximum": 0.1382641974642652
+        },
+        {
+          "id": 245,
+          "frames": 53,
+          "baseline": 76.42173901166063,
+          "p95": 0.11767530292016652,
+          "maximum": 0.21489476776350405
+        },
+        {
+          "id": 288,
+          "frames": 22,
+          "baseline": 25.575924051275614,
+          "p95": 0.04992135335452473,
+          "maximum": 0.050211321361416046
+        },
+        {
+          "id": 318,
+          "frames": 70,
+          "baseline": 66.13178508658486,
+          "p95": 0.34176195799507936,
+          "maximum": 0.35315378215284265
+        },
+        {
+          "id": 357,
+          "frames": 38,
+          "baseline": 47.388461710480875,
+          "p95": 0.33265026566536154,
+          "maximum": 0.48038305752961896
+        },
+        {
+          "id": 396,
+          "frames": 20,
+          "baseline": 16.527276468444033,
+          "p95": 0.037458453803337316,
+          "maximum": 0.038870324937322204
+        },
+        {
+          "id": 416,
+          "frames": 23,
+          "baseline": 19.084824888306134,
+          "p95": 0.09327783888652033,
+          "maximum": 0.10705782764048002
+        },
+        {
+          "id": 462,
+          "frames": 22,
+          "baseline": 17.39513058530002,
+          "p95": 0.2262315781602236,
+          "maximum": 0.23988102075913126
+        },
+        {
+          "id": 551,
+          "frames": 14,
+          "baseline": 15.289513905964139,
+          "p95": 0.05572948972118836,
+          "maximum": 0.06721790683984862
+        },
+        {
+          "id": 575,
+          "frames": 18,
+          "baseline": 18.670857173283594,
+          "p95": 0.049269465031699565,
+          "maximum": 0.059657946118062494
+        },
+        {
+          "id": 599,
+          "frames": 25,
+          "baseline": 32.57209536113362,
+          "p95": 0.04977097069624073,
+          "maximum": 0.0900165676180873
+        },
+        {
+          "id": 640,
+          "frames": 26,
+          "baseline": 34.51776951657898,
+          "p95": 0.08408809110702105,
+          "maximum": 0.1879395561580569
+        },
+        {
+          "id": 665,
+          "frames": 25,
+          "baseline": 46.13473456847021,
+          "p95": 0.2006178864169963,
+          "maximum": 0.44100638039164786
+        },
+        {
+          "id": 709,
+          "frames": 16,
+          "baseline": 23.48715989804049,
+          "p95": 0.05428121587532157,
+          "maximum": 0.08316561878500803
+        },
+        {
+          "id": 739,
+          "frames": 55,
+          "baseline": 84.32590429300429,
+          "p95": 0.0978612978482211,
+          "maximum": 0.1374773357585246
+        },
+        {
+          "id": 756,
+          "frames": 13,
+          "baseline": 25.203689570575108,
+          "p95": 0.09216876066438538,
+          "maximum": 0.1113207507797703
+        },
+        {
+          "id": 774,
+          "frames": 8,
+          "baseline": 16.105785030132825,
+          "p95": 0.08045855177652854,
+          "maximum": 0.08878489093548786
+        },
+        {
+          "id": 824,
+          "frames": 30,
+          "baseline": 59.8828139216804,
+          "p95": 0.18381424910674368,
+          "maximum": 0.1932023746635946
+        },
+        {
+          "id": 835,
+          "frames": 15,
+          "baseline": 21.612784392222196,
+          "p95": 0.10620547881920274,
+          "maximum": 0.13879922863612598
+        },
+        {
+          "id": 852,
+          "frames": 15,
+          "baseline": 23.666296106606115,
+          "p95": 0.10326798854527296,
+          "maximum": 0.12273134206703981
+        },
+        {
+          "id": 895,
+          "frames": 12,
+          "baseline": 26.73819985104669,
+          "p95": 0.11030654421966088,
+          "maximum": 0.11284095295479003
+        },
+        {
+          "id": 969,
+          "frames": 25,
+          "baseline": 42.179179307210106,
+          "p95": 0.16862082539192366,
+          "maximum": 0.17425289941608038
+        }
+      ],
+      "tracks_p95_at_most_10cm": 13,
+      "checked_observations": 685
+    },
+    "C": {
+      "training_landmarks": 106,
+      "validation_tracks": [
+        {
+          "id": 8,
+          "frames": 11,
+          "baseline": 15.379055958930442,
+          "p95": 0.0971956890524674,
+          "maximum": 0.0986086395542576
+        },
+        {
+          "id": 16,
+          "frames": 13,
+          "baseline": 30.63560823608793,
+          "p95": 0.3274242943794354,
+          "maximum": 0.4086499530605818
+        },
+        {
+          "id": 43,
+          "frames": 12,
+          "baseline": 21.39987171349868,
+          "p95": 0.07224347325773717,
+          "maximum": 0.08739614829516444
+        },
+        {
+          "id": 80,
+          "frames": 52,
+          "baseline": 87.42482192765276,
+          "p95": 0.32316485120224964,
+          "maximum": 0.3925241549060095
+        },
+        {
+          "id": 104,
+          "frames": 17,
+          "baseline": 30.304032159967804,
+          "p95": 0.184244676441486,
+          "maximum": 0.24965865261077086
+        },
+        {
+          "id": 165,
+          "frames": 9,
+          "baseline": 16.596909515499316,
+          "p95": 0.18249632479231495,
+          "maximum": 0.19684698120263008
+        },
+        {
+          "id": 237,
+          "frames": 58,
+          "baseline": 97.82391028986284,
+          "p95": 0.14093388274219146,
+          "maximum": 0.18810375425853126
+        },
+        {
+          "id": 285,
+          "frames": 24,
+          "baseline": 37.449699827947,
+          "p95": 0.06876182060754495,
+          "maximum": 0.08111015250485774
+        },
+        {
+          "id": 309,
+          "frames": 9,
+          "baseline": 22.498833379081308,
+          "p95": 0.18402094186914555,
+          "maximum": 0.22021987752915764
+        },
+        {
+          "id": 397,
+          "frames": 18,
+          "baseline": 25.36297640414694,
+          "p95": 0.06075968174159538,
+          "maximum": 0.0622537534649168
+        },
+        {
+          "id": 446,
+          "frames": 32,
+          "baseline": 54.61043452617305,
+          "p95": 0.07286365667143434,
+          "maximum": 0.14906167851900645
+        },
+        {
+          "id": 464,
+          "frames": 15,
+          "baseline": 20.828773210500323,
+          "p95": 0.1947331200198724,
+          "maximum": 0.19938009286256037
+        },
+        {
+          "id": 498,
+          "frames": 11,
+          "baseline": 19.270711480283943,
+          "p95": 0.06701709985218804,
+          "maximum": 0.06839667855320677
+        },
+        {
+          "id": 569,
+          "frames": 14,
+          "baseline": 21.993081509349324,
+          "p95": 0.05997946023203269,
+          "maximum": 0.07104458338197672
+        },
+        {
+          "id": 650,
+          "frames": 16,
+          "baseline": 23.39968423229696,
+          "p95": 0.05523047830931903,
+          "maximum": 0.06933343724731766
+        },
+        {
+          "id": 816,
+          "frames": 15,
+          "baseline": 20.327964754246448,
+          "p95": 0.07266501075652454,
+          "maximum": 0.08889682158254904
+        },
+        {
+          "id": 1081,
+          "frames": 10,
+          "baseline": 21.59544382919843,
+          "p95": 0.1882841262822573,
+          "maximum": 0.22095647499571452
+        },
+        {
+          "id": 1271,
+          "frames": 11,
+          "baseline": 23.31994972649862,
+          "p95": 0.05752341234308081,
+          "maximum": 0.06068871933338865
+        },
+        {
+          "id": 1332,
+          "frames": 45,
+          "baseline": 79.72333450024158,
+          "p95": 0.16301273732282037,
+          "maximum": 0.17882735991587131
+        },
+        {
+          "id": 1383,
+          "frames": 17,
+          "baseline": 25.008166169484998,
+          "p95": 0.06295951504609767,
+          "maximum": 0.0638040009068219
+        },
+        {
+          "id": 1430,
+          "frames": 10,
+          "baseline": 16.192809697138106,
+          "p95": 0.2070688182019812,
+          "maximum": 0.2543221415123298
+        },
+        {
+          "id": 1558,
+          "frames": 12,
+          "baseline": 24.41849615488503,
+          "p95": 0.0599718175585342,
+          "maximum": 0.06657811599884732
+        },
+        {
+          "id": 1678,
+          "frames": 9,
+          "baseline": 21.624133424533408,
+          "p95": 0.07963291097021365,
+          "maximum": 0.10902540904025755
+        },
+        {
+          "id": 1731,
+          "frames": 12,
+          "baseline": 24.68432187001894,
+          "p95": 0.07195480395366093,
+          "maximum": 0.07840475914038485
+        },
+        {
+          "id": 1819,
+          "frames": 24,
+          "baseline": 40.134863914871026,
+          "p95": 0.08396115528424336,
+          "maximum": 0.11384711055730115
+        },
+        {
+          "id": 1941,
+          "frames": 10,
+          "baseline": 20.02297465779308,
+          "p95": 0.05097118523682539,
+          "maximum": 0.05612879004716341
+        },
+        {
+          "id": 2041,
+          "frames": 14,
+          "baseline": 21.71746800508253,
+          "p95": 0.10987818543247224,
+          "maximum": 0.13071063658187113
+        }
+      ],
+      "tracks_p95_at_most_10cm": 16,
+      "checked_observations": 500
+    }
+  },
+  "gate": {
+    "metrics": [
+      {
+        "metric": "recordings.doubleT_obstacle.frames",
+        "baseline": 201,
+        "current": 201,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_obstacle.alarm_events",
+        "baseline": 2,
+        "current": 2,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_obstacle.stop_episodes",
+        "baseline": 1,
+        "current": 1,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_obstacle.alarm_frames",
+        "baseline": 193,
+        "current": 193,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_obstacle.advisory_frames",
+        "baseline": 91,
+        "current": 91,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_obstacle.first_alarm_frame",
+        "baseline": 8,
+        "current": 8,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_obstacle.labelled.object_on_rail.hits",
+        "baseline": 129,
+        "current": 129,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_obstacle.labelled.person_crossing.hits",
+        "baseline": 61,
+        "current": 61,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_obstacle.labelled.object_on_rail_from_frame_75.hits",
+        "baseline": 126,
+        "current": 126,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_obstacle.labelled.hits",
+        "baseline": 190,
+        "current": 190,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_obstacle.labelled.fp_events",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_obstacle.labelled.distance_error_max_m",
+        "baseline": 0.23,
+        "current": 0.23,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_platform.frames",
+        "baseline": 345,
+        "current": 345,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_platform.alarm_events",
+        "baseline": 1,
+        "current": 0,
+        "verdict": "better",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_platform.stop_episodes",
+        "baseline": 1,
+        "current": 0,
+        "verdict": "better",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_platform.alarm_frames",
+        "baseline": 2,
+        "current": 0,
+        "verdict": "better",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.doubleT_platform.advisory_frames",
+        "baseline": 182,
+        "current": 180,
+        "verdict": "better",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_doubleT.frames",
+        "baseline": 252,
+        "current": 252,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_doubleT.alarm_events",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_doubleT.stop_episodes",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_doubleT.alarm_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_doubleT.advisory_frames",
+        "baseline": 173,
+        "current": 173,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_pressureGate_roundT.frames",
+        "baseline": 268,
+        "current": 268,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_pressureGate_roundT.alarm_events",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_pressureGate_roundT.stop_episodes",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_pressureGate_roundT.alarm_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_pressureGate_roundT.advisory_frames",
+        "baseline": 107,
+        "current": 107,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_squareT_pressureGate_squareT.frames",
+        "baseline": 545,
+        "current": 545,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_squareT_pressureGate_squareT.alarm_events",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_squareT_pressureGate_squareT.stop_episodes",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_squareT_pressureGate_squareT.alarm_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.roundT_squareT_pressureGate_squareT.advisory_frames",
+        "baseline": 146,
+        "current": 146,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.squareT_platform_squareT_switch.frames",
+        "baseline": 877,
+        "current": 877,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.squareT_platform_squareT_switch.alarm_events",
+        "baseline": 7,
+        "current": 7,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.squareT_platform_squareT_switch.stop_episodes",
+        "baseline": 11,
+        "current": 11,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.squareT_platform_squareT_switch.alarm_frames",
+        "baseline": 37,
+        "current": 37,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "recordings.squareT_platform_squareT_switch.advisory_frames",
+        "baseline": 398,
+        "current": 398,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "five_empty.alarm_events",
+        "baseline": 8,
+        "current": 7,
+        "verdict": "better",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "five_empty.stop_episodes",
+        "baseline": 12,
+        "current": 11,
+        "verdict": "better",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "five_empty.alarm_frames",
+        "baseline": 39,
+        "current": 37,
+        "verdict": "better",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "ride.frames",
+        "baseline": 11271,
+        "current": 11271,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "ride.alarm_events",
+        "baseline": 27,
+        "current": 18,
+        "verdict": "better",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "ride.stop_episodes",
+        "baseline": 30,
+        "current": 24,
+        "verdict": "better",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "ride.alarm_frames",
+        "baseline": 126,
+        "current": 102,
+        "verdict": "better",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.frames",
+        "baseline": 1510,
+        "current": 1510,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_center.stop_frames",
+        "baseline": 208,
+        "current": 208,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_center.first_stop_m",
+        "baseline": 98.0,
+        "current": 98.0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_center.held_from_m",
+        "baseline": 98.7,
+        "current": 98.7,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_center.max_missed_streak_frames",
+        "baseline": 5,
+        "current": 5,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_center.max_missed_span_m",
+        "baseline": 0.5,
+        "current": 0.5,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_center.advisory_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_center.bins.0-50.visible_frames",
+        "baseline": 43,
+        "current": 43,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_center.bins.0-50.stop_frames",
+        "baseline": 43,
+        "current": 43,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_center.bins.50-100.visible_frames",
+        "baseline": 170,
+        "current": 170,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_center.bins.50-100.stop_frames",
+        "baseline": 165,
+        "current": 165,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_center.stop_frames",
+        "baseline": 32,
+        "current": 32,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_center.first_stop_m",
+        "baseline": 55.8,
+        "current": 55.8,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_center.held_from_m",
+        "baseline": 60.8,
+        "current": 60.8,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_center.max_missed_streak_frames",
+        "baseline": 47,
+        "current": 47,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_center.max_missed_span_m",
+        "baseline": 71.4,
+        "current": 71.4,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_center.advisory_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_center.bins.0-50.visible_frames",
+        "baseline": 28,
+        "current": 28,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_center.bins.0-50.stop_frames",
+        "baseline": 28,
+        "current": 28,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_center.bins.50-100.visible_frames",
+        "baseline": 31,
+        "current": 31,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_center.bins.50-100.stop_frames",
+        "baseline": 4,
+        "current": 4,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_center.bins.100-150.visible_frames",
+        "baseline": 20,
+        "current": 20,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_center.bins.100-150.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_on_rail.stop_frames",
+        "baseline": 23,
+        "current": 23,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_on_rail.first_stop_m",
+        "baseline": 42.7,
+        "current": 42.7,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_on_rail.held_from_m",
+        "baseline": 46.2,
+        "current": 46.2,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_on_rail.max_missed_streak_frames",
+        "baseline": 23,
+        "current": 23,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_on_rail.max_missed_span_m",
+        "baseline": 38.7,
+        "current": 38.7,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_on_rail.advisory_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_on_rail.bins.0-50.visible_frames",
+        "baseline": 27,
+        "current": 27,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_on_rail.bins.0-50.stop_frames",
+        "baseline": 23,
+        "current": 23,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_on_rail.bins.50-100.visible_frames",
+        "baseline": 19,
+        "current": 19,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_on_rail.bins.50-100.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_on_rail.bins.100-150.visible_frames",
+        "baseline": 1,
+        "current": 1,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_on_rail.bins.100-150.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_on_rail.bins.200-300.visible_frames",
+        "baseline": 2,
+        "current": 2,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_on_rail.bins.200-300.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_edge_inside.stop_frames",
+        "baseline": 18,
+        "current": 18,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_edge_inside.first_stop_m",
+        "baseline": 35.0,
+        "current": 35.0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_edge_inside.held_from_m",
+        "baseline": 38.7,
+        "current": 38.7,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_edge_inside.max_missed_streak_frames",
+        "baseline": 61,
+        "current": 61,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_edge_inside.max_missed_span_m",
+        "baseline": 109.0,
+        "current": 109.0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_edge_inside.advisory_frames",
+        "baseline": 7,
+        "current": 7,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_edge_inside.bins.0-50.visible_frames",
+        "baseline": 26,
+        "current": 26,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_edge_inside.bins.0-50.stop_frames",
+        "baseline": 18,
+        "current": 18,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_edge_inside.bins.50-100.visible_frames",
+        "baseline": 27,
+        "current": 27,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_edge_inside.bins.50-100.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_edge_inside.bins.100-150.visible_frames",
+        "baseline": 27,
+        "current": 27,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_edge_inside.bins.100-150.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_edge_inside.bins.150-200.visible_frames",
+        "baseline": 3,
+        "current": 3,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_edge_inside.bins.150-200.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_outside_near.false_stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.small_outside_near.advisory_frames",
+        "baseline": 24,
+        "current": 24,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.stop_frames",
+        "baseline": 7,
+        "current": 7,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.first_stop_m",
+        "baseline": 18.3,
+        "current": 18.3,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.held_from_m",
+        "baseline": 10.3,
+        "current": 10.3,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.max_missed_streak_frames",
+        "baseline": 106,
+        "current": 106,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.max_missed_span_m",
+        "baseline": 202.4,
+        "current": 202.4,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.advisory_frames",
+        "baseline": 1,
+        "current": 1,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.bins.0-50.visible_frames",
+        "baseline": 25,
+        "current": 25,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.bins.0-50.stop_frames",
+        "baseline": 7,
+        "current": 7,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.bins.50-100.visible_frames",
+        "baseline": 26,
+        "current": 26,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.bins.50-100.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.bins.100-150.visible_frames",
+        "baseline": 26,
+        "current": 26,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.bins.100-150.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.bins.150-200.visible_frames",
+        "baseline": 26,
+        "current": 26,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.bins.150-200.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.bins.200-300.visible_frames",
+        "baseline": 22,
+        "current": 22,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_edge_inside.bins.200-300.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_outside.false_stop_frames",
+        "baseline": 6,
+        "current": 6,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_outside.advisory_frames",
+        "baseline": 43,
+        "current": 43,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.stop_frames",
+        "baseline": 56,
+        "current": 56,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.first_stop_m",
+        "baseline": 111.4,
+        "current": 111.4,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.held_from_m",
+        "baseline": 123.6,
+        "current": 123.6,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.max_missed_streak_frames",
+        "baseline": 68,
+        "current": 68,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.max_missed_span_m",
+        "baseline": 134.7,
+        "current": 134.7,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.advisory_frames",
+        "baseline": 6,
+        "current": 6,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.bins.0-50.visible_frames",
+        "baseline": 25,
+        "current": 25,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.bins.0-50.stop_frames",
+        "baseline": 25,
+        "current": 25,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.bins.50-100.visible_frames",
+        "baseline": 25,
+        "current": 25,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.bins.50-100.stop_frames",
+        "baseline": 25,
+        "current": 25,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.bins.100-150.visible_frames",
+        "baseline": 25,
+        "current": 25,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.bins.100-150.stop_frames",
+        "baseline": 6,
+        "current": 6,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.bins.150-200.visible_frames",
+        "baseline": 24,
+        "current": 24,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.bins.150-200.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.bins.200-300.visible_frames",
+        "baseline": 25,
+        "current": 25,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.big_above.bins.200-300.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.long_low_on_rails.stop_frames",
+        "baseline": 52,
+        "current": 52,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.long_low_on_rails.first_stop_m",
+        "baseline": 87.2,
+        "current": 87.2,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.long_low_on_rails.held_from_m",
+        "baseline": 95.9,
+        "current": 95.9,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.long_low_on_rails.max_missed_streak_frames",
+        "baseline": 18,
+        "current": 18,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.long_low_on_rails.max_missed_span_m",
+        "baseline": 30.4,
+        "current": 30.4,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.long_low_on_rails.advisory_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.long_low_on_rails.bins.0-50.visible_frames",
+        "baseline": 29,
+        "current": 29,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.long_low_on_rails.bins.0-50.stop_frames",
+        "baseline": 29,
+        "current": 29,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.long_low_on_rails.bins.50-100.visible_frames",
+        "baseline": 30,
+        "current": 30,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.long_low_on_rails.bins.50-100.stop_frames",
+        "baseline": 23,
+        "current": 23,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.long_low_on_rails.bins.100-150.visible_frames",
+        "baseline": 15,
+        "current": 15,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.long_low_on_rails.bins.100-150.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.long_low_on_rails.bins.200-300.visible_frames",
+        "baseline": 12,
+        "current": 12,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.long_low_on_rails.bins.200-300.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.thin_hanging.stop_frames",
+        "baseline": 15,
+        "current": 18,
+        "verdict": "better",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.thin_hanging.first_stop_m",
+        "baseline": 30.1,
+        "current": 35.1,
+        "verdict": "better",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.thin_hanging.held_from_m",
+        "baseline": 31.8,
+        "current": 40.0,
+        "verdict": "better",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.thin_hanging.max_missed_streak_frames",
+        "baseline": 4,
+        "current": 4,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.thin_hanging.max_missed_span_m",
+        "baseline": 4.9,
+        "current": 4.9,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.thin_hanging.advisory_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.thin_hanging.bins.0-50.visible_frames",
+        "baseline": 24,
+        "current": 24,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.thin_hanging.bins.0-50.stop_frames",
+        "baseline": 15,
+        "current": 18,
+        "verdict": "better",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.thin_hanging.bins.50-100.visible_frames",
+        "baseline": 10,
+        "current": 10,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.thin_hanging.bins.50-100.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.thin_hanging.bins.100-150.visible_frames",
+        "baseline": 3,
+        "current": 3,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.thin_hanging.bins.100-150.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.thin_hanging.bins.150-200.visible_frames",
+        "baseline": 5,
+        "current": 5,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.objects.thin_hanging.bins.150-200.stop_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.background.alarm_frames",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.background.track_ids",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.inside_stop_frames",
+        "baseline": 411,
+        "current": 414,
+        "verdict": "better",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_O.outside_false_stop_frames",
+        "baseline": 6,
+        "current": 6,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.person.detected",
+        "baseline": 6,
+        "current": 6,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.person.first_detection_median_m",
+        "baseline": 151.0,
+        "current": 151.0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.person.false_detections",
+        "baseline": 6,
+        "current": 6,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.person.sustained_median_m",
+        "baseline": 157.1,
+        "current": 157.1,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.person.recall_0-50",
+        "baseline": 106,
+        "current": 106,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.person.recall_50-100",
+        "baseline": 125,
+        "current": 125,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.person.recall_100-150",
+        "baseline": 120,
+        "current": 120,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.person.recall_150-200",
+        "baseline": 13,
+        "current": 13,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.person.recall_200-250",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box1.0.detected",
+        "baseline": 6,
+        "current": 6,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box1.0.first_detection_median_m",
+        "baseline": 123.9,
+        "current": 123.9,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box1.0.false_detections",
+        "baseline": 12,
+        "current": 12,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box1.0.sustained_median_m",
+        "baseline": 119.0,
+        "current": 119.0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box1.0.recall_0-50",
+        "baseline": 106,
+        "current": 106,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box1.0.recall_50-100",
+        "baseline": 123,
+        "current": 123,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box1.0.recall_100-150",
+        "baseline": 47,
+        "current": 47,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box1.0.recall_150-200",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box1.0.recall_200-250",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box0.5.detected",
+        "baseline": 2,
+        "current": 2,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box0.5.first_detection_median_m",
+        "baseline": 64.4,
+        "current": 64.4,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box0.5.false_detections",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box0.5.sustained_median_m",
+        "baseline": 55.6,
+        "current": 55.6,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box0.5.recall_0-50",
+        "baseline": 18,
+        "current": 18,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box0.5.recall_50-100",
+        "baseline": 5,
+        "current": 5,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box0.5.recall_100-150",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box0.5.recall_150-200",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.box0.5.recall_200-250",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.trolley.detected",
+        "baseline": 6,
+        "current": 6,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.trolley.first_detection_median_m",
+        "baseline": 151.4,
+        "current": 151.4,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.trolley.false_detections",
+        "baseline": 5,
+        "current": 5,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.trolley.sustained_median_m",
+        "baseline": 120.9,
+        "current": 120.9,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.trolley.recall_0-50",
+        "baseline": 106,
+        "current": 106,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.trolley.recall_50-100",
+        "baseline": 124,
+        "current": 124,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.trolley.recall_100-150",
+        "baseline": 60,
+        "current": 60,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.trolley.recall_150-200",
+        "baseline": 9,
+        "current": 9,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.trolley.recall_200-250",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.cable.detected",
+        "baseline": 6,
+        "current": 6,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.cable.first_detection_median_m",
+        "baseline": 98.9,
+        "current": 98.9,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.cable.false_detections",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": true,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.cable.sustained_median_m",
+        "baseline": 34.2,
+        "current": 17.8,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.cable.recall_0-50",
+        "baseline": 43,
+        "current": 50,
+        "verdict": "better",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.cable.recall_50-100",
+        "baseline": 47,
+        "current": 49,
+        "verdict": "better",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.cable.recall_100-150",
+        "baseline": 12,
+        "current": 12,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.cable.recall_150-200",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "set_F_straight.cable.recall_200-250",
+        "baseline": 0,
+        "current": 0,
+        "verdict": "same",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.doubleT_obstacle.mean",
+        "baseline": 43.2,
+        "current": 61.4,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.doubleT_obstacle.p95",
+        "baseline": 84.4,
+        "current": 213.3,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.doubleT_platform.mean",
+        "baseline": 57.2,
+        "current": 70.4,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.doubleT_platform.p95",
+        "baseline": 100.3,
+        "current": 320.8,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.roundT_doubleT.mean",
+        "baseline": 55.4,
+        "current": 66.7,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.roundT_doubleT.p95",
+        "baseline": 85.0,
+        "current": 263.8,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.roundT_pressureGate_roundT.mean",
+        "baseline": 52.2,
+        "current": 55.4,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.roundT_pressureGate_roundT.p95",
+        "baseline": 80.5,
+        "current": 248.0,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.roundT_squareT_pressureGate_squareT.mean",
+        "baseline": 41.8,
+        "current": 51.8,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.roundT_squareT_pressureGate_squareT.p95",
+        "baseline": 71.6,
+        "current": 229.7,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.squareT_platform_squareT_switch.mean",
+        "baseline": 43.7,
+        "current": 55.2,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.squareT_platform_squareT_switch.p95",
+        "baseline": 72.5,
+        "current": 246.3,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.cloud_with_fake_obj.mean",
+        "baseline": 60.9,
+        "current": 51.5,
+        "verdict": "better",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.cloud_with_fake_obj.p95",
+        "baseline": 138.0,
+        "current": 222.1,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.new_data.mean",
+        "baseline": 48.3,
+        "current": 57.4,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      },
+      {
+        "metric": "latency_ms.new_data.p95",
+        "baseline": 118.0,
+        "current": 247.5,
+        "verdict": "worse",
+        "gated": false,
+        "allowed": false,
+        "fails": false
+      }
+    ],
+    "raw_counts": {
+      "cloud_with_fake_obj": {
+        "frames": 1510,
+        "STOP_frames": 450
+      },
+      "doubleT_obstacle": {
+        "frames": 201,
+        "STOP_frames": 193
+      },
+      "doubleT_platform": {
+        "frames": 345,
+        "STOP_frames": 0
+      },
+      "new_data_0": {
+        "frames": 1409,
+        "STOP_frames": 12
+      },
+      "new_data_1": {
+        "frames": 1409,
+        "STOP_frames": 6
+      },
+      "new_data_2": {
+        "frames": 1409,
+        "STOP_frames": 2
+      },
+      "new_data_3": {
+        "frames": 1409,
+        "STOP_frames": 2
+      },
+      "new_data_4": {
+        "frames": 1409,
+        "STOP_frames": 16
+      },
+      "new_data_5": {
+        "frames": 1409,
+        "STOP_frames": 32
+      },
+      "new_data_6": {
+        "frames": 1409,
+        "STOP_frames": 27
+      },
+      "new_data_7": {
+        "frames": 1408,
+        "STOP_frames": 5
+      },
+      "roundT_doubleT": {
+        "frames": 252,
+        "STOP_frames": 0
+      },
+      "roundT_pressureGate_roundT": {
+        "frames": 268,
+        "STOP_frames": 0
+      },
+      "roundT_squareT_pressureGate_squareT": {
+        "frames": 545,
+        "STOP_frames": 0
+      },
+      "squareT_platform_squareT_switch": {
+        "frames": 877,
+        "STOP_frames": 37
+      }
+    },
+    "passed": true,
+    "non_timing_verdicts": {
+      "same": 190,
+      "better": 17,
+      "worse": 1
+    },
+    "main_non_timing_metric_identity": {
+      "rows": 208,
+      "identical": true,
+      "reference": "docs/evidence/integration_2026-10-19/runs/gate_final_4cf8e27.json"
+    }
+  },
+  "probes": {
+    "A-axis": {
+      "rows": 340,
+      "identical_to_E": true,
+      "matched": 114,
+      "visible": 177,
+      "summary": {
+        "cache": "roundT_squareT_pressureGate_squareT",
+        "obj": [
+          0.3,
+          0.3,
+          2.8
+        ],
+        "lat": 0.0,
+        "base": 0.0,
+        "start": 150,
+        "d0": 230.0,
+        "first_visible_X": 228.36,
+        "first_stop_X": 218.38,
+        "held_from_X": 19.75,
+        "visible_frames": 177,
+        "stop_frames": 114,
+        "bins": {
+          "3-30": "11/18",
+          "30-60": "10/21",
+          "60-100": "27/27",
+          "100-150": "20/39",
+          "150-200": "35/42",
+          "200-260": "11/30"
+        },
+        "decisions_while_visible": {
+          "GO": 5,
+          "CAUTION": 58,
+          "STOP": 114,
+          "FAULT": 0
+        },
+        "go_within_60m": 0,
+        "n_obj_at": {
+          "200": 6,
+          "150": 16,
+          "100": 26,
+          "60": 63,
+          "30": 228
+        }
+      }
+    },
+    "C-person": {
+      "rows": 268,
+      "identical_to_E": true,
+      "matched": 55,
+      "visible": 153,
+      "summary": {
+        "cache": "roundT_pressureGate_roundT",
+        "obj": [
+          0.5,
+          0.5,
+          1.75
+        ],
+        "lat": 0.0,
+        "base": 0.0,
+        "start": 0,
+        "d0": 230.0,
+        "first_visible_X": 230.0,
+        "first_stop_X": 82.77,
+        "held_from_X": 91.63,
+        "visible_frames": 153,
+        "stop_frames": 55,
+        "bins": {
+          "3-30": "19/19",
+          "30-60": "20/20",
+          "60-100": "16/27",
+          "100-150": "0/34",
+          "150-200": "0/33",
+          "200-260": "0/20"
+        },
+        "decisions_while_visible": {
+          "GO": 42,
+          "CAUTION": 56,
+          "STOP": 55,
+          "FAULT": 0
+        },
+        "go_within_60m": 0,
+        "n_obj_at": {
+          "200": 4,
+          "150": 5,
+          "100": 24,
+          "60": 70,
+          "30": 260
+        }
+      }
+    },
+    "E6": {
+      "rows": 340,
+      "identical_to_E": true,
+      "matched": 34,
+      "visible": 59,
+      "summary": {
+        "cache": "roundT_squareT_pressureGate_squareT",
+        "obj": [
+          0.05,
+          0.05,
+          2.6
+        ],
+        "lat": 0.0,
+        "base": 0.2,
+        "start": 150,
+        "d0": 230.0,
+        "first_visible_X": 222.61,
+        "first_stop_X": 86.25,
+        "held_from_X": 61.28,
+        "visible_frames": 59,
+        "stop_frames": 34,
+        "bins": {
+          "3-30": "18/18",
+          "30-60": "13/15",
+          "60-100": "3/10",
+          "100-150": "0/6",
+          "150-200": "0/4",
+          "200-260": "0/6"
+        },
+        "decisions_while_visible": {
+          "GO": 22,
+          "CAUTION": 3,
+          "STOP": 34,
+          "FAULT": 0
+        },
+        "go_within_60m": 1,
+        "n_obj_at": {
+          "200": 6,
+          "150": 9,
+          "100": 13,
+          "60": 20,
+          "30": 35
+        }
+      }
+    }
+  },
+  "Falcon": {
+    "rows": 4443,
+    "old_STOP": 1372,
+    "merged_STOP": 1364,
+    "removed_STOP": [
+      4394,
+      4395,
+      4396,
+      4397,
+      4398,
+      4399,
+      4400,
+      4401
+    ],
+    "added_STOP": [],
+    "detection_payload_changes": [
+      4394,
+      4395,
+      4396,
+      4397,
+      4398,
+      4399,
+      4400,
+      4401
+    ],
+    "attribution": "Exactly the eight ceiling STOP frames removed by H-prime in origin/main integration; other detection payloads are identical."
+  },
+  "tests": {
+    "junit_cases": 2277,
+    "failures": [
+      {
+        "name": "test_child_process_inherits_hook_and_bad_source_fails_closed",
+        "file": "tests.test_lidar_proxy_hook",
+        "message": "assert (86 == 86 and 'outside the pinned source' in 'Traceback (most recent call last):\\n  File \"/home/aiops/resense/docs/evidence/n2_falcon_2026-10-18/proxy_hook/sitecus...y\", line 20, in install\\n    from resense.detector import Detector\\nModuleNotFoundError: No module named \\'resense\\'\\n')\n +  where 86 = CompletedProcess(args=['/tmp/opencode/resense-b4-venv/bin/python', '-c', 'raise SystemExit(0)'], returncode=86, stdout...\", line 20, in install\\n    from resense.detector import Detector\\nModuleNotFoundError: No module named \\'resense\\'\\n').returncode\n +  and   'Traceback (most recent call last):\\n  File \"/home/aiops/resense/docs/evidence/n2_falcon_2026-10-18/proxy_hook/sitecus...y\", line 20, in install\\n    from resense.detector import Detector\\nModuleNotFoundError: No module named \\'resense\\'\\n' = CompletedProcess(args=['/tmp/opencode/resense-b4-venv/bin/python', '-c', 'raise SystemExit(0)'], returncode=86, stdout...\", line 20, in install\\n    from resense.detector import Detector\\nModuleNotFoundError: No module named \\'resense\\'\\n').stderr"
+      }
+    ],
+    "subtests_included": true
+  }
+}

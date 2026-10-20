@@ -1,0 +1,266 @@
+[
+  {
+    "frame": 0,
+    "points": 340888,
+    "has_ring": true,
+    "input_sha256": "4b35fa78cae50b9fa2cb08e85f83239bfec147b4cbd610faf2cc81a65347b29d",
+    "positive_fraction": [
+      0.9403683853877903,
+      0.556520667775519,
+      0.308753773178094
+    ],
+    "forward_axis": 0,
+    "forward_sign": 1,
+    "transverse_angles_q": [
+      [
+        -88.43764520945784,
+        -152.14103712152868
+      ],
+      [
+        -80.21686754245667,
+        -126.46225356475522
+      ],
+      [
+        -63.10260029185773,
+        -31.55178929802162
+      ],
+      [
+        10.095976485438502,
+        -3.701935822706475
+      ],
+      [
+        81.43057072972977,
+        11.478040860171594
+      ],
+      [
+        95.40405793211504,
+        99.27905762436109
+      ],
+      [
+        97.21526757278279,
+        147.07746437115802
+      ]
+    ],
+    "observations": [
+      {
+        "rotation": 0,
+        "observation": {
+          "ok": true,
+          "rail_score": 0.15776856138398185,
+          "roll": 0.053033946446998326,
+          "pitch": -0.014851895038905587,
+          "yaw": 0.03065855886103213,
+          "height": 1.5036508735850411,
+          "lateral": 0.05806026449263568,
+          "forward_ratio": 40548.0
+        },
+        "accepted": true,
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "orientation_confirmed": true,
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": "",
+          "orientation_conflict": false
+        },
+        "forward_evidence": null,
+        "up_evidence": null
+      },
+      {
+        "rotation": 4,
+        "observation": {
+          "ok": true,
+          "rail_score": 0.16952221250232424,
+          "roll": 0.040929191169291335,
+          "pitch": 0.026807126121766795,
+          "yaw": 0.02356727480880065,
+          "height": 6.507825298587683,
+          "lateral": 0.19486253991623897,
+          "forward_ratio": 40548.0
+        },
+        "accepted": true,
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "orientation_confirmed": true,
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": "",
+          "orientation_conflict": false
+        },
+        "forward_evidence": null,
+        "up_evidence": null
+      },
+      {
+        "rotation": 5,
+        "observation": {
+          "ok": true,
+          "rail_score": 0.09568460942149065,
+          "roll": 0.04248364238610107,
+          "pitch": 0.08389229155639999,
+          "yaw": NaN,
+          "height": 2.8349048783032678,
+          "lateral": -0.7750000000000065,
+          "forward_ratio": 40548.0
+        },
+        "accepted": true,
+        "mount": {
+          "status": "pending",
+          "orientation": "configured",
+          "orientation_confirmed": true,
+          "roll_deg": 0.0,
+          "pitch_deg": 0.0,
+          "yaw_deg": 0.0,
+          "height": null,
+          "lateral": null,
+          "frames_used": 0,
+          "drift_deg": 0.0,
+          "message": "",
+          "orientation_conflict": false
+        },
+        "forward_evidence": null,
+        "up_evidence": null
+      }
+    ]
+  },
+  {
+    "frame": 1,
+    "points": 340732,
+    "has_ring": true,
+    "input_sha256": "d9a8a695313a22a508e87c08db28f07a66c0ffed2a222d6575f0968c91985d5c",
+    "positive_fraction": [
+      0.9420682854677678,
+      0.5557746826081598,
+      0.3061752742512018
+    ],
+    "forward_axis": 0,
+    "forward_sign": 1,
+    "transverse_angles_q": [
+      [
+        -87.99701168307546,
+        -152.14877970983486
+      ],
+      [
+        -80.19498070164379,
+        -126.33782209414639
+      ],
+      [
+        -62.82652241307098,
+        -32.192120104251416
+      ],
+      [
+        10.004492181699582,
+        -3.736978577483301
+      ],
+      [
+        81.08152271007529,
+        11.016906231288008
+      ],
+      [
+        95.40201164427647,
+        98.40704893370496
+      ],
+      [
+        97.20701172493207,
+        143.76572299570324
+      ]
+    ]
+  },
+  {
+    "frame": 50,
+    "points": 340610,
+    "has_ring": true,
+    "input_sha256": "7e52573df98fc841a566692c803560aec50bb1da043fcba3887cf16da71737f3",
+    "positive_fraction": [
+      0.9411220715166461,
+      0.5542540073982737,
+      0.3080764488286067
+    ],
+    "forward_axis": 0,
+    "forward_sign": 1,
+    "transverse_angles_q": [
+      [
+        -88.98359145571179,
+        -154.4135483306878
+      ],
+      [
+        -80.7858946433944,
+        -128.45947834001075
+      ],
+      [
+        -63.238726656840186,
+        -32.010617480438334
+      ],
+      [
+        9.797011450448153,
+        -3.716148212855004
+      ],
+      [
+        81.29767625928129,
+        11.371956853533987
+      ],
+      [
+        95.22041841119074,
+        104.41894817498843
+      ],
+      [
+        97.2470216431097,
+        147.64635549075598
+      ]
+    ]
+  },
+  {
+    "frame": 100,
+    "points": 340872,
+    "has_ring": true,
+    "input_sha256": "8bf6b929f8754b331467ad9bc2f87ac1b993f5ab4af4ec9820bfee7e8fba2f6a",
+    "positive_fraction": [
+      0.9404263183834402,
+      0.5556308526367669,
+      0.30637013307047806
+    ],
+    "forward_axis": 0,
+    "forward_sign": 1,
+    "transverse_angles_q": [
+      [
+        -88.20699207105316,
+        -152.86261589396557
+      ],
+      [
+        -80.29850665864859,
+        -127.28749348899346
+      ],
+      [
+        -62.73900421704963,
+        -31.841703349545075
+      ],
+      [
+        10.007499998395751,
+        -3.710839336687704
+      ],
+      [
+        81.39780458803973,
+        10.974188393377275
+      ],
+      [
+        95.46350659485151,
+        99.82564457141754
+      ],
+      [
+        97.38171674143344,
+        146.707150033628
+      ]
+    ]
+  }
+]

@@ -1,0 +1,154 @@
+{
+  "doubleT_obstacle": {
+    "raw_messages": 201,
+    "all_receive_stamps_exact": true,
+    "samples": [
+      {
+        "frame": 0,
+        "points": 340888,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": true,
+        "cdr_sha256": "bd3c3cd3cccc9f3f13319b0611cd697ffc5b429c35c9f80080fe2cdcf0afd33e",
+        "mutation_positive_control": true
+      },
+      {
+        "frame": 100,
+        "points": 340872,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": true,
+        "cdr_sha256": "6448a497cec043bada457a38855b0dcecbb09b0117299fd5e64c2965d8aea7ef",
+        "mutation_positive_control": true
+      },
+      {
+        "frame": 200,
+        "points": 340824,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": true,
+        "cdr_sha256": "8c4a57a757e433953f10dad2c1a8bf881830e31e063d15e53dbcf03227fdedcd",
+        "mutation_positive_control": true
+      }
+    ]
+  },
+  "squareT_platform_squareT_switch": {
+    "raw_messages": 877,
+    "all_receive_stamps_exact": true,
+    "samples": [
+      {
+        "frame": 0,
+        "points": 181528,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": true,
+        "cdr_sha256": "a3be15b35aeb8bedbb671c7a2caa4f5a71099fef019d9a16ed0273ea442fc9be",
+        "mutation_positive_control": true
+      },
+      {
+        "frame": 438,
+        "points": 159778,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": true,
+        "cdr_sha256": "a055b65d2144aecd77b247f7ce952f18b99507021194d86e01574513f69eb429",
+        "mutation_positive_control": true
+      },
+      {
+        "frame": 876,
+        "points": 189657,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": true,
+        "cdr_sha256": "5d96415e55a05e545b2f1a6ea074ef48da5a5bfecd41659398a1e95c19f30999",
+        "mutation_positive_control": true
+      }
+    ]
+  },
+  "roundT_squareT_pressureGate_squareT": {
+    "raw_messages": 545,
+    "all_receive_stamps_exact": true,
+    "samples": [
+      {
+        "frame": 0,
+        "points": 184770,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": true,
+        "cdr_sha256": "68b021252f226e43a20a83ad68b8b654b10efec6fcd780d7a6f9beb20c09527a",
+        "mutation_positive_control": true
+      },
+      {
+        "frame": 272,
+        "points": 180866,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": true,
+        "cdr_sha256": "a2f8f37528eea8237edc6fdeaac8c39d83636f29f64f94419a9f2bcd688ac160",
+        "mutation_positive_control": true
+      },
+      {
+        "frame": 544,
+        "points": 190224,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": true,
+        "cdr_sha256": "97592e76c83322760859ec50a9c3d92521c25e85449fec03e2fb20d650c4f09e",
+        "mutation_positive_control": true
+      }
+    ]
+  },
+  "cloud_with_fake_obj": {
+    "raw_messages": 1510,
+    "all_receive_stamps_exact": true,
+    "samples": [
+      {
+        "frame": 0,
+        "points": 172797,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": false,
+        "cdr_sha256": "751e60f88ba43ded1bc5a5181e614a3fdd25e2510506da9210aba538778b914f",
+        "mutation_positive_control": true
+      },
+      {
+        "frame": 332,
+        "points": 189074,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": false,
+        "cdr_sha256": "df1edfe3f2af98516da15cbed96f286df3e2006c4c00566e44198021702f8978",
+        "mutation_positive_control": true
+      },
+      {
+        "frame": 755,
+        "points": 182318,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": false,
+        "cdr_sha256": "d7c78588c017004e021fce9f0460fec9ad2c0b7d64cd021196e8df52b486d834",
+        "mutation_positive_control": true
+      },
+      {
+        "frame": 777,
+        "points": 180809,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": false,
+        "cdr_sha256": "a9c04e15a1bc651d21f3892180c8434e545120574a896db8ace2da474579bbe9",
+        "mutation_positive_control": true
+      },
+      {
+        "frame": 778,
+        "points": 181904,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": false,
+        "cdr_sha256": "52f270f039f2de6581a5ed7121f58eae0d485b0c29fd85931d92f256f94760d9",
+        "mutation_positive_control": true
+      },
+      {
+        "frame": 786,
+        "points": 182046,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": false,
+        "cdr_sha256": "9ec66d77dc93f3eac16951d88b31cfa606694d7aefbe7d53a59f83ea7689b5cb",
+        "mutation_positive_control": true
+      },
+      {
+        "frame": 1509,
+        "points": 161816,
+        "xyz_intensity_ring_exact": true,
+        "has_ring": false,
+        "cdr_sha256": "a385a248f607ca382d1a5bdf6ffc9cc18ce296fa6ea7b83b2ac7d7f27bb429cb",
+        "mutation_positive_control": true
+      }
+    ]
+  }
+}

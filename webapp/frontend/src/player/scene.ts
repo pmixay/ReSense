@@ -273,6 +273,7 @@ export class PlayerScene {
       uFloorC: { value: new THREE.Vector3(0, 0, -1.5) },
       uFloorR: { value: new THREE.Vector2(3, 120) },
       uAxis: { value: new THREE.Vector4(-0.1, 0, 0, 0.35) },
+      uAxisStep: { value: new THREE.Vector2(0, 0) },
       uRamp: { value: RAMP },
       uBedLo: { value: deep(0x1f6f8f) },
       uBedHi: { value: deep(0xa6eef4) },
@@ -776,6 +777,7 @@ export class PlayerScene {
       (u.uFloorC.value as THREE.Vector3).set(n >= 3 ? c[n - 3] : 0, n >= 2 ? c[n - 2] : 0, n >= 1 ? c[n - 1] : -1.5);
       (u.uFloorR.value as THREE.Vector2).set(t.floor_range?.[0] ?? 3, t.floor_range?.[1] ?? 120);
       (u.uAxis.value as THREE.Vector4).set(t.center ?? 0, Math.tan(t.yaw ?? 0), t.curvature ?? 0, t.rail_offset ?? 0.35);
+      (u.uAxisStep.value as THREE.Vector2).set(t.curv_step ?? 0, t.curv_knot ?? 0);
     }
   }
 

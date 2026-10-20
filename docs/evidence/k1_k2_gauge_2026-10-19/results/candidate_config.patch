@@ -1,0 +1,58 @@
+From da8abe915af8c16f492363b473614e2e4325d414 Mon Sep 17 00:00:00 2001
+From: P3 candidate <noreply@anthropic.com>
+Date: Mon, 19 Oct 2026 12:58:03 +0000
+Subject: [PATCH] local only: K1/K2 candidate config (axis_joint_fit on,
+ walls_smoothing_distance 1.5)
+
+---
+ configs/default.yaml                         | 4 ++--
+ ros2_ws/src/resense_ros/config/detector.yaml | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/configs/default.yaml b/configs/default.yaml
+index 331500d..a14a8fe 100644
+--- a/configs/default.yaml
++++ b/configs/default.yaml
+@@ -93,7 +93,7 @@ resense:
+     floor_verify_tolerance: 0.5    # m, allowed deviation of the far side base from its near-range height
+     floor_verify_min_points: 5     # side points per bin for the bin to count
+     floor_verify_max_range: 250.0  # m, how far the verification is attempted
+-    axis_joint_fit: false          # 19.10 (K2, off): joint least-squares axis of the near rail-pair midpoints and every tunnel-boundary segment (track.joint_axis_fit): tangent, curvature and a curvature step at axis_joint_knot from one fit, grown outward; off = as before
++    axis_joint_fit: true           # 19.10 (K2, off): joint least-squares axis of the near rail-pair midpoints and every tunnel-boundary segment (track.joint_axis_fit): tangent, curvature and a curvature step at axis_joint_knot from one fit, grown outward; off = as before
+     axis_joint_knot: 60.0          # 19.10: m, X from which the curvature may change (C1 piecewise axis); 0 = a single quadratic
+     axis_joint_step_sigma: 0.001   # 19.10: 1/m, prior SD of that curvature step
+     axis_joint_min_far_bins: 4     # 19.10: boundary bins beyond the knot needed to fit a step
+@@ -103,7 +103,7 @@ resense:
+     axis_joint_grow_start: 40.0    # 19.10: m, first range of the outward growth
+     axis_joint_grow_step: 16.0     # 19.10: m, growth step
+     axis_joint_min_segment: 3      # 19.10: bins a boundary segment needs to take part
+-    walls_smoothing_distance: 0.0  # 19.10 (K1, off): m; > 0: the axis EMA exponent and rate limits per distance travelled (travel / this, at least walls_smoothing_min_k, at most the frame periods); unknown speed as before
++    walls_smoothing_distance: 1.5  # 19.10 (K1, off): m; > 0: the axis EMA exponent and rate limits per distance travelled (travel / this, at least walls_smoothing_min_k, at most the frame periods); unknown speed as before
+     walls_smoothing_min_k: 0.05    # 19.10 (K1): lower bound of that exponent
+     walls_smoothing_standstill_speed: 1.0  # 19.10 (K1): m/s; no speed estimate and a texture profile without any change count as standing while the last confident estimate is at most this
+     walls_smoothing_standstill_max: 60.0  # 19.10 (K1): s; that standing rule at most this long in a row
+diff --git a/ros2_ws/src/resense_ros/config/detector.yaml b/ros2_ws/src/resense_ros/config/detector.yaml
+index 331500d..a14a8fe 100644
+--- a/ros2_ws/src/resense_ros/config/detector.yaml
++++ b/ros2_ws/src/resense_ros/config/detector.yaml
+@@ -93,7 +93,7 @@ resense:
+     floor_verify_tolerance: 0.5    # m, allowed deviation of the far side base from its near-range height
+     floor_verify_min_points: 5     # side points per bin for the bin to count
+     floor_verify_max_range: 250.0  # m, how far the verification is attempted
+-    axis_joint_fit: false          # 19.10 (K2, off): joint least-squares axis of the near rail-pair midpoints and every tunnel-boundary segment (track.joint_axis_fit): tangent, curvature and a curvature step at axis_joint_knot from one fit, grown outward; off = as before
++    axis_joint_fit: true           # 19.10 (K2, off): joint least-squares axis of the near rail-pair midpoints and every tunnel-boundary segment (track.joint_axis_fit): tangent, curvature and a curvature step at axis_joint_knot from one fit, grown outward; off = as before
+     axis_joint_knot: 60.0          # 19.10: m, X from which the curvature may change (C1 piecewise axis); 0 = a single quadratic
+     axis_joint_step_sigma: 0.001   # 19.10: 1/m, prior SD of that curvature step
+     axis_joint_min_far_bins: 4     # 19.10: boundary bins beyond the knot needed to fit a step
+@@ -103,7 +103,7 @@ resense:
+     axis_joint_grow_start: 40.0    # 19.10: m, first range of the outward growth
+     axis_joint_grow_step: 16.0     # 19.10: m, growth step
+     axis_joint_min_segment: 3      # 19.10: bins a boundary segment needs to take part
+-    walls_smoothing_distance: 0.0  # 19.10 (K1, off): m; > 0: the axis EMA exponent and rate limits per distance travelled (travel / this, at least walls_smoothing_min_k, at most the frame periods); unknown speed as before
++    walls_smoothing_distance: 1.5  # 19.10 (K1, off): m; > 0: the axis EMA exponent and rate limits per distance travelled (travel / this, at least walls_smoothing_min_k, at most the frame periods); unknown speed as before
+     walls_smoothing_min_k: 0.05    # 19.10 (K1): lower bound of that exponent
+     walls_smoothing_standstill_speed: 1.0  # 19.10 (K1): m/s; no speed estimate and a texture profile without any change count as standing while the last confident estimate is at most this
+     walls_smoothing_standstill_max: 60.0  # 19.10 (K1): s; that standing rule at most this long in a row
+-- 
+2.43.0
+

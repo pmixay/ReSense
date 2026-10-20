@@ -1,0 +1,9 @@
+{
+  "file": "raw-evidence.tar.gz",
+  "bytes": 621366,
+  "sha256": "b51ad3d35891483e613ced664ed4e169e98978c0fcc685e91cfddfbfdd1666e8",
+  "members": 52,
+  "all_member_hashes_verified": true,
+  "measured_commit": "69cf4b8c07e5c6f5a5f2d2be3e62cd1e0b4ddf60",
+  "note": "Raw paired replay plus additive reporting reanalysis; no new full gate/X3/Falcon replay."
+}

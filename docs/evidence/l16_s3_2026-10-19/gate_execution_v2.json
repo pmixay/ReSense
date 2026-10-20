@@ -1,0 +1,29 @@
+{
+  "scope": "P3 uncommitted author full gate, not reseal",
+  "numpy_version": "1.26.4",
+  "runs": [
+    {
+      "name": "reference",
+      "command": [
+        "/tmp/opencode/resense-b4-venv/bin/python",
+        "/tmp/opencode/l16-s3/reference/scripts/regression_gate.py",
+        "--cache",
+        "/tmp/opencode/resense-b4-data/cache",
+        "--jobs",
+        "2",
+        "--baseline",
+        "/tmp/opencode/l16-s3/reference/docs/evidence/results/regression_baseline_2026-09-29_shell_off.json",
+        "--out",
+        "/home/aiops/resense/docs/evidence/l16_s3_2026-10-19/gate-reference-v2.json",
+        "--work",
+        "/tmp/opencode/l16-s3/run2/gate-reference-work"
+      ],
+      "source_sha256": "2bcf99e2624b8e6915ea74ed254c94dd8dd378f1afcc376efc0b831bd4992855",
+      "started": "2026-10-19T09:20:45.459458+00:00",
+      "returncode": 0,
+      "finished": "2026-10-19T09:39:52.522387+00:00",
+      "source_unchanged": true,
+      "log_sha256": "fc53a6c771d767e4af4564b7a97cbdb9a1b7ba63d4a223132e97465cc1df6836"
+    }
+  ]
+}

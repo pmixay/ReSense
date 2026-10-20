@@ -1,0 +1,10 @@
+{
+  "file": "failed-fixture.tar.gz",
+  "sha256": "43d151d2ebbff8dec702ee9c184b5fc5a2e829ae6e55dc34a8c5143037133b7d",
+  "members": {
+    "full-detector-first.xml": {
+      "sha256": "9e7cf873f89f1c26ec6a79e17918d2e13b4741e3c71f009242d21c1653991f9a"
+    }
+  },
+  "verification": "tar extraction SHA256 equals original file SHA256 before removing the redundant textual copy"
+}

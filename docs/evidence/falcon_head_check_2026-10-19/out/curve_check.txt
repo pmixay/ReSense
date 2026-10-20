@@ -1,0 +1,16 @@
+roundT_doubleT v110 frames 130-175: usable 45
+path curvature   median -0.00248 /m  (radius ~403 m)
+detector curv.   median -0.00070 /m
+ratio path/detector (median of per-frame ratios): 3.6
+lateral gap at X m  median 4.82 m, p90 5.37 m; axis_valid median 60 m
+roundT_doubleT v100 frames 130-175: usable 45
+path curvature   median -0.00248 /m  (radius ~403 m)
+detector curv.   median -0.00070 /m
+ratio path/detector (median of per-frame ratios): 3.6
+lateral gap at X m  median 4.82 m, p90 5.37 m; axis_valid median 60 m
+X=30 m:
+lateral gap at X m  median 0.04 m, p90 0.15 m; axis_valid median 60 m
+X=45 m:
+lateral gap at X m  median 0.64 m, p90 0.68 m; axis_valid median 60 m
+X=60 m:
+lateral gap at X m  median 1.63 m, p90 1.74 m; axis_valid median 60 m

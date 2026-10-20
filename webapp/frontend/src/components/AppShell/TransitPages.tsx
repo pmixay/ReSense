@@ -121,7 +121,10 @@ export function TransitPages({ phase, journey, snapshot, captureDestination, onP
         if (endpoints[i] && bitmaps[i].sharp) glassEndpoints.current.push({ view: endpoints[i]!, bitmap: bitmaps[i].sharp! });
       });
       // Give layout and cached bitmap surfaces two full paints before starting the compositor.
-      const warm = () => { if (++settle === 3) onPrepared(true); else raf = requestAnimationFrame(warm); };
+      const warm = () => {
+        if (cancelled) return;
+        if (++settle === 3) onPrepared(true); else raf = requestAnimationFrame(warm);
+      };
       raf = requestAnimationFrame(warm);
     };
     const prepare = (now: number) => {

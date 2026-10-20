@@ -1,7 +1,7 @@
 """Range-adaptive clustering of corridor candidates and cluster descriptors."""
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from functools import partial
 from typing import Callable, List, Optional
 
@@ -11,9 +11,10 @@ from scipy.sparse.csgraph import connected_components
 from scipy.spatial import cKDTree
 
 from resense import _native
-from resense.config import ClusterConfig, GaugeConfig
-from resense.gauge import gauge_reach_mask
+from resense.config import ClusterConfig, GaugeConfig, TrackConfig
+from resense.gauge import gauge_core_mask, gauge_reach_mask
 from resense.sensor import AZIMUTH_STEP_DEG, expected_points
+from resense.track import TrackModel, bin_percentile, estimate_rails
 
 
 @dataclass
@@ -45,6 +46,7 @@ class Cluster:
     low_height_weak: bool = False  # below the straddle top-height threshold; only bounded continuation of a low STOP
     spared: bool = False         # 14.10: column-shaped, but not demoted as a column because its top is seen free (top_is_free; tracking.column_free_min_spares)
     cut: bool = False            # 14.10: a part of an oversize cluster cut along its wall surface (cluster.structure_cut_tol; Detector._not_part_of_corridor_objects)
+    collision_core: bool = False  # current observed tall body in the additionally eroded rail envelope
 
     @property
     def size(self) -> np.ndarray:
@@ -161,7 +163,8 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
                   weak_from: float = 0.0, ring: Optional[np.ndarray] = None,
                   low_height_margin: float = 0.0, frame_xyz: Optional[np.ndarray] = None,
                   frame_ring: Optional[np.ndarray] = None, frame_h: Optional[np.ndarray] = None,
-                  frame_dy: Optional[np.ndarray] = None) -> List[Cluster]:
+                  frame_dy: Optional[np.ndarray] = None, frame_track: Optional[TrackModel] = None,
+                  frame_track_cfg: Optional[TrackConfig] = None) -> List[Cluster]:
     """Voxelise candidates, cluster the voxels, describe and filter the clusters.
 
     ``xyz``/``intensity``/``dy``/``h``/``in_gauge`` are the corridor candidates;
@@ -249,7 +252,8 @@ def find_clusters(xyz: np.ndarray, intensity: np.ndarray, dy: np.ndarray, h: np.
         return out
     if frame_idx is None:
         frame_idx = np.arange(xyz.shape[0])
-    rays = None if frame_xyz is None else FrameRays(frame_xyz, frame_ring, frame_h, frame_dy)
+    rays = None if frame_xyz is None else FrameRays(frame_xyz, frame_ring, frame_h, frame_dy,
+                                                   frame_track, frame_track_cfg)
     vox, inv = voxelize(xyz, cfg)
     vlabels = cluster_labels(vox, cfg)
     labels = vlabels[inv]                       # raw point labels
@@ -379,10 +383,86 @@ class FrameRays:
     SCALE, MID = 105.0, 127.0         # bucket = SCALE tan(azimuth) + MID: +-50 deg (the sensor's field) in 2-252
 
     def __init__(self, xyz: np.ndarray, ring: Optional[np.ndarray] = None, h: Optional[np.ndarray] = None,
-                 dy: Optional[np.ndarray] = None):
+                 dy: Optional[np.ndarray] = None, track: Optional[TrackModel] = None,
+                 track_cfg: Optional[TrackConfig] = None):
         self.xyz, self.ring, self.h, self.dy = xyz, ring, h, dy
+        self.track, self.track_cfg = track, track_cfg
         self._keys: Optional[np.ndarray] = None
         self._band: Optional[tuple] = None
+        self._core_boundaries: Optional[list] = None
+        self._core_anchor: Optional[tuple] = None
+        self._core_anchor_checked = False
+        self._core_rail_stations: Optional[np.ndarray] = None
+
+    def collision_axis_anchor(self) -> Optional[tuple]:
+        """Absolute current rail-midpoint residuals, not the smoothed model's label.
+
+        Re-measure the raw near ridges lazily, once per frame needing a tall core.
+        A held floor, missing pair or missing slab support supplies no exemption.
+        The bin-sized padding is observational slack, not a calibrated error bound.
+        """
+        if not self._core_anchor_checked:
+            self._core_anchor_checked = True
+            model, cfg = self.track, self.track_cfg
+            if model is None or cfg is None or not cfg.rails_enabled or model.floor_held:
+                return None
+            rails = estimate_rails(self.xyz, model, cfg, model.center, prior=model)
+            if (rails.score < cfg.rails_min_score or rails.n_slabs < max(2, cfg.rails_yaw_min_slabs)
+                    or rails.xm is None or rails.mids is None):
+                return None
+            residual = rails.mids - model.center_y(rails.xm)
+            if np.isfinite(residual).all():
+                self._core_anchor = (float(residual.min()) - cfg.rails_bin,
+                                     float(residual.max()) + cfg.rails_bin)
+                self._core_rail_stations = rails.xm.copy()
+        return self._core_anchor
+
+    def collision_axis_interval(self, x: float) -> Optional[tuple]:
+        """Hull of independently observed left/right boundary continuation axes.
+
+        Fresh raw rail midpoints supply the absolute near anchor; the boundary
+        changes cannot cancel a constant error in the fitted axis. Asymmetric
+        tunnels need no assumed centre/width. Missing support gives no exemption.
+        This is an observed consistency interval, not a certified truth bound.
+        """
+        if self.h is None or self.dy is None:
+            return None
+        anchor = self.collision_axis_anchor()
+        if anchor is None:
+            return None
+        stations = self._core_rail_stations
+        if stations is not None and stations.size >= 3 and stations.min() <= x <= stations.max():
+            # Locally observed paired rails support the axis directly. A wall
+            # widening, gate or platform inside this range is not an alternative
+            # track position. Never extrapolate this rail-only proof past support.
+            return min(0.0, anchor[0]), max(0.0, anchor[1])
+        if self._core_boundaries is None:
+            profiles = []
+            X = self.xyz[:, 0]
+            for lo, hi in [(0.4, 1.4), (1.4, 2.4)]:
+                band = (X >= 4) & (X < 250) & (self.h >= lo) & (self.h < hi)
+                for side in [-1, 1]:
+                    k = np.flatnonzero(band & (side * self.dy > 1.4) & (side * self.dy < 5.0))
+                    bins = np.floor(X[k] / 2).astype(int)
+                    values, _ = bin_percentile(self.dy[k], bins, 125, 50.0, min_points=2)
+                    bottom, top = np.full(125, np.inf), np.full(125, -np.inf)
+                    np.minimum.at(bottom, bins, self.h[k])
+                    np.maximum.at(top, bins, self.h[k])
+                    ok = np.isfinite(values) & (top - bottom >= 0.15)
+                    profiles.append((2 * np.flatnonzero(ok) + 1, values[ok]))
+            self._core_boundaries = profiles
+        lower = upper = 0.0
+        window = max(6.0, 0.16 * x)
+        for stations, values in self._core_boundaries:
+            near = values[(stations >= 8) & (stations <= 28)]
+            local = values[np.abs(stations - x) <= window]
+            if near.size < 4 or local.size < 2:
+                return None
+            a, b = float(np.median(near)), float(np.median(local))
+            spread = float(np.max(np.abs(near - a)) + np.max(np.abs(local - b))) + 0.10
+            lower = min(lower, b - a + anchor[0] - spread)
+            upper = max(upper, b - a + anchor[1] + spread)
+        return lower, upper
 
     def _bucket(self, t: float) -> int:
         return int(min(max(float(np.floor(t * self.SCALE + self.MID)), 0.0), 254.0))
@@ -630,8 +710,8 @@ def _own_rays_pass(qa: np.ndarray, qe: np.ndarray, beyond: np.ndarray, above: np
 
 
 def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cfg: ClusterConfig,
-                     axis_valid: float, height_valid: Optional[float], lat_along: Optional[float] = None,
-                     free_top: Optional[Callable[[], bool]] = None) -> str:
+                      axis_valid: float, height_valid: Optional[float], lat_along: Optional[float] = None,
+                      free_top: Optional[Callable[[], bool]] = None, collision_core: bool = False) -> str:
     """Why a cluster is advisory although it may have gauge voxels ('' = it is an obstacle):
     beyond the range where the axis or the height reference is supported, hanging entirely in
     the top zone (cables, lamps), or a v0.5 infrastructure signature (EXPERIMENTS.md 1b).
@@ -661,7 +741,8 @@ def _advisory_reason(b: _Blob, dist: float, lateral: float, zone: str, dy, h, cf
         if col_w - float(hi - lo) >= cfg.column_width_trim_min_cut:
             col_w = float(hi - lo)
     if cfg.column_min_height > 0 and size[2] > cfg.column_min_height and col_w < cfg.column_max_width \
-            and (off_centre or col_w >= cfg.column_min_width) and not (free_top is not None and free_top()):
+            and (off_centre or col_w >= cfg.column_min_width) and not collision_core \
+            and not (free_top is not None and free_top()):
         return "column"                    # column, post, gate leg: taller than any listed object, narrow
     # opt-in, off by default: a cluster as short as the organizers' test objects (and near enough)
     # that the elevated or floating shape would demote stays an obstacle (the rules after them
@@ -927,6 +1008,35 @@ def _surface_fit(u: np.ndarray, hh: np.ndarray, y: np.ndarray, band: float):
     return coef, res, spread, on
 
 
+def _collision_core(b: _Blob, dy, h, in_gauge, in_rail, inv, frame_idx,
+                    cfg: ClusterConfig, gauge: Optional[GaugeConfig], rays: Optional[FrameRays]) -> bool:
+    """Positive current-frame body; never infer free space from absent upper hits.
+
+    The extra erosion uses rail-relative coordinates even with a sensor-reference
+    union. Only observed current voxels supply the height/point bars. Other axis,
+    height and shape rules still apply after this predicate.
+    """
+    if (gauge is None or rays is None or cfg.column_core_margin <= 0
+            or b.size[0] > cfg.column_core_max_footprint
+            or b.size[1] > cfg.column_core_max_footprint):
+        return False
+    current = (frame_idx[b.idx] >= 0) & in_gauge[b.idx] & in_rail[b.idx]
+    k = b.idx[current]
+    if k.size < cfg.column_core_min_voxels:
+        return False
+    interval = rays.collision_axis_interval(float(b.pts[:, 0].mean()))
+    if interval is None:
+        return False
+    inner = replace(gauge, edge_margin=gauge.edge_margin + cfg.column_core_margin)
+    x = b.pts[current, 0]
+    keep = gauge_core_mask(dy[k] - interval[0], h[k], x, inner)
+    keep &= gauge_core_mask(dy[k] - interval[1], h[k], x, inner)
+    k = k[keep]
+    return bool(k.size and np.unique(inv[k]).size >= cfg.column_core_min_voxels
+                and float(np.ptp(h[k])) >= cfg.column_core_min_height
+                and float(h[k].min()) <= cfg.far_max_bottom)
+
+
 def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg: ClusterConfig,
                       factor: float, factor_range: float, axis_valid: float,
                       height_valid: Optional[float], gauge: Optional[GaugeConfig] = None,
@@ -1021,8 +1131,11 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         def free_top() -> bool:
             seen_free.append(bool(ask()))
             return seen_free[-1]
+    core = (zone == "gauge" and not weak and not thin
+            and _collision_core(b, dy if dy_report is None else dy_report, h,
+                                in_gauge, in_rail, inv, frame_idx, cfg, gauge, rays))
     reason = _advisory_reason(b, dist, lat_rules, zone, dy_rules, h, cfg, axis_valid, height_valid, lat_along,
-                              free_top)
+                              free_top, core)
     demoted = zone == "gauge" and reason in SHAPE_SIGNATURES
     if reason:
         zone = "warning"
@@ -1056,4 +1169,5 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         n_expected=n_exp, score=score, zone=zone, n_gauge=n_gauge, retro=retro, reason=reason,
         wall_kept=wall_kept, demoted=demoted and not retro, thin=thin, weak=weak,
         ring_count=ring_count, spared=bool(seen_free and seen_free[-1]),
+        collision_core=bool(core and zone == "gauge" and not reason),
     )

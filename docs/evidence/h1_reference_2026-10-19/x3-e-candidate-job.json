@@ -1,0 +1,12 @@
+{
+  "pid": 18043,
+  "command": [
+    "/tmp/opencode/resense-b4-venv/bin/python",
+    "/home/aiops/resense/docs/evidence/h1_reference_2026-10-19/run_checks.py",
+    "x3",
+    "--revision",
+    "e",
+    "--reference",
+    "/home/aiops/resense/docs/evidence/h1_axis_range_2026-10-19/x3-d2-candidate.json"
+  ]
+}

@@ -1,0 +1,204 @@
+{
+ "E_base": {
+  "E1_cross150": {
+   "first_stop_X": 129.63,
+   "stop_frames": 20,
+   "visible_frames": 96,
+   "decisions_while_visible": {
+    "GO": 64,
+    "CAUTION": 12,
+    "STOP": 20,
+    "FAULT": 0
+   }
+  },
+  "E2_cross80": {
+   "first_stop_X": 53.33,
+   "stop_frames": 26,
+   "visible_frames": 60,
+   "decisions_while_visible": {
+    "GO": 29,
+    "CAUTION": 5,
+    "STOP": 26,
+    "FAULT": 0
+   }
+  },
+  "E3_recede5": {
+   "first_stop_X": 97.14,
+   "stop_frames": 101,
+   "visible_frames": 108,
+   "decisions_while_visible": {
+    "GO": 5,
+    "CAUTION": 2,
+    "STOP": 101,
+    "FAULT": 0
+   }
+  },
+  "E3_recede8": {
+   "first_stop_X": 96.15,
+   "stop_frames": 101,
+   "visible_frames": 110,
+   "decisions_while_visible": {
+    "GO": 2,
+    "CAUTION": 7,
+    "STOP": 101,
+    "FAULT": 0
+   }
+  },
+  "E4_appear100": {
+   "first_stop_X": 91.98,
+   "stop_frames": 61,
+   "visible_frames": 66,
+   "decisions_while_visible": {
+    "GO": 5,
+    "CAUTION": 0,
+    "STOP": 61,
+    "FAULT": 0
+   }
+  },
+  "E4_appear60": {
+   "first_stop_X": 53.8,
+   "stop_frames": 35,
+   "visible_frames": 39,
+   "decisions_while_visible": {
+    "GO": 4,
+    "CAUTION": 0,
+    "STOP": 35,
+    "FAULT": 0
+   }
+  },
+  "E5_pole_c": {
+   "first_stop_X": 218.38,
+   "stop_frames": 82,
+   "visible_frames": 177,
+   "decisions_while_visible": {
+    "GO": 5,
+    "CAUTION": 90,
+    "STOP": 82,
+    "FAULT": 0
+   }
+  },
+  "E5_pole_side": {
+   "first_stop_X": null,
+   "stop_frames": 0,
+   "visible_frames": 176,
+   "decisions_while_visible": {
+    "GO": 6,
+    "CAUTION": 170,
+    "STOP": 0,
+    "FAULT": 0
+   }
+  },
+  "E6_cable_low_c": {
+   "first_stop_X": 59.78,
+   "stop_frames": 29,
+   "visible_frames": 59,
+   "decisions_while_visible": {
+    "GO": 27,
+    "CAUTION": 3,
+    "STOP": 29,
+    "FAULT": 0
+   }
+  }
+ },
+ "E_cand_129415f": {
+  "E1_cross150": {
+   "first_stop_X": 129.63,
+   "stop_frames": 20,
+   "visible_frames": 96,
+   "decisions_while_visible": {
+    "GO": 64,
+    "CAUTION": 12,
+    "STOP": 20,
+    "FAULT": 0
+   }
+  },
+  "E2_cross80": {
+   "first_stop_X": 53.33,
+   "stop_frames": 26,
+   "visible_frames": 60,
+   "decisions_while_visible": {
+    "GO": 29,
+    "CAUTION": 5,
+    "STOP": 26,
+    "FAULT": 0
+   }
+  },
+  "E3_recede5": {
+   "first_stop_X": 97.14,
+   "stop_frames": 101,
+   "visible_frames": 108,
+   "decisions_while_visible": {
+    "GO": 5,
+    "CAUTION": 2,
+    "STOP": 101,
+    "FAULT": 0
+   }
+  },
+  "E3_recede8": {
+   "first_stop_X": 96.15,
+   "stop_frames": 101,
+   "visible_frames": 110,
+   "decisions_while_visible": {
+    "GO": 2,
+    "CAUTION": 7,
+    "STOP": 101,
+    "FAULT": 0
+   }
+  },
+  "E4_appear100": {
+   "first_stop_X": 91.98,
+   "stop_frames": 61,
+   "visible_frames": 66,
+   "decisions_while_visible": {
+    "GO": 5,
+    "CAUTION": 0,
+    "STOP": 61,
+    "FAULT": 0
+   }
+  },
+  "E4_appear60": {
+   "first_stop_X": 53.8,
+   "stop_frames": 35,
+   "visible_frames": 39,
+   "decisions_while_visible": {
+    "GO": 4,
+    "CAUTION": 0,
+    "STOP": 35,
+    "FAULT": 0
+   }
+  },
+  "E5_pole_c": {
+   "first_stop_X": 218.38,
+   "stop_frames": 82,
+   "visible_frames": 177,
+   "decisions_while_visible": {
+    "GO": 5,
+    "CAUTION": 90,
+    "STOP": 82,
+    "FAULT": 0
+   }
+  },
+  "E5_pole_side": {
+   "first_stop_X": null,
+   "stop_frames": 0,
+   "visible_frames": 176,
+   "decisions_while_visible": {
+    "GO": 6,
+    "CAUTION": 170,
+    "STOP": 0,
+    "FAULT": 0
+   }
+  },
+  "E6_cable_low_c": {
+   "first_stop_X": 59.78,
+   "stop_frames": 29,
+   "visible_frames": 59,
+   "decisions_while_visible": {
+    "GO": 27,
+    "CAUTION": 3,
+    "STOP": 29,
+    "FAULT": 0
+   }
+  }
+ }
+}

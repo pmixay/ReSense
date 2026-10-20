@@ -1,0 +1,16 @@
+candidate_source.tar.gz: OK
+falcon_candidate.tar.gz: OK
+falcon_node_candidate.tar.gz: OK
+falcon_node_reference.tar.gz: OK
+falcon_reference.tar.gz: OK
+gate_candidate_work.tar.gz: OK
+gate_reference_work.tar.gz: OK
+instrumentation_plain.tar.gz: OK
+instrumentation_traced.tar.gz: OK
+pandar_empty_ring_candidate.tar.gz: OK
+pandar_empty_ringfree_candidate.tar.gz: OK
+pandar_empty_ringfree_reference.tar.gz: OK
+pandar_positive_ring_candidate.tar.gz: OK
+pandar_positive_ring_reference.tar.gz: OK
+pandar_positive_ringfree_candidate.tar.gz: OK
+pandar_positive_ringfree_reference.tar.gz: OK

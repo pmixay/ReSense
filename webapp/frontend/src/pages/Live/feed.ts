@@ -98,7 +98,7 @@ export class LiveFeedStore {
 
   // ------------------------------------------------------------ commands
 
-  start(source: FeedSource): void {
+  start(source: FeedSource, paused = false): void {
     this.gen += 1; // before closing: a synchronous close event of the old link must be ignored
     this.disconnect();
     this.source = source;
@@ -108,9 +108,9 @@ export class LiveFeedStore {
     this.count = 0;
     this.samples = [];
     this.everOpen = false;
-    this.paused = false;
+    this.paused = source.kind === 'sim' && paused;
     this.link = 'connecting';
-    this.awaitSeek(source.kind === 'sim' && source.startPos ? Math.floor(source.startPos) : null);
+    this.awaitSeek(source.kind === 'sim' && source.startPos != null ? Math.floor(source.startPos) : null);
     if (source.kind === 'sim') this.openSim(source);
     else void this.openRos(source.url);
     this.publish();
@@ -181,11 +181,7 @@ export class LiveFeedStore {
     if (!base) return;
     // a replay paused on purpose stays paused when a seek lands while it (re)connects
     const keepPaused = same && this.paused && this.link === 'connecting';
-    this.start({ ...base, startPos: p });
-    if (keepPaused) {
-      this.paused = true;
-      this.publish();
-    }
+    this.start({ ...base, startPos: p }, keepPaused);
   }
 
   setSpeed(speed: number): void {
@@ -203,10 +199,7 @@ export class LiveFeedStore {
     if (src?.kind !== 'sim') return;
     if (this.link === 'open') {
       const pos = typeof this.msg?.pos === 'number' ? this.msg.pos : 0;
-      const paused = this.paused;
-      this.start({ ...src, loop, startPos: pos });
-      this.paused = paused;
-      this.publish();
+      this.start({ ...src, loop, startPos: pos }, this.paused);
     } else {
       this.source = { ...src, loop };
       this.publish();
@@ -245,13 +238,13 @@ export class LiveFeedStore {
     const mine = () => g === this.gen;
     try {
       this.sim = this.deps.openSim(
-        { runId: src.runId, speed: src.speed, loop: src.loop },
+        { runId: src.runId, speed: src.speed, loop: src.loop, ...(this.paused ? { paused: true } : {}) },
         {
           onOpen: () => {
             if (!mine()) return;
             this.link = 'open';
             this.everOpen = true;
-            if (src.startPos) this.sim?.send({ cmd: 'seek', pos: src.startPos });
+            if (src.startPos != null) this.sim?.send({ cmd: 'seek', pos: src.startPos });
             if (this.paused) this.sim?.send({ cmd: 'pause' });
             this.publish();
           },
