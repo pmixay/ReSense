@@ -92,6 +92,16 @@ and 11 changed files until the reseal; CI was red.)
 
 ### 20.10 — CI and image
 
+- **CI: `changes` merged into `checks`; the browser suite in four parallel shards; the parallax test fixed (20.10 night).** Run #698
+  (the lighter-CI change) failed only in the browser suite, after 33 min: 4 of 75 tests, three of them timeouts on the slow runner and
+  one a test bug of the reduced-motion default (`test_pointer_pressure_parallax_and_reduced_motion` needs the pointer parallax, which
+  `prefers-reduced-motion` switches off; it now carries `full_motion`; it failed identically on a 4-core machine). The 3D player renders
+  at 1–1.5 s per frame with software WebGL (SwiftShader; independent of the canvas size, the point count or MSAA, not traced further),
+  so the suite is 17 min on 4 cores and 33 min on the 2-vCPU runner. The `webapp` job lost the browser suite and now takes the
+  backend, frontend and dashboard checks only; the new `webapp-e2e` job runs the suite as four parallel shards
+  (`WEBAPP_E2E_SHARD=k/4`, `webapp/e2e/conftest.py`: whole modules, `test_player.py` split by test, weights from a measured run);
+  assertions wait up to 45 s and actions 120 s (were 20 and 60) so that a slow frame does not fail a test that would pass. The
+  `changes` job is a step of `checks` (its outputs are `checks`' outputs), one job fewer to wait for.
 - **CI made lighter, web tests kept (20.10 evening, the captain's instruction; pushes only, no pull-request CI).** A new `changes` job
   (`scripts/ci_changes.py`, `tests/test_ci_changes.py`) lets a push skip what it cannot affect: `docker` and `offline-build` unless it
   touches something the Dockerfile copies, and the `webapp` job unless it touches `web/`, `webapp/`, the detector package, `configs/`,
