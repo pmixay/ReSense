@@ -1,0 +1,22 @@
+config.set                                                                     []  ['tracking.cable_confirm_time_s=0']
+config.sha256                                                debeb58455f0a24deec885864a02d91c70d7eb7a  9448aa345247faf7114e0fbeeeb65f247d38e2ec
+recordings.doubleT_obstacle.health.ok                                         167                   201
+recordings.doubleT_obstacle.health.warn                                        34                     0
+recordings.doubleT_platform.health.ok                                         319                   322
+recordings.doubleT_platform.health.warn                                        26                    23
+ride.health.ok                                                              10580                 10669
+ride.health.warn                                                              691                   602
+run.jobs                                                                        3                     2
+set_F_straight.kinds.cable.recall_by_bin.0-50                            [50, 73]              [43, 73]
+set_F_straight.kinds.cable.recall_by_bin.50-100                          [49, 72]              [47, 72]
+set_F_straight.kinds.cable.sequence_metrics                  [{'identity': {'kind': 'cable', 'file0':  [{'identity': {'kind': 'cable', 'file0':
+set_F_straight.kinds.cable.sustained_median_m                                17.8                  34.2
+set_F_straight.kinds.cable.sustained_sequences                                  4                     2
+set_O.alarm_frames                                                            450                   447
+set_O.inside_stop_frames                                                      414                   411
+set_O.objects.thin_hanging.bins.0-50.alarm                                     18                    15
+set_O.objects.thin_hanging.first_stop_frame                                   786                   789
+set_O.objects.thin_hanging.first_stop_m                                      35.1                  30.1
+set_O.objects.thin_hanging.held_from_m                                       40.0                  31.8
+set_O.objects.thin_hanging.missed_intervals                  [{'start_frame': 686, 'end_frame': 687,   [{'start_frame': 686, 'end_frame': 687, 
+set_O.objects.thin_hanging.stop_frames                                         18                    15

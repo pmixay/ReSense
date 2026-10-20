@@ -1,0 +1,28 @@
+speed unknown R3 on: first STOP 78.0 m, STOP frames 41, track-frames accumulated 0, with cable_kind 41
+    frame 0 x 80.0 - (hits, kind, cable_hits, n_raw, n_pts) [(1, 1, 1, 15, 15)]
+    frame 1 x 79.0 - (hits, kind, cable_hits, n_raw, n_pts) [(2, 1, 2, 17, 17)]
+    frame 2 x 78.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(3, 1, 3, 17, 17)]
+    frame 3 x 77.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(4, 1, 4, 17, 17)]
+    frame 4 x 76.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(5, 1, 5, 17, 17)]
+    frame 5 x 75.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(6, 1, 6, 17, 17)]
+    frame 6 x 74.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(7, 1, 7, 17, 17)]
+    frame 7 x 73.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(8, 1, 8, 17, 17)]
+    frame 8 x 72.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(9, 1, 9, 18, 18)]
+    frame 9 x 71.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(10, 1, 10, 18, 18)]
+    frame 10 x 70.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(11, 1, 11, 18, 18)]
+    frame 11 x 69.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(12, 1, 12, 18, 18)]
+speed unknown R3 off: first STOP 76.0 m, STOP frames 35, track-frames accumulated 0, with cable_kind 0
+speed given R3 on: first STOP 76.0 m, STOP frames 47, track-frames accumulated 33, with cable_kind 16
+    frame 0 x 80.0 - (hits, kind, cable_hits, n_raw, n_pts) [(1, 1, 1, 15, 15)]
+    frame 1 x 79.0 - (hits, kind, cable_hits, n_raw, n_pts) [(2, 0, 0, 32, 17)]
+    frame 2 x 78.0 - (hits, kind, cable_hits, n_raw, n_pts) [(3, 0, 0, 49, 17)]
+    frame 3 x 77.0 - (hits, kind, cable_hits, n_raw, n_pts) [(4, 0, 0, 66, 17)]
+    frame 4 x 76.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(5, 0, 0, 83, 17)]
+    frame 5 x 75.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(6, 0, 0, 85, 17)]
+    frame 6 x 74.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(7, 0, 0, 85, 17)]
+    frame 7 x 73.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(8, 0, 0, 85, 17)]
+    frame 8 x 72.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(9, 0, 0, 86, 18)]
+    frame 9 x 71.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(10, 0, 0, 87, 18)]
+    frame 10 x 70.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(11, 0, 0, 88, 18)]
+    frame 11 x 69.0 STOP (hits, kind, cable_hits, n_raw, n_pts) [(12, 0, 0, 89, 18)]
+speed given R3 off: first STOP 76.0 m, STOP frames 47, track-frames accumulated 33, with cable_kind 0

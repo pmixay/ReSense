@@ -1,0 +1,11 @@
+== cloud_with_fake_obj: 3 rows differ
+  row 786 cloud_with_fake_obj_0786: shipped STOP -> off -
+      shipped dets [(339, 35.08, 0.15, 'gauge', '', 'hanging', 0.61)] warns []
+      off     dets [] warns []
+  row 787 cloud_with_fake_obj_0787: shipped STOP -> off -
+      shipped dets [(339, 33.43, 0.15, 'gauge', '', 'hanging', 0.59)] warns []
+      off     dets [] warns []
+  row 788 cloud_with_fake_obj_0788: shipped STOP -> off -
+      shipped dets [(339, 31.77, 0.14, 'gauge', '', 'hanging', 0.56)] warns []
+      off     dets [] warns []
+TOTAL {"rows": 15269, "dec": 3, "dets": 3, "stop_lost": 3, "stop_added": 0}
