@@ -1,0 +1,35 @@
+{
+ "src": "/dev/stdin",
+ "bytes": 20281548800,
+ "found": 4443,
+ "kept": 4443,
+ "lost": 0,
+ "order_violations": 0,
+ "duplicates": 0,
+ "ref_differ_on": 0,
+ "pair_differ": 8,
+ "dumped": 16,
+ "frames": 4443,
+ "ref_frames": 4443,
+ "set_off": [
+  "cluster.mount_cross_tol=0"
+ ],
+ "repo": "/home/user/wt_main",
+ "resets": {
+  "on": [],
+  "off": []
+ },
+ "counter_control": {
+  "small_target_limit": 1,
+  "candidate_ranges": 1,
+  "falcon_expected_points": 49
+ },
+ "replica_calls": {
+  "small_target_limit": 0,
+  "candidate_ranges": 0,
+  "falcon_expected_points": 0
+ },
+ "wall_s": 439.2,
+ "cpu_s": 406.8,
+ "rss_peak_mb": 1400.2
+}
