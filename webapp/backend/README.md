@@ -54,7 +54,7 @@ same-version overlay lacks `resense_ros.decision_policy`.
 fresh non-editable venv. It checks the wheel's declared dependency, lets pip
 resolve the ROS wheel, runs `pip check`, imports the actual backend application
 and policy with the source namespace unavailable, forbids node/ROS imports, and
-checks the installed CLI. CI runs it in the `webapp` job.
+checks the installed CLI. The on-demand workflow `web-tests.yml` runs it (it is not part of the push gate).
 
 ## Environment
 
