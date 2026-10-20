@@ -8,6 +8,9 @@
 > identical to `5fa865b`, the source of the reused shipped-source runs · environment: Python 3.12.3, numpy 1.26.4, scipy 1.13.1,
 > `OPENBLAS_CORETYPE=Haswell OMP_NUM_THREADS=1`, native kernels built in the worktree with `scripts/build_native.sh` ·
 > **Not touched:** G3, any detector change. This record reports disagreements and does not fix them.
+> **Main has moved since** (`f56ad5e`: R3 completion, detector files `resense/clustering.py` and `resense/tracking.py` differ from
+> `cc6226e`; new seal `0a472d6`). The Falcon pair and the H′-off gate were rerun on `f56ad5e`; every number below carries over (section
+> "Current main"). X3 was not rerun there.
 
 ## Answer
 
@@ -78,6 +81,22 @@ detections. The ceiling is the sheet of returns at Z ≈ +2.5 m in every frame, 
    raster, not of the 0.3 × 0.3 m / 3-return criterion.
 4. **`BACKLOG.md` says "on" without the condition** (the node's non-default range policy). The wording should say so.
 
+## Current main (`f56ad5e`)
+
+After the review on `cc6226e`, main received the R3 completion (`git diff cc6226e f56ad5e -- resense native configs ros2_ws` is
+`clustering.py` +22 and `tracking.py` ±55; `detector.py` and `decision_policy.py` are unchanged). Rerun on `f56ad5e` (worktree built
+with `build_native.sh`, same commands), outputs in [`out/main/`](out/main/):
+
+| check | result |
+|---|---|
+| the whole Falcon stream, shipped replica | **4,443 rows equal the `cc6226e` shipped record in every non-timing field, and the 4,443 track records are byte-equal** (`ref_differ_on` 0): the R3 patch changes no Falcon row here; stream sha256 `90dea27d…` equal to the published |
+| H′ off vs shipped on main | the same 8 frames (4394–4401, CAUTION → STOP), STOP 1,364 vs 1,372, nothing else; the hook looked at the same 265 clusters, 31 over the threshold, 20 demoted, 11 kept; the clear-distance results (4,442 frames model on vs off, max 48.2 m, 0 decision differences) are the same. The analysis texts of the two sources are identical line by line ([`out/main/falcon_analysis_main.txt`](out/main/falcon_analysis_main.txt) against [`out/falcon_analysis.txt`](out/falcon_analysis.txt)) |
+| gate with H′ off on main | exit 0, no `--allow`, 8 gated rows better, none worse; **15,269 rows, 0 differ** against the `cc6226e` shipped rows ([`out/main/identity_gate_main_hoff_vs_cc6226e.txt`](out/main/identity_gate_main_hoff_vs_cc6226e.txt)); set F: only the config hash, the wall time and `gt_vehicle_y_m` (≤ 7e-9 m) ([`out/main/setF_straight_compare_main.txt`](out/main/setF_straight_compare_main.txt)) |
+| X3 on main | **not rerun** (unverified here); R3's own record reports its paired X3 equal |
+
+The comparison is of main with H′ off against `cc6226e` with H′ on, so a 0 means the R3 patch and H′ together change no gate row. It does
+not show the two apart: H′ on, on main, was not rerun through the gate (the shipped gate on main is R3's record, not reproduced here).
+
 ## Independent findings that are not caused by either switch
 
 1. **Frames 4373–4414: a person-like object 2.5–7 m ahead gets no STOP in the shipped run, with or without H′.** Only 4380–4382 are
@@ -116,6 +135,7 @@ detections. The ceiling is the sheet of returns at Z ≈ +2.5 m in every frame, 
 ## Not verified
 
 * A Falcon ground truth beyond the person's walk: whether the object of frames 4373–4414 must be STOP, and what exactly it is.
+* X3 on current main (`f56ad5e`), and the gate with H′ on there (only the H′-off gate was rerun).
 * The node path itself: the clear-distance results are a read-only replay of `candidate_ranges` after `evaluate_decision` with
   the node's arguments (`min_points_far`, `max_range`, policy v1, a valid freshness record), not a ROS run. The live node's
   freshness, latch and health overrides are not modelled. `small_candidate` is run and equals `conservative` here.
