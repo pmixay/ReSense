@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "h1_acceptance": "BLOCKED",
+  "publication_parent": "769d07588b4bedcf73e365eebee42044d39f5a16",
+  "detector_bytes_equal_replayed_520e7dc": true,
+  "copied_payloads_checked": 77,
+  "original_checksum_entries_checked": 80,
+  "archived_python_tools": 26,
+  "local_markdown_links_checked": 401,
+  "planted_changed_byte_detected": true,
+  "intended_files": 82
+}

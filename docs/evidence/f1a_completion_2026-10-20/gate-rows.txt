@@ -1,0 +1,6 @@
+doubleT_platform.advisory_frames: reference 182 -> candidate 180
+ride.alarm_events: reference 23 -> candidate 18
+ride.stop_episodes: reference 26 -> candidate 24
+ride.alarm_frames: reference 111 -> candidate 102
+recorded pre-repair 8c2bf51: ride alarm_events 18, stop_episodes 24, alarm_frames 102
+gate: reference passed True, candidate passed True, candidate waivers []

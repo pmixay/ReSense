@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "method": "Separate script; no review implementation imported",
+  "independent_raw_visible_matching_rows": 177,
+  "independent_directed_output_rows": 518,
+  "directed_sequences": 31,
+  "report_sha256": "bdd7e94747aff3422d217a824f9327be09f5c1e6c0cdfb9f1da9ca81f533c71e",
+  "script_sha256": "3921a10aa9f52f2e6f6e0972f6ceacda5dd9c154fea05e4811057a33ed955167",
+  "index_sha256": "5c04ad6dd30a1d089909bd2166ed509e54681e448855a5cdacccf62887b62ec6",
+  "source_files_checked": 52
+}

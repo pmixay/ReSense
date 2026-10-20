@@ -1,0 +1,28 @@
+{
+  "original_measured_tools_unchanged": true,
+  "restore_command": "tar -xJf tool-snapshots.tar.xz",
+  "archive_sha256": "dcd8516ed0772ec66e8d3f6eed1f428020ae57a8b415c81e4b421760569b8a22",
+  "archive_bytes": 23828,
+  "members": {
+    "audit.py": {
+      "bytes": 31858,
+      "sha256": "113552e670d553cbbeaf85468604bb74c960a5d08c0653424b646d8a96c5373a"
+    },
+    "build_publication.py": {
+      "bytes": 11744,
+      "sha256": "3dca9930f68981a684bc9502c870b2793721726c3344af35cbfcdee612037140"
+    },
+    "finalize_publication.py": {
+      "bytes": 6030,
+      "sha256": "9e7ce35acdc0999b6cae0163bf2dca9025ffc8c3412d964995a2b07dc23cdeec"
+    },
+    "verify_audit.py": {
+      "bytes": 24539,
+      "sha256": "eb00d122cfb9c3d65c2f185457a6748ffed87921186a6eac8d7808fe7be8b35f"
+    },
+    "verify_publication.py": {
+      "bytes": 20584,
+      "sha256": "522799d98dca6cc723809b3204dc8eab8849b1c765d8bc87d98dfb3aca00bc93"
+    }
+  }
+}

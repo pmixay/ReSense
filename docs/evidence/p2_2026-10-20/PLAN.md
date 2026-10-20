@@ -128,10 +128,10 @@ correctly, frontend reconnect/zero-position behavior, and the live browser flow.
 
 ## Non-code handoff — stop before executing these
 
-- **P0 today:** the three root photos (`1591221.jpeg`, `IMG_8349.jpeg`,
-  `IMG_8350.jpeg`) need a usage/licensing decision, then relocation into deck
-  assets or deletion. Main records this assignment; no tracked source references
-  were found beyond the backlog. Preserve them pending the asset decision.
+- **P0 completed 20.10:** all five root reference photos deleted at the user's
+  request. They were design references, not runtime assets; local gallery links
+  were removed. Historical filenames in design notes and capture metadata record
+  the references used at the time.
 - **P1:** cut the Falcon person demo bag around 280–330 seconds; verify actual
   `ros2 bag play` and update `web/DEMO_HANDOFF.md`.
 - **P1:** second-device readability check; fallback clip recorded on the final

@@ -1,0 +1,474 @@
+{
+  "gate": {
+    "reports": {
+      "reference": {
+        "commit": "f56ad5e62d9d051811c804734c7731b6951eae90",
+        "ride": {
+          "alarm_events": 23,
+          "stop_episodes": 26,
+          "alarm_frames": 111
+        }
+      },
+      "candidate": {
+        "commit": "a77d884bd749f8b90e4350c32baa0e13d65ca64b",
+        "ride": {
+          "alarm_events": 18,
+          "stop_episodes": 24,
+          "alarm_frames": 102
+        }
+      }
+    },
+    "equal_non_timing_metrics": 208,
+    "changed_frames": [
+      [
+        "doubleT_platform.jsonl",
+        36,
+        false,
+        false
+      ],
+      [
+        "doubleT_platform.jsonl",
+        37,
+        false,
+        false
+      ],
+      [
+        "new_data_1.jsonl",
+        1259,
+        true,
+        false
+      ],
+      [
+        "new_data_1.jsonl",
+        1260,
+        true,
+        false
+      ],
+      [
+        "new_data_1.jsonl",
+        1261,
+        true,
+        false
+      ],
+      [
+        "new_data_1.jsonl",
+        1265,
+        true,
+        false
+      ],
+      [
+        "new_data_1.jsonl",
+        1266,
+        true,
+        false
+      ],
+      [
+        "new_data_1.jsonl",
+        1267,
+        true,
+        false
+      ],
+      [
+        "new_data_2.jsonl",
+        1342,
+        false,
+        false
+      ],
+      [
+        "new_data_4.jsonl",
+        80,
+        true,
+        false
+      ],
+      [
+        "new_data_4.jsonl",
+        86,
+        false,
+        false
+      ],
+      [
+        "new_data_4.jsonl",
+        87,
+        false,
+        false
+      ],
+      [
+        "new_data_4.jsonl",
+        88,
+        false,
+        false
+      ],
+      [
+        "new_data_4.jsonl",
+        89,
+        false,
+        false
+      ],
+      [
+        "new_data_4.jsonl",
+        91,
+        false,
+        false
+      ],
+      [
+        "new_data_7.jsonl",
+        621,
+        false,
+        false
+      ],
+      [
+        "new_data_7.jsonl",
+        622,
+        false,
+        false
+      ],
+      [
+        "new_data_7.jsonl",
+        623,
+        true,
+        false
+      ],
+      [
+        "new_data_7.jsonl",
+        624,
+        true,
+        false
+      ]
+    ],
+    "files": {
+      "cloud_with_fake_obj.jsonl": {
+        "rows": 1510,
+        "STOP": 450
+      },
+      "doubleT_obstacle.jsonl": {
+        "rows": 201,
+        "STOP": 193
+      },
+      "doubleT_platform.jsonl": {
+        "rows": 345,
+        "STOP": 0
+      },
+      "new_data_0.jsonl": {
+        "rows": 1409,
+        "STOP": 12
+      },
+      "new_data_1.jsonl": {
+        "rows": 1409,
+        "STOP": 6
+      },
+      "new_data_2.jsonl": {
+        "rows": 1409,
+        "STOP": 2
+      },
+      "new_data_3.jsonl": {
+        "rows": 1409,
+        "STOP": 2
+      },
+      "new_data_4.jsonl": {
+        "rows": 1409,
+        "STOP": 16
+      },
+      "new_data_5.jsonl": {
+        "rows": 1409,
+        "STOP": 32
+      },
+      "new_data_6.jsonl": {
+        "rows": 1409,
+        "STOP": 27
+      },
+      "new_data_7.jsonl": {
+        "rows": 1408,
+        "STOP": 5
+      },
+      "roundT_doubleT.jsonl": {
+        "rows": 252,
+        "STOP": 0
+      },
+      "roundT_pressureGate_roundT.jsonl": {
+        "rows": 268,
+        "STOP": 0
+      },
+      "roundT_squareT_pressureGate_squareT.jsonl": {
+        "rows": 545,
+        "STOP": 0
+      },
+      "squareT_platform_squareT_switch.jsonl": {
+        "rows": 877,
+        "STOP": 37
+      }
+    },
+    "labelled_reference": {
+      "per_label": {
+        "object_on_rail": {
+          "hits": 129,
+          "frames": 185
+        },
+        "person_crossing": {
+          "hits": 61,
+          "frames": 61
+        },
+        "object_on_rail_from_frame_75": {
+          "hits": 126,
+          "frames": 126
+        }
+      },
+      "hits": 190,
+      "frames": 246,
+      "fp_frames": 0,
+      "fp_events": 0,
+      "distance_error_max_m": 0.23
+    },
+    "labelled_candidate": {
+      "per_label": {
+        "object_on_rail": {
+          "hits": 129,
+          "frames": 185
+        },
+        "person_crossing": {
+          "hits": 61,
+          "frames": 61
+        },
+        "object_on_rail_from_frame_75": {
+          "hits": 126,
+          "frames": 126
+        }
+      },
+      "hits": 190,
+      "frames": 246,
+      "fp_frames": 0,
+      "fp_events": 0,
+      "distance_error_max_m": 0.23
+    },
+    "set_O_lost": [],
+    "set_O_objects": {
+      "big_center": {
+        "stop_frames": 208,
+        "first_stop_m": 98.0
+      },
+      "small_center": {
+        "stop_frames": 32,
+        "first_stop_m": 55.8
+      },
+      "small_on_rail": {
+        "stop_frames": 23,
+        "first_stop_m": 42.7
+      },
+      "small_edge_inside": {
+        "stop_frames": 18,
+        "first_stop_m": 35.0
+      },
+      "small_outside_near": {
+        "stop_frames": 0,
+        "first_stop_m": null
+      },
+      "big_edge_inside": {
+        "stop_frames": 7,
+        "first_stop_m": 18.3
+      },
+      "big_outside": {
+        "stop_frames": 6,
+        "first_stop_m": null
+      },
+      "big_above": {
+        "stop_frames": 56,
+        "first_stop_m": 111.4
+      },
+      "long_low_on_rails": {
+        "stop_frames": 52,
+        "first_stop_m": 87.2
+      },
+      "thin_hanging": {
+        "stop_frames": 18,
+        "first_stop_m": 35.1
+      }
+    },
+    "metric_loss_control_detected": true
+  },
+  "physical": {
+    "scenes": 32,
+    "differing_rows": 0,
+    "stopped_scenes": 26,
+    "empty_controls": [
+      [
+        "stationary/raise0.0/topNone/margin0.0",
+        0,
+        0
+      ],
+      [
+        "stationary/raise0.0/topNone/margin0.01",
+        0,
+        0
+      ],
+      [
+        "stationary/raise0.18/topNone/margin0.0",
+        0,
+        0
+      ],
+      [
+        "stationary/raise0.18/topNone/margin0.01",
+        0,
+        0
+      ],
+      [
+        "stationary/raise0.2/topNone/margin0.0",
+        0,
+        0
+      ],
+      [
+        "stationary/raise0.2/topNone/margin0.01",
+        0,
+        0
+      ]
+    ],
+    "positive_box_rows": 8
+  },
+  "flips": {
+    "flips": 98,
+    "recovered": 85,
+    "missed": [
+      [
+        "doubleT_platform_0033",
+        8,
+        49.69,
+        0.812,
+        "reference"
+      ],
+      [
+        "new_data_21_0038",
+        0,
+        41.81,
+        0.958,
+        "top"
+      ],
+      [
+        "new_data_52_0017",
+        5,
+        33.76,
+        0.732,
+        "top"
+      ],
+      [
+        "new_data_52_0019",
+        5,
+        32.66,
+        0.811,
+        "top"
+      ],
+      [
+        "new_data_52_0019",
+        9,
+        41.24,
+        -0.023,
+        "either"
+      ],
+      [
+        "new_data_52_0022",
+        2,
+        36.95,
+        0.02,
+        "top"
+      ],
+      [
+        "new_data_81_0027",
+        10,
+        41.91,
+        -0.848,
+        "reference"
+      ],
+      [
+        "new_data_112_0000",
+        4,
+        39.12,
+        -0.038,
+        "reference"
+      ],
+      [
+        "new_data_112_0000",
+        7,
+        45.61,
+        0.806,
+        "reference"
+      ],
+      [
+        "new_data_115_0035",
+        1,
+        26.08,
+        0.703,
+        "either"
+      ],
+      [
+        "new_data_161_0040",
+        0,
+        28.12,
+        0.549,
+        "top"
+      ],
+      [
+        "new_data_200_0013",
+        0,
+        26.59,
+        0.661,
+        "top"
+      ],
+      [
+        "new_data_205_0041",
+        1,
+        50.57,
+        0.608,
+        "reference"
+      ]
+    ],
+    "recovered_frames": [
+      "doubleT_platform_0031",
+      "doubleT_platform_0032",
+      "doubleT_platform_0034",
+      "doubleT_platform_0035",
+      "doubleT_platform_0036",
+      "doubleT_platform_0182",
+      "doubleT_platform_0183",
+      "doubleT_platform_0186",
+      "doubleT_platform_0187",
+      "doubleT_platform_0190",
+      "new_data_111_0049",
+      "new_data_112_0020",
+      "new_data_115_0034",
+      "new_data_115_0036",
+      "new_data_161_0041",
+      "new_data_161_0042",
+      "new_data_205_0027",
+      "new_data_205_0031",
+      "new_data_52_0016",
+      "new_data_52_0017",
+      "new_data_52_0018",
+      "new_data_52_0019",
+      "new_data_52_0020",
+      "new_data_52_0021",
+      "new_data_52_0023",
+      "new_data_52_0024",
+      "new_data_55_0016",
+      "new_data_55_0017",
+      "new_data_55_0018",
+      "new_data_55_0022",
+      "new_data_55_0023",
+      "new_data_55_0024",
+      "new_data_55_0025",
+      "new_data_55_0026",
+      "new_data_55_0027",
+      "new_data_81_0014",
+      "new_data_81_0017",
+      "new_data_81_0020",
+      "new_data_81_0021",
+      "new_data_81_0022",
+      "new_data_81_0023",
+      "new_data_81_0024",
+      "new_data_81_0027"
+    ]
+  },
+  "tests-c-candidate": {
+    "suite": "pytest",
+    "tests": 2422,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  }
+}

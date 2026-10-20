@@ -1,0 +1,5 @@
+{
+  "returncode": 0,
+  "stdout": "Detector freeze PASS: 40 files; source 6d091081769104657ecc2c0b06f53049647d4f6c7327b7429bbda92673782452\nIntegrity check only; no recordings replayed.\n",
+  "stderr": ""
+}

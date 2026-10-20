@@ -1,0 +1,75 @@
+{
+  "sources": [
+    {
+      "public_url": "https://disk.yandex.ru/d/DK6H3Lxiyi-M-Q",
+      "metadata": {
+        "name": "falcon_test.zst",
+        "type": "file",
+        "size": 6758209772,
+        "sha256": "90dea27d8636bcb2e5cdddf9bc15add3eae0e05196c2b3de959482da7e505611",
+        "modified": "2026-10-16T14:41:08+00:00",
+        "path": "/"
+      }
+    },
+    {
+      "public_url": "https://disk.yandex.ru/d/SfBeRHbs8bNJAQ",
+      "metadata": {
+        "name": "bags",
+        "type": "dir",
+        "modified": "2026-10-16T14:54:56+00:00",
+        "path": "/"
+      },
+      "items": [
+        {
+          "name": "cloud_with_fake_obj.zst",
+          "type": "file",
+          "size": 1746145824,
+          "sha256": "d41c2fb28475194a98efeca5d2ee3fd175c0aef350ffb92fff4c26d497e696e9",
+          "modified": "2026-09-24T13:07:53+00:00",
+          "path": "/cloud_with_fake_obj.zst"
+        },
+        {
+          "name": "falcon_test.zst",
+          "type": "file",
+          "size": 6758209772,
+          "sha256": "90dea27d8636bcb2e5cdddf9bc15add3eae0e05196c2b3de959482da7e505611",
+          "modified": "2026-10-16T14:41:08+00:00",
+          "path": "/falcon_test.zst"
+        },
+        {
+          "name": "new_data.zst",
+          "type": "file",
+          "size": 17078961996,
+          "sha256": "8124b627a8a70516a4023db522849f1cadae711e7b152b0f701535a69dab99ec",
+          "modified": "2026-09-17T12:51:29+00:00",
+          "path": "/new_data.zst"
+        },
+        {
+          "name": "new_synth_data.zst",
+          "type": "file",
+          "size": 2532818915,
+          "sha256": "e09336cb939e6b5a6fdb35ccacce59f3808d875a4084142a02cbd1cf88a26bc7",
+          "modified": "2026-10-16T18:43:35+00:00",
+          "path": "/new_synth_data.zst"
+        },
+        {
+          "name": "new_synth_data_with_markers.zst",
+          "type": "file",
+          "size": 2533631921,
+          "sha256": "04d176b49526e5da55a0481cf92d8442604dc0fb9f69c31680482b21d8682760",
+          "modified": "2026-10-19T10:21:59+00:00",
+          "path": "/new_synth_data_with_markers.zst"
+        },
+        {
+          "name": "obstacles.md",
+          "type": "file",
+          "size": 1024,
+          "sha256": "db62201d049da4f16063abceab8a918f7091335e41a093fcb9211863df687558",
+          "modified": "2026-10-19T10:57:58+00:00",
+          "path": "/obstacles.md"
+        }
+      ]
+    }
+  ],
+  "download_urls_excluded": true
+}
