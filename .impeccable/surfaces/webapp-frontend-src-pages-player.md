@@ -13,7 +13,7 @@ Mode: Operate. Engineers inspect LiDAR recordings, decisions and telemetry, navi
 
 THESIS: One ReSense workspace beneath the existing global navigation. Replace the scaled miniature cab and duplicate local navigation with normal responsive layout.
 
-OWN-WORLD: Inherit the application's cool page ground, white telemetry surfaces, red actions and explicit decision colors. The display is an actual shallow Three.js model with rounded black glass and a thin silver housing, based on the supplied `docs/images/references/images (1).jpg`.
+OWN-WORLD: Inherit the application's cool page ground, white telemetry surfaces, red actions and explicit decision colors. The display is an actual shallow Three.js model with rounded black glass and a thin silver housing, based on the supplied `images (1).jpg`.
 
 STORY: Open a run, inspect the live point cloud on the modeled display, select another scenario/camera, read metrics, then seek or replay events. Every control stays readable at its native CSS size.
 
@@ -39,7 +39,7 @@ INTERIOR DETAIL & LIGHTING: Follow the supplied saloon/touchscreen references fo
 
 DESKTOP ONLY: Use one layout with a 1280px minimum workspace width. Verify 1280×720, 1366×768, 1440×900 and 1920×1080, all decision/error states, resize, orbit, run switching, fullscreen, speed, stepping and seeking. Future work, captures and documentation must follow this desktop-only scope. Preserve the established global design system; document the page architecture without replacing global design artifacts.
 
-LATEST PHOTO PASS: `IMG_8349.jpeg`, `IMG_8350.jpeg` and `1591221.jpeg` in `docs/images/references/`, from main
+LATEST PHOTO PASS: `IMG_8349.jpeg`, `IMG_8350.jpeg` and `1591221.jpeg` from main
 `7e38c01` pin warm off-white laminate, bronze rails, black enamel/glazing and taupe
 individual moquette seats. Keep display, original handrail path and door anchors
 unchanged. Add a cantilevered bench beneath the housing, never over the active view.

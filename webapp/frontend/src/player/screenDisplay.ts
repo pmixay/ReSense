@@ -1,4 +1,4 @@
-// Parametric display modeled from docs/images/references/images (1).jpg: shallow silver housing,
+// Parametric display modeled from the supplied images (1).jpg: shallow silver housing,
 // rounded black cover glass, and the live LiDAR render target on the active display surface.
 import * as THREE from 'three';
 import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';

@@ -1,0 +1,3 @@
+== H1 archive X3 (0f02b28) vs R3 candidate X3 (f56ad5e)
+rows 29765 | rows with a change in a decision-bearing field 1 | level differences 9941 (not explained by a latency message: 0)
+   /clear                       rows      1  max |diff| 2.180e+01

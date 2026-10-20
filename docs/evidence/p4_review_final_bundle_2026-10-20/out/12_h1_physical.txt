@@ -1,0 +1,9 @@
+0f02b28: archive (Python 3.12/numpy 1.26/native) vs this review (Python 3.13/numpy 2.5/no native): stationary rows 448: hit differs 0, detection payload differs 165 | moving rows 672: hit differs 12, payload differs 262 | outside cases identical True | summaries {'previous_matches': 293, 'matched': 320, 'outside_cases': 280, 'false_STOP': 0, 'moving_cases': 12} / {'previous_matches': 320, 'matched': 320, 'outside_cases': 280, 'false_STOP': 0, 'moving_cases': 12}
+   continuous_from A [130.8, 135.2, 139.6, 128.6, 146.2, 146.2, 139.6, 130.8, 128.6, 146.2, 130.8, 139.6]
+   continuous_from B [130.8, 139.6, 139.6, 130.8, 146.2, 146.2, 141.8, 133.0, 133.0, 146.2, 126.4, 133.0] | max difference 6.6 m
+same runtime, 0f02b28 vs f56ad5e: stationary rows 448: hit differs 0, detection payload differs 0 | moving rows 672: hit differs 0, payload differs 0 | outside cases identical True | summaries {'previous_matches': 320, 'matched': 320, 'outside_cases': 280, 'false_STOP': 0, 'moving_cases': 12} / {'previous_matches': 320, 'matched': 320, 'outside_cases': 280, 'false_STOP': 0, 'moving_cases': 12}
+   continuous_from A [130.8, 139.6, 139.6, 130.8, 146.2, 146.2, 141.8, 133.0, 133.0, 146.2, 126.4, 133.0]
+   continuous_from B [130.8, 139.6, 139.6, 130.8, 146.2, 146.2, 141.8, 133.0, 133.0, 146.2, 126.4, 133.0] | equal
+archive 0f02b28 vs f56ad5e here: stationary rows 448: hit differs 0, detection payload differs 165 | moving rows 672: hit differs 12, payload differs 262 | outside cases identical True | summaries {'previous_matches': 293, 'matched': 320, 'outside_cases': 280, 'false_STOP': 0, 'moving_cases': 12} / {'previous_matches': 320, 'matched': 320, 'outside_cases': 280, 'false_STOP': 0, 'moving_cases': 12}
+   continuous_from A [130.8, 135.2, 139.6, 128.6, 146.2, 146.2, 139.6, 130.8, 128.6, 146.2, 130.8, 139.6]
+   continuous_from B [130.8, 139.6, 139.6, 130.8, 146.2, 146.2, 141.8, 133.0, 133.0, 146.2, 126.4, 133.0] | max difference 6.6 m

@@ -2,13 +2,15 @@
 
 ## References
 
-The user supplied these photographs in main commit `7e38c01`:
+The user supplied these photographs in main commit `7e38c01`. The reference files
+were removed from the checkout at the user's request on 20 October 2026; these
+names record the sources used for the captures:
 
-- [`IMG_8349.jpeg`](../references/IMG_8349.jpeg): frontal doorway, black glazed leaves,
+- `IMG_8349.jpeg`: frontal doorway, black glazed leaves,
   formed off-white pillars, bronze handrails, gray individual bench seats.
-- [`IMG_8350.jpeg`](../references/IMG_8350.jpeg): perspective saloon view, taupe woven
+- `IMG_8350.jpeg`: perspective saloon view, taupe woven
   upholstery, cantilevered shells, curved bronze bench-end armrests.
-- [`1591221.jpeg`](../references/1591221.jpeg): exterior door proportions, dark framing,
+- `1591221.jpeg`: exterior door proportions, dark framing,
   red door-edge illumination and brushed threshold.
 
 The photographs guide modeled materials and geometry; their pixels do not ship as

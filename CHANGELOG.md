@@ -59,8 +59,7 @@ and 11 changed files until the reseal; CI was red.)
   has six failing comparisons. [Author evidence](docs/evidence/k1_k2_repair_2026-10-20/README.md).
 - Document Falcon's **38 non-STOP near-object clear-distance overclaims** as a
   [known limit](docs/evidence/falcon_clear_limit_2026-10-20/README.md), not an accepted fix.
-- Move all five root images to [`docs/images/references/`](docs/images/references/README.md),
-  preserve their bytes and update the documentation/source-comment references.
+- All five unused root reference images were deleted (P2, at the user's request, `2af2e53`); the relocation to `docs/images/references/` that P2's branch had first made is withdrawn.
 
 ### 20.10 — R3 B2/B3 completion
 

@@ -1,0 +1,45 @@
+STATIC {'distance': 37.0, 'lateral': -0.68, 'top': 2.72, 'absorbing': None} 10 -> 10
+STATIC {'distance': 37.0, 'lateral': -0.68, 'top': 3.22, 'absorbing': None} 10 -> 10
+STATIC {'distance': 37.0, 'lateral': -0.68, 'top': 4.12, 'absorbing': None} 10 -> 10
+STATIC {'distance': 37.0, 'lateral': -0.68, 'top': 4.12, 'absorbing': [2.54, 4.12]} 10 -> 10
+STATIC {'distance': 37.0, 'lateral': 0.68, 'top': 2.72, 'absorbing': None} 10 -> 10
+STATIC {'distance': 37.0, 'lateral': 0.68, 'top': 3.22, 'absorbing': None} 10 -> 10
+STATIC {'distance': 37.0, 'lateral': 0.68, 'top': 4.12, 'absorbing': None} 10 -> 10
+STATIC {'distance': 37.0, 'lateral': 0.68, 'top': 4.12, 'absorbing': [2.54, 4.12]} 10 -> 10
+STATIC {'distance': 67.0, 'lateral': -0.68, 'top': 2.72, 'absorbing': None} 10 -> 10
+STATIC {'distance': 67.0, 'lateral': -0.68, 'top': 3.22, 'absorbing': None} 10 -> 10
+STATIC {'distance': 67.0, 'lateral': -0.68, 'top': 4.12, 'absorbing': None} 10 -> 10
+STATIC {'distance': 67.0, 'lateral': -0.68, 'top': 4.12, 'absorbing': [2.54, 4.12]} 10 -> 10
+STATIC {'distance': 67.0, 'lateral': 0.68, 'top': 2.72, 'absorbing': None} 10 -> 10
+STATIC {'distance': 67.0, 'lateral': 0.68, 'top': 3.22, 'absorbing': None} 10 -> 10
+STATIC {'distance': 67.0, 'lateral': 0.68, 'top': 4.12, 'absorbing': None} 10 -> 10
+STATIC {'distance': 67.0, 'lateral': 0.68, 'top': 4.12, 'absorbing': [2.54, 4.12]} 10 -> 10
+STATIC {'distance': 109.0, 'lateral': -0.68, 'top': 2.72, 'absorbing': None} 10 -> 10
+STATIC {'distance': 109.0, 'lateral': -0.68, 'top': 3.22, 'absorbing': None} 10 -> 10
+STATIC {'distance': 109.0, 'lateral': -0.68, 'top': 4.12, 'absorbing': None} 10 -> 10
+STATIC {'distance': 109.0, 'lateral': -0.68, 'top': 4.12, 'absorbing': [2.54, 4.12]} 10 -> 10
+STATIC {'distance': 109.0, 'lateral': 0.68, 'top': 2.72, 'absorbing': None} 10 -> 10
+STATIC {'distance': 109.0, 'lateral': 0.68, 'top': 3.22, 'absorbing': None} 10 -> 10
+STATIC {'distance': 109.0, 'lateral': 0.68, 'top': 4.12, 'absorbing': None} 10 -> 10
+STATIC {'distance': 109.0, 'lateral': 0.68, 'top': 4.12, 'absorbing': [2.54, 4.12]} 10 -> 10
+STATIC {'distance': 137.0, 'lateral': -0.68, 'top': 2.72, 'absorbing': None} 10 -> 10
+STATIC {'distance': 137.0, 'lateral': -0.68, 'top': 3.22, 'absorbing': None} 10 -> 10
+STATIC {'distance': 137.0, 'lateral': -0.68, 'top': 4.12, 'absorbing': None} 10 -> 10
+STATIC {'distance': 137.0, 'lateral': -0.68, 'top': 4.12, 'absorbing': [2.54, 4.12]} 10 -> 10
+STATIC {'distance': 137.0, 'lateral': 0.68, 'top': 2.72, 'absorbing': None} 10 -> 10
+STATIC {'distance': 137.0, 'lateral': 0.68, 'top': 3.22, 'absorbing': None} 10 -> 10
+STATIC {'distance': 137.0, 'lateral': 0.68, 'top': 4.12, 'absorbing': None} 10 -> 10
+STATIC {'distance': 137.0, 'lateral': 0.68, 'top': 4.12, 'absorbing': [2.54, 4.12]} 10 -> 10
+MOVING {} -0.68 130.8
+MOVING {} 0.68 139.6
+MOVING {'azimuth_phase': -0.049} -0.68 139.6
+MOVING {'azimuth_phase': -0.049} 0.68 130.8
+MOVING {'azimuth_phase': 0.0} -0.68 146.2
+MOVING {'azimuth_phase': 0.0} 0.68 146.2
+MOVING {'azimuth_phase': 0.049} -0.68 141.8
+MOVING {'azimuth_phase': 0.049} 0.68 133.0
+MOVING {'wall_left': 3.25, 'wall_right': -1.85, 'rail_center': -0.25} -0.68 133.0
+MOVING {'wall_left': 3.25, 'wall_right': -1.85, 'rail_center': -0.25} 0.68 146.2
+MOVING {'wall_left': 3.25, 'wall_right': -1.85, 'rail_center': 0.25} -0.68 126.4
+MOVING {'wall_left': 3.25, 'wall_right': -1.85, 'rail_center': 0.25} 0.68 133.0
+{'previous_matches': 320, 'matched': 320, 'outside_cases': 280, 'false_STOP': 0, 'moving_cases': 12}

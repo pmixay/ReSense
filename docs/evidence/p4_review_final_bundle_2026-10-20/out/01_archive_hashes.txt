@@ -1,0 +1,2 @@
+<repo>/docs/evidence/r3_completion_2026-10-20/raw-manifest.json: members 413 missing 0 bad 0
+<repo>/docs/evidence/h1_partial_integration_2026-10-20/raw-manifest.json: members 166 missing 0 bad 0

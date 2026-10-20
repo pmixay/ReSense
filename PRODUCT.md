@@ -35,7 +35,7 @@ controls, system metrics and timeline/transport. Keep scenario switching, camera
 presets and orbit/reset, seeking, speed, event stepping, looping, fullscreen,
 keyboard operation and recovery from data/GPU failures.
 
-The user-supplied `docs/images/references/images (1).jpg` is the physical display reference: rounded black
+The user-supplied `images (1).jpg` is the physical display reference: rounded black
 glass, silver housing and shallow depth. The modeled display belongs to the primary
 visualization, while surrounding controls inherit the application's shared design.
 The display is installed into a believable modeled train wall, with restrained
@@ -57,7 +57,7 @@ open side-panel contents. Charging fittings align to the door pillar and wall
 trim stops before the door; artificial roof bands are omitted from the close wall crop.
 Raleway remains in use; the requested Esh/Struve comparison was deferred by the user.
 
-The latest user-supplied photographs in `docs/images/references/` (`IMG_8349.jpeg`, `IMG_8350.jpeg`, and
+The latest user-supplied photographs (`IMG_8349.jpeg`, `IMG_8350.jpeg`, and
 `1591221.jpeg`, main commit `7e38c01`) guide the next material pass. Keep the existing
 screen, door and foreground handrail anchors locked. Use warm bronze metalwork,
 off-white molded paneling, layered black glazing surrounds and gray-taupe woven

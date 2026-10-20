@@ -1,31 +1,67 @@
-# J1 on release day — runbook (pre-built 16.10)
+# J1 on release day — runbook (pre-built 16.10 on 1.1.0, retargeted 20.10 to the 1.2.0 seal)
 
-> **Captain's note, 19.10:** 1.1.0 will not be released. J1 runs on the **final 1.2.0 seal** after the 21.10
-> integration (and its release image once CI works). The identity check below must then compare against the 1.2.0
-> manifest that P1 writes at the reseal (today's candidate: `docs/evidence/detector_freeze_2026-10-18_b4_merged.json`,
-> digest `68dee667…`), not the 1.1.0 tree `db3f588d…`. Expected values: on Pandar data the 1.2.0 candidate equals
-> 1.1.0 (gate and X3 identical); on the Falcon recording `aec88d2` reproduces the 1.1.0 run frame by frame
-> ([check](../falcon_head_check_2026-10-19/README.md)). A detector change integrated on 21.10 moves these
-> expectations: rebuild the pre-release numbers on the final seal before scoring.
+> **Retargeted 20.10 (P4).** 1.1.0 will not be released (captain, 19.10). J1 runs on the **final 1.2.0 seal**: the R3 reseal,
+> main `f56ad5e` (measured `0a472d6`), manifest [`detector_freeze_2026-10-20_1.2.0_r3.json`](../detector_freeze_2026-10-20_1.2.0_r3.json),
+> 40 files, seal digest `6d091081769104657ecc2c0b06f53049647d4f6c7327b7429bbda92673782452`; the git tree of the sealed paths
+> (`resense native configs setup.py pyproject.toml ros2_ws/src/resense_ros/config`) hashes to
+> `014ad8fd61f1a4b6962952505cc0274c95744f476c0d8d501a9c8cbe27873e54` (identical on `0a472d6`, `47b220c`, `f56ad5e` and the
+> docs-only commits after it). **The run is one command** once the captain has accepted that seal:
+>
+> ```
+> PY=<P4 runtime python> DATA=<decoded caches + x1/icp> BAGS=<six organizer bags + cloud_with_fake_obj> DATASET_ZIP=<organizers' archive> \
+>   docs/evidence/rejudge_2026-10-16/release_day.sh <release checkout> <work dir> --run
+> ```
+>
+> Without `--run` it checks the identity and prints the plan; a wrong tree or digest stops it (exit 2). The identity step is
+> tested (pass on this tree, fail on a wrong value); the other steps were **not executed** in this retargeting (no recordings
+> in the container) and are the existing tools called with the paths of this folder. If the accepted seal is a later
+> reseal, give the new `EXPECT_TREE_SHA` / `EXPECT_DIGEST`. The Docker steps still wait for the release image
+> (`scripts/docker/chain.sh`, below). **Everything below the table that says 1.1.0 or 707ea9c is the 16–18.10 pre-release
+> record; what to expect on 1.2.0, and what differs from it, is the section "On the 1.2.0 seal".**
 
-The release J1 (BACKLOG J1) runs on the accepted 1.1.0 release: tag, archive, image. Everything that does
-not need the release image is already run on the sealed 1.1.0 tree and on 707ea9c as a control
-([prebuild/](prebuild/)). On release day, only the identity check and the steps marked **left** remain.
-Use one runtime throughout and pin `OPENBLAS_CORETYPE=Haswell`
-([P4 amendment 1](../p4_eval_1.1.0_2026-10-16/PROTOCOL.md)); always set `RESENSE_REPO` to the evaluated checkout.
+The release J1 (BACKLOG J1) runs on the accepted release: tag, archive, image. The 1.1.0-era pre-build ([prebuild/](prebuild/),
+[dryrun/](dryrun/)) stays as the reference for 707ea9c and for what 1.1.0 did. On release day, only the identity check and the
+steps marked **left** remain. Use one runtime throughout and pin `OPENBLAS_CORETYPE=Haswell`
+([P4 amendment 1](../p4_eval_1.1.0_2026-10-16/PROTOCOL.md)); always set `RESENSE_REPO` to the evaluated checkout (the script does).
 
 | J1 deliverable | state | how |
 |---|---|---|
-| identity: release tag / commit / image = sealed tree `db3f588d…`; `detector_freeze.py verify` PASS in the run log | **left** | `git ls-tree -r <tag> -- resense native configs setup.py pyproject.toml ros2_ws/src/resense_ros/config` must equal the measured tree; image ID and archive SHA-256 from the release |
-| 8 per-recording CSVs: six bags | **pre-built** (pre-release) on `492e407` | [dryrun/dryrun.json](dryrun/dryrun.json): 0 decisions differ from 707ea9c; the 707ea9c dry run reproduces the judge |
-| 8 per-recording CSVs: Set O | **left** (cheap) | `judge_runner.py --bag <cloud_with_fake_obj> --out …` (~1,510 frames), then `score_objects.py`. The X3 nominal Set O metrics are already identical between versions |
+| identity: release tag / commit / image = sealed tree (tree sha `014ad8fd…3e54`, seal digest `6d091081…2452`); `detector_freeze.py verify` PASS in the run log | **left** (`release_day.sh`, step `identity`) | `git ls-tree -r <tag> -- resense native configs setup.py pyproject.toml ros2_ws/src/resense_ros/config | sha256sum` must equal the value above; image ID and archive SHA-256 from the release. The image must carry the same sources: compare `resense/*.py` in the image with the tag |
+| 8 per-recording CSVs: six bags | **left** (cheap; `release_day.sh` step `sixbags`). The 1.1.0 pre-build on `492e407` does **not** stand in for 1.2.0 | [dryrun/dryrun.json](dryrun/dryrun.json) is 1.1.0 / 707ea9c (0 decisions differ from 707ea9c; the 707ea9c dry run reproduces the judge). 1.2.0 on the X3 nominal cases (node-decoded caches): `doubleT_obstacle` 193 STOP frames, first STOP frame 8, `squareT_platform_squareT_switch` 11 STOP frames / 3 episodes, `roundT_squareT_pressureGate_squareT` 0: the 707ea9c anchors. The other three bags are not in X3: **not measured on 1.2.0 in the judge-runner path** |
+| 8 per-recording CSVs: Set O | **left** (cheap; step `seto`) | `judge_runner.py --bag <cloud_with_fake_obj> --out …` (~1,510 frames), then `score_objects.py`. **Set O is not identical to 1.1.0 any more:** X3 nominal 452 → 457 STOP frames, 8 → 9 episodes (R3: the labelled hanging cable, first STOP 35.1 m instead of 30.1 m) |
 | 8 per-recording CSVs: ride `new_data` | **left** (~1–2 h, ~14 GB peak disk) | `stream_new_data.py` streams the 17 GB archive from Yandex Disk |
-| range summaries | **pre-built**: all 37 jobs of `run_range_matrix.sh` + `run_range_extra.sh`, both versions | [prebuild/range_table.md](prebuild/range_table.md), `prebuild_range.py`; re-run on the release checkout only if the identity check fails |
-| perturbation table | **done** | X3 on 1.1.0, PASS, identical to v1.0.0 ([P4 report](../p4_eval_1.1.0_2026-10-16/README.md)) |
+| range summaries | **left for 1.2.0** (step `ranges`, ~8 min at 2 workers): the pre-build is 1.1.0 / 707ea9c only | [prebuild/range_table.md](prebuild/range_table.md), `prebuild_range.py`. H1 and the later switches changed the detector after the pre-build; known moves: the pole on the axis 82 → 114 of 177 STOP frames (H1, measured on `0f02b28`); C person (82.77 m, 55 of 153) re-measured unchanged on `0f02b28` only; E6 (34 of 59) unchanged on `0f02b28` and `0a472d6`; the other jobs are unmeasured on 1.2.0 |
+| perturbation table | **done on the sealed bytes**, repeated on the release (step `x3`) | X3 on 1.1.0 was PASS, identical to v1.0.0 ([P4 report](../p4_eval_1.1.0_2026-10-16/README.md)); on the 1.2.0 source (`0a472d6` bytes): 40 cases / 29,765 rows / 260 comparisons PASS against the base, re-derived 20.10 ([P4 review](../p4_review_final_bundle_2026-10-20/README.md)); against the 1.1.0 table 30 of 40 cases are identical in frames, STOP frames and episodes, the 10 Set O cases gain 1–7 STOP frames |
 | 4 Docker chain summaries | **left** (needs the release image) | `scripts/docker/chain.sh <image> <bag dir> <bag> <label> [play options]` for the 13.10 conditions (its table has five runs: 360° and 120° each with README flags and with the literal default `ros2 bag play`, plus a renamed topic; the card asks for four summaries) |
 | `scores.json`, `delta.md` | **left** | a fresh-context agent scores against the 13.10 rubric; S1 stays FAIL; the selected runtime is measured |
 
-## Pre-built range result (16.10)
+## On the 1.2.0 seal: what to expect, and what the checks will print (20.10)
+
+Derived from the committed final-source records ([R3 raw archive](../r3_completion_2026-10-20/), P4's own runs on `f56ad5e`,
+[the final-bundle review](../p4_review_final_bundle_2026-10-20/README.md)); nothing here is a J1 result.
+
+| item | 1.2.0 expected | against the 1.1.0 record the comparators still hold |
+|---|---|---|
+| identity | tree sha `014ad8fd…3e54`, digest `6d091081…2452`, 40 files | — |
+| synthetic bags, decisions (`run_probe.sh`) | platform 185 / 135 / 66, switch 142 / 294 / 300, tunnels 126 / 223 / 196 (STOP / CAUTION / GO), identical to 1.1.0 in all 1,667 frames | `PASS` ×3. Four frames differ in `clear` (platform 316; tunnels 45, 52, 291; F1a switch-on, no decision) — the comparator does not look at `clear` |
+| synthetic platform, scored | person first STOP 44.0 m, edge box 86.8 m, 0 unmatched STOP | `PASS` (the 20.10 final-source replay equals 1.1.0 in every detection) |
+| Falcon, whole recording | 4,443 frames; STOP 1,364 / CAUTION 3,070 / GO 8 / FAULT 1; 7 STOP episodes | **`DIFF` is expected, not a finding:** `Falcon whole recording decisions: 4435/4443 frames equal`. The 8 frames are rows 4394–4401, STOP → CAUTION: the tunnel-ceiling episode at 9.4 m that H′ removes (checked 20.10 against the committed 1.1.0 record: exactly these 8 rows; the other 3,169 rows differ only in `curv` at 1e-18). Any other difference is a finding |
+| Falcon stream complete | 4,443 of 4,443, 0 lost | `PASS` |
+| Pandar ↔ Falcon switch | the second bag equals its stand-alone run, both orders | `PASS` expected (the prefix is 100 frames, far from row 4394); not re-measured on 1.2.0 |
+| gauge range and stability | not re-measured on 1.2.0 | unknown: report `PASS`/`DIFF` as printed; L16 and F1a touch calibration and the low-object reference |
+| X3 | 40 cases PASS against `r3_completion_2026-10-20/x3-a-candidate.json` | the 10 Set O cases differ from the 1.1.0 table by +1…+7 STOP frames (nominal 452 → 457) |
+| ride | gate-level counts of the seal: 23 events / 26 STOP episodes / 111 STOP frames (the gate path, not the judge-runner CSV) | the judge-runner CSV of the ride is not measured on 1.2.0 |
+
+**Runtime sensitivity (found 20.10).** The same H1 physical replay on the same source moves its moving-body onset distance by
+up to 6.6 m (three scans) between the P4 runtime and Python 3.13 / numpy 2.5 without the native kernels, and flips no stationary
+hit ([review §3](../p4_review_final_bundle_2026-10-20/README.md)). Run J1, X3 and any comparison with the committed numbers in
+the one pinned runtime; a number from another runtime is not a regression and not an improvement.
+
+**Order on the day.** (1) `release_day.sh <checkout> <work>` without `--run` (identity, plan); (2) with `--run` (about 1 h plus
+downloads, ride separately); (3) the Docker chain summaries on the release image; (4) a fresh-context agent scores against the
+13.10 rubric (`scores.json`, `delta.md`); S1 stays FAIL.
+
+## Pre-built range result (16.10, on 1.1.0 and 707ea9c; stale for 1.2.0)
 
 * **707ea9c reproduces the judge's 13.10 range table** (first STOP / held, metres): A person 218 / 222,
   with dropout 209 / 204, ±0.5 m 218 / 222; 1 m 151 / 163; 0.5 m 135 / 83; 0.3 m and the low box 45 / 49;
