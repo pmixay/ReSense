@@ -79,7 +79,7 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
   Telemetry starts hidden; its button toggles independently scrollable left/right side
   columns while keeping the image center clear. Its canvas,
   offscreen render target, camera aspect, close-up and HUD resize together via ResizeObserver.
-  The display housing is a real Three.js mesh based on the supplied `images (1).jpg`; only the
+  The display housing is a real Three.js mesh based on the supplied [`images (1).jpg`](../../docs/images/references/images%20%281%29.jpg); only the
   Player enables this presentation, while existing CloudPreview views retain direct rendering.
   There is no scaled stage, duplicate local header or separate page background.
 - **Display optics.** `screenDisplay.ts` tilts the housing and publishes the active-face affine

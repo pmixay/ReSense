@@ -3,9 +3,9 @@
   "base": "http://127.0.0.1:4178",
   "frontendSourceSha256": "c4ba70e25dfe4e13995dc346f6f4637122739d3524462895189426e0c851b201",
   "references": [
-    "IMG_8349.jpeg",
-    "IMG_8350.jpeg",
-    "1591221.jpeg"
+    "docs/images/references/IMG_8349.jpeg",
+    "docs/images/references/IMG_8350.jpeg",
+    "docs/images/references/1591221.jpeg"
   ],
   "captures": [
     {

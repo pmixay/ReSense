@@ -50,6 +50,18 @@ and 11 changed files until the reseal; CI was red.)
   open. Author evidence on committed source: not independent P4 acceptance and not a release.
   [Evidence](docs/evidence/f1a_completion_2026-10-20/README.md).
 
+### 20.10 — deadline handoff: K1/K2 off, Falcon limit, reference images
+
+- **Decided 20.10 evening (captain's delegate, can be overruled): K2/K1 stay off in 1.2.0, and the R3 B2 labelling is accepted** (the STOP on co-moving physical targets is correct, R3 stays on; `DECISIONS.md` rows 48–49).
+- **K2/K1 stay off in 1.2.0.** Registered repair results still fail acceptance:
+  combined r4 standing-person 150 m is 0/260; r5 retains 28/29 original tunnel
+  marker-19 STOP frames. R3/off X3 passes 40 cases /260 comparisons, while r3/on
+  has six failing comparisons. [Author evidence](docs/evidence/k1_k2_repair_2026-10-20/README.md).
+- Document Falcon's **38 non-STOP near-object clear-distance overclaims** as a
+  [known limit](docs/evidence/falcon_clear_limit_2026-10-20/README.md), not an accepted fix.
+- Move all five root images to [`docs/images/references/`](docs/images/references/README.md),
+  preserve their bytes and update the documentation/source-comment references.
+
 ### 20.10 — R3 B2/B3 completion
 
 - Accumulated cable clusters can confirm from current-frame footprint, height and distinct

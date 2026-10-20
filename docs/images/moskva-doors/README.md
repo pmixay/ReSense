@@ -6,7 +6,7 @@ material/proportion and optical-transmission reference.
 
 ## Reference and finish
 
-The supplied `IMG_8349.jpeg`, `IMG_8350.jpeg` and `1591221.jpeg` guide the
+The supplied [`IMG_8349.jpeg`](../references/IMG_8349.jpeg), [`IMG_8350.jpeg`](../references/IMG_8350.jpeg) and [`1591221.jpeg`](../references/1591221.jpeg) guide the
 Moskva-2020 / 81-775 leaves: near-full-height glazing, narrow black enamel stiles,
 layered center seals, slim red edge LEDs and a small lower glazing bead. The
 previous invented recessed handles and broad metal kick plates are removed.

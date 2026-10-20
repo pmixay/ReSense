@@ -1,0 +1,96 @@
+{
+  "scope": "synthetic track-estimator and direct classifier probe; recording exposure unmeasured",
+  "finding_reproduced": true,
+  "rows": [
+    {
+      "native": false,
+      "extension_m": 0.0,
+      "points_without_floor": 63548,
+      "before": {
+        "axis_valid": 147.0,
+        "joint_reach": 147.0,
+        "joint_used": true,
+        "base_axis_valid": 163.0
+      },
+      "after": {
+        "axis_valid": 163.0,
+        "joint_reach": 0.0,
+        "joint_used": true,
+        "base_axis_valid": 163.0
+      },
+      "direct_dual_classifier_before_after": []
+    },
+    {
+      "native": false,
+      "extension_m": 15.0,
+      "points_without_floor": 63548,
+      "before": {
+        "axis_valid": 162.0,
+        "joint_reach": 147.0,
+        "joint_used": true,
+        "base_axis_valid": 163.0
+      },
+      "after": {
+        "axis_valid": 163.0,
+        "joint_reach": 0.0,
+        "joint_used": true,
+        "base_axis_valid": 163.0
+      },
+      "direct_dual_classifier_before_after": [
+        [
+          "warning",
+          "beyond_axis"
+        ],
+        [
+          "gauge",
+          ""
+        ]
+      ]
+    },
+    {
+      "native": true,
+      "extension_m": 0.0,
+      "points_without_floor": 63548,
+      "before": {
+        "axis_valid": 147.0,
+        "joint_reach": 147.0,
+        "joint_used": true,
+        "base_axis_valid": 163.0
+      },
+      "after": {
+        "axis_valid": 163.0,
+        "joint_reach": 0.0,
+        "joint_used": true,
+        "base_axis_valid": 163.0
+      },
+      "direct_dual_classifier_before_after": []
+    },
+    {
+      "native": true,
+      "extension_m": 15.0,
+      "points_without_floor": 63548,
+      "before": {
+        "axis_valid": 162.0,
+        "joint_reach": 147.0,
+        "joint_used": true,
+        "base_axis_valid": 163.0
+      },
+      "after": {
+        "axis_valid": 163.0,
+        "joint_reach": 0.0,
+        "joint_used": true,
+        "base_axis_valid": 163.0
+      },
+      "direct_dual_classifier_before_after": [
+        [
+          "warning",
+          "beyond_axis"
+        ],
+        [
+          "gauge",
+          ""
+        ]
+      ]
+    }
+  ]
+}

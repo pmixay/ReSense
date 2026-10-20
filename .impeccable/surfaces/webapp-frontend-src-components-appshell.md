@@ -11,7 +11,7 @@ Mode: Operate. Retain the shared metro navigation and native page behavior.
 
 USER-PINNED MOMENT: A pair of dimensional Moscow-2020 sliding train doors closes
 over the departing page, hides the route swap behind matte frosted glass, then
-opens over the destination. Use uploaded `IMG_8349.jpeg` and `IMG_8350.jpeg` for
+opens over the destination. Use uploaded `docs/images/references/IMG_8349.jpeg` and `docs/images/references/IMG_8350.jpeg` for
 the black enamel leaves, tall rounded glazing, bronze/metal surrounds and seals.
 Frost is explicitly requested even though the reference train has clear glass.
 

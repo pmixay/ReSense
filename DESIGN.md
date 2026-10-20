@@ -182,7 +182,7 @@ The shared system combines neutral tonal layering with soft card, popover and pr
 
 The Player's depth is actual Three.js geometry: beveled rear and rounded housing sit in a real wall opening and recessed rubber gasket. `trainInterior.ts` supplies cool-gray panels, seams, fasteners, bevelled aluminium door reveals, rubber/glazing, red edge diffuser, release rosette and lit charging sockets. The charging plate and release share the pillar's centerline; paired indicators are centered within the plate. Horizontal dado/service seams terminate before the door. The previously invented ceiling valance, vent fins and horizontal light bands have been removed from this close wall crop; broad ceiling illumination and reflections remain off-camera. The sharp curved copper-toned post and collars retain independent 24% parallax. Model checks verify screen clearance, rail depth, centered charging geometry and trim/door separation.
 
-`images (1).jpg` (commit `5118a17`) remains the physical display authority. The inspected Moscow-2020 saloon/touchscreen photographs cited in the gallery README inform cool-gray paneling, black surrounds, copper-toned rails and red door-edge lighting. These are reference-only material cues; no photograph pixels ship in the scene, and no factory-dimensional scan is claimed.
+`docs/images/references/images (1).jpg` (commit `5118a17`) remains the physical display authority. The inspected Moscow-2020 saloon/touchscreen photographs cited in the gallery README inform cool-gray paneling, black surrounds, copper-toned rails and red door-edge lighting. These are reference-only material cues; no photograph pixels ship in the scene, and no factory-dimensional scan is claimed.
 
 The opaque train-wall scene fills the Player background. Deterministic DataTexture grain supplies laminate bump and steel roughness without image assets. A neutral broad ceiling area light, cool overhead key, warm cove fill and dimmer lower hemispheric bounce reproduce the references' lighting hierarchy. A small procedural saloon reflection environment is prefiltered once per renderer and cached, giving copper/aluminium broad luminaire reflections rather than unlit metallic surfaces. The shared area-light lookup tables initialize once. Dynamic shadow maps remain disabled. An analytic rounded signed-distance contact shadow follows the enclosure at the wall plane, using `fwidth` antialiasing for a smooth penumbra. A transparent clear-coated MeshPhysicalMaterial cover plane remains above the live face (z .205 versus .175), with mild ceiling-light glare in the display shader.
 
@@ -202,7 +202,7 @@ Normalized mouse displacement sets a bounded quadratic pressure target: maximum 
 
 ### Photo-led interior refinement and section transitions
 
-The uploaded `IMG_8349.jpeg` / `IMG_8350.jpeg` saloon views and `1591221.jpeg`
+The uploaded `docs/images/references/IMG_8349.jpeg` / `docs/images/references/IMG_8350.jpeg` saloon views and `docs/images/references/1591221.jpeg`
 exterior in main commit `7e38c01` are the current material/seating/door authority.
 Screen housing, right-hand door and foreground post positions stay locked to their
 existing responsive geometry. Refine the wall toward warm off-white laminate,
@@ -267,7 +267,7 @@ temporary hints are released before the doors finish opening. Native focus/input
 the overlay, then main receives focus without scrolling.
 
 The overlay is dimensional CSS geometry: only two full-viewport sliding leaves,
-following the uploaded `IMG_8349.jpeg`, `IMG_8350.jpeg` and `1591221.jpeg`:
+following the uploaded photos in `docs/images/references/`: `IMG_8349.jpeg`, `IMG_8350.jpeg` and `1591221.jpeg`:
 tall glazing occupying approximately 91% of the height, narrow black enamel
 stiles, deep center seals, red edge strips and a small lower glazing bead. The
 invented recessed grips and broad metal kick plates are removed. Every detail moves with

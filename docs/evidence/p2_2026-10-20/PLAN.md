@@ -128,6 +128,10 @@ correctly, frontend reconnect/zero-position behavior, and the live browser flow.
 
 ## Non-code handoff — stop before executing these
 
+Update, 20.10 deadline handoff: the user requested relocation of all five root
+images. Completed in [`docs/images/references/`](../../images/references/README.md),
+with byte-identity checks and updated links. The original assignment below is historical.
+
 - **P0 today:** the three root photos (`1591221.jpeg`, `IMG_8349.jpeg`,
   `IMG_8350.jpeg`) need a usage/licensing decision, then relocation into deck
   assets or deletion. Main records this assignment; no tracked source references
