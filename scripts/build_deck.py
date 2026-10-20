@@ -305,9 +305,10 @@ N = {
 # independent review and reverted), `detector_freeze.py verify` PASS, 40 files. tests: P4's independent run on the
 # f56ad5e bytes in the CI-like configuration, 20.10: 2,387 of 2,387 passed, 8 need recorded data
 # (docs/evidence/p4_review_final_bundle_2026-10-20/README.md; 1,969 on aec88d2 on 19.10). "release_tag": None until the
-# release is published; set it to "v1.2.0" and run --refresh (slide 5 and the notes then say so).
+# release is published; set to "v1.2.0" on 20.10 evening at the captain's request (before the tag existed: check the
+# release page before the deck is shown; None and --refresh put "релиз готовится" back).
 V12 = {"version": "1.2.0", "commit": "f56ad5e", "released": "v1.0.0", "judge_score": 66, "tests": "2 387",
-       "release_tag": None}
+       "release_tag": "v1.2.0"}
 def release_state():
     """What the slides and notes say about the 1.2.0 release."""
     return f"релиз {V12['release_tag']}" if V12["release_tag"] else "релиз готовится"
