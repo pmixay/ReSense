@@ -26,8 +26,9 @@ object would). The exposure B1 describes, a genuine low object on a frame whose 
 here because no genuine low object is on the ride or in set O at those frames; the condition itself (reference
 ≥ 0.11 m) is common on the ride: 114 of 163, 70 % of F1a's weak clusters.
 
-P3's fix (top over the cluster's own footprint including the returns above the floor) is not committed yet; its gate +
-Falcon measurement is still to run.
+P3's fix (top over the cluster's own footprint including the returns above the floor) was committed later as `f07f4b8`
+(`main` `99dab01`); its gate, Falcon, X3 and a trace of every changed frame are in
+[`../f1a_acceptance_2026-10-20/README.md`](../f1a_acceptance_2026-10-20/README.md).
 
 ## How it was checked
 
