@@ -22,6 +22,27 @@ red. Figures are the team's, measured when a change landed (detector figures on 
 targeted suites pass; the full suite, the final gate, X3 and the whole Falcon recording on the final commit are pending
 ([`docs/BACKLOG.md`](docs/BACKLOG.md) "Current plan"). Not a release, not a J1 score, not a G3 run.
 
+### 20.10 — H1 partial improvement, overall OPEN
+
+- **Publish the retained positive collision core as a partial H1 improvement**, explicitly authorized by the user for
+  main integration before overall H1 closure. Current-frame support, fresh raw rail anchors and geometric consistency
+  can exempt a tall narrow body from the column signature; uninterrupted ordinary confirmation can suspend only its
+  column hold. The withdrawn free-top experiment remains off (`column_free_max_top=0`).
+- A-axis, an injected object in real scans: **82 ->114/177** matched visible rows, **63 still unmatched**. All 32 physical
+  stationary scenes match every post-confirmation scan; three left137 m cases improve **1/14 ->10/14**. Nominal moving
+  physical scenes at 22 m/s have continuous STOP from **130.8 /135.2 m**; **0/280** outside-control false STOPs. These
+  are development/injection/simulation results, not a real-world detection-range or stopping guarantee.
+- Merged source `0f02b28` includes remote main `0acb18c`: full original gate PASS, all **208 non-timing metrics equal**
+  the published main integration gate; critical A/C/cable probes retained, all 4,443 Falcon frames checked. Fresh
+  combined-tree X3: **PASS, 40 cases /29,765 rows**. Full pytest: **2,276 passed +17 subtests**, one inherited
+  proxy-hook message assertion failure, eight external-data deselections. No all-green-suite claim.
+- **H1 remains OPEN.** Corrected a longitudinal ICP alias (raw reflector supports 1.343 m rather than 0.335 m), but
+  six reconstructions, long-baseline checks and separate validation landmark tracks do not establish a validated far
+  rail axis. Independent review/reseal remain pending. No rejected trajectory is installed or credited as truth.
+  [Publication record](docs/evidence/h1_partial_integration_2026-10-20/README.md),
+  [retained repair](docs/evidence/h1_reference_2026-10-19/README.md),
+  [merged-source/reference checks](docs/evidence/h1_trajectory_2026-10-19/README.md).
+
 ### 19.10
 
 - **Four agent lanes merged** with `main` (P3's L16/S3 and R3) into one integration branch: K1/K2 gauge, F1 false alarms, Falcon

@@ -72,7 +72,7 @@ lanes K1/K2, F1, Falcon long range and N3, merged 19.10 with an identity proof; 
 |---|---|---|
 | P0 | Answer P4's review of R3 and L16/S3; explain the set F cable sustained-median row (34.2 → 17.8 m) under R3; no detector edits after the code stop except review fixes the captain approves | P4 P0 |
 | P1 | Q&A preparation and mock jury: the algorithm, curves (what K2 ships and costs), why not 300 m, dust, the second lidar, false alarms; technical check of `ALGORITHM.md` and the slides | — |
-| P1 | H1 (tall narrow objects, the open High finding): document the proposed approach, no code | cause reproduced ([R3/H1](evidence/r3_h1_2026-10-19/README.md)) |
+| P1 | H1 (tall narrow objects, the open High finding): retain the implemented partial improvement; obtain a validated far-axis reference, resolve remaining misses and complete independent review | user-authorized main integration, **overall OPEN**; A-axis 82 ->114/177, 63 misses remain ([publication](evidence/h1_partial_integration_2026-10-20/README.md)) |
 | P2 | F1a without the B1 risk (a long low object along one rail raises its own reference); Falcon far range (route-map variant, second boundary); M1 moving-object probes (the organizers: objects may move); C1, R1/R2, S4, N6 | after 23.10 |
 
 ### P4 · data / evaluation
@@ -125,7 +125,7 @@ point estimates and the former dates of every row are in the archive.
 | K1 / K2 | gauge on curves, standing train | **on**; variant chosen from v3/v4/v5 on 20.10; P4 develops it | P0 / P2 |
 | N3 | dust | guard written, **off** (fails its acceptance); re-check the organizers' dust on the final configuration | P0 |
 | N7 | Falcon to 300 m | `farrange` **off**: person STOP 146 m (was 127 m), no gain on injected targets, rule 5.1(b) fails | P2 |
-| H1 | tall narrow objects (the open High finding, 8.1) | cause reproduced, approach proposed, no code | P1 |
+| H1 | tall narrow objects (the open High finding, 8.1) | **partial positive-core improvement implemented and accepted for main; overall OPEN**. A-axis 82 ->114/177, physical controls and merged gate/X3 pass; independent far-axis reference and final review pending ([record](evidence/h1_partial_integration_2026-10-20/README.md)) | P1 |
 | N5 | labels of the new synthetic bags | done 17.10; the organizers' markers are now the reference; add the missed cube, mark 12 rows, re-score 1.2.0 | P1 |
 | J1 | re-judge the final seal | retarget [`RELEASE_DAY.md`](evidence/rejudge_2026-10-16/RELEASE_DAY.md) from 1.1.0; needs the reseal | P1 |
 | G3 | held-out run by a fresh agent | spec registered, no run; on the final 1.2.0 seal | P1 |
@@ -212,8 +212,19 @@ markers as the reference, re-score 1.2.0.
 ### Detector: range and false alarms
 
 #### H1 · Tall narrow objects (the inherited High finding, 8.1)
-**OPEN.** The free-top fix was dropped after review ([withdrawal](evidence/integration_2026-10-16/h4_fixes/columns/WITHDRAWAL_RESULTS.md));
-the cause was reproduced on 19.10 and a new approach proposed ([R3/H1](evidence/r3_h1_2026-10-19/README.md)). P3: document it, no code.
+**OPEN, partially improved (20.10).** The old free-top fix remains withdrawn
+([withdrawal](evidence/integration_2026-10-16/h4_fixes/columns/WITHDRAWAL_RESULTS.md)). A new positive current-frame
+collision core with fresh rail anchors is implemented (`column_core_margin=0.02`); it releases only column suppression
+after ordinary uninterrupted confirmation. A-axis improves **82 ->114/177**, leaving **63 visible unmatched frames**.
+All 32 stationary physical scenes match after confirmation; 280 outside controls have no false STOP. Nominal moving
+physical scenes have continuous STOP from **130.8 /135.2 m**, a simulation result only. Merged source `0f02b28` passes
+the full gate; fresh combined-tree X3 passes 40 cases /29,765 rows. The full suite retains one inherited proxy-hook
+failure (2,276 passed +17 subtests). The user explicitly authorized publishing this partial improvement in main without
+claiming closure. Still needed: independently validated far rail axis/trajectory, remaining miss resolution,
+wrong-pair/no-rail limits and independent final review/reseal.
+[Publication](evidence/h1_partial_integration_2026-10-20/README.md),
+[repair](evidence/h1_reference_2026-10-19/README.md),
+[rejected reference attempts](evidence/h1_trajectory_2026-10-19/README.md).
 
 #### K1 · Standing train: far axis jitter → STOP flicker at 100–150 m, perturbation-sensitive platform false STOPs
 Distance-based smoothing of the wall fit (`track.walls_smoothing_distance`), **on**. v4: standing person at 100 / 150 m
