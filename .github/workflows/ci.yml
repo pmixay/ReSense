@@ -8,6 +8,15 @@ on:
 # archive: loaded, rebuilt offline, bags played through it) and `webapp` (the web prototype: backend,
 # frontend build and the browser suite). A lint error stops a push before the
 # ~20 runner-minutes of stage 2 start.
+# Read-only token (no job writes to the repository). A newer push to the same ref cancels the run it
+# supersedes, except on main, whose runs seed the cold-bag cache and are never cancelled. No job
+# uploads an artifact: the repository is out of Actions artifact storage and a failed upload fails
+# the job; evidence stays in the step logs.
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   checks:
     # ruff: pyflakes + the pycodestyle error classes (ruff's default rule set) over the package, the
@@ -15,6 +24,7 @@ jobs:
     # red. configs/default.yaml is the single source of truth; the ROS package carries a copy.
     # Parameter sync and the detector seal run even after a lint/integrity failure.
     runs-on: ubuntu-22.04
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
       - name: immutable archived helper integrity
@@ -40,6 +50,7 @@ jobs:
     # run even when the suite failed, so one run reports both.
     needs: checks
     runs-on: ubuntu-22.04
+    timeout-minutes: 30
     env:
       RESENSE_REQUIRE_SYNTHETIC: "1"
       RESENSE_REQUIRE_WEB: "1"
@@ -54,7 +65,6 @@ jobs:
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq libegl1 libgl1 libgomp1 libusb-1.0-0
       - id: install
         run: pip install -e ".[dev]" playwright && python -m playwright install --with-deps chromium
-      - run: python -c "import open3d, sys; print('open3d', open3d.__version__, 'python', sys.version)"
       - run: python -m pytest -rs -q --junitxml=junit.xml
       - name: the dashboard tests in headless Chromium (web/demo)
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
@@ -82,6 +92,7 @@ jobs:
     # that drives every page against a real backend serving that build. Skips count as failures.
     needs: checks
     runs-on: ubuntu-22.04
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
@@ -94,7 +105,7 @@ jobs:
             webapp/backend/pyproject.toml
       - uses: actions/setup-node@v7
         with:
-          node-version: "22"
+          node-version: "24"
           cache: npm
           cache-dependency-path: webapp/frontend/package-lock.json
       # open3d (synthetic bags in the backend tests) links libEGL / libGL / libgomp / libusb
@@ -139,10 +150,12 @@ jobs:
     # offline-build.
     needs: checks
     runs-on: ubuntu-22.04
+    timeout-minutes: 60
     env:
-      # The integration branch, score/improvement branch, retained working branches and main run
-      # the viewer and original-bag cold/warm regression (scripts/p1_cold_bag_test.sh keeps the same list)
-      FULL: ${{ github.ref == 'refs/heads/gpt-score-push-20260928' || github.ref == 'refs/heads/integration/p3-score-sync-20260928' || github.ref == 'refs/heads/integration/2026-10-15-16' || github.ref == 'refs/heads/experiment/cross-ring-sparse-evidence' || github.ref == 'refs/heads/testovaya-gpt' || github.ref == 'refs/heads/claude/nifty-pascal-lzgl78' || github.ref == 'refs/heads/claude/p1-p2-supported-playback-20260927' || github.ref == 'refs/heads/claude/amazing-fermi-t67v8g' || github.ref == 'refs/heads/main' }}
+      # main runs the viewer and original-bag cold/warm regression (scripts/p1_cold_bag_test.sh keeps the
+      # same list). Add a branch here and there to run them on it; the earlier integration and
+      # working branches are deleted.
+      FULL: ${{ github.ref == 'refs/heads/main' }}
     steps:
       - uses: actions/checkout@v7
       - run: docker build -t resense:ci --build-arg WITH_TOOLS=1 -f docker/Dockerfile .
@@ -213,7 +226,6 @@ jobs:
         if: ${{ env.FULL == 'true' }}
         # The viewer probe needs the WITH_TOOLS=1 build's `websockets` client. This models a second
         # device on an isolated network and checks outage/recovery without requiring demo hardware.
-        # FULL includes testovaya-gpt for the P1/P2/P4 completion run.
         run: IMAGE=resense:ci scripts/p2_viewer_test.sh
       # ---- the original-bag cold/warm regression (full-CI branches). The two original
       # organizer bags come from the Actions cache, so that Google Drive is not asked for the 3.7 GB
@@ -285,6 +297,7 @@ jobs:
     # (36109782167, 36112092652, 36113989932, 36116178404).
     needs: checks
     runs-on: ubuntu-22.04
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
       - name: the release archive (scripts/export_image.sh; GZIP_LEVEL=1 for speed)
