@@ -1,0 +1,31 @@
+# K2 variants on the final source vs the committed 8c2bf51 and c9e8daa records, and vs final K2-off
+## final+B vs ref/B8c
+platform  386 frames: IDENT
+switch    736 frames: IDENT
+tunnels   545 frames: IDENT
+## final+v5c15 vs ref/v5c15_8c
+platform  386 frames: IDENT
+switch    736 frames: IDENT
+tunnels   545 frames: IDENT
+## final+B vs ref/B_c9e8daa
+platform  386 frames: IDENT
+switch    736 frames: IDENT
+tunnels   545 frames: IDENT
+## final+B vs final+v5c15
+platform  386 frames: monitored[66, 67, 68, 69, 70, 71](31); clear[66, 67, 68, 69, 70, 71](21); warns[85, 86, 88, 90, 91, 95](6)
+switch    736 frames: monitored[0, 1, 2, 3, 4, 5](239); clear[0, 1, 2, 3, 4, 5](185)
+tunnels   545 frames: monitored[1, 2, 3, 4, 5, 6](225); clear[1, 2, 3, 4, 5, 6](189); warns[121, 122, 274, 278, 289, 320](12)
+## final+B vs final (K2 effect)
+platform  386 frames: track_center[66, 68, 69, 70, 71, 72](39); monitored[66, 67, 68, 69, 70, 71](36); clear[66, 67, 68, 69, 70, 71](33); curv[66, 67, 68, 69, 70, 71](41); warns[70, 71, 72, 73, 74, 75](82); decision[70, 71, 104, 105](4); warning[70, 71, 104, 105, 350, 351](6); ego[73, 76, 77, 78, 79, 81](21); dets[104, 105, 106, 107, 108, 109](44); obstacle[104, 105](2); nearest[104, 105](2)
+switch    736 frames: track_center[0, 1, 2, 3, 4, 5](411); monitored[0, 1, 2, 3, 4, 5](313); clear[0, 1, 2, 3, 4, 5](294); curv[0, 1, 2, 3, 4, 5](417); ego[3, 4, 5, 6, 7, 9](52); warns[5, 6, 13, 14, 15, 16](271); decision[5, 6, 7, 8, 9, 10](126); warning[5, 6, 13, 14, 50, 51](125); dets[7, 8, 9, 10, 11, 12](66); obstacle[7, 8, 9, 10, 11, 12](25); nearest[7, 8, 9, 10, 11, 12](27)
+tunnels   545 frames: track_center[0, 1, 2, 3, 4, 5](385); curv[0, 1, 2, 3, 4, 5](397); monitored[1, 2, 3, 4, 5, 6](270); clear[1, 2, 3, 4, 5, 6](247); warns[50, 51, 52, 53, 54, 55](324); decision[50, 51, 52, 53, 54, 55](166); warning[50, 51, 52, 53, 54, 55](190); ego[86, 133, 134, 135, 136, 137](89); dets[147, 148, 149, 259, 260, 261](115); obstacle[147, 148, 149, 259, 260, 261](23); nearest[147, 148, 149, 259, 260, 261](25); msgs[439](1); dlevel[439](1); level[439](1)
+## final+v5c15 vs final
+platform  386 frames: track_center[66, 68, 69, 70, 71, 72](39); curv[66, 67, 68, 69, 70, 71](41); clear[66, 67, 68, 70, 72, 73](30); monitored[66, 67, 68, 69, 70, 71](36); warns[70, 71, 72, 73, 74, 75](82); decision[70, 71, 104, 105](4); warning[70, 71, 104, 105, 350, 351](6); ego[73, 76, 77, 78, 79, 81](21); nearest[104, 105](2); dets[104, 105, 106, 107, 108, 109](44); obstacle[104, 105](2)
+switch    736 frames: track_center[0, 1, 2, 3, 4, 5](411); curv[0, 1, 2, 3, 4, 5](417); clear[0, 1, 2, 3, 4, 5](279); monitored[0, 1, 2, 3, 4, 5](291); ego[3, 4, 5, 6, 7, 9](52); warns[5, 6, 13, 14, 15, 16](271); decision[5, 6, 7, 8, 9, 10](126); warning[5, 6, 13, 14, 50, 51](125); nearest[7, 8, 9, 10, 11, 12](27); dets[7, 8, 9, 10, 11, 12](66); obstacle[7, 8, 9, 10, 11, 12](25)
+tunnels   545 frames: track_center[0, 1, 2, 3, 4, 5](385); curv[0, 1, 2, 3, 4, 5](397); clear[1, 2, 3, 4, 5, 6](221); monitored[1, 2, 3, 4, 5, 6](236); warns[50, 51, 52, 53, 54, 55](324); decision[50, 51, 52, 53, 54, 55](166); warning[50, 51, 52, 53, 54, 55](190); ego[86, 133, 134, 135, 136, 137](89); nearest[147, 148, 149, 259, 260, 261](25); dets[147, 148, 149, 259, 260, 261](115); obstacle[147, 148, 149, 259, 260, 261](23); msgs[439](1); level[439](1); dlevel[439](1)
+## dust.enabled=true vs final
+platform  386 frames: IDENT
+switch    736 frames: IDENT
+tunnels   545 frames: IDENT
+## plain judge_runner.py vs judge_runner_set.py (tunnels)
+tunnels   545 frames: IDENT

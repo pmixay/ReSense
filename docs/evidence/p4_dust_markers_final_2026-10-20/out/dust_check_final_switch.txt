@@ -1,0 +1,27 @@
+dust frames (4): [481, 483, 611, 613]; dust boxes in them: 8
+
+== /tmp/claude-0/-home-user-ReSense/fb93d84d-3156-5b5d-9ddf-809db858cc32/scratchpad/runs/final_switch.jsonl
+   STOP 0, CAUTION 3 of 4 dust frames; detections at a dust box: tight 0 coarse 0; warnings at a dust box: tight 0 coarse 0
+  frame 481 CAUTION clear 104.8 nearest None level ok dets 0 warns 1 msgs []
+      box  2 at fwd  4.07 lat -0.62 up  0.16; closest det/warn (kind, d, |dfwd|, |dlat|, reason): [('warn', 55.9, 52.02, 2.38, '')]
+      box  3 at fwd  5.47 lat  0.30 up  0.39; closest det/warn (kind, d, |dfwd|, |dlat|, reason): [('warn', 55.9, 50.62, 1.46, '')]
+      decisions i-3..i+3 (warning distances): 478:CAUT[59.89]  479:CAUT[59.1]  480:CAUT[57.47]  481:CAUT[55.92]  482:CAUT[54.47]  483:CAUT[52.92]  484:CAUT[51.36]
+      warn d=55.92 c=[56.09, 1.76, 0.07] size=[0.35, 0.14, 0.73] reason='': marker object(s) none
+  frame 483 CAUTION clear 105.1 nearest None level ok dets 0 warns 1 msgs []
+      box  5 at fwd  4.82 lat  1.51 up  0.31; closest det/warn (kind, d, |dfwd|, |dlat|, reason): [('warn', 52.9, 48.2, 0.12, '')]
+      decisions i-3..i+3 (warning distances): 480:CAUT[57.47]  481:CAUT[55.92]  482:CAUT[54.47]  483:CAUT[52.92]  484:CAUT[51.36]  485:CAUT[49.86]  486:CAUT[48.32]
+      warn d=52.92 c=[53.02, 1.63, 0.07] size=[0.37, 0.17, 0.82] reason='': marker object(s) none
+  frame 611 CAUTION clear 112.4 nearest None level ok dets 0 warns 1 msgs []
+      box  7 at fwd  3.39 lat  1.42 up  0.32; closest det/warn (kind, d, |dfwd|, |dlat|, reason): [('warn', 151.9, 149.5, 3.76, 'beyond_height_ref')]
+      box  8 at fwd  4.49 lat -0.26 up  0.57; closest det/warn (kind, d, |dfwd|, |dlat|, reason): [('warn', 151.9, 148.4, 2.08, 'beyond_height_ref')]
+      box  9 at fwd  5.69 lat -1.46 up  0.17; closest det/warn (kind, d, |dfwd|, |dlat|, reason): [('warn', 151.9, 147.2, 0.88, 'beyond_height_ref')]
+      decisions i-3..i+3 (warning distances): 608:CAUT[155.65]  609:GO  610:CAUT[153.28]  611:CAUT[151.88]  612:CAUT[150.29]  613:GO  614:GO
+      warn d=151.88 c=[152.89, -2.34, -2.08] size=[1.45, 1.62, 0.31] reason='beyond_height_ref': marker object(s) none
+  frame 613 GO      clear 110.3 nearest None level ok dets 0 warns 0 msgs []
+      box 10 at fwd  4.89 lat -1.68 up  0.45; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      box 11 at fwd  6.89 lat  0.64 up  0.23; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      decisions i-3..i+3 (warning distances): 610:CAUT[153.28]  611:CAUT[151.88]  612:CAUT[150.29]  613:GO  614:GO  615:GO  616:STOP
+
+control 1 (detection on every dust box): tight 8/8, coarse 8/8
+control 3 (detection 20 m beyond every dust box): tight 0/8, coarse 0/8 (must be 0)
+control 2 (run's STOP frames with a known object in range that the coarse rule matches): 133/141

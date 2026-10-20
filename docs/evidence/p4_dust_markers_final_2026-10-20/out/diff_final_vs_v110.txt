@@ -1,0 +1,8 @@
+# final source f56ad5e (this run) vs the 1.1.0 records of 16.10 (committed v110_synthetic_<bag>.jsonl; same clouds as the marked bags)
+platform  386 frames: clear[316](1)
+    frame 316 clear: a=11.5  b=7.6
+switch    736 frames: IDENT
+tunnels   545 frames: clear[45, 52, 291](3)
+    frame 45 clear: a=121.9  b=58.5
+    frame 52 clear: a=127.0  b=50.5
+    frame 291 clear: a=40.9  b=36.2

@@ -1,0 +1,12 @@
+# control: synthetic_platform with the configured mapping deliberately wrong (sensor.forward=+x left=+y up=+z), first 10 frames
+# frame  z>0  x<0  cue_forward  locked_forward  orientation_confirmed  mapping  conflict  message
+0 0.298 0.518 [0.0, -1.0, 0.0] [0.0, -1.0, 0.0] False configured True 'alternative orientation awaiting confirmation'
+1 0.297 0.518 [0.0, -1.0, 0.0] [0.0, -1.0, 0.0] True forward=-y left=+x up=+z False 'sensor orientation found from the data: forward=-y left=+x up=+z'
+2 0.298 0.52 [0.0, -1.0, 0.0] [0.0, -1.0, 0.0] True forward=-y left=+x up=+z False 'sensor orientation found from the data: forward=-y left=+x up=+z'
+3 0.297 0.517 [0.0, -1.0, 0.0] [0.0, -1.0, 0.0] True forward=-y left=+x up=+z False 'sensor orientation found from the data: forward=-y left=+x up=+z'
+4 0.298 0.519 [0.0, -1.0, 0.0] [0.0, -1.0, 0.0] True forward=-y left=+x up=+z False 'sensor orientation found from the data: forward=-y left=+x up=+z'
+5 0.291 0.495 [0.0, -1.0, 0.0] [0.0, -1.0, 0.0] True forward=-y left=+x up=+z False 'sensor orientation found from the data: forward=-y left=+x up=+z'
+6 0.297 0.518 [0.0, -1.0, 0.0] [0.0, -1.0, 0.0] True forward=-y left=+x up=+z False 'sensor orientation found from the data: forward=-y left=+x up=+z'
+7 0.298 0.518 [0.0, -1.0, 0.0] [0.0, -1.0, 0.0] True forward=-y left=+x up=+z False 'sensor orientation found from the data: forward=-y left=+x up=+z'
+8 0.297 0.519 [0.0, -1.0, 0.0] [0.0, -1.0, 0.0] True forward=-y left=+x up=+z False 'sensor orientation found from the data: forward=-y left=+x up=+z'
+9 0.298 0.518 [0.0, -1.0, 0.0] [0.0, -1.0, 0.0] True forward=-y left=+x up=+z False 'sensor orientation found from the data: forward=-y left=+x up=+z'

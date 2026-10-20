@@ -1,0 +1,16 @@
+# the same for K2 variant B (base = final+B, ensemble = the same 5 perturbations with variant B's overrides)
+base runs/B; ensemble of 5 perturbed runs
+bag        id object                         | STOP base  STOP ens min..max | first base   first ens min..max
+platform   15 person (8 parts, id 15-22)     |       147      147..147      (5 runs) |       44.0      44.0..44.0     
+platform   23 small cube right               |        40       39..40       (5 runs) |       89.5      87.7..89.5     
+platform   24 small cube left                |         0        0..0        (5 runs) |        nan       nan..nan      
+switch      0 small cube on the left rail    |        37       37..37       (5 runs) |       54.0      54.0..54.0     
+switch      1 hanging inclined cable         |        42       42..42       (5 runs) |       69.1      69.1..69.1     
+switch     12 small cube right (first)       |        21       21..21       (5 runs) |      110.6     110.6..110.6    
+switch     13 small cube left                |         9        6..9        (5 runs) |       26.5      26.5..26.5     
+switch     14 small cube right (last)        |        41       41..41       (5 runs) |      104.0     104.0..104.0    
+tunnels     0 big cube 2x2x2 m               |        55       54..55       (5 runs) |      100.4      99.1..100.4    
+tunnels     1 beam across the rails          |        37       37..37       (5 runs) |       70.4      70.4..70.4     
+tunnels    18 small cube left (first)        |         0        0..0        (5 runs) |        nan       nan..nan      
+tunnels    19 small cube right               |        13       14..18       (5 runs) |       27.6      27.6..48.8     
+tunnels    20 small cube left (last)         |         0        0..0        (5 runs) |        nan       nan..nan      
