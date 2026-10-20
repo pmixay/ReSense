@@ -1,0 +1,24 @@
+{
+ "source_header": {
+  "magic": "SQLite format 3",
+  "page_size": 4096,
+  "write_version": 1,
+  "read_version": 1,
+  "reserved_bytes": 0,
+  "text_encoding": 1,
+  "user_version": 0,
+  "application_id": 0,
+  "pages_in_header": 4951550
+ },
+ "output_header": {
+  "magic": "SQLite format 3",
+  "page_size": 4096,
+  "write_version": 1,
+  "read_version": 1,
+  "reserved_bytes": 0,
+  "text_encoding": 1,
+  "user_version": 0,
+  "application_id": 0,
+  "pages_in_header": 481417
+ }
+}
