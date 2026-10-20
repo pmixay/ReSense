@@ -1,0 +1,27 @@
+{
+ "bag": "/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scratchpad/falcon_demo_bag",
+ "first_frame": 2719,
+ "messages": 432,
+ "topics_in_bag": [
+  "/iv_points"
+ ],
+ "metadata_message_count": 432,
+ "metadata_matches_bag": true,
+ "receive_gap_s_min_median_max": [
+  0.0944,
+  0.099,
+  0.1085
+ ],
+ "frames_not_in_order": [],
+ "frames_with_other_receive_time_than_record": [],
+ "frames_with_other_header_stamp_than_record": [],
+ "frames_with_other_decoded_point_count_than_record": [],
+ "frames_where_manifest_differs": [],
+ "npz_frames_compared": 432,
+ "frames_where_cache_npz_sha256_differs": [],
+ "topic_metadata_equals_original": true,
+ "original_version_and_storage": [
+  5,
+  "sqlite3"
+ ]
+}

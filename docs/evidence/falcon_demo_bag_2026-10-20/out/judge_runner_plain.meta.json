@@ -1,0 +1,10 @@
+{
+ "frames": 432,
+ "wall_s": 18.7,
+ "cpu_s": 18.4,
+ "rss_peak_mb": 115.4,
+ "resets": [],
+ "bags": [
+  "/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scratchpad/falcon_demo_bag"
+ ]
+}
