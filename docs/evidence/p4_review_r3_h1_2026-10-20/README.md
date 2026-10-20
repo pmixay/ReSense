@@ -84,7 +84,9 @@ unchanged, run with the shipped YAML (class defaults give the same numbers: [`ou
 | hanging, 37 m | STOP frames 1–17 | none | same |
 | hanging, 30 m | 1–17 | none | same |
 | tall, 30 m | 2–17 | 4–17 | the veto does not hold it without R3 either |
-| control: static, approached from 47 m, tall | STOP at frame 2 (R3) vs 4 | — | — |
+| control: static, approached from 47 m, tall | first STOP frame 4 (41.0 m), 10 frames | the same (frame 4, 10 frames): R3 changes nothing here, consistent with B3 (beyond 40 m with the speed given the cluster is accumulated) | — |
+| control: static, approached from 47 m, hanging | frame 1 (45.5 m), 7 frames | frame 7 (36.5 m), 6 frames | — |
+| control: static, approached from 40 m, tall / hanging | frame 3 (35.5 m) / 2 (37.0 m) | frame 7 (29.5 m) both | — |
 
 So B2 **reproduces on `cc6226e`** exactly as the shipping review tabulated it (0 → 16–17 STOP frames at 37 m). What it means is a
 **labelling disagreement, not a measurement disagreement:** P3's [R3 completion](../r3_completion_2026-10-20/README.md) argues that a thin
@@ -166,7 +168,26 @@ This is the open High finding as the author describes it ("63 misses, far-axis r
 
 ## 5. The same runs on the new main (`f56ad5e`, detector bytes of `0a472d6`)
 
-NEWMAIN_PLACEHOLDER
+Same harness, same inputs, same `--set` overrides, a worktree of `f56ad5e` with its own native build (sha256 `67fa0887…`);
+`git diff 0a472d6 f56ad5e -- resense native configs ros2_ws scripts/robustness_battery.py scripts/regression_gate.py` is empty, and the harness
+scripts equal `5fa865b`'s. The shipped `cc6226e` runs are the reference.
+
+| | `cc6226e` (§1–§4) | new main `f56ad5e` |
+|---|---|---|
+| B2 at 37 m, R3 on (tall / hanging) | STOP frames 2–17 / 1–17; none with R3 off | **identical** ([`out/b2_yaml_main_f56ad5e.txt`](out/b2_yaml_main_f56ad5e.txt)); 30 m rows and the 40 m controls as before; the **47 m tall control changes**: R3 on now STOPs at frame 2 (44.0 m, then frame 3 is not a STOP, then 4 onward; 11 frames) where `cc6226e` had frame 4 (41.0 m, 10 frames) with or without R3 |
+| **B3**, speed given, R3 on | first STOP **76.0 m**; `cable_kind` 0 on all 33 accumulated track-frames | first STOP **78.0 m**, 51 STOP frames (47 with R3 off), `cable_kind` set on 41 track-frames including the accumulated ones ([`out/b3_accum_main_f56ad5e.txt`](out/b3_accum_main_f56ad5e.txt)) — **P3's claim "76 → 78 m" reproduced; B3 is closed on the synthetic scene** |
+| B3, speed unknown | 78.0 m with R3, 76.0 m without | unchanged |
+| gate, H1 off vs the shipped `cc6226e` rows | 0 of 15,269 differ | **0 of 15,269 differ**; gate PASS |
+| gate, R3 off vs the shipped rows | 3 rows differ (set O 786–788) | the same 3 rows; PASS (4 gated rows better) |
+| set F, R3 off → on | 9 added cable hits, 0 lost, 2/6 → 4/6, 34.2 → 17.8 m | the same ([`out/main_setF_recount_r3_off_to_on.txt`](out/main_setF_recount_r3_off_to_on.txt)) |
+| X3, H1 off vs shipped (R3 on) | 40 of 40 cases equal, 0 of 260 fail | **40 of 40 equal, 0 of 260 fail**: the new R3 gives the same decisions, detections and warnings as the old on all 29,765 X3 rows |
+| X3, R3 off → on | 40 STOP rows added in 10 set O cases, 0 lost | the same 40 rows, 0 lost, 0 of 260 fail |
+| whole Falcon, default / R3 off / H1 off vs the shipped record | 0 / 0 / 0 rows differ | **0 / 0 / 0 of 4,443 rows differ**; stream sha256 `90dea27d…` |
+
+So on every real-data measure the new R3 (`0a472d6`) behaves exactly as the one reviewed in §2 (P3's "all equal" claims for the gate, X3,
+Falcon and set F reproduce from my side); what it changes is B3's synthetic scene. B2's behaviour is unchanged (§2.4).
+NEWMAIN_DEFAULT_CONTROL
+
 
 ## 6. What is not verified
 
