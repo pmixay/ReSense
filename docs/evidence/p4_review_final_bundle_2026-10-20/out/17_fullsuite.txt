@@ -1,0 +1,6 @@
+run 2 (final configuration: package installed in the interpreter, native kernels built, rosbags + open3d present), pytest on the checkout at a92f7f4 (detector bytes = f56ad5e):
+2387 passed, 8 deselected, 5 warnings, 17 subtests passed in 263.91s (0:04:23)
+runtime: Python 3.13.16 numpy 2.5.3 scipy 1.18.1
+native kernels: scripts/build_native.sh -> resense/_resense_native.so sha256 67fa0887e5480e24ca67138ec5271969742917a5c5869d9ab4e634599d8c7394
+run 1 (rosbags missing, native not built, package installed): 2 failed (ModuleNotFoundError rosbags), 2356 passed, 29 skipped (native kernels not built), 8 deselected; the 2 pass after pip install rosbags
+B2 with the native kernels loaded: 41 of 41 lines identical to p4_review_r3_h1_2026-10-20/out/b2_yaml_main_f56ad5e.txt

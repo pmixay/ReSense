@@ -1,0 +1,11 @@
+<work>/r3/tests-a-candidate.xml: {'passed': 2384, 'failure': 3}
+   FAIL ('tests.test_algorithm', 'test_timing_with_accumulation', 'assert 156.6692459629837 < 150.0')
+   FAIL ('tests.test_lidar_proxy_hook', 'test_child_process_inherits_hook_and_bad_source_fails_closed', 'assert (86 == 86 and \'outside the pinned source\' in \'Traceback (most recent call last):\\n  File "/tmp/opencode/r3-completion-checkout/docs/evidence/n2_falcon_2026-10-18/p...y", line 20, in install\\n  ')
+   FAIL ('tests.test_node', 'test_obstacle_is_stop_and_published_in_the_sensor_frame', 'assert 0.0 == 39.967063903808594 ± 0.2      comparison failed   Obtained: 0.0   Expected: 39.967063903808594 ± 0.2')
+<work>/r3/tests-merged-candidate.xml: {'passed': 2386, 'failure': 1}
+   FAIL ('tests.test_lidar_proxy_hook', 'test_child_process_inherits_hook_and_bad_source_fails_closed', 'assert (86 == 86 and \'outside the pinned source\' in \'Traceback (most recent call last):\\n  File "/tmp/opencode/r3-completion-checkout/docs/evidence/n2_falcon_2026-10-18/p...y", line 20, in install\\n  ')
+<work>/r3/diagnose-merged-candidate.xml: {'passed': 2, 'failure': 1}
+   FAIL ('tests.test_lidar_proxy_hook', 'test_child_process_inherits_hook_and_bad_source_fails_closed', 'assert (86 == 86 and \'outside the pinned source\' in \'Traceback (most recent call last):\\n  File "/tmp/opencode/r3-completion-checkout/docs/evidence/n2_falcon_2026-10-18/p...y", line 20, in install\\n  ')
+<work>/r3/diagnose-merged-reference.xml: {'passed': 2, 'failure': 1}
+   FAIL ('tests.test_lidar_proxy_hook', 'test_child_process_inherits_hook_and_bad_source_fails_closed', 'assert (86 == 86 and \'outside the pinned source\' in \'Traceback (most recent call last):\\n  File "/tmp/opencode/r3-completion-reference/docs/evidence/n2_falcon_2026-10-18/...y", line 20, in install\\n  ')
+<work>/r3/integrity-tests.xml: {'passed': 65}

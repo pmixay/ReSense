@@ -1,0 +1,10 @@
+== gate: P3 candidate vs P4's own run on f56ad5e
+rows 15269 | rows with a change in a decision-bearing field 0 | level differences 14890 (not explained by a latency message: 0)
+   /track/yaw                   rows   5388  max |diff| 1.561e-16
+   /track/curvature             rows   5117  max |diff| 3.686e-18
+== X3: P3 candidate vs P4's own run on f56ad5e
+rows 29765 | rows with a change in a decision-bearing field 0 | level differences 28100 (not explained by a latency message: 0)
+   /curv                        rows   4506  max |diff| 4.337e-18
+== Falcon: P3 candidate vs P4's own stream on f56ad5e
+rows 4443 | rows with a change in a decision-bearing field 0 | level differences 4290 (not explained by a latency message: 0)
+   /curv                        rows   3169  max |diff| 8.565e-18

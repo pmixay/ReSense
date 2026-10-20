@@ -1,0 +1,42 @@
+== R3 archives (candidate must equal f56ad5e; the reference is the base 5fa865b = positive control)
+analytic-a-candidate-source.tar.gz         f56ad5e  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+analytic-a-candidate-source.tar.gz         5fa865b  members 47 equal 44 differ 2 ['resense/clustering.py', 'resense/tracking.py'] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+analytic-a-reference-source.tar.gz         f56ad5e  members 47 equal 44 differ 2 ['resense/clustering.py', 'resense/tracking.py'] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+analytic-a-reference-source.tar.gz         5fa865b  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+diagnose-merged-candidate-source.tar.gz    f56ad5e  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+diagnose-merged-candidate-source.tar.gz    5fa865b  members 47 equal 44 differ 2 ['resense/clustering.py', 'resense/tracking.py'] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+diagnose-merged-reference-source.tar.gz    f56ad5e  members 47 equal 44 differ 2 ['resense/clustering.py', 'resense/tracking.py'] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+diagnose-merged-reference-source.tar.gz    5fa865b  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+falcon-a-candidate-source.tar.gz           f56ad5e  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+falcon-a-candidate-source.tar.gz           5fa865b  members 47 equal 44 differ 2 ['resense/clustering.py', 'resense/tracking.py'] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+falcon-a-reference-source.tar.gz           f56ad5e  members 47 equal 44 differ 2 ['resense/clustering.py', 'resense/tracking.py'] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+falcon-a-reference-source.tar.gz           5fa865b  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+gate-a-candidate-source.tar.gz             f56ad5e  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+gate-a-candidate-source.tar.gz             5fa865b  members 47 equal 44 differ 2 ['resense/clustering.py', 'resense/tracking.py'] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+gate-a-reference-source.tar.gz             f56ad5e  members 47 equal 44 differ 2 ['resense/clustering.py', 'resense/tracking.py'] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+gate-a-reference-source.tar.gz             5fa865b  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+range-a-candidate-source.tar.gz            f56ad5e  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+range-a-candidate-source.tar.gz            5fa865b  members 47 equal 44 differ 2 ['resense/clustering.py', 'resense/tracking.py'] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+range-a-reference-source.tar.gz            f56ad5e  members 47 equal 44 differ 2 ['resense/clustering.py', 'resense/tracking.py'] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+range-a-reference-source.tar.gz            5fa865b  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+tests-a-candidate-source.tar.gz            f56ad5e  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+tests-a-candidate-source.tar.gz            5fa865b  members 47 equal 44 differ 2 ['resense/clustering.py', 'resense/tracking.py'] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+tests-merged-candidate-source.tar.gz       f56ad5e  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+tests-merged-candidate-source.tar.gz       5fa865b  members 47 equal 44 differ 2 ['resense/clustering.py', 'resense/tracking.py'] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+x3-a-candidate-source.tar.gz               f56ad5e  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+x3-a-candidate-source.tar.gz               5fa865b  members 47 equal 44 differ 2 ['resense/clustering.py', 'resense/tracking.py'] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+x3-a-reference-source.tar.gz               f56ad5e  members 47 equal 44 differ 2 ['resense/clustering.py', 'resense/tracking.py'] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+x3-a-reference-source.tar.gz               5fa865b  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.cpython-312-x86_64-linux-gnu.so']
+== H1 archives (measured on 0f02b28)
+physical-source.tar.gz                     0f02b28  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.so']
+physical-source.tar.gz                     f56ad5e  members 47 equal 37 differ 9 ['configs/default.yaml', 'resense/calibration.py', 'resense/clustering.py', 'resense/config.py', 'resense/detector.py', 'resense/lowobj.py', 'resense/track.py', 'resense/tracking.py', 'ros2_ws/src/resense_ros/config/detector.yaml'] not in git ['resense/_resense_native.so']
+x3-source.tar.gz                           0f02b28  members 47 equal 46 differ 0 [] not in git ['resense/_resense_native.so']
+x3-source.tar.gz                           f56ad5e  members 47 equal 37 differ 9 ['configs/default.yaml', 'resense/calibration.py', 'resense/clustering.py', 'resense/config.py', 'resense/detector.py', 'resense/lowobj.py', 'resense/track.py', 'resense/tracking.py', 'ros2_ws/src/resense_ros/config/detector.yaml'] not in git ['resense/_resense_native.so']
+== tree identity
+f56ad5e 014ad8fd61f1a4b6962952505cc0274c95744f476c0d8d501a9c8cbe27873e54
+0a472d6 014ad8fd61f1a4b6962952505cc0274c95744f476c0d8d501a9c8cbe27873e54
+47b220c 014ad8fd61f1a4b6962952505cc0274c95744f476c0d8d501a9c8cbe27873e54
+HEAD 014ad8fd61f1a4b6962952505cc0274c95744f476c0d8d501a9c8cbe27873e54
+== seal
+Detector freeze PASS: 40 files; source 6d091081769104657ecc2c0b06f53049647d4f6c7327b7429bbda92673782452
+Integrity check only; no recordings replayed.

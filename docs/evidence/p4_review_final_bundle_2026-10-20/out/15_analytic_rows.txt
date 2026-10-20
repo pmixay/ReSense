@@ -1,0 +1,5 @@
+cases 32 rows 576 | matched STOP rows lost vs reference 0, added 20 | reference detections absent in candidate rows 0
+in-gauge matched STOP rows 326 | outside-gauge controls ['tall-outside', 'hanging-outside']: STOP rows 0 | scene with no object ['empty']: STOP rows with no object in the scene 0
+   changed: ('tall-80-approach-known-on', [2, 3], [])
+   changed: ('tall-80-carried-known-on', [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], [])
+   changed: ('trace-control', [2, 3], [])

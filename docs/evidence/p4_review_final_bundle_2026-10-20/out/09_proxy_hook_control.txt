@@ -1,0 +1,7 @@
+== A: PYTHONPATH only
+=========================== short test summary info ============================
+FAILED tests/test_lidar_proxy_hook.py::test_child_process_inherits_hook_and_bad_source_fails_closed
+1 failed, 1 passed in 1.17s
+== B: installed in the interpreter
+..                                                                       [100%]
+2 passed in 1.06s
