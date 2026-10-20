@@ -9,7 +9,7 @@
 > release text of 19.10 before the clean-up and the decision-log rows of 22–29.09 in
 > [`archive/CAPTAIN_history_2026-10-19.md`](archive/CAPTAIN_history_2026-10-19.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-10-19 (evening): §3–§5 and the decision log against GitHub (releases, tags, branches, CI runs),
+> **Last verified:** 2026-10-20 (branch/seal/CI statements in §4–§5 only; the rest 2026-10-19 evening): §3–§5 and the decision log against GitHub (releases, tags, branches, CI runs),
 > `main` `9621024`, the integration of 19.10 and `python3 scripts/detector_freeze.py verify` (FAIL: the seal of 18.10 no longer
 > matches the sources); earlier: 2026-10-15, D1 pass 1: the judgement of 13.10 (v1.0.0, 66/100), tag `v1.0.0` → `5d6e9b5`,
 > detector baseline and ownership against the current files. The decision log retains its original dates.
@@ -79,9 +79,9 @@ agent branches. Older work branches of 15–18.10 are merged (PR #33, #35–#38)
 
 | branch | state | recommendation |
 |---|---|---|
-| `main` | `9621024`: the 1.2.0 candidate with P3's L16/S3 and R3 (done, switched on; P4 review pending); `detector_freeze.py verify` FAILS (sealed files changed); CI red (0 of the last 100 runs succeeded) | base of the integration |
+| `main` | `9621024`: the 1.2.0 candidate with P3's L16/S3 and R3 (done, switched on; P4 review pending); `detector_freeze.py verify` FAILED then (sealed files changed); CI red then. Update 20.10: `main` `f56ad5e` is resealed (`verify` PASS, 40 files) and CI is green | base of the integration |
 | `claude/optimistic-mccarthy-z5nmwd` | integration of 19.10: `main` + the four agent lanes, merged with an identity proof ([evidence](evidence/integration_2026-10-19/README.md)); F1a and H′ switched on | the base of the final gate, X3 and the combined reseal; P1 merges to `main` after P4's review |
-| `ui-improvement` | P2's web Player work: not merged into `main` (26 commits ahead of it on 19.10, checked with `git rev-list`); CI red | P2 merges `main` in; P1 reviews and merges, or keeps it out of the pitch |
+| `ui-improvement` | P2's web Player work: `main` of 20.10 (`f56ad5e`) merged in with no conflicts; web-only diff, detector, `native/`, configs and tests identical to `main`; preview at resense.amdm.life | P2 merges `main` in; P1 reviews and merges, or keeps it out of the pitch |
 | `det/k1-k2-gauge`, `det/f1-false-alarms`, `det/falcon-long-range`, `det/n3-dust-robustness` | merged into the integration branch 19.10 with every switch off ([`DECISIONS.md`](DECISIONS.md) row 40); the agents are stopped, handoffs written | the remote branches may be deleted |
 
 ## 5. Release and submission
@@ -89,12 +89,10 @@ agent branches. Older work branches of 15–18.10 are merged (PR #33, #35–#38)
 **v1.0.0 is the only published release** (tag `5d6e9b5`, 29.09, with `resense-image-v1.0.0.tar.gz`, its `.sha256` and
 `SHA256SUMS`; the judge verified it on 13.10). **1.1.0 (sealed 16.10) was not released and will not be** (captain, 19.10). The
 sources carry the **1.2.0 candidate**: all four version declarations are 1.2.0 (`tests/test_release.py`). **The detector seal
-currently fails `verify`**: `detector_freeze_2026-10-18_b4_merged.json` (accepted by P4 on 19.10 for the measured source
-`0779db7`) no longer matches after L16/S3, R3 and the integration of 19.10; a combined reseal (P1 + P4) follows the last code
-change (code stop 20.10 23:59 MSK). The next release is **v1.2.0 on the final seal**: `.github/workflows/release.yml` builds the
+passes `verify` since 20.10** (`detector_freeze_2026-10-20_1.2.0_r3.json`, 40 files, measured `0a472d6`; the 19.10 text said it failed
+until the combined reseal); P4's independent final-bundle review remains open (code stop 20.10 23:59 MSK). The next release is **v1.2.0 on the final seal**: `.github/workflows/release.yml` builds the
 runtime image from a pushed `v*` tag, loads the archive back, plays both smoke bags with no internet, runs the E2 check and
-publishes the archive with its checksums. **It needs working CI** (0 of the last 100 runs succeeded, the jobs stop before any
-step); fallbacks: `scripts/release.sh`, `scripts/export_image.sh`. Whether an updated archive may be re-run is asked in O1 (sent,
+publishes the archive with its checksums. **It needs working CI** (green on `main` at `f56ad5e`, 20.10; 19.10: 0 of the last 100 runs succeeded); fallbacks: `scripts/release.sh`, `scripts/export_image.sh`. Whether an updated archive may be re-run is asked in O1 (sent,
 unanswered).
 
 ## 6. Freeze and merge rules
@@ -103,8 +101,7 @@ unanswered).
   captain merges. No branch protection (the captain, 25.09). A red `main` is fixed by its author within 1 h or reverted.
 - No edits in another lane's files without the owner's OK (§8), unless the captain orders them. Contract changes (§7):
   `[contract]` in the PR title and a heads-up to the consumers; add, never rename or remove.
-- Freeze: detector and config sealed since 27.09 ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md), checked by `verify`; it fails now
-  until the combined reseal, §5); the node, the image, the tools and the documents change through reviewed PRs with CI green.
+- Freeze: detector and config sealed since 27.09 ([`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md), checked by `verify`; passes since the 20.10 reseal, §5); the node, the image, the tools and the documents change through reviewed PRs with CI green.
 - Detector / config gate: `python scripts/regression_gate.py --baseline
   docs/evidence/results/regression_baseline_2026-09-29_shell_off.json` (the baseline of every manifest since 16.10) exits 0 on
   the change. Every gated metric must be identical or better on the six recordings, set O, the ride and set F straight (the last
