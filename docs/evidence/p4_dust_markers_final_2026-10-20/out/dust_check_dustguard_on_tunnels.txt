@@ -1,0 +1,37 @@
+dust frames (5): [70, 166, 167, 195, 446]; dust boxes in them: 15
+
+== /tmp/claude-0/-home-user-ReSense/fb93d84d-3156-5b5d-9ddf-809db858cc32/scratchpad/runs/dust_tunnels.jsonl
+   STOP 0, CAUTION 2 of 5 dust frames; detections at a dust box: tight 0 coarse 0; warnings at a dust box: tight 0 coarse 0
+  frame  70 GO      clear 94.0 nearest None level ok dets 0 warns 0 msgs []
+      box  3 at fwd  4.33 lat  0.58 up  0.31; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      box  4 at fwd  5.53 lat  1.46 up  0.53; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      box  5 at fwd  4.84 lat -1.57 up  0.29; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      decisions i-3..i+3 (warning distances): 67:GO  68:GO  69:GO  70:GO  71:GO  72:GO  73:GO
+  frame 166 CAUTION clear 99.0 nearest None level ok dets 0 warns 2 msgs []
+      box  6 at fwd  4.49 lat  1.50 up  0.36; closest det/warn (kind, d, |dfwd|, |dlat|, reason): [('warn', 38.8, 34.4, 0.38, '')]
+      box  8 at fwd  6.09 lat -0.21 up  0.25; closest det/warn (kind, d, |dfwd|, |dlat|, reason): [('warn', 38.8, 32.8, 1.33, '')]
+      box  9 at fwd  7.19 lat  0.61 up  0.12; closest det/warn (kind, d, |dfwd|, |dlat|, reason): [('warn', 38.8, 31.7, 0.51, '')]
+      decisions i-3..i+3 (warning distances): 163:CAUT[43.83, 55.25]  164:CAUT[42.12, 53.42]  165:CAUT[40.45, 51.63]  166:CAUT[38.82, 50.19]  167:CAUT[37.15, 48.52]  168:CAUT[35.49, 46.87]  169:CAUT[45.21]
+      warn d=38.82 c=[38.89, 1.12, -0.12] size=[0.1, 0.04, 0.95] reason='': marker object(s) none
+      warn d=50.19 c=[50.28, 2.35, -0.03] size=[0.18, 0.11, 1.02] reason='': marker object(s) none
+  frame 167 CAUTION clear 99.0 nearest None level ok dets 0 warns 2 msgs []
+      box  7 at fwd  4.00 lat -1.35 up  0.55; closest det/warn (kind, d, |dfwd|, |dlat|, reason): [('warn', 37.1, 33.24, 2.28, '')]
+      box  8 at fwd  4.70 lat -0.24 up  0.25; closest det/warn (kind, d, |dfwd|, |dlat|, reason): [('warn', 37.1, 32.54, 1.17, '')]
+      box  9 at fwd  5.81 lat  0.57 up  0.12; closest det/warn (kind, d, |dfwd|, |dlat|, reason): [('warn', 37.1, 31.43, 0.36, '')]
+      decisions i-3..i+3 (warning distances): 164:CAUT[42.12, 53.42]  165:CAUT[40.45, 51.63]  166:CAUT[38.82, 50.19]  167:CAUT[37.15, 48.52]  168:CAUT[35.49, 46.87]  169:CAUT[45.21]  170:CAUT[43.45]
+      warn d=37.15 c=[37.24, 0.93, -0.23] size=[0.2, 0.07, 0.81] reason='': marker object(s) none
+      warn d=48.52 c=[48.59, 2.1, -0.03] size=[0.24, 0.11, 0.73] reason='': marker object(s) none
+  frame 195 GO      clear 99.1 nearest None level ok dets 0 warns 0 msgs []
+      box 10 at fwd  3.84 lat -1.59 up  0.43; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      box 11 at fwd  4.44 lat -0.52 up  0.23; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      box 12 at fwd  5.74 lat  0.31 up  0.54; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      box 13 at fwd  6.35 lat  1.64 up  0.17; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      decisions i-3..i+3 (warning distances): 192:GO  193:GO  194:GO  195:GO  196:GO  197:GO  198:GO
+  frame 446 GO      clear 0.0 nearest None level warn dets 0 warns 0 msgs []
+      box 15 at fwd  4.19 lat -1.41 up  0.35; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      box 16 at fwd  4.70 lat  1.53 up  0.59; closest det/warn (kind, d, |dfwd|, |dlat|, reason): []
+      decisions i-3..i+3 (warning distances): 443:STOP  444:STOP  445:GO  446:GO  447:GO  448:GO  449:GO
+
+control 1 (detection on every dust box): tight 15/15, coarse 15/15
+control 3 (detection 20 m beyond every dust box): tight 0/15, coarse 0/15 (must be 0)
+control 2 (run's STOP frames with a known object in range that the coarse rule matches): 118/121

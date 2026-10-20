@@ -1,0 +1,6 @@
+(a) no dust, guard off: decisions {'GO': 38, 'CAUTION': 2}, health levels {'ok': 40}, clear min/median 101.5/148.9, messages []
+(a') no dust, guard ON : decisions {'GO': 38, 'CAUTION': 2}, health levels {'ok': 40}, clear min/median 101.5/148.9, messages []
+(b) dust 1.0/m3, guard off: decisions {'GO': 7, 'STOP': 31, 'CAUTION': 2}, health levels {'ok': 40}, clear min/median 0.0/18.7, messages []
+(c) dust 1.0/m3, guard ON : decisions {'CAUTION': 40}, health levels {'warn': 40}, clear min/median 0.0/0.0, messages ['diffuse volumetric returns (dust / suspension): visibility degraded, range unverified; N unsupported candidate returns kept out of obstacle evidence']
+(a') equals (a) in every non-timing field: True (0 of 40 frames differ)
+(c) differs from (b) in 40 of 40 frames; (b) differs from (a) in 40 frames

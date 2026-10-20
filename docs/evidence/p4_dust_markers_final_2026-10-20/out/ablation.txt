@@ -1,0 +1,28 @@
+# ablations on the final source, one switch at a time, vs 1.1.0 and vs final
+## f1aoff
+vs 1.1.0:
+platform  386 frames: IDENT
+switch    736 frames: IDENT
+tunnels   545 frames: IDENT
+vs final:
+platform  386 frames: clear[316](1)
+switch    736 frames: IDENT
+tunnels   545 frames: clear[45, 52, 291](3)
+## h1off
+vs 1.1.0:
+platform  386 frames: clear[316](1)
+switch    736 frames: IDENT
+tunnels   545 frames: clear[45, 52, 291](3)
+vs final:
+platform  386 frames: IDENT
+switch    736 frames: IDENT
+tunnels   545 frames: IDENT
+## hpoff
+vs 1.1.0:
+platform  386 frames: clear[316](1)
+switch    736 frames: IDENT
+tunnels   545 frames: clear[45, 52, 291](3)
+vs final:
+platform  386 frames: IDENT
+switch    736 frames: IDENT
+tunnels   545 frames: IDENT
