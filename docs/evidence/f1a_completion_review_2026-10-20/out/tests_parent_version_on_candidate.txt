@@ -1,0 +1,40 @@
+............FF......                                                     [100%]
+=================================== FAILURES ===================================
+_______ test_one_sided_or_absent_head_support_does_not_suppress[before] ________
+
+missing = 'before'
+
+    @pytest.mark.parametrize('missing', ['before', 'after', 'both'])
+    def test_one_sided_or_absent_head_support_does_not_suppress(missing):
+        X, dy, h, c = _scene()
+        head = np.isclose(dy, HALF + 0.11) & ((X < 39.7) | (X > 40.6))
+        remove = head & ((X < 40) if missing == 'before' else (X > 40) if missing == 'after' else True)
+        h[remove] = -1.0
+>       assert _check(X, dy, h, c) == (True, False)
+E       assert (False, True) == (True, False)
+E         
+E         At index 0 diff: False != True
+E         Use -v to get more diff
+
+tests/test_f1a_continuation_parentver.py:51: AssertionError
+________ test_one_sided_or_absent_head_support_does_not_suppress[after] ________
+
+missing = 'after'
+
+    @pytest.mark.parametrize('missing', ['before', 'after', 'both'])
+    def test_one_sided_or_absent_head_support_does_not_suppress(missing):
+        X, dy, h, c = _scene()
+        head = np.isclose(dy, HALF + 0.11) & ((X < 39.7) | (X > 40.6))
+        remove = head & ((X < 40) if missing == 'before' else (X > 40) if missing == 'after' else True)
+        h[remove] = -1.0
+>       assert _check(X, dy, h, c) == (True, False)
+E       assert (False, True) == (True, False)
+E         
+E         At index 0 diff: False != True
+E         Use -v to get more diff
+
+tests/test_f1a_continuation_parentver.py:51: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_f1a_continuation_parentver.py::test_one_sided_or_absent_head_support_does_not_suppress[before]
+FAILED tests/test_f1a_continuation_parentver.py::test_one_sided_or_absent_head_support_does_not_suppress[after]
+2 failed, 18 passed in 0.65s

@@ -1,0 +1,1 @@
+scenes 48 frames 2160: frames where the branch was reached 104; with a surface value 62; frames with a surface value AND a rejected low cluster 59; scenes with such frames 23

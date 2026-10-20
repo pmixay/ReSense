@@ -1,0 +1,15 @@
+        assert result.returncode == 0, result.stderr
+        assert len(list((tmp_path / "valid").glob("activated_*.json"))) == 1
+        assert len(list((tmp_path / "valid").glob("frames_*.jsonl"))) == 1
+        env["RESENSE_N2_SOURCE"] = str(tmp_path / "missing-source")
+        result = subprocess.run([sys.executable, "-c", "raise SystemExit(0)"], env=env,
+                                capture_output=True, text=True)
+>       assert result.returncode == 86 and "outside the pinned source" in result.stderr
+E       assert (86 == 86 and 'outside the pinned source' in 'Traceback (most recent call last):\n  File "/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scr...y", line 20, in install\n    from resense.detector import Detector\nModuleNotFoundError: No module named \'resense\'\n')
+E        +  where 86 = CompletedProcess(args=['/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scratchpad/f1a_review/ve...", line 20, in install\n    from resense.detector import Detector\nModuleNotFoundError: No module named \'resense\'\n').returncode
+E        +  and   'Traceback (most recent call last):\n  File "/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scr...y", line 20, in install\n    from resense.detector import Detector\nModuleNotFoundError: No module named \'resense\'\n' = CompletedProcess(args=['/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scratchpad/f1a_review/ve...", line 20, in install\n    from resense.detector import Detector\nModuleNotFoundError: No module named \'resense\'\n').stderr
+
+tests/test_lidar_proxy_hook.py:72: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_lidar_proxy_hook.py::test_child_process_inherits_hook_and_bad_source_fails_closed
+1 failed, 1 passed in 1.49s

@@ -1,0 +1,22 @@
+empty arrays                                                   -> None
+one return on each side (any height -0.2)                      -> -0.2
+two returns before only                                        -> None
+two distinct returns 0.2 before, bed return after              -> 0.2
+ONE return held twice (duplicate) before, bed after            -> None
+NaN heights everywhere                                         -> None
+one NaN among two good returns                                 -> 0.2
++inf height (excluded by h < foot_max_top)                     -> None
+NaN in X                                                       -> None
+rails_spacing = 0                                              -> None
+rails_spacing = NaN                                            -> None
+rails_spacing = None                                           -> EXCEPTION TypeError: float() argument must be a string or a real number, not 'NoneType'
+cluster bbox x NaN                                             -> None
+float32 inputs                                                 -> 0.20000000298023224
+zero-width cluster (bbox width 0)                              -> None
+lateral band does not reach a rail line (centre)               -> None
+call site, free mask present (expected: rejected)              -> 1
+call site, free=None (unsafe ablation; expected: not rejected) -> 0
+call site, local_rail_margin=0 (switch off; expected: not rejected) -> 0
+call site, own rail line absent (original ref None; expected: kept) -> 0
+  same scene with the own rail's web present (control; expected: rejected) -> 1
+100k returns in the window: time (s) / value                   -> 0.311 / 0.24999887085119124

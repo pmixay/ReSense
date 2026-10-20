@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "exact_plain_traced_rows": 698,
+  "actual_keep_returns_verified": 693,
+  "changed_return_control_detected": true,
+  "cases": [
+    {
+      "warm_scans": 0,
+      "error": 1.6,
+      "gauge_voxels": 12,
+      "keep_enabled": true,
+      "post_fault_STOP_count": 0,
+      "first_post_fault_STOP": null,
+      "last_post_fault_STOP": null,
+      "last_keep_scan": null,
+      "maximum_kept_age_s": null
+    },
+    {
+      "warm_scans": 12,
+      "error": 0.0,
+      "gauge_voxels": 12,
+      "keep_enabled": true,
+      "post_fault_STOP_count": 130,
+      "first_post_fault_STOP": 12,
+      "last_post_fault_STOP": 141,
+      "last_keep_scan": null,
+      "maximum_kept_age_s": null
+    },
+    {
+      "warm_scans": 12,
+      "error": 1.6,
+      "gauge_voxels": 12,
+      "keep_enabled": true,
+      "post_fault_STOP_count": 104,
+      "first_post_fault_STOP": 12,
+      "last_post_fault_STOP": 115,
+      "last_keep_scan": 111,
+      "maximum_kept_age_s": 9.99999999999998
+    },
+    {
+      "warm_scans": 12,
+      "error": 1.6,
+      "gauge_voxels": 9,
+      "keep_enabled": true,
+      "post_fault_STOP_count": 4,
+      "first_post_fault_STOP": 12,
+      "last_post_fault_STOP": 15,
+      "last_keep_scan": null,
+      "maximum_kept_age_s": null
+    },
+    {
+      "warm_scans": 12,
+      "error": 1.6,
+      "gauge_voxels": 12,
+      "keep_enabled": false,
+      "post_fault_STOP_count": 4,
+      "first_post_fault_STOP": 12,
+      "last_post_fault_STOP": 15,
+      "last_keep_scan": null,
+      "maximum_kept_age_s": null
+    }
+  ]
+}

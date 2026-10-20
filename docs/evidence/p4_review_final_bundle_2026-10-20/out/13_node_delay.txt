@@ -1,0 +1,6 @@
+# node_delay_test.py (open3d 0.20, Python 3.13, numpy 2.5; test tests/test_node.py fixtures)
+DELAY 0.0 decision STOP nearest 39.97 clear 40.0
+.DELAY 0.3 decision STOP nearest 39.97 clear 40.0
+.DELAY 0.7 decision STOP nearest 39.97 clear 0.0
+3 passed in 2.81s
+# natural load (16 busy loops), tests/test_node.py::test_obstacle_is_stop_and_published_in_the_sensor_frame, 5 runs: 5 passed (not reproduced)

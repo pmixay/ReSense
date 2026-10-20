@@ -1,0 +1,50 @@
+family approach: 48 scenes; columns = matched frames for apr_ref, apr_cand
+rail    raise 0.00 d   58 side +1 L 0.3 W 0.3 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.00 d   58 side +1 L 0.3 W 0.3 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.00 d   58 side +1 L 0.3 W 0.3 delta +0.10 rest: 23 23   frames differing 0
+rail    raise 0.00 d   58 side +1 L 1.0 W 0.3 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.00 d   58 side +1 L 1.0 W 0.3 delta +0.05 rest:  2  2   frames differing 0
+rail    raise 0.00 d   58 side +1 L 1.0 W 0.3 delta +0.10 rest: 32 32   frames differing 0
+rail    raise 0.00 d   58 side +1 L 4.0 W 0.3 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.00 d   58 side +1 L 4.0 W 0.3 delta +0.05 rest: 18 18   frames differing 0
+rail    raise 0.00 d   58 side +1 L 4.0 W 0.3 delta +0.10 rest: 33 33   frames differing 0
+rail    raise 0.00 d   58 side +1 L 4.0 W 0.1 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.00 d   58 side +1 L 4.0 W 0.1 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.00 d   58 side +1 L 4.0 W 0.1 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.00 d   58 side -1 L 0.3 W 0.3 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.00 d   58 side -1 L 0.3 W 0.3 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.00 d   58 side -1 L 0.3 W 0.3 delta +0.10 rest: 19 19   frames differing 0
+rail    raise 0.00 d   58 side -1 L 1.0 W 0.3 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.00 d   58 side -1 L 1.0 W 0.3 delta +0.05 rest:  4  4   frames differing 0
+rail    raise 0.00 d   58 side -1 L 1.0 W 0.3 delta +0.10 rest: 32 32   frames differing 0
+rail    raise 0.00 d   58 side -1 L 4.0 W 0.3 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.00 d   58 side -1 L 4.0 W 0.3 delta +0.05 rest: 14 14   frames differing 0
+rail    raise 0.00 d   58 side -1 L 4.0 W 0.3 delta +0.10 rest: 33 33   frames differing 0
+rail    raise 0.00 d   58 side -1 L 4.0 W 0.1 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.00 d   58 side -1 L 4.0 W 0.1 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.00 d   58 side -1 L 4.0 W 0.1 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side +1 L 0.3 W 0.3 delta +0.00 bed : 10 10   frames differing 0
+rail    raise 0.18 d   58 side +1 L 0.3 W 0.3 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side +1 L 0.3 W 0.3 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side +1 L 1.0 W 0.3 delta +0.00 bed : 10 10   frames differing 0
+rail    raise 0.18 d   58 side +1 L 1.0 W 0.3 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side +1 L 1.0 W 0.3 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side +1 L 4.0 W 0.3 delta +0.00 bed : 11 11   frames differing 0
+rail    raise 0.18 d   58 side +1 L 4.0 W 0.3 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side +1 L 4.0 W 0.3 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side +1 L 4.0 W 0.1 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.18 d   58 side +1 L 4.0 W 0.1 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side +1 L 4.0 W 0.1 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side -1 L 0.3 W 0.3 delta +0.00 bed : 14 13   frames differing 1  <-- DIFFERENT
+rail    raise 0.18 d   58 side -1 L 0.3 W 0.3 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side -1 L 0.3 W 0.3 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side -1 L 1.0 W 0.3 delta +0.00 bed : 14 13   frames differing 1  <-- DIFFERENT
+rail    raise 0.18 d   58 side -1 L 1.0 W 0.3 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side -1 L 1.0 W 0.3 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side -1 L 4.0 W 0.3 delta +0.00 bed : 14 13   frames differing 1  <-- DIFFERENT
+rail    raise 0.18 d   58 side -1 L 4.0 W 0.3 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side -1 L 4.0 W 0.3 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side -1 L 4.0 W 0.1 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.18 d   58 side -1 L 4.0 W 0.1 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.18 d   58 side -1 L 4.0 W 0.1 delta +0.10 rest:  0  0   frames differing 0
+scenes with different counts: 3

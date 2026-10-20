@@ -5,9 +5,10 @@ and [verification receipt](../docs/evidence/p2_2026-10-20/README.md). The UI/mai
 integration and scoped rendering/navigation/live-replay fixes are verified locally.
 Preview publication is complete at [resense.amdm.life](https://resense.amdm.life/);
 the [publication receipt](../docs/evidence/p2_2026-10-20/PUBLISH.md) records the public checks.
-Today's remaining Role 2 deliverables are assets, recordings, visuals, documents
-and device/rehearsal work; stop before those as requested. The dated queue below
-retains its historical verification dates.
+**Asset cleanup, 20.10:** all five unused root reference images deleted at the
+user's request; the P0 photo item is complete. Remaining non-code deliverables
+are recordings, visuals, documents and device/rehearsal work. The dated queue
+below retains its historical verification dates.
 
 > **Purpose:** P2's queue and acceptance state, through the 23.10 defence; the current work and priorities of P2 are in
 > [`docs/BACKLOG.md`](../docs/BACKLOG.md) "Current plan" (P2 table).

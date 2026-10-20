@@ -1,0 +1,1 @@
+traced cand vs plain cand (approach_bed): scenes 48 frames 2160 differing frames 0

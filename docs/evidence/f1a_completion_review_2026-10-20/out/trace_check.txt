@@ -1,0 +1,10 @@
+{
+ "scenes": 195,
+ "frames": 2340,
+ "differ": 0,
+ "calls": 67,
+ "surface_values": 30,
+ "clusters_checked": 452,
+ "rejected": 83,
+ "scenes_with_call": 14
+}
