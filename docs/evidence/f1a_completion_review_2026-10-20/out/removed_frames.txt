@@ -1,0 +1,182 @@
+new_data_1 row 1259 stem new_data_52_0016  author distance 42.1
+   track 288 hits 6 age 10 reported True zone gauge kind 'low' centroid [42.793, 0.5] lineage cluster k=5 A=True D=False cause=top | candidate replay: rejected=True surface=0.19903850555419922 top_new=0.234 top_old=0.108 ref_orig=0.101 ref_ind=0.102 lat=0.736
+   track 289 hits 7 age 10 reported True zone warning kind '' centroid [174.228, -1.262]
+   track 293 hits 3 age 3 reported False zone gauge kind 'low' centroid [32.958, 0.646] lineage cluster k=1 A=True D=False cause=top | candidate replay: rejected=True surface=0.18716377019882202 top_new=0.163 top_old=0.047 ref_orig=0.096 ref_ind=0.087 lat=0.83
+   track 294 hits 3 age 3 reported False zone gauge kind 'low' centroid [36.534, 0.624] lineage cluster k=3 A=True D=False cause=top | candidate replay: rejected=True surface=0.19903850555419922 top_new=0.174 top_old=0.097 ref_orig=0.109 ref_ind=0.101 lat=0.827
+   track 295 hits 3 age 3 reported False zone gauge kind '' centroid [48.233, 0.847]
+   track 300 hits 1 age 1 reported False zone warning kind '' centroid [20.569, 1.257]
+new_data_1 row 1260 stem new_data_52_0017  author distance 38.9
+   track 288 hits 7 age 11 reported True zone warning kind '' centroid [40.794, 0.823]
+   track 293 hits 4 age 4 reported False zone gauge kind 'low' centroid [34.495, 0.53] lineage cluster k=5 A=True D=False cause=top | candidate replay: rejected=False surface=None top_new=0.222 top_old=0.108 ref_orig=0.185 ref_ind=0.196 lat=0.732
+   track 296 hits 2 age 4 reported False zone warning kind '' centroid [63.755, 0.685]
+   track 297 hits 3 age 4 reported False zone warning kind '' centroid [92.522, -0.569]
+   track 300 hits 2 age 2 reported False zone warning kind '' centroid [21.576, 1.252]
+   track 301 hits 1 age 1 reported False zone gauge kind 'low' centroid [29.406, 0.617] lineage cluster k=1 A=True D=False cause=top | candidate replay: rejected=True surface=0.22605039179325104 top_new=0.195 top_old=0.071 ref_orig=0.127 ref_ind=0.149 lat=0.79
+   track 302 hits 1 age 1 reported False zone gauge kind 'low' centroid [32.115, -0.936] lineage cluster k=2 A=True D=False cause=top | candidate replay: rejected=True surface=0.23741476237773895 top_new=0.191 top_old=0.108 ref_orig=0.179 ref_ind=0.169 lat=-0.748
+   track 303 hits 1 age 1 reported False zone gauge kind 'low' centroid [33.719, -1.014] lineage cluster k=4 A=True D=False cause=top | candidate replay: rejected=True surface=0.23741476237773895 top_new=0.221 top_old=0.076 ref_orig=0.187 ref_ind=0.194 lat=-0.817
+   track 304 hits 1 age 1 reported False zone warning kind '' centroid [70.276, 0.63]
+new_data_1 row 1261 stem new_data_52_0018  author distance 36.9
+   track 289 hits 8 age 12 reported True zone warning kind '' centroid [173.074, -1.819]
+   track 292 hits 3 age 6 reported False zone warning kind '' centroid [59.549, 0.728]
+   track 293 hits 5 age 5 reported True zone gauge kind 'low' centroid [35.302, 0.61] lineage cluster k=5 A=True D=False cause=top | candidate replay: rejected=True surface=0.280875027179718 top_new=0.246 top_old=0.102 ref_orig=0.162 ref_ind=0.162 lat=0.781
+   track 297 hits 4 age 5 reported True zone gauge kind '' centroid [90.467, -0.529]
+   track 298 hits 2 age 4 reported False zone warning kind '' centroid [47.882, 1.032]
+   track 301 hits 2 age 2 reported False zone warning kind '' centroid [29.59, 0.866]
+   track 305 hits 1 age 1 reported False zone gauge kind 'low' centroid [26.414, 0.662] lineage cluster k=0 A=True D=False cause=top | candidate replay: rejected=True surface=0.17968153953552246 top_new=0.151 top_old=0.039 ref_orig=0.111 ref_ind=0.116 lat=0.792
+   track 306 hits 1 age 1 reported False zone gauge kind 'low' centroid [26.514, -0.892] lineage cluster k=1 A=True D=False cause=top | candidate replay: rejected=True surface=0.1713528037071228 top_new=0.152 top_old=0.033 ref_orig=0.116 ref_ind=0.116 lat=-0.761
+   track 307 hits 1 age 1 reported False zone gauge kind '' centroid [55.303, -1.096]
+new_data_1 row 1265 stem new_data_52_0022  author distance 35.8
+   track 289 hits 12 age 16 reported True zone warning kind '' centroid [168.916, -2.417]
+   track 294 hits 6 age 9 reported True zone warning kind '' centroid [42.569, 0.889]
+   track 295 hits 6 age 9 reported True zone warning kind '' centroid [47.838, 0.908]
+   track 301 hits 6 age 6 reported True zone gauge kind 'low' centroid [36.973, -0.207] lineage cluster k=2 A=True D=False cause=top | candidate replay: rejected=False surface=None top_new=0.18 top_old=0.08 ref_orig=0.085 ref_ind=0.104 lat=0.02
+   track 310 hits 1 age 1 reported False zone warning kind '' centroid [137.647, -2.41]
+new_data_1 row 1266 stem new_data_52_0023  author distance 24.3
+   track 289 hits 13 age 17 reported True zone warning kind '' centroid [168.263, -2.603]
+   track 292 hits 6 age 11 reported False zone gauge kind '' centroid [45.686, 0.814]
+   track 294 hits 7 age 10 reported True zone warning kind '' centroid [42.956, 0.964]
+   track 295 hits 7 age 10 reported True zone warning kind '' centroid [47.911, 0.898]
+   track 298 hits 4 age 9 reported False zone warning kind '' centroid [56.74, 0.805]
+   track 302 hits 4 age 7 reported False zone gauge kind '' centroid [35.062, 0.179]
+   track 305 hits 5 age 6 reported True zone gauge kind 'low' centroid [24.465, -0.935] lineage cluster k=2 A=True D=False cause=top | candidate replay: rejected=True surface=0.20697176456451416 top_new=0.15 top_old=0.115 ref_orig=0.119 ref_ind=0.118 lat=-0.786
+   track 306 hits 4 age 6 reported False zone gauge kind 'low' centroid [30.26, -0.986] lineage cluster k=8 A=True D=False cause=top | candidate replay: rejected=True surface=0.23474140465259552 top_new=0.216 top_old=0.112 ref_orig=0.145 ref_ind=0.153 lat=-0.81
+   track 311 hits 1 age 1 reported False zone warning kind '' centroid [3.497, -1.47]
+   track 312 hits 1 age 1 reported False zone warning kind '' centroid [12.908, 1.287]
+   track 313 hits 1 age 1 reported False zone gauge kind 'low' centroid [26.408, 0.612] lineage cluster k=3 A=True D=False cause=top | candidate replay: rejected=True surface=0.18302735686302185 top_new=0.162 top_old=0.086 ref_orig=0.132 ref_ind=0.138 lat=0.77
+   track 314 hits 1 age 1 reported False zone gauge kind 'low' centroid [26.614, -0.986] lineage cluster k=4 A=True D=False cause=top | candidate replay: rejected=True surface=0.2103838175535202 top_new=0.153 top_old=0.071 ref_orig=0.136 ref_ind=0.136 lat=-0.827
+   track 315 hits 1 age 1 reported False zone gauge kind 'low' centroid [27.503, 0.65] lineage cluster k=5 A=True D=False cause=top | candidate replay: rejected=True surface=0.18302735686302185 top_new=0.189 top_old=0.057 ref_orig=0.144 ref_ind=0.121 lat=0.813
+   track 316 hits 1 age 1 reported False zone gauge kind 'low' centroid [28.957, 0.609] lineage cluster k=7 A=True D=False cause=top | candidate replay: rejected=True surface=0.23388253152370453 top_new=0.214 top_old=0.084 ref_orig=0.151 ref_ind=0.144 lat=0.778
+   track 317 hits 1 age 1 reported False zone gauge kind 'low' centroid [30.588, 0.593] lineage cluster k=9 A=True D=False cause=top | candidate replay: rejected=True surface=0.23495063185691833 top_new=0.224 top_old=0.11 ref_orig=0.17 ref_ind=0.155 lat=0.77
+   track 318 hits 1 age 1 reported False zone gauge kind '' centroid [50.341, 0.877]
+new_data_1 row 1267 stem new_data_52_0024  author distance 23.6
+   track 289 hits 14 age 18 reported True zone warning kind '' centroid [167.191, -2.42]
+   track 292 hits 7 age 12 reported False zone warning kind '' centroid [41.729, 1.002]
+   track 301 hits 7 age 8 reported True zone gauge kind 'low' centroid [37.05, -0.948] lineage cluster k=7 A=False D=False cause=None
+   track 302 hits 5 age 8 reported True zone gauge kind '' centroid [34.337, 0.336]
+   track 316 hits 2 age 2 reported False zone gauge kind 'low' centroid [28.938, -0.928] lineage cluster k=1 A=True D=False cause=top | candidate replay: rejected=True surface=0.15476074814796448 top_new=0.124 top_old=0.052 ref_orig=0.113 ref_ind=0.12 lat=-0.754
+   track 319 hits 1 age 1 reported False zone warning kind '' centroid [19.088, 1.257]
+   track 320 hits 1 age 1 reported False zone gauge kind 'low' centroid [32.928, -0.95] lineage cluster k=4 A=True D=False cause=reference | candidate replay: rejected=True surface=0.152202770113945 top_new=0.057 top_old=0.057 ref_orig=0.081 ref_ind=0.027 lat=-0.756
+   track 321 hits 1 age 1 reported False zone gauge kind 'low' centroid [34.808, -0.958] lineage cluster k=6 A=True D=False cause=top | candidate replay: rejected=True surface=0.19435684382915497 top_new=0.194 top_old=0.06 ref_orig=0.076 ref_ind=0.101 lat=-0.754
+new_data_4 row 80 stem new_data_112_0004  author distance 21.8
+   track 57 hits 7 age 7 reported True zone warning kind '' centroid [37.337, 1.089]
+   track 59 hits 5 age 5 reported True zone warning kind '' centroid [45.916, 1.113]
+   track 61 hits 1 age 1 reported False zone warning kind '' centroid [32.541, 1.059]
+   track 62 hits 1 age 1 reported False zone warning kind '' centroid [40.302, 1.056]
+   track 63 hits 1 age 1 reported False zone warning kind '' centroid [43.45, 1.123]
+new_data_7 row 623 stem new_data_205_0031  author distance 47.6
+   track 202 hits 7 age 8 reported True zone gauge kind 'low' centroid [47.952, -2.196] lineage cluster k=0 A=True D=False cause=either | candidate replay: rejected=True surface=0.18433746695518494 top_new=0.192 top_old=0.108 ref_orig=0.103 ref_ind=0.062 lat=0.855
+   track 205 hits 3 age 3 reported False zone warning kind '' centroid [75.798, -4.73]
+new_data_7 row 624 stem new_data_205_0032  author distance 45.9
+   track 205 hits 4 age 4 reported False zone warning kind '' centroid [74.17, -4.423]
+[
+ {
+  "piece": "new_data_1",
+  "row": 1259,
+  "stem": "new_data_52_0016",
+  "author_distance": 42.1,
+  "track": 288,
+  "centroid_x": 42.793,
+  "dist_match": true,
+  "tag": [
+   5,
+   true,
+   false,
+   "top"
+  ]
+ },
+ {
+  "piece": "new_data_1",
+  "row": 1261,
+  "stem": "new_data_52_0018",
+  "author_distance": 36.9,
+  "track": 293,
+  "centroid_x": 35.302,
+  "dist_match": true,
+  "tag": [
+   5,
+   true,
+   false,
+   "top"
+  ]
+ },
+ {
+  "piece": "new_data_1",
+  "row": 1261,
+  "stem": "new_data_52_0018",
+  "author_distance": 36.9,
+  "track": 297,
+  "centroid_x": 90.467,
+  "dist_match": false,
+  "tag": null
+ },
+ {
+  "piece": "new_data_1",
+  "row": 1265,
+  "stem": "new_data_52_0022",
+  "author_distance": 35.8,
+  "track": 301,
+  "centroid_x": 36.973,
+  "dist_match": true,
+  "tag": [
+   2,
+   true,
+   false,
+   "top"
+  ]
+ },
+ {
+  "piece": "new_data_1",
+  "row": 1266,
+  "stem": "new_data_52_0023",
+  "author_distance": 24.3,
+  "track": 305,
+  "centroid_x": 24.465,
+  "dist_match": true,
+  "tag": [
+   2,
+   true,
+   false,
+   "top"
+  ]
+ },
+ {
+  "piece": "new_data_1",
+  "row": 1267,
+  "stem": "new_data_52_0024",
+  "author_distance": 23.6,
+  "track": 301,
+  "centroid_x": 37.05,
+  "dist_match": false,
+  "tag": [
+   7,
+   false,
+   false,
+   null
+  ]
+ },
+ {
+  "piece": "new_data_1",
+  "row": 1267,
+  "stem": "new_data_52_0024",
+  "author_distance": 23.6,
+  "track": 302,
+  "centroid_x": 34.337,
+  "dist_match": false,
+  "tag": null
+ },
+ {
+  "piece": "new_data_7",
+  "row": 623,
+  "stem": "new_data_205_0031",
+  "author_distance": 47.6,
+  "track": 202,
+  "centroid_x": 47.952,
+  "dist_match": true,
+  "tag": [
+   0,
+   true,
+   false,
+   "either"
+  ]
+ }
+]

@@ -1,0 +1,116 @@
+variant / parameters                                                                         ref     parent  cand
+sweep_top side=1, head=0.2, delta=-0.06                                                      KEEP    HIDE    HIDE      <-- sources differ
+sweep_top side=1, head=0.2, delta=-0.02                                                      KEEP    HIDE    HIDE      <-- sources differ
+sweep_top side=1, head=0.2, delta=0.0                                                        KEEP    HIDE    HIDE      <-- sources differ
+sweep_top side=1, head=0.2, delta=0.02                                                       KEEP    HIDE    HIDE      <-- sources differ
+sweep_top side=1, head=0.2, delta=0.04                                                       KEEP    HIDE    HIDE      <-- sources differ
+sweep_top side=1, head=0.2, delta=0.05                                                       KEEP    HIDE    HIDE      <-- sources differ
+sweep_top side=1, head=0.2, delta=0.0501                                                     KEEP    KEEP    KEEP   
+sweep_top side=1, head=0.2, delta=0.06                                                       KEEP    KEEP    KEEP   
+sweep_top side=1, head=0.2, delta=0.08                                                       KEEP    KEEP    KEEP   
+sweep_top side=1, head=0.2, delta=0.1                                                        KEEP    KEEP    KEEP   
+sweep_top side=1, head=0.2, delta=0.15                                                       HIDE    HIDE    HIDE   
+sweep_top side=1, head=0.2, delta=0.2                                                        HIDE    HIDE    HIDE   
+sweep_top side=-1, head=0.2, delta=-0.06                                                     KEEP    HIDE    HIDE      <-- sources differ
+sweep_top side=-1, head=0.2, delta=-0.02                                                     KEEP    HIDE    HIDE      <-- sources differ
+sweep_top side=-1, head=0.2, delta=0.0                                                       KEEP    HIDE    HIDE      <-- sources differ
+sweep_top side=-1, head=0.2, delta=0.02                                                      KEEP    HIDE    HIDE      <-- sources differ
+sweep_top side=-1, head=0.2, delta=0.04                                                      KEEP    HIDE    HIDE      <-- sources differ
+sweep_top side=-1, head=0.2, delta=0.05                                                      KEEP    HIDE    HIDE      <-- sources differ
+sweep_top side=-1, head=0.2, delta=0.0501                                                    KEEP    KEEP    KEEP   
+sweep_top side=-1, head=0.2, delta=0.06                                                      KEEP    KEEP    KEEP   
+sweep_top side=-1, head=0.2, delta=0.08                                                      KEEP    KEEP    KEEP   
+sweep_top side=-1, head=0.2, delta=0.1                                                       KEEP    KEEP    KEEP   
+sweep_top side=-1, head=0.2, delta=0.15                                                      HIDE    HIDE    HIDE   
+sweep_top side=-1, head=0.2, delta=0.2                                                       HIDE    HIDE    HIDE   
+sweep_top_head0.11 head=0.11, delta=0.0                                                      HIDE    HIDE    HIDE   
+sweep_top_head0.11 head=0.11, delta=0.02                                                     KEEP    HIDE    HIDE      <-- sources differ
+sweep_top_head0.11 head=0.11, delta=0.05                                                     KEEP    HIDE    HIDE      <-- sources differ
+sweep_top_head0.11 head=0.11, delta=0.0501                                                   KEEP    KEEP    KEEP   
+sweep_top_head0.11 head=0.11, delta=0.1                                                      KEEP    KEEP    KEEP   
+head_returns_count n=0                                                                       KEEP    KEEP    KEEP   
+head_returns_count n=1                                                                       KEEP    KEEP    KEEP   
+head_returns_count n=2                                                                       KEEP    KEEP    HIDE      <-- sources differ
+head_returns_count n=3                                                                       KEEP    KEEP    HIDE      <-- sources differ
+head_slope slope=-0.02, local_head=0.2, top=0.3                                              KEEP    KEEP    HIDE      <-- sources differ
+head_slope slope=-0.01, local_head=0.2, top=0.3                                              KEEP    KEEP    KEEP   
+head_slope slope=-0.006, local_head=0.2, top=0.3                                             KEEP    KEEP    KEEP   
+head_slope slope=0.0, local_head=0.2, top=0.3                                                KEEP    KEEP    KEEP   
+head_slope slope=0.006, local_head=0.2, top=0.3                                              KEEP    KEEP    KEEP   
+head_slope slope=0.008, local_head=0.2, top=0.3                                              KEEP    KEEP    KEEP   
+head_slope slope=0.01, local_head=0.2, top=0.3                                               KEEP    KEEP    HIDE      <-- sources differ
+head_slope slope=0.012, local_head=0.2, top=0.3                                              KEEP    KEEP    HIDE      <-- sources differ
+head_slope slope=0.02, local_head=0.2, top=0.3                                               KEEP    KEEP    HIDE      <-- sources differ
+head_slope slope=0.04, local_head=0.2, top=0.3                                               KEEP    KEEP    KEEP   
+object_own_unclustered_returns strays_x=40.5, top=0.21, head=0.11                            KEEP    KEEP    HIDE      <-- sources differ
+object_own_unclustered_returns strays_x=41.0, top=0.21, head=0.11                            KEEP    KEEP    HIDE      <-- sources differ
+object_own_unclustered_returns strays_x=41.5, top=0.21, head=0.11                            KEEP    KEEP    HIDE      <-- sources differ
+object_own_unclustered_returns strays_x=43.0, top=0.21, head=0.11                            KEEP    KEEP    HIDE      <-- sources differ
+object_own_unclustered_returns strays_x=44.5, top=0.21, head=0.11                            KEEP    KEEP    HIDE      <-- sources differ
+object_own_unclustered_returns strays_x=46.0, top=0.21, head=0.11                            KEEP    KEEP    KEEP   
+object_own_unclustered_returns_ABOVE_rail_edge strays_x=40.5, top=0.31, head=0.11            KEEP    KEEP    HIDE      <-- sources differ
+object_own_unclustered_returns_ABOVE_rail_edge strays_x=43.0, top=0.31, head=0.11            KEEP    KEEP    HIDE      <-- sources differ
+object_own_unclustered_returns_ABOVE_rail_edge strays_x=46.0, top=0.31, head=0.11            KEEP    KEEP    KEEP   
+object_own_unclustered_returns strays_x=47.0, top=0.21, head=0.11, note=6.7 m after, outside window KEEP    KEEP    KEEP   
+head_before_only                                                                             KEEP    KEEP    HIDE      <-- sources differ
+head_after_only                                                                              KEEP    KEEP    HIDE      <-- sources differ
+local_rise_on_rail_line at_x=36.0, rise_h=0.3, head=0.2, top=0.3                             KEEP    KEEP    HIDE      <-- sources differ
+local_rise_on_rail_line at_x=36.0, rise_h=0.25, head=0.2, top=0.3                            KEEP    KEEP    HIDE      <-- sources differ
+local_rise_on_rail_line at_x=44.0, rise_h=0.3, head=0.2, top=0.3                             KEEP    KEEP    HIDE      <-- sources differ
+local_rise_on_rail_line at_x=46.0, rise_h=0.3, head=0.2, top=0.3                             KEEP    KEEP    KEEP   
+local_rise_on_rail_line at_x=47.0, rise_h=0.3, head=0.2, top=0.3                             KEEP    KEEP    KEEP   
+local_rise_on_rail_line_top0.34 at_x=36.0, rise_h=0.3, head=0.2, top=0.34                    KEEP    KEEP    HIDE      <-- sources differ
+local_rise_on_rail_line_top0.34 at_x=36.0, rise_h=0.34, head=0.2, top=0.34                   KEEP    KEEP    HIDE      <-- sources differ
+high_head_cap head=0.28, delta=0.02, top=0.3                                                 KEEP    HIDE    HIDE      <-- sources differ
+high_head_cap head=0.28, delta=0.05, top=0.33                                                KEEP    HIDE    HIDE      <-- sources differ
+high_head_cap head=0.28, delta=0.1, top=0.349                                                KEEP    KEEP    KEEP   
+high_head_cap head=0.3, delta=0.02, top=0.32                                                 KEEP    KEEP    HIDE      <-- sources differ
+high_head_cap head=0.3, delta=0.05, top=0.349                                                KEEP    KEEP    HIDE      <-- sources differ
+high_head_cap head=0.3, delta=0.1, top=0.349                                                 KEEP    KEEP    HIDE      <-- sources differ
+high_head_cap head=0.32, delta=0.02, top=0.34                                                KEEP    KEEP    HIDE      <-- sources differ
+high_head_cap head=0.32, delta=0.05, top=0.349                                               KEEP    KEEP    HIDE      <-- sources differ
+high_head_cap head=0.32, delta=0.1, top=0.349                                                KEEP    KEEP    HIDE      <-- sources differ
+high_head_cap head=0.34, delta=0.02, top=0.349                                               KEEP    KEEP    HIDE      <-- sources differ
+high_head_cap head=0.34, delta=0.05, top=0.349                                               KEEP    KEEP    HIDE      <-- sources differ
+high_head_cap head=0.34, delta=0.1, top=0.349                                                KEEP    KEEP    HIDE      <-- sources differ
+high_head_cap head=0.36, delta=0.02, top=0.349                                               KEEP    KEEP    KEEP   
+high_head_cap head=0.36, delta=0.05, top=0.349                                               KEEP    KEEP    KEEP   
+high_head_cap head=0.36, delta=0.1, top=0.349                                                KEEP    KEEP    KEEP   
+not_on_rail_centre                                                                           KEEP    KEEP    KEEP   
+wide_cluster                                                                                 KEEP    KEEP    KEEP   
+noise_mc scenario=pessimistic, sigma=0.01, delta=0.06, trials=500                            0/500 HIDE 218/500 HIDE 333/500 HIDE   <-- sources differ
+noise_mc scenario=pessimistic, sigma=0.01, delta=0.08, trials=500                            0/500 HIDE 13/500 HIDE 50/500 HIDE   <-- sources differ
+noise_mc scenario=pessimistic, sigma=0.01, delta=0.1, trials=500                             0/500 HIDE 0/500 HIDE 1/500 HIDE   <-- sources differ
+noise_mc scenario=pessimistic, sigma=0.015, delta=0.06, trials=500                           0/500 HIDE 270/500 HIDE 388/500 HIDE   <-- sources differ
+noise_mc scenario=pessimistic, sigma=0.015, delta=0.08, trials=500                           0/500 HIDE 70/500 HIDE 163/500 HIDE   <-- sources differ
+noise_mc scenario=pessimistic, sigma=0.015, delta=0.1, trials=500                            0/500 HIDE 8/500 HIDE 29/500 HIDE   <-- sources differ
+noise_mc scenario=pessimistic, sigma=0.02, delta=0.06, trials=500                            0/500 HIDE 299/500 HIDE 404/500 HIDE   <-- sources differ
+noise_mc scenario=pessimistic, sigma=0.02, delta=0.08, trials=500                            0/500 HIDE 131/500 HIDE 247/500 HIDE   <-- sources differ
+noise_mc scenario=pessimistic, sigma=0.02, delta=0.1, trials=500                             0/500 HIDE 30/500 HIDE 99/500 HIDE   <-- sources differ
+noise_mc scenario=pessimistic, sigma=0.03, delta=0.06, trials=500                            0/500 HIDE 326/500 HIDE 408/500 HIDE   <-- sources differ
+noise_mc scenario=pessimistic, sigma=0.03, delta=0.08, trials=500                            0/500 HIDE 221/500 HIDE 326/500 HIDE   <-- sources differ
+noise_mc scenario=pessimistic, sigma=0.03, delta=0.1, trials=500                             0/500 HIDE 129/500 HIDE 228/500 HIDE   <-- sources differ
+noise_mc scenario=sparse, sigma=0.01, delta=0.06, trials=500                                 0/500 HIDE 9/500 HIDE 86/500 HIDE   <-- sources differ
+noise_mc scenario=sparse, sigma=0.01, delta=0.08, trials=500                                 0/500 HIDE 0/500 HIDE 0/500 HIDE
+noise_mc scenario=sparse, sigma=0.01, delta=0.1, trials=500                                  0/500 HIDE 0/500 HIDE 0/500 HIDE
+noise_mc scenario=sparse, sigma=0.015, delta=0.06, trials=500                                0/500 HIDE 23/500 HIDE 132/500 HIDE   <-- sources differ
+noise_mc scenario=sparse, sigma=0.015, delta=0.08, trials=500                                0/500 HIDE 0/500 HIDE 10/500 HIDE   <-- sources differ
+noise_mc scenario=sparse, sigma=0.015, delta=0.1, trials=500                                 0/500 HIDE 0/500 HIDE 0/500 HIDE
+noise_mc scenario=sparse, sigma=0.02, delta=0.06, trials=500                                 0/500 HIDE 30/500 HIDE 148/500 HIDE   <-- sources differ
+noise_mc scenario=sparse, sigma=0.02, delta=0.08, trials=500                                 0/500 HIDE 0/500 HIDE 28/500 HIDE   <-- sources differ
+noise_mc scenario=sparse, sigma=0.02, delta=0.1, trials=500                                  0/500 HIDE 0/500 HIDE 2/500 HIDE   <-- sources differ
+noise_mc scenario=sparse, sigma=0.03, delta=0.06, trials=500                                 0/500 HIDE 38/500 HIDE 162/500 HIDE   <-- sources differ
+noise_mc scenario=sparse, sigma=0.03, delta=0.08, trials=500                                 0/500 HIDE 11/500 HIDE 69/500 HIDE   <-- sources differ
+noise_mc scenario=sparse, sigma=0.03, delta=0.1, trials=500                                  0/500 HIDE 1/500 HIDE 23/500 HIDE   <-- sources differ
+noise_mc scenario=dense, sigma=0.01, delta=0.06, trials=500                                  0/500 HIDE 11/500 HIDE 78/500 HIDE   <-- sources differ
+noise_mc scenario=dense, sigma=0.01, delta=0.08, trials=500                                  0/500 HIDE 0/500 HIDE 1/500 HIDE   <-- sources differ
+noise_mc scenario=dense, sigma=0.01, delta=0.1, trials=500                                   0/500 HIDE 0/500 HIDE 0/500 HIDE
+noise_mc scenario=dense, sigma=0.015, delta=0.06, trials=500                                 0/500 HIDE 21/500 HIDE 115/500 HIDE   <-- sources differ
+noise_mc scenario=dense, sigma=0.015, delta=0.08, trials=500                                 0/500 HIDE 0/500 HIDE 12/500 HIDE   <-- sources differ
+noise_mc scenario=dense, sigma=0.015, delta=0.1, trials=500                                  0/500 HIDE 0/500 HIDE 0/500 HIDE
+noise_mc scenario=dense, sigma=0.02, delta=0.06, trials=500                                  0/500 HIDE 29/500 HIDE 137/500 HIDE   <-- sources differ
+noise_mc scenario=dense, sigma=0.02, delta=0.08, trials=500                                  0/500 HIDE 3/500 HIDE 25/500 HIDE   <-- sources differ
+noise_mc scenario=dense, sigma=0.02, delta=0.1, trials=500                                   0/500 HIDE 0/500 HIDE 5/500 HIDE   <-- sources differ
+noise_mc scenario=dense, sigma=0.03, delta=0.06, trials=500                                  0/500 HIDE 51/500 HIDE 139/500 HIDE   <-- sources differ
+noise_mc scenario=dense, sigma=0.03, delta=0.08, trials=500                                  0/500 HIDE 12/500 HIDE 63/500 HIDE   <-- sources differ
+noise_mc scenario=dense, sigma=0.03, delta=0.1, trials=500                                   0/500 HIDE 2/500 HIDE 19/500 HIDE   <-- sources differ

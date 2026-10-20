@@ -1,0 +1,130 @@
+family rail: 128 scenes; columns = matched frames of 12 for ref, cand
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta -0.02 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.02 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.02 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.04 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.04 rest:  5  5   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.05 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.06 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.06 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.08 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.08 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.10 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.20 bed :  7  7   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.20 rest:  7  7   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta -0.02 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.02 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.02 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.04 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.04 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.05 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.06 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.06 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.08 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.08 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.10 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.20 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 0.3 W 0.1 delta +0.20 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta -0.02 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.02 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.02 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.04 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.04 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.05 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.06 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.06 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.08 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.08 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.10 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.20 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.20 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta -0.02 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.02 bed :  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.02 rest:  0  0   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.04 bed :  8  8   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.04 rest:  8  8   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.05 bed :  8  8   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.05 rest:  8  8   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.06 bed :  8  8   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.06 rest:  8  8   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.08 bed :  8  8   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.08 rest:  8  8   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.10 bed :  8  8   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.10 rest:  8  8   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.20 bed :  7  7   frames differing 0
+rail    raise 0.00 d   40 side +1 L 4.0 W 0.3 delta +0.20 rest:  7  7   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta -0.02 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.02 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.02 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.04 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.04 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.05 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.06 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.06 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.08 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.08 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.10 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.20 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.20 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta -0.02 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.02 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.02 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.04 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.04 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.05 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.06 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.06 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.08 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.08 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.10 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.20 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 0.3 W 0.1 delta +0.20 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta -0.02 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.02 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.02 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.04 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.04 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.05 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.06 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.06 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.08 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.08 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.10 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.20 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.20 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta -0.02 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.00 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.02 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.02 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.04 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.04 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.05 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.05 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.06 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.06 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.08 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.08 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.10 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.10 rest:  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.20 bed :  0  0   frames differing 0
+rail    raise 0.18 d   40 side +1 L 4.0 W 0.3 delta +0.20 rest:  0  0   frames differing 0
+scenes with different counts: 0

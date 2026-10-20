@@ -1,0 +1,8 @@
+.............                                                            [100%]
+=============================== warnings summary ===============================
+tests/test_f1_false_alarms.py:114
+  /tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scratchpad/f1a_review/wt_ref/tests/test_f1_false_alarms.py:114: PytestUnknownMarkWarning: Unknown pytest.mark.synthetic - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.synthetic
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+13 passed, 1 warning in 0.70s

@@ -1,0 +1,18 @@
+family beside: 16 scenes; columns = matched frames of 12 for ref, cand
+beside  raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.00 bed :  0  0   frames differing 0
+beside  raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.05 bed :  0  0   frames differing 0
+beside  raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.10 bed :  0  0   frames differing 0
+beside  raise 0.00 d   40 side +1 L 4.0 W 0.1 delta +0.20 bed :  0  0   frames differing 0
+beside  raise 0.00 d   40 side -1 L 4.0 W 0.1 delta +0.00 bed :  0  0   frames differing 0
+beside  raise 0.00 d   40 side -1 L 4.0 W 0.1 delta +0.05 bed :  0  0   frames differing 0
+beside  raise 0.00 d   40 side -1 L 4.0 W 0.1 delta +0.10 bed :  0  0   frames differing 0
+beside  raise 0.00 d   40 side -1 L 4.0 W 0.1 delta +0.20 bed :  0  0   frames differing 0
+beside  raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.00 bed :  0  0   frames differing 0
+beside  raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.05 bed :  0  0   frames differing 0
+beside  raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.10 bed :  0  0   frames differing 0
+beside  raise 0.18 d   40 side +1 L 4.0 W 0.1 delta +0.20 bed :  0  0   frames differing 0
+beside  raise 0.18 d   40 side -1 L 4.0 W 0.1 delta +0.00 bed :  0  0   frames differing 0
+beside  raise 0.18 d   40 side -1 L 4.0 W 0.1 delta +0.05 bed :  0  0   frames differing 0
+beside  raise 0.18 d   40 side -1 L 4.0 W 0.1 delta +0.10 bed :  0  0   frames differing 0
+beside  raise 0.18 d   40 side -1 L 4.0 W 0.1 delta +0.20 bed :  0  0   frames differing 0
+scenes with different counts: 0

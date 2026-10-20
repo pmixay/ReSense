@@ -1,0 +1,21 @@
+new_data_0: rows 1409 obstacle rows 12
+new_data_1: rows 1409 obstacle rows 12
+new_data_2: rows 1409 obstacle rows 2
+new_data_3: rows 1409 obstacle rows 2
+new_data_4: rows 1409 obstacle rows 17
+new_data_5: rows 1409 obstacle rows 32
+new_data_6: rows 1409 obstacle rows 27
+new_data_7: rows 1408 obstacle rows 7
+ride obstacle (STOP) rows over 8 pieces: 111 (reference gate JSON says alarm_frames 111)
+keys of a row: ['clear_distance', 'detections', 'ego_speed', 'ego_speed_confidence', 'ego_speed_estimate', 'ego_speed_source', 'frame', 'frame_id', 'health', 'mount', 'n_accumulated', 'n_candidates', 'n_corridor', 'n_points', 'nearest_distance', 'obstacle', 'stamp', 'timing_ms', 'track', 'warning', 'warnings']
+new_data_1 row 1259: obstacle=True detections [42.1]  author reference distance 42.1 -> MATCH
+new_data_1 row 1260: obstacle=True detections [38.9]  author reference distance 38.9 -> MATCH
+new_data_1 row 1261: obstacle=True detections [36.9]  author reference distance 36.9 -> MATCH
+new_data_1 row 1265: obstacle=True detections [35.8]  author reference distance 35.8 -> MATCH
+new_data_1 row 1266: obstacle=True detections [24.3]  author reference distance 24.3 -> MATCH
+new_data_1 row 1267: obstacle=True detections [23.6]  author reference distance 23.6 -> MATCH
+new_data_4 row 80: obstacle=True detections [21.8]  author reference distance 21.8 -> MATCH
+new_data_7 row 623: obstacle=True detections [47.6]  author reference distance 47.6 -> MATCH
+new_data_7 row 624: obstacle=True detections [45.9]  author reference distance 45.9 -> MATCH
+9 of 9 removed frames are obstacle rows at the author's reference distance in P4's B1-tree gate
+neighbouring rows not in the author's list (obstacle flag): {'new_data_1:1262': True, 'new_data_1:1263': True, 'new_data_1:1264': True, 'new_data_4:79': False, 'new_data_4:81': False, 'new_data_7:622': False, 'new_data_7:625': False}
