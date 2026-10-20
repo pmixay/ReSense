@@ -209,6 +209,11 @@ not byte-identical to the committed hash, which the range-attribution README say
 object's per-frame position X and Y equal the committed 1.1.0 attribution rows in all 259 frames, and K2 off reproduces
 the registered 90 / 259.
 
+**After the measurement (not registered):** [`PROPOSAL_r3.md`](PROPOSAL_r3.md) scores the Falcon person by position
+(v5c-15 first person STOP 124.02 m, 1,366 person STOP frames vs K2 off's 1,360; 7 of the 9 "new near STOP frames" are
+the person at 6.4–6.7 m, 4410–4411 stay unattributed) and traces X3's person-crossing losses to a 5–9 cm axis
+difference at 55.5 m on a person entering at the gauge edge.
+
 ## 7. T3: why K2 loses the tunnels cube (marker 19), measured on the cloud (20.10, data run)
 
 **K2 does not bend away from the cube; the cube is an edge object, and it is K2-off's axis that is displaced, towards
