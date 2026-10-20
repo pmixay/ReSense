@@ -1,0 +1,12 @@
+{
+  "original_measured_tools_unchanged": true,
+  "restore_command": "tar -xJf tool-snapshots.tar.xz",
+  "archive_sha256": "fc5e800353cb7ae8b2281bc0d81f75f80c14a9cbd81176d9e5b06e425170b97a",
+  "archive_bytes": 10844,
+  "members": {
+    "review_reference.py": {
+      "bytes": 33071,
+      "sha256": "b904555d5366ad30769d3d03fb3f578c77a7cac90075d6d62cb5bb0e729de55d"
+    }
+  }
+}

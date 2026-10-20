@@ -1,0 +1,6 @@
+{
+  "returncode": 0,
+  "stdout": "ACCEPTANCE.json: OK\nPROTOCOL.md: OK\nREADME.md: OK\narchive-manifest.json: OK\naudit-attempt1.py: OK\naudit.py: OK\ncore-rule-checks.json: OK\neffective-config.json: OK\nfreeze-before-resume.json: OK\nfreeze-before.json: OK\nieee-exact-check.json: OK\ninspect_captures.py: OK\ninspection.json: OK\nmanifest-after-replay.json: OK\nmanifest-before-resume.json: OK\nmanifest-before.json: OK\nmanifest-final.json: OK\nmiss-snapshots.pkl.gz: OK\npackage.log: OK\npackage_audit.py: OK\nraw-captures.tar.gz: OK\nraw-examples-verified.json: OK\nraw-examples.json: OK\nraw-examples.png: OK\nrender_examples.py: OK\nreport-initial.json: OK\nreport.json: OK\nreview_selected.py: OK\nruntime-libraries.json: OK\nseal_audit.py: OK\nsource-tools-input-metadata.tar.gz: OK\nverify_audit.py: OK\nartifact-manifest.json: OK\n",
+  "stderr": "",
+  "sha256sums_sha256": "d8534f8b052dfe51eaf8b5a2f0aceda305533ae196fb77d265cd50d35b4fb5c4"
+}

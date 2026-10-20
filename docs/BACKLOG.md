@@ -30,6 +30,14 @@ H1 is still **OPEN**
 ([publication](evidence/h1_partial_integration_2026-10-20/README.md)). The former integration branch
 `claude/optimistic-mccarthy-z5nmwd` has already landed through PR #42.
 
+**H1 independent closure check, evening 20.10: BLOCKED.** All 63 misses are now traced and independently
+reviewed; actual wrong-selected-pair and no-rail tests are complete, with failures rather than acceptance.
+Fresh replay on the F1a-completion source `520e7dc` preserves all 63 misses and the directed wrong-pair
+counterexamples. An independently validated far-axis reference is still missing. See the
+[current-source check](evidence/h1_current_source_2026-10-20/README.md),
+[independent review](evidence/h1_final_review_2026-10-20/README.md) and
+[publication summary](evidence/h1_publication_2026-10-20/README.md).
+
 **PR #43 merged 20.10** ([PR #43](https://github.com/pmixay/ReSense/pull/43), squash `8c2bf51`): main now also carries
 the off-by-default K2 v5c switch (`track.axis_joint_reach_dual`, 0 = off; code in `resense/track.py`,
 `resense/detector.py`, `resense/config.py` and both YAMLs), P4's reviews, the N5 supplement and the data handoff.
@@ -55,7 +63,7 @@ Pinned reports: [shipping review][p4-shipping], [integration review][p4-integrat
 | Falcon clear-distance model (`small_target_limit`, falcon_prime) | **on**, only in the node's non-default `clear_range_policy` (conservative / small_candidate) | reports up to 48.2 m from the measured Falcon raster (density model, as for Pandar) instead of 0 | P4 review 20.10: 48.2 m reproduced, no decision changes; it lets the detector's clear distance through where there was 0, and that value is wrong in 38 frames at the recording's end ([record][p4-h-falcon]) |
 | Falcon far range (`farrange.with_falcon_profile`) | off | person STOP 146 m (was 127) but rule 5.1(b) fails (9 vs 8 episodes), no long-range gain on injected targets | P3: improve (route-map variant, second boundary) |
 | Dust guard (`dust.enabled`) | off | fails its own acceptance; 13 organizer dust frames checked on `4cf8e27`, no dust-attributed STOP/CAUTION | P1/P4: repeat on H1 main / final reseal source; old check is not a dense-dust robustness result |
-| H1 positive collision core (`cluster.column_core_margin` 0.02) | **on**, partial improvement | A-axis 82 →114/177; merged gate/X3 pass; inherited High remains OPEN (decision 45) | P3/P4: far-axis reference, 63 misses, independent review; withdrawn `column_free_max_top=0` stays off |
+| H1 positive collision core (`cluster.column_core_margin` 0.02) | **on**, partial improvement; independent acceptance **BLOCKED** | A-axis 82 →114/177; 63 misses remain on `520e7dc`. Actual wrong-pair scenes produce false core/STOP and inside misses | Independent review completed; P3/P4 must repair the measured failures and obtain a validated far-axis reference ([current check](evidence/h1_current_source_2026-10-20/README.md)); withdrawn `column_free_max_top=0` stays off |
 
 ### P1 · captain
 
@@ -102,7 +110,7 @@ Pinned reports: [shipping review][p4-shipping], [integration review][p4-integrat
 | done (author acceptance) | Complete R3 B2/B3 on current main | current-only voxel/shape support in accumulated clusters; resolved moving cables are not demoted by static-world ego-veto; strict gate, paired X3/Falcon/E6,576 analytic rows and448 affected tests verified ([record](evidence/r3_completion_2026-10-20/README.md)) |
 | done | Investigate Set F cable sustained median 34.2 →17.8 m and repair aggregate-only reporting | fresh 30-sequence paired run, 3,060 rows/side: 0 lost hits, 9 added cable hits, no false-detection increase; coverage 2/6 →4/6, original-success cohort unchanged ([record](evidence/r3_sustained_2026-10-20/README.md)) |
 | P1 | Q&A preparation and mock jury: the algorithm, curves (what K2 ships and costs), why not 300 m, dust, the second lidar, false alarms; technical check of `ALGORITHM.md` and the slides | — |
-| P1 | H1 (tall narrow objects, the open High finding): retain the implemented partial improvement; obtain a validated far-axis reference, resolve remaining misses and complete independent review | user-authorized main integration, **overall OPEN**; A-axis 82 ->114/177, 63 misses remain ([publication](evidence/h1_partial_integration_2026-10-20/README.md)) |
+| P1 | H1: obtain a validated far-axis reference and repair the attributed misses and actual wrong-pair failures | **OPEN/BLOCKED**. Independent audit/review complete; all 63 misses and wrong-pair failures reproduced on F1a-completion `520e7dc`, with 104 H1 tests passing ([current check](evidence/h1_current_source_2026-10-20/README.md)) |
 | P2 | F1a B1: author repair and its completion both implemented on user request; the independent final-bundle review and the captain's decision on the (now removed) ride cost remain ([completion](evidence/f1a_completion_2026-10-20/README.md)); Falcon far range (route-map variant, second boundary); M1 moving-object probes (the organizers: objects may move); C1, R1/R2, S4, N6 | F1a worked on 20.10; other items after 23.10 |
 
 ### P4 · data / evaluation
@@ -113,7 +121,7 @@ Pinned reports: [shipping review][p4-shipping], [integration review][p4-integrat
 | P0 (T4) | Measure F1a capped-top exposure and hand findings to P3 | registered in [data handoff][p4-handoff]; remains separate from completed L16 T1 |
 | **P0 (K2/K1)** | **Keep both off.** K2 v5c revision 1 is in main, off (PR #43 merged); registered gate/X3/Falcon/standing-person/marked-bag rows are not run. Resolve both the corrected Falcon loss and the in-gauge tunnels cube loss, set O `small_center`, K1 false STOPs and the review items. P3 or a fresh agent reviews P4's candidate; captain decides switch-on | [existing package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md), [v5c][p4-k2], T2/T3 in [handoff][p4-handoff] |
 | P0 | Complete acceptance of what ships on, including **H1**: resolve reported L16/S3, R3 and F1a findings, verify fixes on recordings and review combined source | pre-H1 synthetic shipping review in main (PR #43); its A1/B1/B2 re-run on H1 main `8c2bf51` gave identical results before the A1 repair; **not clean acceptance**, reseal still blocked ([review][p4-shipping]) |
-| P0 | Finish independent integration verification from raw outputs of the exact combined source | historical review done where committed files allow; some old per-frame outputs missing. New H1 raw archives exist, independent review pending ([review][p4-integration], [current record](evidence/h1_partial_integration_2026-10-20/README.md)) |
+| P0 | Finish independent integration verification from raw outputs of the exact combined source | H1-specific review **complete, BLOCKED**: 340 A outputs and 518 directed rows checked independently, then exactly reproduced on `520e7dc`; other bundle work remains separate ([review](evidence/h1_final_review_2026-10-20/README.md), [current check](evidence/h1_current_source_2026-10-20/README.md), [historical integration][p4-integration]) |
 | P1 | On the final seal: J1 (retarget [`RELEASE_DAY.md`](evidence/rejudge_2026-10-16/RELEASE_DAY.md) from 1.1.0) and the G3 held-out run by a fresh agent | needs the reseal |
 | P1 | N5: review the merged marker supplement, then re-score final 1.2.0 | PR #43 adds 34 missing-cube rows and flags 12 unmatched rows; merged, final H1/reseal scoring pending ([supplement][p4-n5]) |
 | P1 | Mock jury at both rehearsals | — |
@@ -157,7 +165,7 @@ point estimates and the former dates of every row are in the archive.
 | K1 / K2 | gauge on curves, standing train | **both off** (`walls_smoothing_distance=0`, `axis_joint_fit=false`), decision 44; v5c merged off by default, real-data acceptance pending | P0 / P2 |
 | N3 | dust | guard **off** (fails acceptance); organizer dust checked on `4cf8e27`, H1/final-source replay pending | P0 |
 | N7 | Falcon to 300 m | `farrange` **off**: person STOP 146 m (was 127 m), no gain on injected targets, rule 5.1(b) fails | P2 |
-| H1 | tall narrow objects (the open High finding, 8.1) | **partial positive-core improvement implemented and accepted for main; overall OPEN**. A-axis 82 ->114/177, physical controls and merged gate/X3 pass; independent far-axis reference and final review pending ([record](evidence/h1_partial_integration_2026-10-20/README.md)) | P1 |
+| H1 | tall narrow objects (the open High finding, 8.1) | **OPEN/BLOCKED after independent review**. A-axis 114/177, all 63 misses attributed; actual wrong-pair false core/STOP and inside misses confirmed. Fresh F1a-source check: all 858 directed/A outputs identical. Far-axis reference and repairs remain ([record](evidence/h1_publication_2026-10-20/README.md)) | P1 |
 | N5 | labels of the new synthetic bags | initial labels done; organizer markers independently checked; merged PR #43 supplement adds cube/flags 12 rows; final scoring pending | P1 |
 | J1 | re-judge the final seal | retarget [`RELEASE_DAY.md`](evidence/rejudge_2026-10-16/RELEASE_DAY.md) from 1.1.0; needs the reseal | P1 |
 | G3 | held-out run by a fresh agent | spec registered, no run; on the final 1.2.0 seal | P1 |
@@ -259,12 +267,40 @@ byte for byte against the old archive; marker boxes give obstacle support, not s
 ([withdrawal](evidence/integration_2026-10-16/h4_fixes/columns/WITHDRAWAL_RESULTS.md)). A new positive current-frame
 collision core with fresh rail anchors is implemented (`column_core_margin=0.02`); it releases only column suppression
 after ordinary uninterrupted confirmation. A-axis improves **82 ->114/177**, leaving **63 visible unmatched frames**.
-All 32 stationary physical scenes match after confirmation; 280 outside controls have no false STOP. Nominal moving
+All 32 stationary physical scenes match after confirmation; 280 historical outside controls have no false STOP. Nominal moving
 physical scenes have continuous STOP from **130.8 /135.2 m**, a simulation result only. Merged source `0f02b28` passes
 the full gate; fresh combined-tree X3 passes 40 cases /29,765 rows. The full suite retains one inherited proxy-hook
 failure (2,276 passed +17 subtests). The user explicitly authorized publishing this partial improvement in main without
 claiming closure. Still needed: independently validated far rail axis/trajectory, remaining miss resolution,
-wrong-pair/no-rail limits and independent final review/reseal.
+repair of the observed failures and independent final acceptance/reseal.
+
+**Evening 20.10 independent review: completed, acceptance BLOCKED.** Fresh A replay on `f56ad5e`
+checks all 340 raw results with exact plain/traced equality and independently matches all 177 visible rows.
+The 63 misses have actual executed primary mechanisms: **43 column hold, 9 axis limit, 7 zone-vote delay,
+2 merged wall-segment filters, 1 height-reference limit, 1 tracker confirmation**. All labels are checked
+against full snapshots; primary labels do not claim a unique counterfactual cause
+([miss audit](evidence/h1_miss_audit_2026-10-20/README.md)).
+
+The new physical matrix actually selects distractor rails. Four outside-target sequences produce
+**56 false-core rows /40 false target-STOP rows**; four inside-target sequences miss all 14 scans each.
+For the ±1.50 m targets the entire body is outside the true host envelope by at least **0.22 m**.
+Rail-free cold starts produce no fresh core in 42 scans, but a visible target's old STOP survives rail loss
+for four scans through the unchanged zone vote. These are bounded synthetic results, not a prevalence
+estimate or universal guarantee ([rail limits](evidence/h1_rail_limits_2026-10-20/README.md)).
+
+A fresh independent reviewer re-derives all 63 labels, 837 rail-estimator calls and 518 directed outputs;
+the far-reference audit checks 11 raw databases and all 36 failed direct comparisons. The supplied
+Falcon and organizer-folder links identify the already investigated data, not an external rail/pose
+reference ([reference audit](evidence/h1_independent_2026-10-20/README.md),
+[final review](evidence/h1_final_review_2026-10-20/README.md)).
+
+After concurrent F1a completion, fresh plain replay on pinned **`520e7dc`** reproduces **all 858 outputs**
+(A340 + directed518) exactly outside timing, including all 63 miss IDs and wrong-pair failures;
+104 H1 tests and the current 40-file F1a integrity seal pass
+([delta acceptance](evidence/h1_current_source_2026-10-20/README.md)). No H1 repair or safety reseal is
+claimed. Required next input: independently checked left/right rail-head geometry and host-path identity
+at 100–150 m in identified A/C frames, with uncertainty, or validated synchronized relative SE(3) and
+extrinsics/error budget. The **63 misses remain unresolved**.
 [Publication](evidence/h1_partial_integration_2026-10-20/README.md),
 [repair](evidence/h1_reference_2026-10-19/README.md),
 [rejected reference attempts](evidence/h1_trajectory_2026-10-19/README.md).

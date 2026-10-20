@@ -1,0 +1,76 @@
+{
+  "schema": "resense-h1-publication-checks-v1",
+  "portable": {
+    "status": "PASS",
+    "replay_repeated": false,
+    "git_operations": false,
+    "visible_rows_checked": 177,
+    "full_precision_hits": 114,
+    "visible_misses": 63,
+    "verified_primary_counts": {
+      "axis_limit": 9,
+      "zone_vote_delay": 7,
+      "tracker_unconfirmed": 1,
+      "merged_wall_segment_filter": 2,
+      "height_reference_limit": 1,
+      "column_hold": 43
+    },
+    "miss_branch_records": 63,
+    "core_miss_calls_checked": 61,
+    "branch_events": 3285,
+    "encoded_arrays_checked": 29824,
+    "largest_candidate_or_target_point_array": 9810,
+    "whole_raw_clouds_present": false,
+    "full_snapshot_hash_records": 340,
+    "historical_miss_set_equal": true,
+    "controls": {
+      "lost_hit_and_payload": true,
+      "deleted_actual_branch_detected": true,
+      "changed_core_mask_detected": true,
+      "planted_whole_cloud_shape_detected": true
+    },
+    "limitation": "Portable records verify target matching and miss attribution; full-scene exact replay equality is a production receipt plus VM-only capture hashes."
+  },
+  "vm_projection": {
+    "status": "PASS_EXACT_PROJECTION_FROM_EXISTING_VM_CAPTURES",
+    "full_snapshot_hashes_verified": 340,
+    "target_support_and_outputs_exact": 177,
+    "all_captured_miss_events_states_exact": 63,
+    "replay_repeated": false
+  },
+  "privacy": {
+    "files": [
+      "README.md",
+      "PUBLICATION.md",
+      "PROTOCOL.md",
+      "ACCEPTANCE.json",
+      "report.json",
+      "ieee-exact-check.json",
+      "core-rule-checks.json",
+      "effective-config.json",
+      "publication-build-checks.json",
+      "storage-map.json",
+      "historical-receipt-verification.json",
+      "SHA256SUMS",
+      "artifact-manifest.json",
+      "archive-manifest.json",
+      "checksum-verification.json",
+      "manifest-before.json",
+      "manifest-after-replay.json",
+      "manifest-final.json",
+      "runtime-libraries.json",
+      "freeze-before.json",
+      "audit.py",
+      "verify_audit.py",
+      "build_publication.py",
+      "verify_publication.py",
+      "finalize_publication.py"
+    ],
+    "compressed_evidence_decompressed_scanned": true,
+    "planted_private_connection_detected": true
+  },
+  "original_production_checksums_resolved": 33,
+  "replay_repeated": false,
+  "git_operations": false,
+  "publication_has_full_raw_capture": false
+}
