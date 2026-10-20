@@ -29,7 +29,8 @@ for b, c in zip(base, cand):
 out = {"base_stop": len(stop_b), "cand_stop": len(stop_c), "false_attributed_base": len(FALSE & stop_b),
        "false_attributed_remaining": sorted(FALSE & stop_c), "person_ref": len(R), "person_kept": len(kept),
        "person_lost": lost[:50], "n_person_lost": len(lost),
-       "n_person_no_stop": len(R - stop_c),  # decision level: a person STOP frame of base with no STOP at all "new_stop_frames": new[:50], "n_new_stop": len(new),
+       "n_person_no_stop": len(R - stop_c),  # decision level: a person STOP frame of base with no STOP at all
+       "new_stop_frames": new[:50], "n_new_stop": len(new),  # 20.10 (data run): these keys were inside the comment above
        "first_person_stop_base": first(base, R), "first_person_stop_cand": first(cand, set(kept)),
        "decision_transitions": trans,
        "caution_base": sum(r["decision"] == "CAUTION" for r in base),
