@@ -34,6 +34,8 @@ gitbook
 !docs/evidence/n2_falcon_2026-10-18/retain_playback_subset.py
 !docs/evidence/n2_falcon_2026-10-18/proxy_hook/proxy_input_hook.py
 !docs/evidence/n2_falcon_2026-10-18/proxy_hook/sitecustomize.py
+# The A1 open-air orientation test builds its scene with the shipping review's dependency-free ray caster.
+!docs/evidence/p4_review_shipping_2026-10-20/scripts/scene.py
 web
 webapp
 # The shared-policy tests import only this dependency-free consumer, not the web application.

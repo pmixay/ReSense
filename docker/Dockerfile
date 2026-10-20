@@ -90,6 +90,8 @@ COPY labels/cloud_with_fake_obj.json ./labels/cloud_with_fake_obj.json
 # The N2 Falcon tests run the playback-subset script and the proxy input hook (with its sitecustomize).
 COPY docs/evidence/n2_falcon_2026-10-18/retain_playback_subset.py ./docs/evidence/n2_falcon_2026-10-18/retain_playback_subset.py
 COPY docs/evidence/n2_falcon_2026-10-18/proxy_hook/proxy_input_hook.py docs/evidence/n2_falcon_2026-10-18/proxy_hook/sitecustomize.py ./docs/evidence/n2_falcon_2026-10-18/proxy_hook/
+# The A1 open-air orientation test builds its scene with the shipping review's ray caster.
+COPY docs/evidence/p4_review_shipping_2026-10-20/scripts/scene.py ./docs/evidence/p4_review_shipping_2026-10-20/scripts/scene.py
 # END pure test fixtures
 RUN if [ "$WITH_TOOLS" = "1" ]; then \
         pip3 install "rosbags==0.11.5" "zstandard==0.25.0" "matplotlib==3.10.7" "open3d==0.19.0" "pytest==8.4.2" "websockets==14.2"; \
