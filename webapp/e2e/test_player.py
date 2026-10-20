@@ -30,14 +30,6 @@ def upload_jsonl(api, name: str, body: bytes) -> str:
     return api.processed(api.upload_jsonl(name, body)["id"])["run_id"]
 
 
-@pytest.fixture(autouse=True)
-def _patient_expect():
-    """The 3D view renders with software WebGL here: a busy machine stalls the page for seconds."""
-    expect.set_options(timeout=15_000)
-    yield
-    expect.set_options(timeout=5_000)
-
-
 # ------------------------------------------------------------------------------ page helpers
 
 

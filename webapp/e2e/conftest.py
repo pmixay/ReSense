@@ -44,6 +44,11 @@ PYTHON = os.environ.get("RESENSE_PYTHON", sys.executable)
 CHROMIUM_CANDIDATES = ("/opt/pw-browsers/chromium-1194/chrome-linux/chrome", "/opt/pw-browsers/chromium")
 CHROMIUM_ARGS = ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"]
 ACTIVE = ("queued", "running")
+# The 3D views and the section travel render with software WebGL (SwiftShader): on a 2-vCPU runner the
+# page's main thread stalls for seconds, so the Playwright defaults (5 s assertions, 30 s actions) are
+# too tight for the whole suite, not only for the Player. Overridable for a faster or slower machine.
+EXPECT_MS = int(os.environ.get("WEBAPP_E2E_EXPECT_MS", "20000"))
+ACTION_MS = int(os.environ.get("WEBAPP_E2E_TIMEOUT_MS", "60000"))
 # what a build depends on: a dist/ older than any of these is stale
 BUILD_INPUTS = ("src", "public", "index.html", "vite.config.ts", "package.json", "package-lock.json", "tsconfig.json")
 
@@ -275,10 +280,28 @@ class App:
         return self.page.url[len(self.base):]
 
 
+def pytest_configure(config):
+    config.addinivalue_line("markers", "full_motion: run with the section travel's full animation (the default is "
+                                       "prefers-reduced-motion: reduce); only the tests of the travel itself need it")
+
+
+@pytest.fixture(autouse=True)
+def _patient_expect():
+    """Every assertion gets EXPECT_MS (see the constant); the global default is restored afterwards."""
+    expect = pytest.importorskip("playwright.sync_api").expect
+    expect.set_options(timeout=EXPECT_MS)
+    yield
+    expect.set_options(timeout=5_000)
+
+
 @pytest.fixture
-def app(browser, backend) -> App:
-    ctx = browser.new_context(viewport={"width": 1600, "height": 1000}, base_url=backend.url)
-    ctx.set_default_timeout(30_000)
+def app(request, browser, backend) -> App:
+    # prefers-reduced-motion: reduce is the app's own accessible path: the section change is a short fade
+    # instead of the door travel's snapshots and compositor animations, which is what stalls a slow runner.
+    # The tests that exercise the travel itself opt back in with @pytest.mark.full_motion.
+    motion = "no-preference" if request.node.get_closest_marker("full_motion") else "reduce"
+    ctx = browser.new_context(viewport={"width": 1600, "height": 1000}, base_url=backend.url, reduced_motion=motion)
+    ctx.set_default_timeout(ACTION_MS)
     page = ctx.new_page()
     errors: list[str] = []
     page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
