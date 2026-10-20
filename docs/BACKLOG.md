@@ -33,7 +33,7 @@ Pinned reports: [shipping review][p4-shipping], [integration review][p4-integrat
 
 | switch | state in current 1.2.0 source | why | follow-up owner |
 |---|---|---|---|
-| F1a local rail reference (`lowobj.local_rail_margin` 0.01, cross-rail rule off) | **on** | ride low-kind false STOP episodes 4/6 → 1/1, gate exit 0 (F1 lane) | P3: accepted long-object risk plus **new capped-top miss** reported in P4 shipping B1; P4 measures exposure (T4) |
+| F1a local rail reference (`lowobj.local_rail_margin` 0.01, cross-rail rule off) | **on** | ride low-kind false STOP episodes 4/6 → 1/1, gate exit 0 (F1 lane) | P3 author repair of both B1 mechanisms measured 20.10; independent review and decision on ride low-kind 1 →3 pending ([record](evidence/f1a_b1_2026-10-20/README.md)); P4 T4 exposure |
 | H′ mount cross-check (`cluster.mount_cross_tol` 0.5) | **on** | removes the 8 false STOP frames on the Falcon tunnel ceiling; 0 gate rows change | — |
 | S2 settle (`tracking.settle_min_hits`) | off | can delay an object entering the gauge | — |
 | R3 cable confirmation (P3) | **on** | hanging cable improves; Set F median 34.2 →17.8 m explained by successful coverage 2/6 →4/6, no lost hits ([follow-up](evidence/r3_sustained_2026-10-20/README.md)) | P3: P4 shipping B2 fast confirmation / ego-veto interaction and B3 accumulation limit remain open |
@@ -86,7 +86,7 @@ Pinned reports: [shipping review][p4-shipping], [integration review][p4-integrat
 | done | Investigate Set F cable sustained median 34.2 →17.8 m and repair aggregate-only reporting | fresh 30-sequence paired run, 3,060 rows/side: 0 lost hits, 9 added cable hits, no false-detection increase; coverage 2/6 →4/6, original-success cohort unchanged ([record](evidence/r3_sustained_2026-10-20/README.md)) |
 | P1 | Q&A preparation and mock jury: the algorithm, curves (what K2 ships and costs), why not 300 m, dust, the second lidar, false alarms; technical check of `ALGORITHM.md` and the slides | — |
 | P1 | H1 (tall narrow objects, the open High finding): retain the implemented partial improvement; obtain a validated far-axis reference, resolve remaining misses and complete independent review | user-authorized main integration, **overall OPEN**; A-axis 82 ->114/177, 63 misses remain ([publication](evidence/h1_partial_integration_2026-10-20/README.md)) |
-| P2 | F1a without the B1 risk (a long low object along one rail raises its own reference); Falcon far range (route-map variant, second boundary); M1 moving-object probes (the organizers: objects may move); C1, R1/R2, S4, N6 | after 23.10 |
+| P2 | F1a B1: author repair implemented on user request, final review/decision on the measured ride cost pending ([record](evidence/f1a_b1_2026-10-20/README.md)); Falcon far range (route-map variant, second boundary); M1 moving-object probes (the organizers: objects may move); C1, R1/R2, S4, N6 | F1a worked on 20.10; other items after 23.10 |
 
 ### P4 · data / evaluation
 
@@ -135,7 +135,7 @@ point estimates and the former dates of every row are in the archive.
 | reseal | reseal 1.2.0 after the last code change | `detector_freeze.py verify` FAILS now; P1 + P4, needs P4's review and the final gate/X3 | P0 |
 | L16/S3 | ring-free orientation + bounded orientation search | **on**; P4 synthetic review reports open-air startup FAULT (PR #43 A1); real exposure/fix/current-source review pending | P0 |
 | R3 | thin cables (hanging 5 cm: first STOP 30.1 → 35.1 m) | **on**; Set F aggregate concern resolved: coverage 2/6 →4/6, fixed cohort 34.2 →34.2 m, 0 lost hits. P4 B2/B3 review findings remain open | P0 |
-| F1 | near-field low-object false STOPs | F1a and H′ **on**, S2 settle off; current gate/Falcon done. New P4 capped-top miss (B1) awaits verification/fix; old accepted long-object risk remains | P0 / P2 |
+| F1 | near-field low-object false STOPs | F1a and H′ **on**, S2 settle off. Author repair of both B1 mechanisms measured in working tree; seal gate PASS, main ride gate FAIL (18 →23 events, 24 →26 episodes); review/ride-cost decision pending ([record](evidence/f1a_b1_2026-10-20/README.md)) | P0 / P2 |
 | K1 / K2 | gauge on curves, standing train | **both off** (`walls_smoothing_distance=0`, `axis_joint_fit=false`), decision 44; v5c proposed only in PR #43, real-data acceptance pending | P0 / P2 |
 | N3 | dust | guard **off** (fails acceptance); organizer dust checked on `4cf8e27`, H1/final-source replay pending | P0 |
 | N7 | Falcon to 300 m | `farrange` **off**: person STOP 146 m (was 127 m), no gain on injected targets, rule 5.1(b) fails | P2 |
@@ -287,8 +287,18 @@ accepted; P3 improves it), H′ mount cross-check **on** (8 false STOP frames on
 ([handoff](evidence/f1_false_alarms_2026-10-19/HANDOFF.md)). Gate and whole Falcon are complete on `4cf8e27` and the
 combined H1 source. **New P4 shipping B1** is distinct from the previously accepted long-object B1: a low cluster's top
 is capped at the model envelope floor, so a raised local rail reference can weaken a genuine low obstacle (8 →0 STOP
-frames in P4's synthetic case). Current main still uses that capped top. P3 verifies/fixes; P4 T4 measures real exposure;
+frames in P4's synthetic case). Committed main still uses that capped top. P3 verifies/fixes; P4 T4 measures real exposure;
 ride/Falcon non-regression and independent review follow ([review][p4-shipping], [handoff][p4-handoff]).
+
+**20.10 author repair (working tree, user-requested):** both B1 mechanisms are addressed with independent low-footprint-free
+rail support and the observed full-footprint top. Fragment controls retain ordinary confirmation (all 12 two-rail tracks);
+the P4 raised-rail box regains its 8 STOP rows. Full gate against the seal baseline **PASS without exceptions**; Set F
+matches starting main, Falcon's 4,443 detection/warning rows match. There is a measured ride cost against starting main:
+chunked gate events **18 →23**, STOP episodes **24 →26**; the continuous replay adds 11 STOP rows (**109 →120**),
+with low-kind episodes **1 →3**. This is **not** clean non-regression against main or final P4 acceptance; the ride
+trade-off needs disposition before integration/reseal. [Repair, source receipts and raw checks](evidence/f1a_b1_2026-10-20/README.md).
+Author X3 also passes all 40 cases /29,765 rows with identical STOP row sets; this dirty-source byte-identified run
+does not replace final committed-source acceptance or independent P4 review.
 
 #### F2 · Far-onset false STOPs at ≥ 100 m (half of all episodes)
 18 of 36 episodes; every earlier filter cost range. Needs the X2 audit and the final seal. P3, P2.

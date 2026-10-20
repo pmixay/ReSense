@@ -1,0 +1,106 @@
+{
+  "archive_sha256": "4642498343846a43f34af3df5daba8da198f1916548dbbd79e470571c13c540c",
+  "archive_bytes": 32625883,
+  "members": 614,
+  "mutated_member_positive_control": true,
+  "receipts": {
+    "gate-baseline": {
+      "returncode": 0,
+      "source_unchanged": true,
+      "receipt_sha256": "d7ae436e8b3f92a8f1f90a2acb8b2521e7f0f25bce38592584c88a33ea0fe36b"
+    },
+    "gate-final": {
+      "returncode": 0,
+      "source_unchanged": true,
+      "receipt_sha256": "597a0cb2cef560925946eb31cc2028f031435e381ad4a7a8a8e36b9554f41f52"
+    },
+    "ride-final": {
+      "returncode": 0,
+      "source_unchanged": true,
+      "receipt_sha256": "7cb6945b3767be764afe2ebdd4c67bb3c7c00b4cbaed48858ebdab37bf974104"
+    },
+    "physical-baseline-v2": {
+      "returncode": 0,
+      "source_unchanged": true,
+      "receipt_sha256": "55c9744e3c68a82e3334959564c8aa5f32801b08b14c5ce1b50b74bb2458c954"
+    },
+    "physical-final-v2": {
+      "returncode": 0,
+      "source_unchanged": true,
+      "receipt_sha256": "5d51f0145fd93aac5022325dd55573538f1bc4e710dee7ca053724d179203725"
+    },
+    "falcon-baseline": {
+      "returncode": 0,
+      "source_unchanged": true,
+      "receipt_sha256": "d45011ab169204b1057546dbe55199133909202f4532839bd5f058b6b4942a42"
+    },
+    "falcon-final": {
+      "returncode": 0,
+      "source_unchanged": true,
+      "receipt_sha256": "cb28e85851e7c06e891e7ac696680332518163a65c2cc0e6159e8b27db0171dd"
+    },
+    "tests-final": {
+      "returncode": 0,
+      "source_unchanged": true,
+      "receipt_sha256": "3eedc29c7eea5deb530a86f8797743df1706ae9c8d2bb6e351c95f735d7eaeb6"
+    },
+    "full-tests": {
+      "returncode": 1,
+      "source_unchanged": true,
+      "receipt_sha256": "05857746bf971b7bf68d6a7fd54a501511d0cee6a1b8afa99706eb8f081aa02f"
+    },
+    "x3-final": {
+      "returncode": 0,
+      "source_unchanged": true,
+      "receipt_sha256": "6a1f761eea1d26a21f086904ab843802a2bd98f24e1dee7cb229f46f378c4c1d"
+    }
+  },
+  "tests": {
+    "tests-final": {
+      "suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "0",
+          "skipped": "0",
+          "tests": "195",
+          "time": "305.956",
+          "timestamp": "2026-10-20T08:46:32.181508+00:00",
+          "hostname": "kuber"
+        }
+      ],
+      "failures": []
+    },
+    "full-tests": {
+      "suites": [
+        {
+          "name": "pytest",
+          "errors": "0",
+          "failures": "3",
+          "skipped": "0",
+          "tests": "2333",
+          "time": "1594.497",
+          "timestamp": "2026-10-20T08:51:52.154826+00:00",
+          "hostname": "kuber"
+        }
+      ],
+      "failures": [
+        {
+          "class": "tests.test_algorithm",
+          "test": "test_timing_with_accumulation",
+          "failure": "tunnel = (Frame(xyz=array([[ 2.0571532 , -2.4516199 ,  0.8218325 ],\n       [ 2.0674713 , -2.4552011 ,  0.8242414 ],\n       [ 2....axis_support=0.0, curv_step=0.0, curv_knot=0.0, curv_range=0.0, axis_straight=False, joint_used=None, joint_reach=0.0))\n\n    def test_timing_with_accumulation(tunnel):\n        det = Detector(acc_cfg())\n        totals = []\n        for d, fr in approach(tunnel, 200.0, 20, seed=5):\n            res = det.process(fr, ego_speed=EGO)\n            totals.append(res.timing_ms[\"total\"])\n        totals = np.array(totals[1:])                              # the first frame warms caches\n        mean, p95 = totals.mean(), np.percentile(totals, 95)\n        print(\"\\n[synthetic, this machine] detector with accumulation: mean %.1f ms, p95 %.1f ms, max %.1f ms over %d frames; last frame stages: %s\"\n              % (mean, p95, totals.max(), totals.size, {k: round(v, 1) for k, v in res.timing_ms.items()}))\n>       assert p95 < 150.0\nE       assert 248.05559704545877 < 150.0\n\ntests/test_algorithm.py:264: AssertionError"
+        },
+        {
+          "class": "tests.test_lidar_proxy_hook",
+          "test": "test_child_process_inherits_hook_and_bad_source_fails_closed",
+          "failure": "tmp_path = PosixPath('/tmp/pytest-of-aiops/pytest-22/test_child_process_inherits_ho0')\n\n    def test_child_process_inherits_hook_and_bad_source_fails_closed(tmp_path):\n        env = environment(tmp_path / \"valid\")\n        code = (\n            \"from resense.detector import Detector; from resense.config import DetectorConfig; \"\n            \"from resense.frame import Frame; import numpy as np; \"\n            \"assert Detector.process.n2_transformed_input; \"\n            \"Detector(DetectorConfig()).process(Frame(np.zeros((0,3),np.float32),np.zeros(0,np.float32)))\"\n        )\n        result = subprocess.run([sys.executable, \"-c\", code], env=env, capture_output=True, text=True)\n        assert result.returncode == 0, result.stderr\n        assert len(list((tmp_path / \"valid\").glob(\"activated_*.json\"))) == 1\n        assert len(list((tmp_path / \"valid\").glob(\"frames_*.jsonl\"))) == 1\n        env[\"RESENSE_N2_SOURCE\"] = str(tmp_path / \"missing-source\")\n        result = subprocess.run([sys.executable, \"-c\", \"raise SystemExit(0)\"], env=env,\n                                capture_output=True, text=True)\n>       assert result.returncode == 86 and \"outside the pinned source\" in result.stderr\nE       assert (86 == 86 and 'outside the pinned source' in 'Traceback (most recent call last):\\n  File \"/home/aiops/resense/docs/evidence/n2_falcon_2026-10-18/proxy_hook/sitecus...y\", line 20, in install\\n    from resense.detector import Detector\\nModuleNotFoundError: No module named \\'resense\\'\\n')\nE        +  where 86 = CompletedProcess(args=['/tmp/opencode/resense-b4-venv/bin/python', '-c', 'raise SystemExit(0)'], returncode=86, stdout...\", line 20, in install\\n    from resense.detector import Detector\\nModuleNotFoundError: No module named \\'resense\\'\\n').returncode\nE        +  and   'Traceback (most recent call last):\\n  File \"/home/aiops/resense/docs/evidence/n2_falcon_2026-10-18/proxy_hook/sitecus...y\", line 20, in install\\n    from resense.detector import Detector\\nModuleNotFoundError: No module named \\'resense\\'\\n' = CompletedProcess(args=['/tmp/opencode/resense-b4-venv/bin/python', '-c', 'raise SystemExit(0)'], returncode=86, stdout...\", line 20, in install\\n    from resense.detector import Detector\\nModuleNotFoundError: No module named \\'resense\\'\\n').stderr\n\ntests/test_lidar_proxy_hook.py:69: AssertionError"
+        },
+        {
+          "class": "tests.test_node",
+          "test": "test_a_cloud_without_a_ring_field_reaches_the_detector_with_unknown_channels",
+          "failure": "node_cls = <class 'resense_ros.detector_node.DetectorNode'>\ntunnel = (Frame(xyz=array([[ 2.0571532 , -2.4516199 ,  0.8218325 ],\n       [ 2.0674713 , -2.4552011 ,  0.8242414 ],\n       [ 2....axis_support=0.0, curv_step=0.0, curv_knot=0.0, curv_range=0.0, axis_straight=False, joint_used=None, joint_reach=0.0))\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x768fc4183860>\n\n    def test_a_cloud_without_a_ring_field_reaches_the_detector_with_unknown_channels(node_cls, tunnel, monkeypatch):\n        \"\"\"Both decoders fill a missing ``ring`` field with zeros. The node passes ``ring=None`` then, so\n        the cross-ring rules (``tracking.far_min_ring_count``) see unknown channels, not one known channel\n        for every point (which would drop all far sparse evidence of a sensor without that field).\"\"\"\n        node = node_cls()\n        seen = []\n        process = node.detector.process\n        monkeypatch.setattr(node.detector, \"process\",\n                            lambda frame, **k: (seen.append(frame.ring), process(frame, **k))[1])\n        for k, drop_ring in enumerate((False, True)):\n            msg, _ = _cloud(tunnel[0].xyz, 0.1 * k)\n            if drop_ring:\n                msg.fields = [f for f in msg.fields if f.name != \"ring\"]   # its bytes become padding\n            node.on_cloud(msg, \"/lidar_points\", {\"source_timestamp\": time.time_ns()})\n        assert len(seen) == 2\n        assert seen[0] is not None and seen[0].dtype == np.uint16 and seen[0].size > 0\n        assert seen[1] is None\n>       assert node.published[\"/resense/decision\"][-1].data != \"FAULT\"\nE       AssertionError: assert 'FAULT' != 'FAULT'\nE        +  where 'FAULT' = <test_node.String object at 0x768fc41c5c10>.data\n\ntests/test_node.py:1608: AssertionError"
+        }
+      ]
+    }
+  }
+}
