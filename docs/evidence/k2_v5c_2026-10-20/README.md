@@ -1,10 +1,11 @@
 # K2 v5c: keep genuine detections beyond the reach cap (20.10)
 
-> **Owner:** P4 (author; the review is by P3 or a fresh agent) · **Decides:** the captain · **Status:** code and
-> offline evidence. The variant is **not measured on the data**: this container cannot reach Google Drive or Yandex
-> Disk (network policy), so no bag or cache was available. Every switch stays **off** by default; nothing ships until
-> the measurement below runs and the captain decides. G3 not touched. v5c addresses the Falcon person's loss beyond
-> the reach cap; the tunnels cube lost inside the cap (§1b) is open, so **K2 is not ready to switch on**.
+> **Owner:** P4 (author; the review is by P3 or a fresh agent) · **Decides:** the captain · **Status:** measured on the
+> data (20.10, §6–§7) on `main` `8c2bf51`; every switch stays **off** by default. Registered rows: **G-1 pass, ID pass,
+> K1-2 reported; F-1 fail as scored** (every extra STOP is on the person; the scorer's reading, §6), **M-1 fail** (the
+> tunnels cube, as predicted; at 30 m also a platform cube); **G-2**: the same 6 X3 failures as variant B (both fail
+> against K2 off), one passing comparison worse by one episode. T3 (§7): K2 does not bend away from the
+> tunnels cube; the cube is an edge object that K2-off's displaced axis carries into its gauge. G3 not touched.
 > Package this answers: [`../k1_k2_gauge_2026-10-19/P4_PACKAGE.md`](../k1_k2_gauge_2026-10-19/P4_PACKAGE.md) §3 row 0.
 
 ## 1. Correction: variant B cost the Falcon person 2.6 m, not 12 m
@@ -60,6 +61,10 @@ detections at 30–60 m on the ride, where the gate counts every STOP as a false
 bring back ([`../n5_markers_2026-10-20/scripts/k2_removed.py`](../n5_markers_2026-10-20/scripts/k2_removed.py)). What makes the joint fit bend wrongly in the
 tunnel needs the cloud (frames 255–275); this container cannot reach it. Until then **K2 is not ready to switch on**,
 v5c included.
+
+**Superseded by §7 (data run, 20.10):** measured against the rails, the cube's centre is 1.165 m from the axis (inner
+face 0.92 m, 0.05–0.08 m inside the strict envelope), and over frames 259–273 B's axis is nearer the true axis than
+K2-off's, both displaced towards the cube. The 0.96 m above was measured from 1.1.0's axis.
 
 ## 2. v5c: what both axes put in the gauge stays an obstacle
 
@@ -163,10 +168,124 @@ F1_SET="$(echo $V | tr ' ' ';')" python docs/evidence/f1_false_alarms_2026-10-19
 python docs/evidence/k2_v5c_2026-10-20/scripts/dual_proxy.py <base gate work> <v5b gate work> 15
 ```
 
-## 6. Not done
+## 6. The registered measurement (20.10, data run; §4 revision 2, nothing else tried)
 
-- No measurement on data (G-1, G-2, F-1, K1-2, ID): the data is not reachable from this container.
-- Set O `small_center` 3.3 m later (package row 1) is the joint shape at 55 m, before any cap; v5c does not touch it.
-- The tunnels cube (§1b): inside the cap, not addressed; diagnosing it needs the cloud of frames 255–275.
-- The 9 new near STOP frames on Falcon (4373–4379, 4410–4411) are not attributed.
-- Review by P3 or a fresh agent.
+**Measured commit: `main` `8c2bf51`** (PR #43 squash-merged during the run; it carries this branch's switch and P3's later
+H1 / R3 changes). Reference: the same commit with every K2 switch off. ID: the same commit against its parent `a5b0ede`.
+Runs that had already been made on the branch head `972d19a` (Falcon K2 off / v5c-15, the marked bags) are kept as
+checks: their K2-off Falcon equals the committed `4cf8e27` record in all 4,443 rows, and every number below that was
+measured on both commits is the same on both. Environment: Python 3.12, numpy 1.26.4, scipy 1.13.1, scikit-learn
+1.5.2, open3d 0.20.0, native kernels, `OPENBLAS_CORETYPE=Haswell OMP_NUM_THREADS=1`; every archive checked against the
+sha256 the Yandex API publishes (Drive zip against `scripts/cold_bags.sha256`). Per-frame outputs:
+[`runs/data_8c2bf51/`](runs/data_8c2bf51/).
+
+| # | criterion | v5c-15 | v5c-30 (run because F-1 failed at 15) |
+|---|---|---|---|
+| F-1 | person first STOP ≥ 124.0 m; `n_person_no_stop` ≤ 22; no new STOP frame beyond variant B's 9 | **fail as scored**: first STOP 122.27 m (frame 2994); `n_person_no_stop` **10** (pass); new STOP frames 18 = B's 9 + 9 more (2979–2983, 3003, 3007, 3008, 3039) | **fail as scored**: 122.27 m; 10; 26 = B's 9 + 17 (also 2950–2957) |
+| G-1 | only set O `small_center` fails; ride STOP episodes ≤ 12; five empty and squareT_platform 0 episodes | **pass**: exit 1 on the 6 `small_center` rows only (first STOP 55.8 → 52.5 m, held from 60.8 → 57.5 m, STOP frames 32 → 30), 11 rows better; ride STOP episodes 24 → **10** (alarm events 18 → 8); five empty 11 → **0**; squareT_platform 11 → **0** | **pass**: the same numbers as v5c-15 |
+| G-2 | X3 not worse than variant B | **the same 6 failures as B** (vs K2 off on this commit; 260 comparisons): `doubleT_obstacle` person-crossing inside STOP rows at +2° roll (60 → 56), 30 % dropout seed 2 and dedup (61 → 58), +2° roll positive STOP frames 192 → 188; set O at 5 Hz positive STOP frames 218 → 214 and `small_center` rows 18 → 14. One comparison differs from B: set O 30 % dropout seed 3, unmatched STOP episodes **7 vs B's 6** (reference 6; within the battery's tolerance of 1) with positive STOP frames 436 vs 434. So not worse than B in what fails; worse by one episode in one passing comparison ([`runs/data_8c2bf51/x3/`](runs/data_8c2bf51/x3/)) | not run |
+| K1-2 | standing person at 150 m: reported | 0 / 259 STOP frames (K2 off 90 / 259; B 0 / 259) | 0 / 259 |
+| ID | every switch off vs the commit without this change | Falcon: `8c2bf51` = `a5b0ede` in all 4,443 rows; gate: `8c2bf51` = `a5b0ede` in all 15,269 rows (36 differ in the latency health level only), set F equal; control: K2 off vs v5c-15 differ in every row | |
+| M-1 | every marked object's STOP frames and first STOP not worse than K2 off | **fail**, as predicted: only the tunnels cube (id 19) 29 → 13 STOP frames, first STOP 55.0 → 27.6 m; every other object equal or better (switch cubes 12 / 13 / 0: 11 → 21, 4 → 9, 35 → 37; tunnels big cube 52 → 55; platform cube 23 38 → 40) | **fail**: the tunnels cube as at 15, **and** the platform's small cube right (id 23) 38 → 31 STOP frames, first STOP 86.8 → 76.4 m |
+
+**F-1, what the scorer counts.** [`score_falcon_pos.py`](scripts/score_falcon_pos.py) counts a candidate STOP only in
+the reference's own STOP frames (`first_person_stop_cand` is the first *kept* one) and every other STOP frame as new.
+All 9 extra frames of v5c-15 and all 17 of v5c-30 are STOPs on the walking person: vehicle Y 0.04–0.16 m, at the
+person's distance in the frame (127.2 → 116.8 m), where K2 off has the same person as a warning (`beyond_axis` or
+unconfirmed) and variant B's committed record (`c9e8daa`) a `beyond_axis` warning in every one of them but 2956
+(unconfirmed). Counted as the person, v5c-15's first STOP is frame 2979 at **124.02 m** and v5c-30's
+frame 2950 at **127.18 m** (K2 off 124.84 m). So as registered F-1 fails at both values; read by position it would pass
+at both (v5c-15 by 0.02 m). That reading was not registered, and the decision is the captain's. The scorer's output
+had lost its `new_stop_frames` / `n_new_stop` keys (they sat inside a comment); fixed before scoring, and the committed
+base vs variant B records reproduce §1 exactly (37 / 122.27 m / 9 new: 4373–4379, 4410–4411).
+
+**M-1 at 30 m, the platform cube.** In frames 103–112 (cube at 90.6–79.0 m) v5c-30's track of the cube carries the
+tracker's `doubt` reason and stays a warning; K2 off STOPs from 106 (86.8 m), v5c-15 and B from 104. Inferred, not traced: the
+wider dual zone demoted a hit of that track and the doubt held it for 10 frames. v5c-30 is therefore worse than v5c-15 on a marked
+object; the tunnels cube is the same at both values (and in B).
+
+**K1-2.** `measure_probe.py` on the node-decoded squareT cache with the ICP odometry regenerated here (open3d 0.20.0;
+not byte-identical to the committed hash, which the range-attribution README says open3d never is run to run): the
+object's per-frame position X and Y equal the committed 1.1.0 attribution rows in all 259 frames, and K2 off reproduces
+the registered 90 / 259.
+
+**After the measurement (not registered):** [`PROPOSAL_r3.md`](PROPOSAL_r3.md) scores the Falcon person by position
+(v5c-15 first person STOP 124.02 m, 1,366 person STOP frames vs K2 off's 1,360; 7 of the 9 "new near STOP frames" are
+the person at 6.4–6.7 m, 4410–4411 stay unattributed) and traces X3's person-crossing losses to a 5–9 cm axis
+difference at 55.5 m on a person entering at the gauge edge.
+
+## 7. T3: why K2 loses the tunnels cube (marker 19), measured on the cloud (20.10, data run)
+
+**K2 does not bend away from the cube; the cube is an edge object, and it is K2-off's axis that is displaced, towards
+it.** Measured against the rails, the cube's centre is **1.165 m** right of the track axis, not the 0.96 m of §1b and
+the n5 README (that figure was measured from 1.1.0's own axis, which near the cube runs 0.18–0.31 m right of the
+rails). Its inner face is **0.92 m** from the axis, and the strict envelope at 30–55 m reaches 0.97–1.00 m, so the cube
+is inside it by only 0.05–0.08 m. Over the 15 lost frames (259–273) **both** axes sit right of the true axis, towards
+the cube: K2-off by 0.08–0.37 m (median 0.21), variant B by −0.22…+0.06 m (median 0.11). K2-off STOPs on the cube from
+55 m because its axis error carries the cube 0.2–0.4 m deeper into its gauge; B's nearer-true axis leaves the cube's few
+returns at the edge.
+
+So there is no K2 error here for a rule to correct, and none was registered or implemented. An OR of the two gauges
+inside the cap would restore these STOPs only by trusting the more displaced axis.
+
+**The true axis.** The cube is static, so its offset from the track is the same at every distance. In frames 275–284
+(cube 9.5–26.5 m ahead) the rail-head returns in front of it (|h| < 0.06 m; 4 m to the near face − 0.5 m, where the
+cube does not shadow the right rail) were split into the two rails by their lateral from the K2-off axis (0.45–1.15 m,
+selection only), each rail fitted as a robust line in absolute Y, and the midpoint taken at the cube's near face
+([`scripts/t3_rails.py`](scripts/t3_rails.py), [`runs/t3/t3_rails.txt`](runs/t3/t3_rails.txt)). Fitted gauge
+1.56–1.62 m (rail-head centres; 1.52 m nominal); in the 7 frames within 0.06 m of 1.52 m the cube's centre is
+1.133–1.189 m right of the rails' midpoint (median 1.165, IQR 1.147–1.179); the 3 others give 1.05–1.15. The picture
+[`runs/t3/png/rails_f278.png`](runs/t3/png/rails_f278.png) shows the two rails as clean parallel lines and the cube's
+inner face ~0.1 m outside the right rail head. Inside the rails' own range (frames 276–279, cube 19–23 m) K2-off's axis
+matches that midpoint within 0.04 m; at 9.5–15 m (frames 280–284) both axes run 0.05–0.31 m right of it, pulled by the
+cube beside the right rail, which is why an axis-based "near-range" offset reads ~0.95 m.
+
+**Frame by frame** ([`scripts/t3_trace.py`](scripts/t3_trace.py): the jury runner with variant B's overrides, hooked
+read-only; its records equal the plain run's in every field but the latency health message; run on `972d19a`, whose
+`resense/track.py` is unchanged on `main` `8c2bf51`, where M-1 gives the same per-object result; [`runs/t3/`](runs/t3/)):
+
+| frames (near face) | K2-off axis error | B axis error | cube's inner face from: K2-off / B axis (strict limit) | what the detector does |
+|---|---|---|---|---|
+| 254–258 (63–57 m) | −0.30…−0.43 | −0.24…−0.30 | 0.49–0.61 / 0.62–0.68 (0.95–0.96) | K2-off: a 10–11-voxel `low` cluster from 257, track 93; B: 4 voxels at 257, none at 258 |
+| 259–266 (55–41 m) | −0.21…−0.37 | −0.11…−0.22 | 0.55–0.70 / 0.70–0.81 (0.97–0.99) | K2-off: STOP every frame (track 93 confirmed at 259); B: no cluster at 259, 261, 264, otherwise thin/4–8 voxels; track 101 dies at 259, track 104 starts at 262 |
+| 267–273 (40–30 m) | −0.08…−0.16 | −0.06…+0.06 | 0.76–0.83 / 0.86–0.98 (0.99–1.00) | K2-off: STOP; B: 2–6 strict voxels, zone `warning` at 268 and 272, track 104 not confirmed |
+| 274–279 (28–19 m) | −0.04…−0.08 | +0.02…+0.18 | 0.84–0.88 / 0.94–1.10 (1.01–1.02) | both STOP from 274; B loses 279 (0 strict voxels at 277 and 279) |
+
+(Error = axis − true axis at the cube's near face, + = left, away from the cube.) The cube gives few returns at 30–60 m
+(4–13 voxels), and its points are judged by the low-object stage against the bed cross-section learned per lateral
+`dy`, so a 0.1–0.2 m shift of the axis decides whether they form a cluster at all. Beyond 60 m B's curvature step
+(−2·10⁻³ 1/m at the 60 m knot) follows a left-wall segment that sweeps from +1.2 to −2 m at 68–92 m
+([`runs/t3/png/tunnels_f262.png`](runs/t3/png/tunnels_f262.png)); that bend is beyond the cube and does not reach it.
+
+**Set O `small_center` (§6 of revision 1, package row 1) is a different case.** The 0.3 m box hangs 0.95–1.25 m above
+the rail head "in the middle of the gauge" (organizers). From the gate rows
+([`scripts/t3_small_center.py`](scripts/t3_small_center.py), [`runs/t3/small_center.txt`](runs/t3/small_center.txt)):
+at 55.8 m its centre is 0.76 m from K2-off's axis and 0.89 m from K2's (inner edge 0.61 / 0.74 m), well inside the
+gauge in both; K2 simply has no detection or warning on it in frames 337–338 and STOPs from 339 (52.5 m), K2 off from
+337. So K2 does not lose it at the gauge edge as it does the cube. If the box really hangs on the track's centre line,
+both axes are 0.5–0.9 m off on this curve at 30–56 m, K2's by about 0.1 m more; not verified (no rails at that range).
+
+**The ride's removed STOPs at 30–60 m.** On `main` the strict detections K2 removes at 30–60 m are `new_data_4`
+1223–1228 (36.9–43.3 m) and `new_data_5` 814–824 (40.1–47.6 m), 1.2–1.4 m from K2-off's axis and 1.4–1.75 m from K2's
+([`k2_removed_8c2bf51.json`](runs/t3/k2_removed_8c2bf51.json); `new_data_7` 623–644 of the v5b list are no longer
+among them). Replayed with [`scripts/t3_ride.py`](scripts/t3_ride.py) (records equal the gate's: 0 rows differ) and
+measured with [`scripts/t3_ride_rails.py`](scripts/t3_ride_rails.py) (rail pairs per 2 m bin): the rails resolve only to
+13–19 m in these frames ([`runs/t3/png/ride_nd4_1228.png`](runs/t3/png/ride_nd4_1228.png)), and their midpoint
+extrapolated to 37–48 m jumps by up to 1.4 m between consecutive frames ([`runs/t3/ride_rails.txt`](runs/t3/ride_rails.txt)).
+**Which axis is right at these detections is not established**, so whether they are the same mechanism as the cube is
+open. They are what an OR-of-gauges rule would bring back, and the gate counts each as a false STOP.
+
+**Limits.** One recording, one object. The true axis is extrapolated 0.5–5 m from the rails in front of the cube;
+the fitted gauge reads 0.04–0.10 m wide, so the midpoint carries a few centimetres of uncertainty, much less than the
+0.1–0.2 m differences above. The synthetic bag's own track geometry is not known otherwise.
+
+## 8. Not done (updated 20.10 after the data run)
+
+- G-2 (X3) for v5c-30: not run (v5c-30 already fails M-1 on a second object). The 6 X3 failures B and v5c-15 share
+  against K2 off are not attributed.
+- Set O `small_center` 55.8 → 52.5 m (§7): inside both gauges; why K2 has no detection in frames 337–338 is not traced.
+- The ride's strict detections removed at 30–60 m (§7): which axis is right there is not established (rails resolve
+  only to 13–19 m).
+- The platform cube under v5c-30 (§6): the `doubt` hold is inferred from the records, not traced.
+- The 9 near STOP frames on Falcon at 5–6 m (4373–4379, 4410–4411, every K2 variant) are still not attributed.
+- Review by P3 or a fresh agent; the captain's decision.
