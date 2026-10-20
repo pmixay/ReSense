@@ -215,11 +215,19 @@ def test_runs_rename_and_delete_with_errors(app, backend, seeded):
     page.get_by_role("button", name="Действия: Черновик 1").click()
     page.get_by_role("menuitem", name="Переименовать").click()
     box.fill("Прогон жюри")
-    box.press("Enter")
+    # Finish the rename's list refresh before creating the stale-row scenario.
+    # Otherwise that in-flight GET can remove scratch2 while its editor opens.
+    with page.expect_response(lambda response: response.url == app.base + "/api/runs"
+                              and response.request.method == "GET") as refreshed:
+        box.press("Enter")
+    refreshed.value.finished()
     expect(page.get_by_role("link", name="Прогон жюри", exact=True)).to_be_visible()
     assert api.get(f"/runs/{ids['scratch1']}")["name"] == "Прогон жюри"
 
     # the run vanished meanwhile: the backend's Russian 404 shows in place (rename, then delete)
+    # Keep this deliberately stale list until both 404s have been exercised; the
+    # system count update can also invalidate it while the browser is interacting.
+    stale_list = Held(page, api_route(app.base, r"/runs$"))
     api.delete(f"/runs/{ids['scratch2']}")
     page.get_by_role("button", name="Действия: Черновик 2").click()
     page.get_by_role("menuitem", name="Переименовать").click()
@@ -241,6 +249,7 @@ def test_runs_rename_and_delete_with_errors(app, backend, seeded):
     page.get_by_role("button", name="Действия: Прогон жюри").click()
     page.get_by_role("menuitem", name="Удалить").click()
     page.get_by_role("dialog").get_by_role("button", name="Удалить").click()
+    stale_list.release()
     expect(page.get_by_role("dialog")).to_have_count(0)
     expect(page.get_by_role("link", name="Прогон жюри", exact=True)).to_have_count(0)
     expect(rows).to_have_count(before - 2)  # the vanished one goes with the refresh

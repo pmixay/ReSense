@@ -55,7 +55,7 @@ window.resenseFormat = (() => {
         || (g.centerline != null && (!Array.isArray(g.centerline)
           || !g.centerline.every(p => vector(p, 3))
           || g.centerline.some((p, i) => i > 0 && p[0] <= g.centerline[i - 1][0]))))) return false;
-    if (!numbers(t, ['center', 'yaw', 'curvature', 'axis_valid', 'rail_offset'])
+    if (!numbers(t, ['center', 'yaw', 'curvature', 'curv_step', 'curv_knot', 'axis_valid', 'rail_offset'])
         || (t.floor_coef != null && (!Array.isArray(t.floor_coef) || !t.floor_coef.length || !t.floor_coef.every(finite)))
         || (t.floor_range != null && !vector(t.floor_range, 2))
         || !numbers(r.timing_ms || {}, ['total', 'track', 'corridor', 'cluster'])

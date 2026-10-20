@@ -1,0 +1,186 @@
+{
+  "capturedAt": "2026-10-19T13:58:14.174073+00:00",
+  "base": "http://127.0.0.1:4175",
+  "frontendSourceSha256": "8b2b3d4b1529f81634eff8dcda8eafd1683062f0377a8d1ba316ac68abb2c5d0",
+  "states": {
+    "clear": "/player/y7oie2mfg0?pos=0",
+    "stop": "/player/y7oie2mfg0?pos=4",
+    "caution": "/player/4s5nn4lay3?pos=21"
+  },
+  "captures": [
+    {
+      "file": "stop-1280.png",
+      "viewport": [
+        1280,
+        720
+      ],
+      "route": "/player/y7oie2mfg0?pos=4",
+      "display": {
+        "x": 32,
+        "y": 92,
+        "width": 1216,
+        "height": 431,
+        "bottom": 523
+      },
+      "playback": {
+        "x": 32,
+        "y": 625,
+        "width": 1216,
+        "height": 83,
+        "bottom": 708
+      },
+      "overflow": false
+    },
+    {
+      "file": "stop-1366.png",
+      "viewport": [
+        1366,
+        768
+      ],
+      "route": "/player/y7oie2mfg0?pos=4",
+      "display": {
+        "x": 34.140625,
+        "y": 92,
+        "width": 1297.6875,
+        "height": 479,
+        "bottom": 571
+      },
+      "playback": {
+        "x": 34.140625,
+        "y": 673,
+        "width": 1297.71875,
+        "height": 83,
+        "bottom": 756
+      },
+      "overflow": false
+    },
+    {
+      "file": "clear-1440.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "route": "/player/y7oie2mfg0?pos=0",
+      "display": {
+        "x": 36,
+        "y": 92,
+        "width": 1368,
+        "height": 611,
+        "bottom": 703
+      },
+      "playback": {
+        "x": 36,
+        "y": 805,
+        "width": 1368,
+        "height": 83,
+        "bottom": 888
+      },
+      "overflow": false
+    },
+    {
+      "file": "caution-1440.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "route": "/player/4s5nn4lay3?pos=21",
+      "display": {
+        "x": 36,
+        "y": 92,
+        "width": 1368,
+        "height": 611,
+        "bottom": 703
+      },
+      "playback": {
+        "x": 36,
+        "y": 805,
+        "width": 1368,
+        "height": 83,
+        "bottom": 888
+      },
+      "overflow": false
+    },
+    {
+      "file": "stop-1440.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "route": "/player/y7oie2mfg0?pos=4",
+      "display": {
+        "x": 36,
+        "y": 92,
+        "width": 1368,
+        "height": 611,
+        "bottom": 703
+      },
+      "playback": {
+        "x": 36,
+        "y": 805,
+        "width": 1368,
+        "height": 83,
+        "bottom": 888
+      },
+      "overflow": false
+    },
+    {
+      "file": "stop-1920.png",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "route": "/player/y7oie2mfg0?pos=4",
+      "display": {
+        "x": 40,
+        "y": 92,
+        "width": 1840,
+        "height": 791,
+        "bottom": 883
+      },
+      "playback": {
+        "x": 40,
+        "y": 985,
+        "width": 1840,
+        "height": 83,
+        "bottom": 1068
+      },
+      "overflow": false
+    }
+  ],
+  "errors": [],
+  "doors": [
+    {
+      "x": 0,
+      "y": 0,
+      "width": 721,
+      "height": 900,
+      "top": 0,
+      "right": 721,
+      "bottom": 900,
+      "left": 0
+    },
+    {
+      "x": 719,
+      "y": 0,
+      "width": 721,
+      "height": 900,
+      "top": 0,
+      "right": 1440,
+      "bottom": 900,
+      "left": 719
+    }
+  ],
+  "exteriorModel": {
+    "method": "Diagnostic perspective render of the actual TrainModel module, same materials and lighting as Player; no photograph or compositing.",
+    "calls": 85,
+    "triangles": 23740,
+    "memory": {
+      "geometries": 24,
+      "textures": 3
+    },
+    "afterDispose": {
+      "geometries": 0,
+      "textures": 1
+    }
+  }
+}

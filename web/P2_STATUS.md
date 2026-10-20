@@ -1,5 +1,14 @@
 # P2 status: work toward the 23.10 defence
 
+**20.10 code handoff:** [execution plan](../docs/evidence/p2_2026-10-20/PLAN.md)
+and [verification receipt](../docs/evidence/p2_2026-10-20/README.md). The UI/main
+integration and scoped rendering/navigation/live-replay fixes are verified locally.
+Preview publication is complete at [resense.amdm.life](https://resense.amdm.life/);
+the [publication receipt](../docs/evidence/p2_2026-10-20/PUBLISH.md) records the public checks.
+Today's remaining Role 2 deliverables are assets, recordings, visuals, documents
+and device/rehearsal work; stop before those as requested. The dated queue below
+retains its historical verification dates.
+
 > **Purpose:** P2's queue and acceptance state, through the 23.10 defence; the current work and priorities of P2 are in
 > [`docs/BACKLOG.md`](../docs/BACKLOG.md) "Current plan" (P2 table).
 > **Audience:** team · **Owner:** P2 for the interface; the pitch, deck, demo and rehearsals are the
@@ -32,11 +41,11 @@ Dates: upload 29.09 by 23:59 MSK; technical expertise 30.09–14.10; pitch 23.10
 
 ## Queue and acceptance
 
-| item | state on 16.10 | next input / acceptance |
+| item | state reconciled 19.10 | next input / acceptance |
 |---|---|---|
-| **D1 pass 1** | corrections integrated; decision log preserved | P2-01 reconciles the newer selected scope; numerical pass after J1; no score gain claimed |
+| **D1 / P2-01** | current version/source, older measurements and open acceptances reconciled; ffprobe confirms 180 s; [receipt](../docs/evidence/p2_d1_2026-10-19/README.md) | P1 shared-document approval; final numerical pass after J1 |
 | **PT1 task 2: slide cuts** | 16-slide PPTX + PDF rebuilt; detail moved to notes; build enforces ≤80 words/slide and ≤1,100 total, counting chart labels | counts, PDF inspection and gate check in evidence; P1 final sign-off pending |
-| **C1 display** | implemented for P1 review in both clients, backend metadata flow and marker text; consumer verification in execution receipt | actual selected-image ROS/RViz/Foxglove and visual acceptance remain open; runtime v2 remains rejected |
+| **C1 display** | producer/consumers implemented; [18.10 N1/N4](../docs/evidence/n1_n4_2026-10-18/README.md) adds actual DDS/graphics/marker expiry on named earlier sources | final merged-image RViz/Foxglove, all reason cases and physical-device acceptance remain open; runtime v2 rejected |
 | **PT1 range chart / final numbers** | historical cache graph clearly labelled as preparation; context from 13.10 is labelled separately | P4 J1 on the final 1.2.0 seal (the 1.1.0 target is dropped): first STOP by straight, curve, double-track, platform × person/1 m/0.3 m; P2 renders ≥3 geometries; P1 chooses the version under O1 |
 | **PT2 fallback / second device** | runbook prepared; existing 69 s clip is explicitly the 23.09 archive | P1-selected permitted release image/checksum (v1.0.0 fallback if O1/E1 pending), captain's machine + second device; record commit/image ID, STOP/distance and forced switch ≤30 s |
 | **D1 pass 2 / S5 / video cards** | after the reseal, the final image and J1 (P1 priority); available hardware accepted by captain 17.10 | S5 measures selected runtime even if S1/S2 remain unshipped; 2–4 cores acceptable, separate four-condition matrix; identify source versus release runs and render cards from accepted results |

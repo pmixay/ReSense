@@ -12,9 +12,11 @@ export interface LineRailProps {
   sub?: string;
   /** marks the Очередь station as busy (jobs running or waiting) */
   queueBusy?: boolean;
+  /** Omit off-line system destinations while keeping the shared rail styling. */
+  hideBranch?: boolean;
 }
 
-export function LineRail({ sub, queueBusy }: LineRailProps) {
+export function LineRail({ sub, queueBusy, hideBranch = false }: LineRailProps) {
   const { pathname } = useLocation();
   const current = pageOfPath(pathname);
   const onBranch = current !== null && BRANCH.includes(current);
@@ -43,7 +45,7 @@ export function LineRail({ sub, queueBusy }: LineRailProps) {
         <div className={styles.line} aria-hidden />
         <div className={styles.stations}>{LINE.map((k, i) => station(k, i, LINE))}</div>
       </div>
-      <div className={styles.branch} aria-hidden={!onBranch}>
+      {!hideBranch && <div className={styles.branch} aria-hidden={!onBranch}>
         <span className={styles.transfer} aria-hidden />
         <span className={styles.roundel} title="Ветка «Система»">
           3
@@ -51,7 +53,7 @@ export function LineRail({ sub, queueBusy }: LineRailProps) {
         <span className={styles.branchName}>Система</span>
         <div className={styles.bline} aria-hidden />
         <div className={styles.bstations}>{BRANCH.map((k, i) => station(k, i, BRANCH))}</div>
-      </div>
+      </div>}
     </nav>
   );
 }

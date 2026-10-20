@@ -1,0 +1,135 @@
+{
+  "capturedAt": "2026-10-19T18:01:21.805059+00:00",
+  "base": "http://127.0.0.1:4183",
+  "route": "/about",
+  "frontendSourceSha256": "45a5498e70bd26b9858cfe79fdc2e0a29304aebff04fdcf288db5857e0eedd51",
+  "captures": [
+    {
+      "file": "overview-1280.png",
+      "viewport": [
+        1280,
+        720
+      ],
+      "state": "collapsed",
+      "expandedOverflowCheck": [],
+      "main": {
+        "x": 0,
+        "y": 148,
+        "width": 1280,
+        "height": 572,
+        "top": 148,
+        "right": 1280,
+        "bottom": 720,
+        "left": 0
+      },
+      "overview": {
+        "x": 32,
+        "y": 228,
+        "width": 1216,
+        "height": 322.265625,
+        "top": 228,
+        "right": 1248,
+        "bottom": 550.265625,
+        "left": 32
+      },
+      "pageOverflow": false,
+      "visibleIcons": 0
+    },
+    {
+      "file": "overview-1366.png",
+      "viewport": [
+        1366,
+        768
+      ],
+      "state": "collapsed",
+      "expandedOverflowCheck": [],
+      "main": {
+        "x": 0,
+        "y": 148,
+        "width": 1366,
+        "height": 620,
+        "top": 148,
+        "right": 1366,
+        "bottom": 768,
+        "left": 0
+      },
+      "overview": {
+        "x": 34.140625,
+        "y": 228,
+        "width": 1297.71875,
+        "height": 322.265625,
+        "top": 228,
+        "right": 1331.859375,
+        "bottom": 550.265625,
+        "left": 34.140625
+      },
+      "pageOverflow": false,
+      "visibleIcons": 0
+    },
+    {
+      "file": "overview-1440.png",
+      "viewport": [
+        1440,
+        900
+      ],
+      "state": "collapsed",
+      "expandedOverflowCheck": [],
+      "main": {
+        "x": 0,
+        "y": 148,
+        "width": 1440,
+        "height": 752,
+        "top": 148,
+        "right": 1440,
+        "bottom": 900,
+        "left": 0
+      },
+      "overview": {
+        "x": 36,
+        "y": 228,
+        "width": 1368,
+        "height": 302.125,
+        "top": 228,
+        "right": 1404,
+        "bottom": 530.125,
+        "left": 36
+      },
+      "pageOverflow": false,
+      "visibleIcons": 0
+    },
+    {
+      "file": "overview-1920.png",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "state": "collapsed",
+      "expandedOverflowCheck": [],
+      "main": {
+        "x": 0,
+        "y": 148,
+        "width": 1920,
+        "height": 932,
+        "top": 148,
+        "right": 1920,
+        "bottom": 1080,
+        "left": 0
+      },
+      "overview": {
+        "x": 40,
+        "y": 228,
+        "width": 1840,
+        "height": 290.734375,
+        "top": 228,
+        "right": 1880,
+        "bottom": 518.734375,
+        "left": 40
+      },
+      "pageOverflow": false,
+      "visibleIcons": 0
+    }
+  ],
+  "errors": [],
+  "longVersionWrapped": true,
+  "offlineStatePassed": true
+}

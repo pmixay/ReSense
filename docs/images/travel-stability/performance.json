@@ -1,0 +1,51 @@
+{
+  "method": "Headless Chromium 1440x900, Emulation.setCPUThrottlingRate(4), fresh contexts, real-time requestAnimationFrame/PerformanceObserver. Same browser launch configuration before and after; no screenshots during samples. CPU-throttled measurements are not a hardware FPS guarantee.",
+  "before": [
+    {
+      "from": "/runs",
+      "to": "/upload",
+      "cpuThrottle": 4,
+      "frames": 12,
+      "maxFrameGap": 116.70000000000005,
+      "meanFrameGap": 74.23636363636363,
+      "animationStartSkew": 1067,
+      "domMutationsDuringTravel": 3,
+      "errors": []
+    },
+    {
+      "from": "/upload",
+      "to": "/about",
+      "cpuThrottle": 4,
+      "frames": 24,
+      "maxFrameGap": 133.30000000000018,
+      "meanFrameGap": 65.9391304347826,
+      "animationStartSkew": 0,
+      "domMutationsDuringTravel": 0,
+      "errors": []
+    }
+  ],
+  "after": [
+    {
+      "from": "/runs",
+      "to": "/upload",
+      "cpuThrottle": 4,
+      "frames": 16,
+      "maxFrameGap": 83.5,
+      "meanFrameGap": 52.226666666666645,
+      "animationStartSkew": 0,
+      "domMutationsDuringTravel": 0,
+      "errors": []
+    },
+    {
+      "from": "/upload",
+      "to": "/about",
+      "cpuThrottle": 4,
+      "frames": 27,
+      "maxFrameGap": 83.39999999999964,
+      "meanFrameGap": 58.96923076923076,
+      "animationStartSkew": 0,
+      "domMutationsDuringTravel": 0,
+      "errors": []
+    }
+  ]
+}

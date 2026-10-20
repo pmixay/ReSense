@@ -90,11 +90,3 @@
   align-items: center;
   flex: none;
 }
-
-@media (max-width: 700px) {
-  .ph { flex-wrap: wrap; }
-  .ttl { max-width: 100%; }
-  .h1, .h1Small { white-space: normal; overflow-wrap: anywhere; font-size: 28px; }
-  .sp { display: none; }
-  .actions, .chips { flex-wrap: wrap; max-width: 100%; }
-}

@@ -26,6 +26,7 @@ export function isStatus(v: unknown): v is LiveMessage {
   }
   const h = (v.health ?? {}) as Record<string, unknown>;
   const f = (v.freshness ?? {}) as Record<string, unknown>;
+  if (!numbers((v.track ?? {}) as Record<string, unknown>, ['curv_step', 'curv_knot'])) return false;
   if (['level', 'decision_level'].some(k => k in h && !['ok', 'warn', 'error'].includes(h[k] as string))) return false;
   if (h.messages != null && (!Array.isArray(h.messages) || !h.messages.every(x => typeof x === 'string'))) return false;
   if (!numbers(h, ['visibility', 'rail_lock'])) return false;

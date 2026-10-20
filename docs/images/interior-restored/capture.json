@@ -1,0 +1,179 @@
+{
+  "capturedAt": "2026-10-19T14:30:55.909884+00:00",
+  "base": "http://127.0.0.1:4177",
+  "frontendSourceSha256": "a9c168eb855db535b4e5441a20c53b6f7023f58a89a30685903576e6d3461108",
+  "restoredExactlyFrom": "af2ecd8^",
+  "restoredFiles": [
+    "webapp/frontend/src/player/trainInterior.ts",
+    "webapp/frontend/src/player/screenDisplay.ts"
+  ],
+  "captures": [
+    {
+      "file": "stop-1280.png",
+      "route": "/player/y7oie2mfg0?pos=4",
+      "viewport": [
+        1280,
+        720
+      ],
+      "display": {
+        "x": 32,
+        "y": 92,
+        "width": 1216,
+        "height": 431,
+        "bottom": 523
+      },
+      "playback": {
+        "x": 32,
+        "y": 625,
+        "width": 1216,
+        "height": 83,
+        "bottom": 708
+      },
+      "overflow": false
+    },
+    {
+      "file": "stop-1366.png",
+      "route": "/player/y7oie2mfg0?pos=4",
+      "viewport": [
+        1366,
+        768
+      ],
+      "display": {
+        "x": 34.140625,
+        "y": 92,
+        "width": 1297.6875,
+        "height": 479,
+        "bottom": 571
+      },
+      "playback": {
+        "x": 34.140625,
+        "y": 673,
+        "width": 1297.71875,
+        "height": 83,
+        "bottom": 756
+      },
+      "overflow": false
+    },
+    {
+      "file": "stop-1440.png",
+      "route": "/player/y7oie2mfg0?pos=4",
+      "viewport": [
+        1440,
+        900
+      ],
+      "display": {
+        "x": 36,
+        "y": 92,
+        "width": 1368,
+        "height": 611,
+        "bottom": 703
+      },
+      "playback": {
+        "x": 36,
+        "y": 805,
+        "width": 1368,
+        "height": 83,
+        "bottom": 888
+      },
+      "overflow": false
+    },
+    {
+      "file": "stop-1920.png",
+      "route": "/player/y7oie2mfg0?pos=4",
+      "viewport": [
+        1920,
+        1080
+      ],
+      "display": {
+        "x": 40,
+        "y": 92,
+        "width": 1840,
+        "height": 791,
+        "bottom": 883
+      },
+      "playback": {
+        "x": 40,
+        "y": 985,
+        "width": 1840,
+        "height": 83,
+        "bottom": 1068
+      },
+      "overflow": false
+    },
+    {
+      "file": "clear-1440.png",
+      "route": "/player/y7oie2mfg0?pos=0",
+      "viewport": [
+        1440,
+        900
+      ],
+      "display": {
+        "x": 36,
+        "y": 92,
+        "width": 1368,
+        "height": 611,
+        "bottom": 703
+      },
+      "playback": {
+        "x": 36,
+        "y": 805,
+        "width": 1368,
+        "height": 83,
+        "bottom": 888
+      },
+      "overflow": false
+    },
+    {
+      "file": "caution-1440.png",
+      "route": "/player/4s5nn4lay3?pos=21",
+      "viewport": [
+        1440,
+        900
+      ],
+      "display": {
+        "x": 36,
+        "y": 92,
+        "width": 1368,
+        "height": 611,
+        "bottom": 703
+      },
+      "playback": {
+        "x": 36,
+        "y": 805,
+        "width": 1368,
+        "height": 83,
+        "bottom": 888
+      },
+      "overflow": false
+    }
+  ],
+  "focus": [
+    {
+      "name": "Телеметрия",
+      "focused": true,
+      "shadow": "rgb(185, 197, 211) 0px 0px 0px 1.5px inset, rgb(255, 255, 255) 0px 0px 0px 3px, rgb(17, 24, 39) 0px 0px 0px 5.5px"
+    },
+    {
+      "name": "Кабина",
+      "focused": true,
+      "shadow": "rgb(255, 255, 255) 0px 0px 0px 3px, rgb(17, 24, 39) 0px 0px 0px 5.5px"
+    },
+    {
+      "name": "1×",
+      "focused": true,
+      "shadow": "rgb(255, 255, 255) 0px 0px 0px 3px, rgb(17, 24, 39) 0px 0px 0px 5.5px"
+    },
+    {
+      "name": "Воспроизвести (пробел)",
+      "focused": true,
+      "shadow": "rgb(255, 255, 255) 0px 0px 0px 3px, rgb(17, 24, 39) 0px 0px 0px 5.5px"
+    }
+  ],
+  "errors": [],
+  "frameStepPassed": true,
+  "controlTokens": {
+    "--control-sheen": "linear-gradient(180deg, rgba(255, 255, 255, .055), rgba(255, 255, 255, .01) 48%, rgba(14, 29, 45, .02))",
+    "--control-edge": "inset 0 1px 0 rgba(255, 255, 255, .16), inset 0 -1px 0 rgba(15, 30, 48, .04)",
+    "--shadow-red": "0 5px 12px -9px rgba(215, 19, 59, .16)"
+  }
+}

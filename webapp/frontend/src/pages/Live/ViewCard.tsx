@@ -9,6 +9,7 @@ import type { FeedSnapshot } from './feed';
 import type { SourceKind } from './SourceBar';
 import { TrackSchematic } from './TrackSchematic';
 import styles from './View.module.css';
+import { useNavigationPreview } from '../../lib/navigationPreview';
 
 const CloudPreview = lazy(() => import('../../player/CloudPreview'));
 
@@ -39,8 +40,9 @@ export interface ViewCardProps {
 }
 
 export function ViewCard({ snap, kind, run, fresh, className }: ViewCardProps) {
+  const preview = useNavigationPreview();
   const [mode, setMode] = useState<Mode>('3d');
-  const can3d = kind === 'sim' && !!run?.has_clouds && webglAvailable();
+  const can3d = !preview && kind === 'sim' && !!run?.has_clouds && webglAvailable();
   const show3d = can3d && mode === '3d';
   const msg = snap.msg;
   const onAir = snap.source?.kind === 'sim' && snap.source.runId === run?.id;

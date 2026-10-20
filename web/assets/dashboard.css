@@ -28,7 +28,7 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--page); color: var(--ink); font: 400 15px/1.4 var(--font-ui); }
+body { margin: 0; min-width: 1280px; background: var(--page); color: var(--ink); font: 400 15px/1.4 var(--font-ui); }
 button, input, select { font: inherit; }
 button, .file-button {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
@@ -156,40 +156,6 @@ body.dragging #drop-overlay { display: grid; }
 .site-footer { display: flex; align-items: center; justify-content: space-between; max-width: 1520px; height: 28px; margin: auto; padding: 0 24px 5px; color: var(--ink); font-size: 11px; }
 #monitor, #safety-card, #node-card, #log { scroll-margin-top: 85px; }
 
-@media (max-width: 900px) {
-  .header-inner { flex-wrap: wrap; gap: 4px 12px; padding: 10px 16px; }
-  .brand { flex: 1 1 100%; }
-  .top-nav { order: 3; width: 100%; margin: 0; overflow-x: auto; }
-  .top-nav a { min-height: 37px; padding: 0 10px; }
-  .health { order: 2; flex-wrap: wrap; }
-  .page { display: block; height: auto; min-height: 0; padding: 18px 16px 20px; }
-  main { display: grid; grid-template-columns: 1fr; gap: 10px; }
-  .cab-stage { min-height: 360px; aspect-ratio: 16 / 9; }
-  .plan-card { grid-template-rows: auto 280px 150px; }
-  .side-column { overflow: visible; padding-right: 0; }
-  .site-footer { height: auto; padding: 0 16px 20px; }
-}
-@media (max-width: 620px) {
-  body { font-size: 14px; }
-  .brand h1 { font-size: 21px; }
-  .brand-mark { width: 32px; height: 32px; font-size: 20px; }
-  .pill { font-size: 11px; }
-  .page-title { font-size: 27px; }
-  .mode-body { align-items: stretch; }
-  .connection-field { flex-basis: 100%; }
-  .connection-field .status-line { display: inline; }
-  input[type="range"] { flex: 1 1 100%; width: 100%; }
-  #banner { --banner-icon-width: clamp(85px, 26vw, 144px); padding: 17px 17px 17px calc(var(--banner-icon-width) - 4px); font-size: 27px; }
-  .banner-icon { left: -14px; }
-  #banner.warn { --banner-warning-icon-width: clamp(72px, 22vw, 120px); padding-left: calc(var(--banner-warning-icon-width) + 12px); }
-  #banner.warn .banner-icon { top: -5px; left: -5px; height: calc(100% + 10px); }
-  #banner.idle { padding-left: 17px; }
-  #banner.idle::before { width: 36px; height: 36px; font-size: 26px; }
-  .visual-card { padding: 12px; }
-  .cab-stage { min-height: 280px; }
-  .plan-card { grid-template-rows: auto 240px 150px; }
-  .site-footer { flex-direction: column; }
-}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .site-header { transition: none; }
