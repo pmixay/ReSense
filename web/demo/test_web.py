@@ -601,17 +601,16 @@ def test_dashboard_uses_supplied_moscow_sans_visual_system():
         assert os.path.getsize(path) > 20_000
 
 
-def newest_ride_baseline():
-    """Compatibility name: use the media's declared source, never a later experiment."""
+def newest_ride_baseline(script="build_deck.py"):
+    """The gate source a media script declares (``GATE_SOURCE``), never a later experiment. The deck follows the
+    shipped gate (20.10: the R3 seal); the overview video is a dated medium and stays on the 29.09 gate it was
+    rendered from, so each is checked against its own declared source."""
     import ast
-    sources = []
-    for name in ("build_deck.py", "make_overview_video.py"):
-        with open(os.path.join(ROOT, "scripts", name)) as source:
-            tree = ast.parse(source.read())
-        sources.append(next(ast.literal_eval(n.value) for n in tree.body if isinstance(n, ast.Assign)
-                            and any(getattr(t, "id", "") == "GATE_SOURCE" for t in n.targets)))
-    assert sources[0] == sources[1], "deck and video must explicitly agree on their historical source"
-    with open(os.path.join(ROOT, sources[0])) as source:
+    with open(os.path.join(ROOT, "scripts", script)) as source:
+        tree = ast.parse(source.read())
+    declared = next(ast.literal_eval(n.value) for n in tree.body if isinstance(n, ast.Assign)
+                    and any(getattr(t, "id", "") == "GATE_SOURCE" for t in n.targets))
+    with open(os.path.join(ROOT, declared)) as source:
         return json.load(source)
 
 
@@ -673,7 +672,7 @@ def test_overview_video_cards_follow_the_current_gate_baseline():
                                                   os.path.join(ROOT, "scripts", "make_overview_video.py"))
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    baseline = newest_ride_baseline()
+    baseline = newest_ride_baseline("make_overview_video.py")
     events = baseline["ride"]["alarm_events"]
     cards = [c for b in module.BLOCKS for c in b["cards"]]
     ride = [c for c in cards if c["kind"] == "num" and "поездке" in c["label"]]

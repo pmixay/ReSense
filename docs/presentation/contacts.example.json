@@ -1,0 +1,8 @@
+{
+  "members": [
+    {"fio": "Фамилия Имя Отчество", "nick": "@telegram", "phone": "+7 ...", "study": "Место работы/учёбы"},
+    {"fio": "", "nick": "", "phone": "", "study": ""},
+    {"fio": "", "nick": "", "phone": "", "study": ""},
+    {"fio": "", "nick": "", "phone": "", "study": ""}
+  ]
+}
