@@ -17,6 +17,15 @@ from resense.sensor import AZIMUTH_STEP_DEG, expected_points
 from resense.track import TrackModel, bin_percentile, estimate_rails
 
 
+@dataclass(frozen=True)
+class CurrentSupport:
+    """Geometry and distinct voxel support from this frame, excluding accumulation."""
+    footprint: float
+    height: float
+    n: int
+    n_gauge: int
+
+
 @dataclass
 class Cluster:
     points_idx: np.ndarray       # indices into the frame
@@ -47,6 +56,7 @@ class Cluster:
     spared: bool = False         # 14.10: column-shaped, but not demoted as a column because its top is seen free (top_is_free; tracking.column_free_min_spares)
     cut: bool = False            # 14.10: a part of an oversize cluster cut along its wall surface (cluster.structure_cut_tol; Detector._not_part_of_corridor_objects)
     collision_core: bool = False  # current observed tall body in the additionally eroded rail envelope
+    current_support: Optional[CurrentSupport] = None  # populated for accumulated corridor clusters
 
     @property
     def size(self) -> np.ndarray:
@@ -1161,6 +1171,17 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
     if dy_report is not None:
         # 27.09 (gauge.reference 1): the reported lateral stays the one from the rail axis
         lateral = float(dy_report[b.idx].mean())
+    current_support = None
+    if (fi < 0).any():
+        current = b.idx[fi >= 0]
+        if current.size:
+            extent = np.ptp(b.pts[fi >= 0], axis=0)
+            current_support = CurrentSupport(
+                footprint=float(max(extent[0], extent[1])), height=float(np.ptp(h[current])),
+                n=int(np.unique(inv[current]).size),
+                n_gauge=int(np.unique(inv[current[in_gauge[current]]]).size))
+        else:
+            current_support = CurrentSupport(0.0, 0.0, 0, 0)
     return Cluster(
         points_idx=fi[fi >= 0], n=b.n_vox, n_raw=int(b.idx.size), centroid=b.pts.mean(axis=0),
         bbox_min=b.bmin, bbox_max=b.bmax, distance=dist, lateral=lateral,
@@ -1170,4 +1191,5 @@ def _corridor_cluster(b: _Blob, dy, h, in_gauge, intensity, inv, frame_idx, cfg:
         wall_kept=wall_kept, demoted=demoted and not retro, thin=thin, weak=weak,
         ring_count=ring_count, spared=bool(seen_free and seen_free[-1]),
         collision_core=bool(core and zone == "gauge" and not reason),
+        current_support=current_support,
     )

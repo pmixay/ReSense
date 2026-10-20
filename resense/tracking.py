@@ -463,9 +463,12 @@ class Tracker:
                     and not t.near_escalated and (any(t.explained_hist) or any(t.provisional_explained_hist))
                     and t.clean_run < c.explained_run) or (
                     q and c.ego_veto_min_speed > 0 and not earned_stop and t.rule_zone == "gauge"
-                    and not t.near_escalated and self._carried_along(t)):
+                    and not t.near_escalated and not self._cable_confirmed(t) and self._carried_along(t)):
                 # 29.09 (explained_run): a history of explained (demoted) hits needs a clean run before
                 # a new STOP; the track stays a visible advisory meanwhile
+                # A resolved cable run is positive collision evidence even when moving
+                # with the train (organizers' moving-in-gauge rule, 19.10). Its STOP
+                # must not depend on whether the static-world veto becomes ready first.
                 q = False
                 fresh_blocked = explained_blocked = True
                 fresh_blocked_tracks.add(id(t))
@@ -932,14 +935,37 @@ class Tracker:
         """
         c = self.cfg
         if (c.cable_confirm_time_s <= 0 or cl.zone != "gauge" or cl.reason or cl.thin
-                or cl.weak or cl.low_height_weak or cl.kind not in ("", "hanging")
-                or cl.n_raw != len(cl.points_idx)
-                or max(float(cl.size[0]), float(cl.size[1])) > c.cable_max_footprint):
+                or cl.weak or cl.low_height_weak or cl.kind not in ("", "hanging")):
             return 0
-        height = cl.height_max - cl.height_min
+        if cl.n_raw != len(cl.points_idx):
+            support = cl.current_support
+            if support is None:
+                return 0
+            footprint, height, n, n_gauge = support.footprint, support.height, support.n, support.n_gauge
+        else:
+            footprint = max(float(cl.size[0]), float(cl.size[1]))
+            height, n, n_gauge = cl.height_max - cl.height_min, cl.n, cl.n_gauge
+        if footprint > c.cable_max_footprint:
+            return 0
         if cl.kind == "hanging":
-            return 2 if (height >= c.hanging_confirm_min_height and cl.n >= 2 and cl.n_gauge >= 1) else 0
-        return 1 if height >= c.cable_min_height and cl.n_gauge >= c.cable_min_voxels else 0
+            return 2 if (height >= c.hanging_confirm_min_height and n >= 2 and n_gauge >= 1) else 0
+        return 1 if height >= c.cable_min_height and n_gauge >= c.cable_min_voxels else 0
+
+    def _cable_confirmation(self, t: Track) -> tuple[int, float]:
+        c = self.cfg
+        span = c.hanging_confirm_time_s if t.cable_kind == 2 else c.cable_confirm_time_s
+        hits = max(2, c.hanging_confirm_hits) if t.cable_kind == 2 else c.confirm_hits
+        # Sensor stamps jitter by microseconds around a nominal frame period.
+        # Slack never substitutes for a missing geometry-qualified hit.
+        slack = max(0.0, min(0.001, 0.01 * c.frame_dt, 0.01 * span))
+        return hits, span - slack
+
+    def _cable_confirmed(self, t: Track) -> bool:
+        if self.cfg.cable_confirm_time_s <= 0 or not t.cable_kind:
+            return False
+        hits, span = self._cable_confirmation(t)
+        return bool(span > 0 and t.cable_hits >= hits
+                    and (not self._timed or t.cable_span_s >= span - 1e-9))
 
     def _qualifies(self, t: Track) -> bool:
         c = self.cfg
@@ -950,17 +976,10 @@ class Tracker:
             return False
         need_span = c.confirm_time_s if (self._timed and c.confirm_time_s > 0) else 0.0
         need_hits = c.low_confirm_hits if (t.last is not None and t.last.kind == "low") else c.confirm_hits
-        if c.cable_confirm_time_s > 0 and t.cable_kind:
-            fast_span = c.hanging_confirm_time_s if t.cable_kind == 2 else c.cable_confirm_time_s
-            fast_hits = max(2, c.hanging_confirm_hits) if t.cable_kind == 2 else c.confirm_hits
-            # Sensor stamps jitter by microseconds around a nominal frame period.
-            # Slack is bounded to 1 ms and 1% of both period and requested duration;
-            # it never substitutes for a missing geometry-qualified hit.
-            slack = max(0.0, min(0.001, 0.01 * c.frame_dt, 0.01 * fast_span))
-            if (fast_span > 0 and t.cable_hits >= fast_hits
-                    and (not self._timed or t.cable_span_s >= fast_span - slack - 1e-9)):
-                need_hits = min(need_hits, fast_hits)
-                need_span = min(need_span, fast_span - slack)
+        if self._cable_confirmed(t):
+            fast_hits, fast_span = self._cable_confirmation(t)
+            need_hits = min(need_hits, fast_hits)
+            need_span = min(need_span, fast_span)
         return (t.hits >= need_hits
                 and t.confidence >= c.conf_threshold and t.misses == 0
                 and t.span_s >= need_span - 1e-9

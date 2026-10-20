@@ -20,6 +20,8 @@ def blob(current="body", distance=80.0, copies=1):
         now = now[:3]
     elif current == "outside":
         now[:, 1] = 0.2
+    elif current == "wide":
+        now[:, 1] = np.linspace(-.1, .1, len(now))
     elif current == "none":
         now = now[:0]
     now = np.repeat(now, copies, axis=0)
@@ -45,7 +47,7 @@ def test_accumulation_keeps_fast_confirmation_from_current_body():
         assert stop(tracker) == (k == 2)
 
 
-@pytest.mark.parametrize("current", ["flat", "sparse", "outside", "none"])
+@pytest.mark.parametrize("current", ["flat", "sparse", "outside", "none", "wide"])
 @pytest.mark.parametrize("copies", [1, 4])
 def test_history_and_duplicate_returns_cannot_complete_current_body(current, copies):
     tracker = Tracker(DetectorConfig().tracking)
@@ -53,6 +55,24 @@ def test_history_and_duplicate_returns_cannot_complete_current_body(current, cop
         tracker.update(blob(current, distance=80. - k, copies=copies), frame_dt=.1, odo_speed=10.)
         assert not stop(tracker)
         assert all(t.cable_hits == 0 for t in tracker.tracks)
+
+
+def test_current_support_counts_unique_voxels_and_measures_only_current_heights():
+    body = blob(copies=4)[0].current_support
+    sparse = blob("sparse", copies=4)[0].current_support
+    flat = blob("flat", copies=4)[0].current_support
+    assert body.n == body.n_gauge == 18
+    assert sparse.n == sparse.n_gauge == 3
+    assert sparse.height == pytest.approx(2 * 2.6 / 17, abs=1e-6)
+    assert flat.n == flat.n_gauge == 1 and flat.height == 0.
+    assert body.height == pytest.approx(2.6)
+
+
+def test_missing_current_descriptor_keeps_accumulated_geometry_ineligible():
+    tracker = Tracker(DetectorConfig().tracking)
+    for k in range(3):
+        tracker.update([replace(blob(distance=80. - k)[0], current_support=None)], frame_dt=.1)
+        assert not stop(tracker)
 
 
 def test_off_switch_keeps_generic_accumulation_confirmation():
