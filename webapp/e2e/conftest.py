@@ -77,6 +77,9 @@ SHARD_WEIGHTS: dict[str, float] = {
 }
 DEFAULT_WEIGHT = 5.0
 SPLIT_MODULES = ("test_player.py",)
+# The 3D player's tests take about twice as long on the 2-vCPU runner as on 4 cores (CI run 712: shard 2, estimated
+# 241 s, took 611 s; the shard without a player test took as long as locally); the other modules take the same.
+RUNNER_FACTOR = {"test_player.py": 2.0}
 # what a build depends on: a dist/ older than any of these is stale
 BUILD_INPUTS = ("src", "public", "index.html", "vite.config.ts", "package.json", "package-lock.json", "tsconfig.json")
 
@@ -360,7 +363,7 @@ def pytest_collection_modifyitems(config, items):
         units.setdefault(f"{module}::{item.name}" if module in SPLIT_MODULES else module, []).append(item)
 
     def weight(key: str) -> float:
-        return SHARD_WEIGHTS.get(key, DEFAULT_WEIGHT * len(units[key]))
+        return SHARD_WEIGHTS.get(key, DEFAULT_WEIGHT * len(units[key])) * RUNNER_FACTOR.get(key.split("::")[0], 1.0)
 
     loads = [0.0] * n
     groups: list[set[str]] = [set() for _ in range(n)]
