@@ -30,6 +30,10 @@ gitbook
 !docs/evidence/node_startup_2026-10-15/docker_tools/publish_report.py
 !docs/evidence/node_startup_2026-10-15/docker_tools/runtime_probe.py
 !docs/evidence/offline_rebuild_2026-10-15/verify.py
+# The N2 Falcon tests need the playback-subset script and the proxy input hook, not the surrounding evidence.
+!docs/evidence/n2_falcon_2026-10-18/retain_playback_subset.py
+!docs/evidence/n2_falcon_2026-10-18/proxy_hook/proxy_input_hook.py
+!docs/evidence/n2_falcon_2026-10-18/proxy_hook/sitecustomize.py
 web
 webapp
 # The shared-policy tests import only this dependency-free consumer, not the web application.
@@ -38,6 +42,7 @@ webapp
 # Only the committed label-schema regression fixture is needed by the dataset-free suite.
 labels
 !labels/doubleT_obstacle.json
+!labels/cloud_with_fake_obj.json
 out
 data
 dist

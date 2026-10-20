@@ -85,6 +85,11 @@ COPY docs/evidence/node_startup_2026-10-15/docker_tools/analyze_chain.py docs/ev
 COPY docs/evidence/offline_rebuild_2026-10-15/verify.py ./docs/evidence/offline_rebuild_2026-10-15/verify.py
 # Label-envelope/schema regression and offline `resense eval`; no point-cloud dataset is copied.
 COPY labels/doubleT_obstacle.json ./labels/doubleT_obstacle.json
+# The score-overclaim tests read the canonical set O labels.
+COPY labels/cloud_with_fake_obj.json ./labels/cloud_with_fake_obj.json
+# The N2 Falcon tests run the playback-subset script and the proxy input hook (with its sitecustomize).
+COPY docs/evidence/n2_falcon_2026-10-18/retain_playback_subset.py ./docs/evidence/n2_falcon_2026-10-18/retain_playback_subset.py
+COPY docs/evidence/n2_falcon_2026-10-18/proxy_hook/proxy_input_hook.py docs/evidence/n2_falcon_2026-10-18/proxy_hook/sitecustomize.py ./docs/evidence/n2_falcon_2026-10-18/proxy_hook/
 # END pure test fixtures
 RUN if [ "$WITH_TOOLS" = "1" ]; then \
         pip3 install "rosbags==0.11.5" "zstandard==0.25.0" "matplotlib==3.10.7" "open3d==0.19.0" "pytest==8.4.2" "websockets==14.2"; \

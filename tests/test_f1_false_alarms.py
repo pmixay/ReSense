@@ -10,6 +10,8 @@
 """
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 import pytest
 
@@ -222,7 +224,7 @@ def test_candidate_values_in_the_class_and_the_yaml():
     assert y.cluster.mount_cross_above_only
     assert y.tracking.settle_min_hits == 0
     assert y.lowobj.rail_band_range == 0 and y.lowobj.no_rail_low_within == 0
-    assert DetectorConfig.from_yaml("configs/default.yaml").to_dict() == y.to_dict()
+    assert DetectorConfig.from_yaml(Path(__file__).resolve().parents[1] / "configs/default.yaml").to_dict() == y.to_dict()
 
 
 def _long_object_on_the_left_rail():
