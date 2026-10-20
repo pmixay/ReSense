@@ -1,0 +1,8319 @@
+{
+  "measuredAt": "2026-10-19T20:11:12.003761+00:00",
+  "baselineCommit": "cf130e8af2c8f30f7714c752ca30bd1b470f770f",
+  "frontendSourceSha256": "12a57f12eb410562a5cf744bf37b5c9fdf4a271fa8962368fd9e60f6547321dc",
+  "browser": "Chrome for Testing 156.0.8078.4, Playwright headless Chromium default launch, DPR 1",
+  "method": "Fresh pages, local live API, same browser launch configuration. Real-time requestAnimationFrame timestamps and long-task observer; no screenshots or concurrent test/capture jobs during sampling. 1440x900: four route pairs, two repeats at 1x and 4x CPU rate. Other desktop sizes: four pairs, one repeat at 1x.",
+  "before": [
+    {
+      "source": "/runs",
+      "target": "/upload",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 13,
+      "meanGap": 55.54999999999999,
+      "p95Gap": 100.0,
+      "maxGap": 100.0,
+      "gapsOver25ms": 9,
+      "gapsOver50ms": 9,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 329.5
+        },
+        {
+          "phase": "covered",
+          "now": 628.8999999761581
+        },
+        {
+          "phase": "travelling",
+          "now": 1234.2999999523163
+        },
+        {
+          "phase": "opening",
+          "now": 1920.7000000476837
+        },
+        {
+          "phase": "idle",
+          "now": 2256.2999999523163
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        100.0,
+        66.7,
+        16.6,
+        50.1,
+        66.6,
+        66.6,
+        50.1,
+        16.6,
+        16.7,
+        66.7,
+        83.3,
+        66.6
+      ],
+      "fps": 18.0
+    },
+    {
+      "source": "/runs",
+      "target": "/upload",
+      "rate": 1,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 13,
+      "meanGap": 55.55833333333334,
+      "p95Gap": 116.70000000000005,
+      "maxGap": 116.70000000000005,
+      "gapsOver25ms": 8,
+      "gapsOver50ms": 7,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 298.5
+        },
+        {
+          "phase": "covered",
+          "now": 604
+        },
+        {
+          "phase": "travelling",
+          "now": 1213.4000000953674
+        },
+        {
+          "phase": "opening",
+          "now": 1902.8000000715256
+        },
+        {
+          "phase": "idle",
+          "now": 2238.7000000476837
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        116.7,
+        66.6,
+        16.7,
+        66.7,
+        66.6,
+        50.0,
+        16.7,
+        16.7,
+        16.7,
+        66.6,
+        83.3,
+        83.4
+      ],
+      "fps": 18.0
+    },
+    {
+      "source": "/upload",
+      "target": "/about",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 23,
+      "meanGap": 58.32727272727272,
+      "p95Gap": 83.29999999999973,
+      "maxGap": 83.29999999999973,
+      "gapsOver25ms": 19,
+      "gapsOver50ms": 15,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 736.2000000476837
+        },
+        {
+          "phase": "covered",
+          "now": 1032.8999999761581
+        },
+        {
+          "phase": "travelling",
+          "now": 2220
+        },
+        {
+          "phase": "opening",
+          "now": 3515.899999976158
+        },
+        {
+          "phase": "idle",
+          "now": 3850.7999999523163
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        16.6,
+        66.7,
+        83.3,
+        16.7,
+        66.7,
+        66.6,
+        50.0,
+        66.6,
+        50.0,
+        66.7,
+        66.7,
+        50.0,
+        66.7,
+        66.6,
+        50.0,
+        66.7,
+        66.6,
+        16.7,
+        66.6,
+        66.8,
+        83.3,
+        66.6
+      ],
+      "fps": 17.14
+    },
+    {
+      "source": "/upload",
+      "target": "/about",
+      "rate": 1,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 21,
+      "meanGap": 63.33,
+      "p95Gap": 83.40000000000009,
+      "maxGap": 83.40000000000009,
+      "gapsOver25ms": 18,
+      "gapsOver50ms": 15,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 664
+        },
+        {
+          "phase": "covered",
+          "now": 955.1999999284744
+        },
+        {
+          "phase": "travelling",
+          "now": 2131.6999999284744
+        },
+        {
+          "phase": "opening",
+          "now": 3413.5
+        },
+        {
+          "phase": "idle",
+          "now": 3748.2999999523163
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        83.3,
+        83.4,
+        16.6,
+        66.7,
+        66.7,
+        50.0,
+        66.6,
+        66.7,
+        66.7,
+        49.9,
+        66.7,
+        66.7,
+        49.9,
+        83.4,
+        66.6,
+        16.7,
+        66.6,
+        83.4,
+        83.3,
+        66.7
+      ],
+      "fps": 15.79
+    },
+    {
+      "source": "/about",
+      "target": "/upload",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 23,
+      "meanGap": 59.849999999999994,
+      "p95Gap": 83.39999999999986,
+      "maxGap": 83.40000000000009,
+      "gapsOver25ms": 19,
+      "gapsOver50ms": 16,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 295.39999997615814
+        },
+        {
+          "phase": "covered",
+          "now": 603
+        },
+        {
+          "phase": "travelling",
+          "now": 1758.1000000238419
+        },
+        {
+          "phase": "opening",
+          "now": 3081.2000000476837
+        },
+        {
+          "phase": "idle",
+          "now": 3417.100000023842
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        83.4,
+        83.4,
+        16.6,
+        66.7,
+        66.6,
+        66.7,
+        66.7,
+        66.6,
+        66.7,
+        50.0,
+        66.7,
+        66.7,
+        49.9,
+        66.7,
+        66.7,
+        16.7,
+        49.9,
+        66.7,
+        16.6,
+        66.7,
+        66.7,
+        83.3
+      ],
+      "fps": 16.71
+    },
+    {
+      "source": "/about",
+      "target": "/upload",
+      "rate": 1,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 22,
+      "meanGap": 62.6952380952381,
+      "p95Gap": 83.40000000000009,
+      "maxGap": 100.0,
+      "gapsOver25ms": 18,
+      "gapsOver50ms": 15,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 278.60000002384186
+        },
+        {
+          "phase": "covered",
+          "now": 593.2999999523163
+        },
+        {
+          "phase": "travelling",
+          "now": 1756.6999999284744
+        },
+        {
+          "phase": "opening",
+          "now": 3089
+        },
+        {
+          "phase": "idle",
+          "now": 3424.2999999523163
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        100.0,
+        83.4,
+        16.6,
+        66.6,
+        66.7,
+        66.7,
+        66.7,
+        83.3,
+        83.3,
+        66.7,
+        50.0,
+        66.6,
+        66.7,
+        50,
+        16.7,
+        16.7,
+        50.0,
+        66.6,
+        83.4,
+        66.6,
+        83.3
+      ],
+      "fps": 15.95
+    },
+    {
+      "source": "/queue",
+      "target": "/player",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 13,
+      "meanGap": 55.558333333333394,
+      "p95Gap": 100.0,
+      "maxGap": 100.0,
+      "gapsOver25ms": 8,
+      "gapsOver50ms": 7,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 353.5
+        },
+        {
+          "phase": "covered",
+          "now": 844.5
+        },
+        {
+          "phase": "travelling",
+          "now": 5367.700000047684
+        },
+        {
+          "phase": "opening",
+          "now": 6050
+        },
+        {
+          "phase": "idle",
+          "now": 6760.300000071526
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        16.7,
+        100.0,
+        16.7,
+        16.7,
+        49.9,
+        66.7,
+        66.6,
+        50.1,
+        16.6,
+        66.7,
+        100.0,
+        100.0
+      ],
+      "fps": 18.0
+    },
+    {
+      "source": "/queue",
+      "target": "/player",
+      "rate": 1,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 13,
+      "meanGap": 58.333333333333336,
+      "p95Gap": 100.09999999999945,
+      "maxGap": 100.09999999999945,
+      "gapsOver25ms": 9,
+      "gapsOver50ms": 7,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 310.5
+        },
+        {
+          "phase": "covered",
+          "now": 769.2999999523163
+        },
+        {
+          "phase": "travelling",
+          "now": 4917.899999976158
+        },
+        {
+          "phase": "opening",
+          "now": 5632.700000047684
+        },
+        {
+          "phase": "idle",
+          "now": 6283.899999976158
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        99.9,
+        16.7,
+        50.1,
+        66.6,
+        50.0,
+        66.7,
+        50,
+        16.6,
+        16.7,
+        83.3,
+        100.1,
+        83.3
+      ],
+      "fps": 17.14
+    },
+    {
+      "source": "/runs",
+      "target": "/upload",
+      "rate": 4,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 15,
+      "meanGap": 47.607142857142854,
+      "p95Gap": 83.30000000000018,
+      "maxGap": 83.30000000000018,
+      "gapsOver25ms": 9,
+      "gapsOver50ms": 7,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 391.89999997615814
+        },
+        {
+          "phase": "covered",
+          "now": 785.6999999284744
+        },
+        {
+          "phase": "travelling",
+          "now": 2484.600000023842
+        },
+        {
+          "phase": "opening",
+          "now": 3162.399999976158
+        },
+        {
+          "phase": "idle",
+          "now": 3516.899999976158
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        16.6,
+        66.7,
+        16.7,
+        16.6,
+        50,
+        66.7,
+        66.6,
+        50.0,
+        66.6,
+        16.7,
+        16.7,
+        66.7,
+        66.6,
+        83.3
+      ],
+      "fps": 21.01
+    },
+    {
+      "source": "/runs",
+      "target": "/upload",
+      "rate": 4,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 14,
+      "meanGap": 48.70769230769233,
+      "p95Gap": 83.29999999999973,
+      "maxGap": 83.29999999999973,
+      "gapsOver25ms": 8,
+      "gapsOver50ms": 7,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 393.59999990463257
+        },
+        {
+          "phase": "covered",
+          "now": 795.0999999046326
+        },
+        {
+          "phase": "travelling",
+          "now": 2479.7999999523163
+        },
+        {
+          "phase": "opening",
+          "now": 3120.1999999284744
+        },
+        {
+          "phase": "idle",
+          "now": 3477.5
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        16.6,
+        83.3,
+        16.7,
+        16.7,
+        66.6,
+        66.7,
+        50.0,
+        66.7,
+        16.7,
+        16.7,
+        66.6,
+        66.7,
+        83.2
+      ],
+      "fps": 20.53
+    },
+    {
+      "source": "/upload",
+      "target": "/about",
+      "rate": 4,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 23,
+      "meanGap": 63.63636363636363,
+      "p95Gap": 116.80000000000018,
+      "maxGap": 133.29999999999927,
+      "gapsOver25ms": 11,
+      "gapsOver50ms": 11,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 773.5
+        },
+        {
+          "phase": "covered",
+          "now": 1127.6000000238419
+        },
+        {
+          "phase": "travelling",
+          "now": 5130.399999976158
+        },
+        {
+          "phase": "opening",
+          "now": 6537.800000071526
+        },
+        {
+          "phase": "idle",
+          "now": 6884.200000047684
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        66.6,
+        116.7,
+        16.7,
+        16.7,
+        116.6,
+        16.7,
+        116.7,
+        16.6,
+        133.3,
+        16.7,
+        16.7,
+        16.7,
+        99.9,
+        116.7,
+        16.7,
+        16.6,
+        100.0,
+        16.6,
+        16.8,
+        116.6,
+        116.6,
+        116.8
+      ],
+      "fps": 15.71
+    },
+    {
+      "source": "/upload",
+      "target": "/about",
+      "rate": 4,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 23,
+      "meanGap": 59.84090909090909,
+      "p95Gap": 133.29999999999927,
+      "maxGap": 133.30000000000018,
+      "gapsOver25ms": 10,
+      "gapsOver50ms": 9,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 770.8000000715256
+        },
+        {
+          "phase": "covered",
+          "now": 1144.8999999761581
+        },
+        {
+          "phase": "travelling",
+          "now": 5549
+        },
+        {
+          "phase": "opening",
+          "now": 6882.899999976158
+        },
+        {
+          "phase": "idle",
+          "now": 7229.200000047684
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        49.9,
+        116.7,
+        16.7,
+        16.7,
+        16.6,
+        133.3,
+        16.7,
+        16.7,
+        116.6,
+        16.7,
+        16.7,
+        116.7,
+        16.6,
+        16.7,
+        99.9,
+        116.7,
+        16.7,
+        16.7,
+        16.6,
+        133.3,
+        116.8,
+        116.5
+      ],
+      "fps": 16.71
+    },
+    {
+      "source": "/about",
+      "target": "/upload",
+      "rate": 4,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 21,
+      "meanGap": 66.66999999999999,
+      "p95Gap": 133.30000000000018,
+      "maxGap": 133.39999999999964,
+      "gapsOver25ms": 10,
+      "gapsOver50ms": 10,
+      "travelLongTasks": [
+        {
+          "start": 4750.100000023842,
+          "duration": 54
+        }
+      ],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 384.60000002384186
+        },
+        {
+          "phase": "covered",
+          "now": 823.8000000715256
+        },
+        {
+          "phase": "travelling",
+          "now": 4743.200000047684
+        },
+        {
+          "phase": "opening",
+          "now": 6087.899999976158
+        },
+        {
+          "phase": "idle",
+          "now": 6449.600000023842
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        66.8,
+        133.3,
+        16.6,
+        16.7,
+        16.7,
+        116.6,
+        16.7,
+        116.6,
+        16.7,
+        16.7,
+        116.7,
+        16.6,
+        16.7,
+        116.6,
+        16.7,
+        116.6,
+        16.7,
+        133.4,
+        133.3,
+        116.7
+      ],
+      "fps": 15.0
+    },
+    {
+      "source": "/about",
+      "target": "/upload",
+      "rate": 4,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 18,
+      "meanGap": 73.52941176470588,
+      "p95Gap": 133.30000000000018,
+      "maxGap": 133.30000000000018,
+      "gapsOver25ms": 11,
+      "gapsOver50ms": 10,
+      "travelLongTasks": [
+        {
+          "start": 4871,
+          "duration": 53
+        }
+      ],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 377.10000002384186
+        },
+        {
+          "phase": "covered",
+          "now": 814.6000000238419
+        },
+        {
+          "phase": "travelling",
+          "now": 4869.299999952316
+        },
+        {
+          "phase": "opening",
+          "now": 6120.299999952316
+        },
+        {
+          "phase": "idle",
+          "now": 6474.700000047684
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        83.3,
+        116.6,
+        16.7,
+        16.7,
+        100.0,
+        33.3,
+        100.1,
+        16.6,
+        116.6,
+        16.8,
+        116.6,
+        16.7,
+        99.9,
+        16.7,
+        133.3,
+        133.3,
+        116.8
+      ],
+      "fps": 13.6
+    },
+    {
+      "source": "/queue",
+      "target": "/player",
+      "rate": 4,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 13,
+      "meanGap": 54.16666666666659,
+      "p95Gap": 100.0,
+      "maxGap": 100.0,
+      "gapsOver25ms": 9,
+      "gapsOver50ms": 6,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 398.2999999523163
+        },
+        {
+          "phase": "covered",
+          "now": 1368.1999999284744
+        },
+        {
+          "phase": "travelling",
+          "now": 7623.299999952316
+        },
+        {
+          "phase": "opening",
+          "now": 8284.5
+        },
+        {
+          "phase": "idle",
+          "now": 9191.899999976158
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        33.4,
+        66.7,
+        16.6,
+        16.7,
+        49.9,
+        66.7,
+        50.0,
+        66.7,
+        66.7,
+        16.7,
+        100.0,
+        99.9
+      ],
+      "fps": 18.46
+    },
+    {
+      "source": "/queue",
+      "target": "/player",
+      "rate": 4,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 13,
+      "meanGap": 54.15833333333338,
+      "p95Gap": 100.0,
+      "maxGap": 100.0,
+      "gapsOver25ms": 9,
+      "gapsOver50ms": 6,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 393.5
+        },
+        {
+          "phase": "covered",
+          "now": 1401.3999999761581
+        },
+        {
+          "phase": "travelling",
+          "now": 7737.600000023842
+        },
+        {
+          "phase": "opening",
+          "now": 8410.899999976158
+        },
+        {
+          "phase": "idle",
+          "now": 9363.100000023842
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "done": true,
+      "frameGaps": [
+        33.3,
+        66.6,
+        16.7,
+        16.7,
+        50.0,
+        66.7,
+        66.6,
+        50.0,
+        83.3,
+        16.7,
+        83.3,
+        100.0
+      ],
+      "fps": 18.46
+    }
+  ],
+  "after": [
+    {
+      "source": "/runs",
+      "target": "/upload",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 34,
+      "meanGap": 16.66363636363636,
+      "p95Gap": 16.700000000000045,
+      "maxGap": 16.700000000000045,
+      "gapsOver25ms": 0,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 316.89999997615814
+        },
+        {
+          "phase": "covered",
+          "now": 618.2999999523163
+        },
+        {
+          "phase": "travelling",
+          "now": 1235.5
+        },
+        {
+          "phase": "opening",
+          "now": 1793.0999999046326
+        },
+        {
+          "phase": "idle",
+          "now": 2129
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.6
+      ],
+      "fps": 60.01
+    },
+    {
+      "source": "/runs",
+      "target": "/upload",
+      "rate": 1,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 34,
+      "meanGap": 16.666666666666668,
+      "p95Gap": 16.700000000000045,
+      "maxGap": 16.800000000000182,
+      "gapsOver25ms": 0,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 293.89999997615814
+        },
+        {
+          "phase": "covered",
+          "now": 584.3000000715256
+        },
+        {
+          "phase": "travelling",
+          "now": 1213
+        },
+        {
+          "phase": "opening",
+          "now": 1764
+        },
+        {
+          "phase": "idle",
+          "now": 2099.8000000715256
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7
+      ],
+      "fps": 60.0
+    },
+    {
+      "source": "/upload",
+      "target": "/about",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 70,
+      "meanGap": 16.9072463768116,
+      "p95Gap": 16.700000000000273,
+      "maxGap": 33.40000000000009,
+      "gapsOver25ms": 1,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 656.5
+        },
+        {
+          "phase": "covered",
+          "now": 947.7000000476837
+        },
+        {
+          "phase": "travelling",
+          "now": 2060.5
+        },
+        {
+          "phase": "opening",
+          "now": 3236.2999999523163
+        },
+        {
+          "phase": "idle",
+          "now": 3571.2999999523163
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.6,
+        16.7,
+        33.4,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6
+      ],
+      "fps": 59.15
+    },
+    {
+      "source": "/upload",
+      "target": "/about",
+      "rate": 1,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 73,
+      "meanGap": 16.666666666666668,
+      "p95Gap": 16.799999999999727,
+      "maxGap": 16.800000000000182,
+      "gapsOver25ms": 0,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 645.3999999761581
+        },
+        {
+          "phase": "covered",
+          "now": 936.5
+        },
+        {
+          "phase": "travelling",
+          "now": 2065.2999999523163
+        },
+        {
+          "phase": "opening",
+          "now": 3266
+        },
+        {
+          "phase": "idle",
+          "now": 3600.899999976158
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.8,
+        16.6,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.8,
+        16.6,
+        16.7
+      ],
+      "fps": 60.0
+    },
+    {
+      "source": "/about",
+      "target": "/upload",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 71,
+      "meanGap": 16.665714285714287,
+      "p95Gap": 16.700000000000273,
+      "maxGap": 16.800000000000182,
+      "gapsOver25ms": 0,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 278
+        },
+        {
+          "phase": "covered",
+          "now": 585.6999999284744
+        },
+        {
+          "phase": "travelling",
+          "now": 1669.1000000238419
+        },
+        {
+          "phase": "opening",
+          "now": 2833.5
+        },
+        {
+          "phase": "idle",
+          "now": 3168.899999976158
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.5,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6
+      ],
+      "fps": 60.0
+    },
+    {
+      "source": "/about",
+      "target": "/upload",
+      "rate": 1,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 73,
+      "meanGap": 16.665277777777774,
+      "p95Gap": 16.800000000000182,
+      "maxGap": 16.800000000000182,
+      "gapsOver25ms": 0,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 274.39999997615814
+        },
+        {
+          "phase": "covered",
+          "now": 582.6000000238419
+        },
+        {
+          "phase": "travelling",
+          "now": 1743.6000000238419
+        },
+        {
+          "phase": "opening",
+          "now": 2945.2999999523163
+        },
+        {
+          "phase": "idle",
+          "now": 3280.7999999523163
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.8,
+        16.6,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.6,
+        16.8,
+        16.6,
+        16.6,
+        16.7,
+        16.8,
+        16.5,
+        16.8,
+        16.6,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6
+      ],
+      "fps": 60.01
+    },
+    {
+      "source": "/queue",
+      "target": "/player",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 34,
+      "meanGap": 16.666666666666668,
+      "p95Gap": 16.699999999999818,
+      "maxGap": 16.799999999999272,
+      "gapsOver25ms": 0,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 302.60000002384186
+        },
+        {
+          "phase": "covered",
+          "now": 800.9000000953674
+        },
+        {
+          "phase": "travelling",
+          "now": 5548.300000071526
+        },
+        {
+          "phase": "opening",
+          "now": 6110.600000023842
+        },
+        {
+          "phase": "idle",
+          "now": 6834.700000047684
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6
+      ],
+      "fps": 60.0
+    },
+    {
+      "source": "/queue",
+      "target": "/player",
+      "rate": 1,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 34,
+      "meanGap": 16.666666666666668,
+      "p95Gap": 16.800000000000182,
+      "maxGap": 16.800000000000182,
+      "gapsOver25ms": 0,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 303.39999997615814
+        },
+        {
+          "phase": "covered",
+          "now": 757.1999999284744
+        },
+        {
+          "phase": "travelling",
+          "now": 5364.600000023842
+        },
+        {
+          "phase": "opening",
+          "now": 5913.399999976158
+        },
+        {
+          "phase": "idle",
+          "now": 6615.799999952316
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.8,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6
+      ],
+      "fps": 60.0
+    },
+    {
+      "source": "/runs",
+      "target": "/upload",
+      "rate": 4,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 30,
+      "meanGap": 17.24137931034483,
+      "p95Gap": 16.700000000000273,
+      "maxGap": 33.40000000000009,
+      "gapsOver25ms": 1,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 422.60000002384186
+        },
+        {
+          "phase": "covered",
+          "now": 798.6999999284744
+        },
+        {
+          "phase": "travelling",
+          "now": 2589.6999999284744
+        },
+        {
+          "phase": "opening",
+          "now": 3100.100000023842
+        },
+        {
+          "phase": "idle",
+          "now": 3456.399999976158
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        33.4,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6
+      ],
+      "fps": 58.0
+    },
+    {
+      "source": "/runs",
+      "target": "/upload",
+      "rate": 4,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 33,
+      "meanGap": 17.1875,
+      "p95Gap": 16.800000000000182,
+      "maxGap": 33.20000000000027,
+      "gapsOver25ms": 1,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 403.39999997615814
+        },
+        {
+          "phase": "covered",
+          "now": 785.1999999284744
+        },
+        {
+          "phase": "travelling",
+          "now": 2574
+        },
+        {
+          "phase": "opening",
+          "now": 3130.899999976158
+        },
+        {
+          "phase": "idle",
+          "now": 3483.399999976158
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        33.2,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7
+      ],
+      "fps": 58.18
+    },
+    {
+      "source": "/upload",
+      "target": "/about",
+      "rate": 4,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 20,
+      "meanGap": 59.65263157894735,
+      "p95Gap": 133.40000000000055,
+      "maxGap": 133.40000000000055,
+      "gapsOver25ms": 9,
+      "gapsOver50ms": 8,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 756.6999999284744
+        },
+        {
+          "phase": "covered",
+          "now": 1133.8999999761581
+        },
+        {
+          "phase": "travelling",
+          "now": 5050.199999928474
+        },
+        {
+          "phase": "opening",
+          "now": 6285.199999928474
+        },
+        {
+          "phase": "idle",
+          "now": 6631.799999952316
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": "Navigation raster preparation timed out",
+      "frosted": false,
+      "done": true,
+      "frameGaps": [
+        33.4,
+        133.4,
+        16.5,
+        16.8,
+        116.6,
+        16.7,
+        116.6,
+        16.7,
+        116.7,
+        16.6,
+        16.7,
+        116.6,
+        16.7,
+        100.1,
+        16.6,
+        16.6,
+        116.7,
+        116.7,
+        16.7
+      ],
+      "fps": 16.76
+    },
+    {
+      "source": "/upload",
+      "target": "/about",
+      "rate": 4,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 20,
+      "meanGap": 63.1578947368421,
+      "p95Gap": 133.30000000000018,
+      "maxGap": 133.30000000000018,
+      "gapsOver25ms": 10,
+      "gapsOver50ms": 9,
+      "travelLongTasks": [],
+      "travelMutations": 0,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 743.7000000476837
+        },
+        {
+          "phase": "covered",
+          "now": 1109.3000000715256
+        },
+        {
+          "phase": "travelling",
+          "now": 5018.300000071526
+        },
+        {
+          "phase": "opening",
+          "now": 6331.300000071526
+        },
+        {
+          "phase": "idle",
+          "now": 6677
+        }
+      ],
+      "mutations": 0,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": "Navigation raster preparation timed out",
+      "frosted": false,
+      "done": true,
+      "frameGaps": [
+        33.3,
+        116.7,
+        16.6,
+        16.7,
+        100.0,
+        16.7,
+        116.6,
+        16.7,
+        116.7,
+        16.6,
+        16.7,
+        116.7,
+        16.6,
+        100.0,
+        16.7,
+        16.7,
+        100.0,
+        133.3,
+        116.7
+      ],
+      "fps": 15.83
+    },
+    {
+      "source": "/about",
+      "target": "/upload",
+      "rate": 4,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 70,
+      "meanGap": 17.389855072463764,
+      "p95Gap": 16.800000000000182,
+      "maxGap": 50.0,
+      "gapsOver25ms": 2,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 398.5
+        },
+        {
+          "phase": "covered",
+          "now": 847.6000000238419
+        },
+        {
+          "phase": "travelling",
+          "now": 4869.399999976158
+        },
+        {
+          "phase": "opening",
+          "now": 6068.799999952316
+        },
+        {
+          "phase": "idle",
+          "now": 6422.299999952316
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        33.3,
+        50.0,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6
+      ],
+      "fps": 57.5
+    },
+    {
+      "source": "/about",
+      "target": "/upload",
+      "rate": 4,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 67,
+      "meanGap": 17.42272727272727,
+      "p95Gap": 16.700000000000728,
+      "maxGap": 50.0,
+      "gapsOver25ms": 2,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 391
+        },
+        {
+          "phase": "covered",
+          "now": 831.6000000238419
+        },
+        {
+          "phase": "travelling",
+          "now": 4771.600000023842
+        },
+        {
+          "phase": "opening",
+          "now": 5927.600000023842
+        },
+        {
+          "phase": "idle",
+          "now": 6280.899999976158
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(10080px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        50.0,
+        33.3,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6
+      ],
+      "fps": 57.4
+    },
+    {
+      "source": "/queue",
+      "target": "/player",
+      "rate": 4,
+      "repeat": 0,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 32,
+      "meanGap": 17.745161290322592,
+      "p95Gap": 33.30000000000018,
+      "maxGap": 33.399999999999636,
+      "gapsOver25ms": 2,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 393.7999999523163
+        },
+        {
+          "phase": "covered",
+          "now": 1346.6000000238419
+        },
+        {
+          "phase": "travelling",
+          "now": 7611.399999976158
+        },
+        {
+          "phase": "opening",
+          "now": 8156.399999976158
+        },
+        {
+          "phase": "idle",
+          "now": 9052.600000023842
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        33.4,
+        33.3,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.8,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7
+      ],
+      "fps": 56.35
+    },
+    {
+      "source": "/queue",
+      "target": "/player",
+      "rate": 4,
+      "repeat": 1,
+      "viewport": [
+        1440,
+        900
+      ],
+      "travelFrames": 33,
+      "meanGap": 17.18437499999999,
+      "p95Gap": 16.700000000000728,
+      "maxGap": 33.30000000000018,
+      "gapsOver25ms": 1,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 402.10000002384186
+        },
+        {
+          "phase": "covered",
+          "now": 1356.7000000476837
+        },
+        {
+          "phase": "travelling",
+          "now": 7496.300000071526
+        },
+        {
+          "phase": "opening",
+          "now": 8048.399999976158
+        },
+        {
+          "phase": "idle",
+          "now": 8942.800000071526
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-2880px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.6,
+        33.3,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6
+      ],
+      "fps": 58.19
+    },
+    {
+      "source": "/runs",
+      "target": "/upload",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1280,
+        720
+      ],
+      "travelFrames": 34,
+      "meanGap": 16.666666666666668,
+      "p95Gap": 16.799999999999955,
+      "maxGap": 16.799999999999955,
+      "gapsOver25ms": 0,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 334.10000002384186
+        },
+        {
+          "phase": "covered",
+          "now": 631.7000000476837
+        },
+        {
+          "phase": "travelling",
+          "now": 1189.3000000715256
+        },
+        {
+          "phase": "opening",
+          "now": 1739.8000000715256
+        },
+        {
+          "phase": "idle",
+          "now": 2076
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(2560px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.6,
+        16.8,
+        16.7,
+        16.5,
+        16.8,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7
+      ],
+      "fps": 60.0
+    },
+    {
+      "source": "/upload",
+      "target": "/about",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1280,
+        720
+      ],
+      "travelFrames": 72,
+      "meanGap": 16.898591549295777,
+      "p95Gap": 16.700000000000273,
+      "maxGap": 33.40000000000009,
+      "gapsOver25ms": 1,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 659
+        },
+        {
+          "phase": "covered",
+          "now": 949.6000000238419
+        },
+        {
+          "phase": "travelling",
+          "now": 2068.600000023842
+        },
+        {
+          "phase": "opening",
+          "now": 3277.2000000476837
+        },
+        {
+          "phase": "idle",
+          "now": 3612.2999999523163
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-8960px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.6,
+        16.6,
+        33.4,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6
+      ],
+      "fps": 59.18
+    },
+    {
+      "source": "/about",
+      "target": "/upload",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1280,
+        720
+      ],
+      "travelFrames": 73,
+      "meanGap": 16.665277777777774,
+      "p95Gap": 16.799999999999955,
+      "maxGap": 16.800000000000182,
+      "gapsOver25ms": 0,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 271.7999999523163
+        },
+        {
+          "phase": "covered",
+          "now": 579.1000000238419
+        },
+        {
+          "phase": "travelling",
+          "now": 1694.2999999523163
+        },
+        {
+          "phase": "opening",
+          "now": 2891.399999976158
+        },
+        {
+          "phase": "idle",
+          "now": 3227.399999976158
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(8960px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.8,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7
+      ],
+      "fps": 60.01
+    },
+    {
+      "source": "/queue",
+      "target": "/player",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1280,
+        720
+      ],
+      "travelFrames": 34,
+      "meanGap": 16.666666666666668,
+      "p95Gap": 16.699999999999818,
+      "maxGap": 16.800000000000182,
+      "gapsOver25ms": 0,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 314.60000002384186
+        },
+        {
+          "phase": "covered",
+          "now": 803
+        },
+        {
+          "phase": "travelling",
+          "now": 5032.199999928474
+        },
+        {
+          "phase": "opening",
+          "now": 5594.899999976158
+        },
+        {
+          "phase": "idle",
+          "now": 6163.299999952316
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-2560px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7
+      ],
+      "fps": 60.0
+    },
+    {
+      "source": "/runs",
+      "target": "/upload",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1366,
+        768
+      ],
+      "travelFrames": 34,
+      "meanGap": 16.666666666666668,
+      "p95Gap": 16.800000000000182,
+      "maxGap": 16.800000000000182,
+      "gapsOver25ms": 0,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 315.7000000476837
+        },
+        {
+          "phase": "covered",
+          "now": 604.7999999523163
+        },
+        {
+          "phase": "travelling",
+          "now": 1228.2999999523163
+        },
+        {
+          "phase": "opening",
+          "now": 1782.2999999523163
+        },
+        {
+          "phase": "idle",
+          "now": 2118.100000023842
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(2732px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.6,
+        16.8,
+        16.5,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7
+      ],
+      "fps": 60.0
+    },
+    {
+      "source": "/upload",
+      "target": "/about",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1366,
+        768
+      ],
+      "travelFrames": 72,
+      "meanGap": 16.901408450704228,
+      "p95Gap": 16.700000000000273,
+      "maxGap": 33.30000000000018,
+      "gapsOver25ms": 1,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 625.7000000476837
+        },
+        {
+          "phase": "covered",
+          "now": 921
+        },
+        {
+          "phase": "travelling",
+          "now": 2024.3999999761581
+        },
+        {
+          "phase": "opening",
+          "now": 3221.2000000476837
+        },
+        {
+          "phase": "idle",
+          "now": 3558.2000000476837
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-9562px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        33.3,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.8,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7
+      ],
+      "fps": 59.17
+    },
+    {
+      "source": "/about",
+      "target": "/upload",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1366,
+        768
+      ],
+      "travelFrames": 72,
+      "meanGap": 16.901408450704224,
+      "p95Gap": 16.700000000000273,
+      "maxGap": 33.299999999999955,
+      "gapsOver25ms": 1,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 273.60000002384186
+        },
+        {
+          "phase": "covered",
+          "now": 580.2000000476837
+        },
+        {
+          "phase": "travelling",
+          "now": 1713
+        },
+        {
+          "phase": "opening",
+          "now": 2910.7000000476837
+        },
+        {
+          "phase": "idle",
+          "now": 3246.2000000476837
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(9562px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        33.3,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7
+      ],
+      "fps": 59.17
+    },
+    {
+      "source": "/queue",
+      "target": "/player",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1366,
+        768
+      ],
+      "travelFrames": 34,
+      "meanGap": 16.666666666666668,
+      "p95Gap": 16.800000000000182,
+      "maxGap": 16.800000000000182,
+      "gapsOver25ms": 0,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 289.7999999523163
+        },
+        {
+          "phase": "covered",
+          "now": 783.6999999284744
+        },
+        {
+          "phase": "travelling",
+          "now": 5233.099999904633
+        },
+        {
+          "phase": "opening",
+          "now": 5785.199999928474
+        },
+        {
+          "phase": "idle",
+          "now": 6412.599999904633
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-2732px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7
+      ],
+      "fps": 60.0
+    },
+    {
+      "source": "/runs",
+      "target": "/upload",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1920,
+        1080
+      ],
+      "travelFrames": 32,
+      "meanGap": 17.741935483870968,
+      "p95Gap": 16.799999999999955,
+      "maxGap": 50.0,
+      "gapsOver25ms": 1,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 320.10000002384186
+        },
+        {
+          "phase": "covered",
+          "now": 611.6000000238419
+        },
+        {
+          "phase": "travelling",
+          "now": 1278.8000000715256
+        },
+        {
+          "phase": "opening",
+          "now": 1849.7000000476837
+        },
+        {
+          "phase": "idle",
+          "now": 2185.2000000476837
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(3840px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        16.6,
+        50.0,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7
+      ],
+      "fps": 56.36
+    },
+    {
+      "source": "/upload",
+      "target": "/about",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1920,
+        1080
+      ],
+      "travelFrames": 72,
+      "meanGap": 17.135211267605634,
+      "p95Gap": 16.800000000000182,
+      "maxGap": 33.40000000000009,
+      "gapsOver25ms": 2,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 675.1000000238419
+        },
+        {
+          "phase": "covered",
+          "now": 937.1000000238419
+        },
+        {
+          "phase": "travelling",
+          "now": 2149.4000000953674
+        },
+        {
+          "phase": "opening",
+          "now": 3369.8000000715256
+        },
+        {
+          "phase": "idle",
+          "now": 3704.600000023842
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-13440px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.6,
+        16.7,
+        33.3,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        33.4,
+        16.6
+      ],
+      "fps": 58.36
+    },
+    {
+      "source": "/about",
+      "target": "/upload",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1920,
+        1080
+      ],
+      "travelFrames": 72,
+      "meanGap": 16.901408450704224,
+      "p95Gap": 16.799999999999955,
+      "maxGap": 33.299999999999955,
+      "gapsOver25ms": 1,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 272
+        },
+        {
+          "phase": "covered",
+          "now": 582.6999999284744
+        },
+        {
+          "phase": "travelling",
+          "now": 1835.3999999761581
+        },
+        {
+          "phase": "opening",
+          "now": 3061.2999999523163
+        },
+        {
+          "phase": "idle",
+          "now": 3397.0999999046326
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(13440px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 1190,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        16.7,
+        33.3,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.6,
+        16.7,
+        16.7
+      ],
+      "fps": 59.17
+    },
+    {
+      "source": "/queue",
+      "target": "/player",
+      "rate": 1,
+      "repeat": 0,
+      "viewport": [
+        1920,
+        1080
+      ],
+      "travelFrames": 32,
+      "meanGap": 17.738709677419344,
+      "p95Gap": 16.800000000000182,
+      "maxGap": 50.0,
+      "gapsOver25ms": 1,
+      "gapsOver50ms": 0,
+      "travelLongTasks": [],
+      "travelMutations": 2,
+      "errors": [],
+      "phases": [
+        {
+          "phase": "closing",
+          "now": 306.10000002384186
+        },
+        {
+          "phase": "covered",
+          "now": 813
+        },
+        {
+          "phase": "travelling",
+          "now": 7028.399999976158
+        },
+        {
+          "phase": "opening",
+          "now": 7599.399999976158
+        },
+        {
+          "phase": "idle",
+          "now": 8715.600000023842
+        }
+      ],
+      "mutations": 2,
+      "animations": [
+        {
+          "id": "section-travel",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear(0 0%, 0.025 10%, 0.84 78%, 0.96 90%, 1 100%)",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(0px, 0px, 0px)",
+              "computedOffset": 0
+            },
+            {
+              "offset": null,
+              "easing": "linear",
+              "composite": "auto",
+              "transform": "translate3d(-3840px, 0px, 0px)",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-outgoing-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.2,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.2
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 1
+            }
+          ]
+        },
+        {
+          "id": "section-incoming-sharp",
+          "timing": {
+            "delay": 0,
+            "direction": "normal",
+            "duration": 540,
+            "easing": "linear",
+            "endDelay": 0,
+            "fill": "both",
+            "iterationStart": 0,
+            "iterations": 1
+          },
+          "keyframes": [
+            {
+              "offset": 0,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0
+            },
+            {
+              "offset": 0.74,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "0",
+              "computedOffset": 0.74
+            },
+            {
+              "offset": 1,
+              "easing": "linear",
+              "composite": "auto",
+              "opacity": "1",
+              "computedOffset": 1
+            }
+          ]
+        }
+      ],
+      "preparationError": null,
+      "frosted": true,
+      "done": true,
+      "frameGaps": [
+        16.7,
+        16.6,
+        50.0,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.7,
+        16.6,
+        16.7,
+        16.6,
+        16.8,
+        16.6,
+        16.6
+      ],
+      "fps": 56.37
+    }
+  ],
+  "trace": {
+    "before": {
+      "route": [
+        "/upload",
+        "/about"
+      ],
+      "cpuRate": 1,
+      "travelWindowMs": 1295.909,
+      "events": {
+        "Layout": {
+          "count": 22,
+          "totalMs": 3.024,
+          "meanMs": 0.13745454545454544,
+          "maxMs": 0.241
+        },
+        "Paint": {
+          "count": 44,
+          "totalMs": 6.179,
+          "meanMs": 0.14043181818181819,
+          "maxMs": 2.107
+        },
+        "DirectRenderer::DrawFrame": {
+          "count": 19,
+          "totalMs": 1210.378,
+          "meanMs": 63.7041052631579,
+          "maxMs": 80.183
+        },
+        "RasterTask": {
+          "count": 76,
+          "totalMs": 33.223,
+          "meanMs": 0.43714473684210525,
+          "maxMs": 2.948
+        }
+      }
+    },
+    "after": {
+      "route": [
+        "/upload",
+        "/about"
+      ],
+      "cpuRate": 1,
+      "travelWindowMs": 1175.72,
+      "events": {
+        "Paint": {
+          "count": 5,
+          "totalMs": 0.661,
+          "meanMs": 0.1322,
+          "maxMs": 0.32
+        },
+        "Layout": {
+          "count": 1,
+          "totalMs": 0.085,
+          "meanMs": 0.085,
+          "maxMs": 0.085
+        },
+        "RasterTask": {
+          "count": 59,
+          "totalMs": 87.749,
+          "meanMs": 1.487271186440678,
+          "maxMs": 13.591
+        },
+        "DirectRenderer::DrawFrame": {
+          "count": 67,
+          "totalMs": 623.136,
+          "meanMs": 9.300537313432836,
+          "maxMs": 23.937
+        }
+      }
+    }
+  },
+  "interpretation": {
+    "normalDesktop": {
+      "samples": 20,
+      "meanGapRangeMs": [
+        16.66363636363636,
+        17.741935483870968
+      ],
+      "worstGapMs": 50.0,
+      "gapsOver50ms": 0,
+      "allPrepared": true
+    },
+    "startupDOMReplacements": "Successful samples record two endpoint source-to-bitmap replacements at the travelling phase commit, before the first painted travel frame. Frozen images then remain immutable (browser regression assertion).",
+    "stress": {
+      "samples": 8,
+      "fallbackSamples": 2,
+      "note": "At 4x CPU throttling, some long journeys exceed the existing 1800ms raster-preparation guard and use the original CSS/live-glass fallback. That fallback remains functional but is not 60fps in this software-rendered run. Guard/phase/animation logic was intentionally retained."
+    }
+  }
+}

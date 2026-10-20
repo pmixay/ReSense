@@ -16,6 +16,12 @@ All 47 webapp browser tests pass. Final release J1 and external acceptance remai
 
 ## 1. Goal and starting point
 
+**19.10 P2-01 execution:** [D1 reconciliation receipt](../evidence/p2_d1_2026-10-19/README.md)
+updates the maintained status/launch/output documents against the merged 1.2.0
+candidate and the dated 18.10 receipts. Tables below retain their registered 16.10
+starting point. Current package version, selected J1 source and published release
+must be kept distinct; external P1/P4 approvals are not implied by this execution.
+
 Deliver **100% of the applicable P2 acceptance checks**, make the jury's view of the system
 accurate and easy to use, and maximize the score the team's measured solution can justify.
 The last independent assessment is **66/100 on v1.0.0, 13 October**. The 100-point weights
@@ -148,7 +154,7 @@ handoffs explicitly list any owner-blocked correction. This pass may complete be
 4. Replace misleading unqualified GO wording (`СВОБОДНО` in `src/lib/decisions.ts`) with
    **«Препятствие не обнаружено»**, or a compact `GO` with that explanation visibly adjacent.
    `clear_distance` is **estimated monitored range**, not guaranteed free path. Keep layout
-   readable at 1280×720 and 1920×1080 screen-share sizes and in the existing mobile layout.
+   readable at 1280×720 and 1920×1080 desktop screen-share sizes.
 5. P1 updates the RViz status marker using the already evaluated policy reasons; P2 checks
    the view and Foxglove layout. No new ROS plugin should be needed. Foxglove LAST-value
    behaviour must be explained; disconnection is not current GO.

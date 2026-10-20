@@ -16,7 +16,7 @@ export function Logo({ compact }: { compact?: boolean }) {
     <>
       <svg className={styles.logoMark} viewBox="0 0 40 38" aria-hidden>
         <path d="M3.5 19H12" stroke="#fff" strokeWidth="7" strokeLinecap="round" />
-        <circle cx="19" cy="19" r="7" fill="#E4000D" stroke="#fff" strokeWidth="5" />
+        <circle cx="19" cy="19" r="7" fill="var(--red)" stroke="#fff" strokeWidth="5" />
         <path d="M28.2 11.3A12 12 0 0 1 28.2 26.7M32 8.1A17 17 0 0 1 32 29.9" fill="none" stroke="#fff" strokeWidth="2.8" strokeLinecap="round" />
       </svg>
       {!compact && <span className={styles.logoWord}>ReSense</span>}

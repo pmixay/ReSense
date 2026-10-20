@@ -1,0 +1,267 @@
+{
+  "method": "Real ScreenDisplay GPU render, Chromium SwiftShader 1200x800 DPR1; diagnostic uniform/split source textures, black baseline, pointer-only cache return. Wall sampled at y=62,64,66 and 650,653,656, outside enclosure y=70..646.",
+  "frames": {
+    "black": {
+      "emission": [
+        0,
+        0,
+        0,
+        255
+      ],
+      "rail": {
+        "x": 52.038002014160156,
+        "y": 399.90211725234985
+      },
+      "viewport": {
+        "x": 126.09999999999997,
+        "y": 90.8,
+        "width": 947.8,
+        "height": 533.2,
+        "motion": {
+          "sceneX": 0,
+          "sceneY": 0,
+          "sceneZ": 0,
+          "railX": 0,
+          "railY": 0,
+          "railZ": 0
+        },
+        "transform": {
+          "a": 1.0000000000000002,
+          "b": 0,
+          "c": 0,
+          "d": 1,
+          "x": 126.09999999999997,
+          "y": 90.8
+        }
+      },
+      "calls": 75,
+      "triangles": 21562
+    },
+    "red": {
+      "emission": [
+        212,
+        10,
+        25,
+        255
+      ],
+      "rail": {
+        "x": 52.038002014160156,
+        "y": 399.90211725234985
+      },
+      "viewport": {
+        "x": 126.09999999999997,
+        "y": 90.8,
+        "width": 947.8,
+        "height": 533.2,
+        "motion": {
+          "sceneX": 0,
+          "sceneY": 0,
+          "sceneZ": 0,
+          "railX": 0,
+          "railY": 0,
+          "railZ": 0
+        },
+        "transform": {
+          "a": 1.0000000000000002,
+          "b": 0,
+          "c": 0,
+          "d": 1,
+          "x": 126.09999999999997,
+          "y": 90.8
+        }
+      },
+      "calls": 75,
+      "triangles": 21562
+    },
+    "green": {
+      "emission": [
+        10,
+        212,
+        68,
+        255
+      ],
+      "rail": {
+        "x": 52.038002014160156,
+        "y": 399.90211725234985
+      },
+      "viewport": {
+        "x": 126.09999999999997,
+        "y": 90.8,
+        "width": 947.8,
+        "height": 533.2,
+        "motion": {
+          "sceneX": 0,
+          "sceneY": 0,
+          "sceneZ": 0,
+          "railX": 0,
+          "railY": 0,
+          "railZ": 0
+        },
+        "transform": {
+          "a": 1.0000000000000002,
+          "b": 0,
+          "c": 0,
+          "d": 1,
+          "x": 126.09999999999997,
+          "y": 90.8
+        }
+      },
+      "calls": 75,
+      "triangles": 21562
+    },
+    "blue": {
+      "emission": [
+        10,
+        68,
+        212,
+        255
+      ],
+      "rail": {
+        "x": 52.038002014160156,
+        "y": 399.90211725234985
+      },
+      "viewport": {
+        "x": 126.09999999999997,
+        "y": 90.8,
+        "width": 947.8,
+        "height": 533.2,
+        "motion": {
+          "sceneX": 0,
+          "sceneY": 0,
+          "sceneZ": 0,
+          "railX": 0,
+          "railY": 0,
+          "railZ": 0
+        },
+        "transform": {
+          "a": 1.0000000000000002,
+          "b": 0,
+          "c": 0,
+          "d": 1,
+          "x": 126.09999999999997,
+          "y": 90.8
+        }
+      },
+      "calls": 75,
+      "triangles": 21562
+    },
+    "gray": {
+      "emission": [
+        184,
+        184,
+        184,
+        255
+      ],
+      "rail": {
+        "x": 52.038002014160156,
+        "y": 399.90211725234985
+      },
+      "viewport": {
+        "x": 126.09999999999997,
+        "y": 90.8,
+        "width": 947.8,
+        "height": 533.2,
+        "motion": {
+          "sceneX": 0,
+          "sceneY": 0,
+          "sceneZ": 0,
+          "railX": 0,
+          "railY": 0,
+          "railZ": 0
+        },
+        "transform": {
+          "a": 1.0000000000000002,
+          "b": 0,
+          "c": 0,
+          "d": 1,
+          "x": 126.09999999999997,
+          "y": 90.8
+        }
+      },
+      "calls": 75,
+      "triangles": 21562
+    },
+    "split": {
+      "emission": [
+        212,
+        0,
+        0,
+        255
+      ],
+      "rail": {
+        "x": 52.038002014160156,
+        "y": 399.90211725234985
+      },
+      "viewport": {
+        "x": 126.09999999999997,
+        "y": 90.8,
+        "width": 947.8,
+        "height": 533.2,
+        "motion": {
+          "sceneX": 0,
+          "sceneY": 0,
+          "sceneZ": 0,
+          "railX": 0,
+          "railY": 0,
+          "railZ": 0
+        },
+        "transform": {
+          "a": 1.0000000000000002,
+          "b": 0,
+          "c": 0,
+          "d": 1,
+          "x": 126.09999999999997,
+          "y": 90.8
+        }
+      },
+      "calls": 75,
+      "triangles": 21562
+    }
+  },
+  "receiverColorEnergy": {
+    "wall": {
+      "red": 23976.5,
+      "green": 21711.0,
+      "blue": 21602.0
+    },
+    "rail": {
+      "red": 13226.0,
+      "green": 9946.5,
+      "blue": 8720.0
+    }
+  },
+  "splitSideEnergy": {
+    "left": 2903,
+    "right": 3062
+  },
+  "cachedNeutralIdentical": true,
+  "gpuLifetime": {
+    "resizes": [
+      {
+        "geometries": 77,
+        "textures": 7
+      },
+      {
+        "geometries": 77,
+        "textures": 7
+      },
+      {
+        "geometries": 77,
+        "textures": 7
+      },
+      {
+        "geometries": 77,
+        "textures": 7
+      },
+      {
+        "geometries": 77,
+        "textures": 7
+      }
+    ],
+    "afterDispose": {
+      "geometries": 1,
+      "textures": 1
+    }
+  },
+  "errors": []
+}

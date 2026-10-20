@@ -1,0 +1,25 @@
+{
+  "method": "Real train-installed ScreenDisplay in Chromium/SwiftShader, 1000x420 at DPR 1; uniform source frames rendered into the live WebGLRenderTarget.",
+  "sourceRGB": {
+    "black": "#000000",
+    "red": "#ff1122",
+    "green": "#11ff55",
+    "blue": "#1155ff",
+    "gray": "#888888"
+  },
+  "emissionCenterRGBA": {
+    "black": [0, 0, 0, 255],
+    "red": [204, 12, 26, 255],
+    "green": [12, 204, 67, 255],
+    "blue": [12, 67, 204, 255],
+    "gray": [173, 173, 173, 255]
+  },
+  "outsideEmittedColorEnergy": {
+    "method": "Sum of matching-channel change minus the average of other-channel changes versus the same unlit frame, at 3938 wall points 3-18px outside the projected hardware's convex hull.",
+    "red": 611.5,
+    "green": 461.0,
+    "blue": 541.0
+  },
+  "uniformGrayApertureChannelExtrema": [[150, 194], [150, 194], [150, 194]],
+  "consoleErrors": []
+}

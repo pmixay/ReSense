@@ -1,0 +1,115 @@
+{
+  "errors": [],
+  "lighting": {
+    "method": "Actual ScreenDisplay GPU rendering at 1280x800; uniform RGB and split red/blue targets compared with black. Wall/rail points projected from actual modeled geometry.",
+    "frames": {
+      "black": {
+        "emission": [
+          0,
+          0,
+          0,
+          255
+        ],
+        "calls": 78,
+        "triangles": 41606,
+        "outputRestored": true
+      },
+      "red": {
+        "emission": [
+          212,
+          10,
+          25,
+          255
+        ],
+        "calls": 78,
+        "triangles": 41606,
+        "outputRestored": true
+      },
+      "green": {
+        "emission": [
+          10,
+          212,
+          68,
+          255
+        ],
+        "calls": 78,
+        "triangles": 41606,
+        "outputRestored": true
+      },
+      "blue": {
+        "emission": [
+          10,
+          68,
+          212,
+          255
+        ],
+        "calls": 78,
+        "triangles": 41606,
+        "outputRestored": true
+      },
+      "split": {
+        "emission": [
+          212,
+          0,
+          0,
+          255
+        ],
+        "calls": 78,
+        "triangles": 41606,
+        "outputRestored": true
+      }
+    },
+    "receiverColorEnergy": {
+      "wall": {
+        "red": 8384.5,
+        "green": 6438.0,
+        "blue": 6184.5
+      },
+      "rail": {
+        "red": 172.5,
+        "green": 211.5,
+        "blue": 447.0
+      }
+    },
+    "splitSideEnergy": {
+      "left": 1767,
+      "right": 1119
+    },
+    "cachedNeutralIdentical": true,
+    "gpuLifetime": {
+      "resizes": [
+        {
+          "geometries": 80,
+          "textures": 9
+        },
+        {
+          "geometries": 80,
+          "textures": 9
+        },
+        {
+          "geometries": 80,
+          "textures": 9
+        },
+        {
+          "geometries": 80,
+          "textures": 9
+        },
+        {
+          "geometries": 80,
+          "textures": 9
+        }
+      ],
+      "afterDispose": {
+        "geometries": 1,
+        "textures": 1
+      }
+    }
+  },
+  "frost": {
+    "method": "Actual closed doors over uniform black/white and 32px checkerboard. Tint and blur removed as positive control. 1440x900.",
+    "meanBackingDifference": 11.799166666666666,
+    "frostedContrast": 1.0847727272727272,
+    "unfilteredContrast": 118.35602272727273,
+    "attenuation": 0.9908346639040722
+  }
+}

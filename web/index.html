@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <title>ReSense — контроль препятствий</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#e4000d">
 <link rel="stylesheet" href="assets/dashboard.css">
 </head>
@@ -409,7 +408,7 @@ function drawCab(res) {
   round(16, 16, hw, 44, 12); ctx.fill();
   ctx.fillStyle = dec === 'CAUTION' ? '#18130a' : '#fff'; ctx.fillText(head, 30, 46);
   ctx.font = '700 19px ' + UI_FONT; ctx.fillStyle = '#fff';
-  // The full explanation is in the wrapping DOM banner. Avoid clipped canvas text on mobile.
+  // The full explanation is in the wrapping DOM banner. Avoid clipped canvas text.
   if (W > hw + ctx.measureText(sub).width + 46) ctx.fillText(sub, 16 + hw + 14, 45);
   // legend: what the green stretch means and how far the corridor is trusted
   ctx.font = '600 12px ' + UI_FONT;

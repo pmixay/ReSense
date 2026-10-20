@@ -17,6 +17,8 @@ describe('C1 input boundary and explanations', () => {
     { caution_reason: null }, { caution_reason: 'health_warning' }, { caution_reason: [1] },
     { decision_policy: [] }, { health: { decision_level: 'unknown' } },
     { warnings: {} }, { detections: [{}] }, { freshness: { valid: 'true' } },
+    { track: { curv_step: '-0.001' } }, { track: { curv_knot: [] } },
+    { track: { curv_step: Infinity } }, { track: { curv_knot: NaN } },
   ])('rejects malformed fields: %j', fields => {
     expect(isStatus({ decision: 'GO', ...fields })).toBe(false);
   });
@@ -26,5 +28,11 @@ describe('C1 input boundary and explanations', () => {
     expect(decideFrame({ obstacle: true, health: { level: 'error' } })).toBe('STOP');
     expect(decideFrame({ warning: 'false' } as never)).toBe('FAULT');
     expect(decideFrame({ health: [] } as never)).toBe('FAULT');
+  });
+
+  it('accepts piecewise tracks and optional legacy coefficients', () => {
+    for (const track of [{}, { curv_step: null, curv_knot: null }, { curv_step: -0.001, curv_knot: 60 }]) {
+      expect(isStatus({ decision: 'GO', track })).toBe(true);
+    }
   });
 });

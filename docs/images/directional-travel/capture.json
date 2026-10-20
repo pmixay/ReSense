@@ -1,0 +1,200 @@
+{
+  "capturedAt": "2026-10-19T15:32:37.685600+00:00",
+  "base": "http://127.0.0.1:4180",
+  "frontendSourceSha256": "65dc6202026bc67011fc6464fc0b142126e4c17604352f8199f1f5a7a47e4124",
+  "journeys": [
+    {
+      "viewport": [
+        1280,
+        720
+      ],
+      "from": "/runs",
+      "to": "/upload",
+      "via": [
+        "queue"
+      ],
+      "direction": "left",
+      "frames": [
+        {
+          "file": "runs-to-upload-queue-1280.png",
+          "station": "queue",
+          "animationTime": 258.54949951171875,
+          "targetX": -1280.02,
+          "stripX": 1279.98,
+          "blur": "blur(32px)"
+        }
+      ],
+      "historyEntriesAdded": 1,
+      "cleanedUp": true
+    },
+    {
+      "viewport": [
+        1366,
+        768
+      ],
+      "from": "/runs",
+      "to": "/upload",
+      "via": [
+        "queue"
+      ],
+      "direction": "left",
+      "frames": [
+        {
+          "file": "runs-to-upload-queue-1366.png",
+          "station": "queue",
+          "animationTime": 258.54949951171875,
+          "targetX": -1366.02,
+          "stripX": 1365.98,
+          "blur": "blur(32px)"
+        }
+      ],
+      "historyEntriesAdded": 1,
+      "cleanedUp": true
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "from": "/runs",
+      "to": "/upload",
+      "via": [
+        "queue"
+      ],
+      "direction": "left",
+      "frames": [
+        {
+          "file": "runs-to-upload-queue-1440.png",
+          "station": "queue",
+          "animationTime": 258.54949951171875,
+          "targetX": -1440.02,
+          "stripX": 1439.98,
+          "blur": "blur(32px)"
+        }
+      ],
+      "historyEntriesAdded": 1,
+      "cleanedUp": true
+    },
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "from": "/runs",
+      "to": "/upload",
+      "via": [
+        "queue"
+      ],
+      "direction": "left",
+      "frames": [
+        {
+          "file": "runs-to-upload-queue-1920.png",
+          "station": "queue",
+          "animationTime": 258.54949951171875,
+          "targetX": -1920.03,
+          "stripX": 1919.97,
+          "blur": "blur(32px)"
+        }
+      ],
+      "historyEntriesAdded": 1,
+      "cleanedUp": true
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "from": "/queue",
+      "to": "/player",
+      "via": [
+        "runs"
+      ],
+      "direction": "right",
+      "frames": [
+        {
+          "file": "queue-to-player-runs-1440.png",
+          "station": "runs",
+          "animationTime": 258.54949951171875,
+          "targetX": 1440.02,
+          "stripX": -1439.98,
+          "blur": "blur(32px)"
+        }
+      ],
+      "historyEntriesAdded": 1,
+      "cleanedUp": true
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "from": "/player",
+      "to": "/queue",
+      "via": [
+        "runs"
+      ],
+      "direction": "left",
+      "frames": [
+        {
+          "file": "player-to-queue-runs-1440.png",
+          "station": "runs",
+          "animationTime": 258.54949951171875,
+          "targetX": -1440.02,
+          "stripX": 1439.98,
+          "blur": "blur(32px)"
+        }
+      ],
+      "copiedCanvasPixel": [
+        215,
+        218,
+        216,
+        255
+      ],
+      "historyEntriesAdded": 1,
+      "cleanedUp": true
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "from": "/upload",
+      "to": "/compare",
+      "via": [
+        "queue",
+        "runs",
+        "player"
+      ],
+      "direction": "right",
+      "frames": [
+        {
+          "file": "upload-to-compare-queue-1440.png",
+          "station": "queue",
+          "animationTime": 246.60663604736328,
+          "targetX": 4320.05,
+          "stripX": -1439.95,
+          "blur": "blur(31.9201px)"
+        },
+        {
+          "file": "upload-to-compare-runs-1440.png",
+          "station": "runs",
+          "animationTime": 355.5055618286133,
+          "targetX": 2880.05,
+          "stripX": -2879.95,
+          "blur": "blur(32px)"
+        },
+        {
+          "file": "upload-to-compare-player-1440.png",
+          "station": "player",
+          "animationTime": 507.7047348022461,
+          "targetX": 1439.98,
+          "stripX": -4320.02,
+          "blur": "blur(32px)"
+        }
+      ],
+      "historyEntriesAdded": 1,
+      "cleanedUp": true
+    }
+  ],
+  "errors": []
+}

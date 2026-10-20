@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { RosStatusHandlers } from '../../api/rosbridge';
-import type { LiveHandlers, LiveSimParams } from '../../api/ws';
+import { liveSimUrl, type LiveHandlers, type LiveSimParams } from '../../api/ws';
 import { LiveFeedStore, RECONNECT_MS, SEEK_SKIP_MAX, TICK_MS } from './feed';
 
 /** A store with a fake socket / rosbridge and a hand-driven clock. */
@@ -141,13 +141,33 @@ describe('LiveFeedStore — simulation', () => {
     store.pause();
     store.setLoop(false); // reconnects, still paused
     expect(store.getSnapshot()).toMatchObject({ link: 'connecting', paused: true });
+    expect(sims[1].params.paused).toBe(true); // before onopen, while the browser may be busy
+    expect(new URL(liveSimUrl(sims[1].params, new URL('https://stand.test'))).searchParams.get('paused')).toBe('true');
     store.seek(49, { runId: 'r1', speed: 1, loop: false }); // before the new socket opened
     expect(sims).toHaveLength(3);
+    expect(sims[2].params.paused).toBe(true);
     expect(store.getSnapshot().paused).toBe(true);
     sims[2].h.onOpen?.();
     expect(sims[2].send).toHaveBeenCalledWith({ cmd: 'seek', pos: 49 });
     expect(sims[2].send).toHaveBeenLastCalledWith({ cmd: 'pause' });
     expect(store.getSnapshot().view).toBe('waiting'); // paused, but no frame of the requested position yet
+    store.destroy();
+  });
+
+  it('shows frame zero after reconnecting a paused loop without advancing it', () => {
+    const { store, sims, tick, frame } = setup();
+    store.start({ kind: 'sim', runId: 'r1', speed: 10, loop: true });
+    sims[0].h.onOpen?.();
+    sims[0].h.onMessage(frame({ pos: 0 }) as never);
+    store.pause();
+    store.setLoop(false);
+    expect(sims[1].params).toMatchObject({ paused: true, loop: false });
+    sims[1].h.onOpen?.();
+    expect(sims[1].send).toHaveBeenCalledWith({ cmd: 'seek', pos: 0 });
+    sims[1].h.onMessage(frame({ pos: 0 }) as never);
+    sims[1].h.onMessage(frame({ pos: 1 }) as never);
+    tick(TICK_MS);
+    expect(store.getSnapshot()).toMatchObject({ view: 'paused', msg: { pos: 0 }, count: 1 });
     store.destroy();
   });
 

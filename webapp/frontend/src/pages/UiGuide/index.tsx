@@ -125,13 +125,13 @@ export default function UiGuide() {
 
         <Section title="Шрифты">
           <div className={styles.type}>
-            <div className={styles.t1}>Benzin 800 · 34</div>
-            <div className={styles.t2}>Benzin 700 · заголовок карточки 15</div>
+            <div className={styles.t1}>Raleway 800 · 34</div>
+            <div className={styles.t2}>Raleway 700 · заголовок карточки 15</div>
             <div className={styles.t3}>
               55,6<small>м</small>
             </div>
-            <div className={styles.t4}>Montserrat 800 · навигация, кнопки 14</div>
-            <div className={styles.t5}>Montserrat 600 · подписи 12,5 · 11 271 кадр · 4,5 ГБ</div>
+            <div className={styles.t4}>Raleway 800 · навигация, кнопки 14</div>
+            <div className={styles.t5}>Raleway 600 · подписи 12,5 · 11 271 кадр · 4,5 ГБ</div>
             <div className={styles.t6}>
               {fmtMeters(54.94)} · {fmtMs(72.4)} · {fmtDuration(20.43)} · {fmtDuration(84)} · {fmtDuration(1200)} · {fmtBytes(4.5 * 1024 ** 3)} · {fmtFrames(11271)} ·{' '}
               {fmtRelDate(new Date())}
@@ -389,7 +389,7 @@ export default function UiGuide() {
 
       <Section title="Карточки и показатели">
         <div className={styles.cardsRow}>
-          <Card title="Карточка" help="Заголовок Benzin 700 · 15, «?» и действия справа." actions={<Button variant="outline" size="sm" iconRight="arrow-right">Все</Button>} className={styles.demoCard}>
+          <Card title="Карточка" help="Заголовок Raleway 700 · 15, «?» и действия справа." actions={<Button variant="outline" size="sm" iconRight="arrow-right">Все</Button>} className={styles.demoCard}>
             <span className={styles.meta}>Белая карточка, радиус 28.</span>
           </Card>
           <Card title="Тёмная" variant="dark" help="Подсказка на тёмном." className={styles.demoCard}>
