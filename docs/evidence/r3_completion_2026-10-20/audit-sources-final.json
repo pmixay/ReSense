@@ -1,0 +1,72 @@
+{
+  "gate-a-candidate": {
+    "commit": "0a472d6a2d80c50c842ad0d7b63480d0adfa69f5",
+    "exit": 0,
+    "source_members": 47
+  },
+  "gate-a-reference": {
+    "commit": "5fa865b853fa890a9878ce7a2b84850e691f59dc",
+    "exit": 0,
+    "source_members": 47
+  },
+  "analytic-a-reference": {
+    "commit": "5fa865b853fa890a9878ce7a2b84850e691f59dc",
+    "exit": 0,
+    "source_members": 47
+  },
+  "range-a-reference": {
+    "commit": "5fa865b853fa890a9878ce7a2b84850e691f59dc",
+    "exit": 0,
+    "source_members": 47
+  },
+  "falcon-a-reference": {
+    "commit": "5fa865b853fa890a9878ce7a2b84850e691f59dc",
+    "exit": 0,
+    "source_members": 47
+  },
+  "tests-merged-candidate": {
+    "commit": "47b220c982369b321a4576d4609127bad8ed1081",
+    "exit": 1,
+    "source_members": 47
+  },
+  "diagnose-merged-candidate": {
+    "commit": "47b220c982369b321a4576d4609127bad8ed1081",
+    "exit": 1,
+    "source_members": 47
+  },
+  "range-a-candidate": {
+    "commit": "0a472d6a2d80c50c842ad0d7b63480d0adfa69f5",
+    "exit": 0,
+    "source_members": 47
+  },
+  "x3-a-candidate": {
+    "commit": "0a472d6a2d80c50c842ad0d7b63480d0adfa69f5",
+    "exit": 0,
+    "source_members": 47
+  },
+  "falcon-a-candidate": {
+    "commit": "0a472d6a2d80c50c842ad0d7b63480d0adfa69f5",
+    "exit": 0,
+    "source_members": 47
+  },
+  "analytic-a-candidate": {
+    "commit": "0a472d6a2d80c50c842ad0d7b63480d0adfa69f5",
+    "exit": 0,
+    "source_members": 47
+  },
+  "tests-a-candidate": {
+    "commit": "0a472d6a2d80c50c842ad0d7b63480d0adfa69f5",
+    "exit": 1,
+    "source_members": 47
+  },
+  "diagnose-merged-reference": {
+    "commit": "5fa865b853fa890a9878ce7a2b84850e691f59dc",
+    "exit": 1,
+    "source_members": 47
+  },
+  "x3-a-reference": {
+    "commit": "5fa865b853fa890a9878ce7a2b84850e691f59dc",
+    "exit": 0,
+    "source_members": 47
+  }
+}

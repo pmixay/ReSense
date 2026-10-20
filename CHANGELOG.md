@@ -22,6 +22,20 @@ red. Figures are the team's, measured when a change landed (detector figures on 
 targeted suites pass; the full suite, the final gate, X3 and the whole Falcon recording on the final commit are pending
 ([`docs/BACKLOG.md`](docs/BACKLOG.md) "Current plan"). Not a release, not a J1 score, not a G3 run.
 
+### 20.10 — R3 B2/B3 completion
+
+- Accumulated cable clusters can confirm from current-frame footprint, height and distinct
+  strict-gauge voxels; historical/duplicate returns cannot supply that evidence. Directed
+  speed-known approach: first STOP76 →78 m. Preserve the organizers' moving-in-gauge rule:
+  a resolved co-moving cable is a real obstacle, even when static-world ego-veto is ready first.
+- Full gate PASS without waivers:208 non-timing metrics and18,329 ordinary/Set F rows unchanged.
+  Fresh paired X3:40 cases /29,765 rows /260 comparisons; whole Falcon4,443 rows unchanged.
+  E6 retains86.25/61.28 m; hanging Set O float32 retains48.19 m (compact gate35.1 m).
+- Merged with main `5d83c5b`;448 affected tests pass. Full pytest2386 passed +17 subtests,
+  one inherited proxy-hook failure reproduced on both sources, eight external-data deselections.
+  Raw evidence and an integrity reseal supplied; independent final-bundle review remains open.
+  [Evidence](docs/evidence/r3_completion_2026-10-20/README.md).
+
 ### 20.10 — L16/S3 open-air startup repair and measured T1 exposure
 
 - Reproduce P4 A1 on merged main `8c2bf51`, then reject a ground half-space as signed-forward

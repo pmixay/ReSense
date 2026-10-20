@@ -1,0 +1,89 @@
+{
+  "equal_non_timing_metrics": 208,
+  "ordinary_rows": 15269,
+  "STOP": 791,
+  "files": {
+    "cloud_with_fake_obj.jsonl": {
+      "rows": 1510,
+      "STOP": 450
+    },
+    "doubleT_obstacle.jsonl": {
+      "rows": 201,
+      "STOP": 193
+    },
+    "doubleT_platform.jsonl": {
+      "rows": 345,
+      "STOP": 0
+    },
+    "new_data_0.jsonl": {
+      "rows": 1409,
+      "STOP": 12
+    },
+    "new_data_1.jsonl": {
+      "rows": 1409,
+      "STOP": 12
+    },
+    "new_data_2.jsonl": {
+      "rows": 1409,
+      "STOP": 2
+    },
+    "new_data_3.jsonl": {
+      "rows": 1409,
+      "STOP": 2
+    },
+    "new_data_4.jsonl": {
+      "rows": 1409,
+      "STOP": 17
+    },
+    "new_data_5.jsonl": {
+      "rows": 1409,
+      "STOP": 32
+    },
+    "new_data_6.jsonl": {
+      "rows": 1409,
+      "STOP": 27
+    },
+    "new_data_7.jsonl": {
+      "rows": 1408,
+      "STOP": 7
+    },
+    "roundT_doubleT.jsonl": {
+      "rows": 252,
+      "STOP": 0
+    },
+    "roundT_pressureGate_roundT.jsonl": {
+      "rows": 268,
+      "STOP": 0
+    },
+    "roundT_squareT_pressureGate_squareT.jsonl": {
+      "rows": 545,
+      "STOP": 0
+    },
+    "squareT_platform_squareT_switch.jsonl": {
+      "rows": 877,
+      "STOP": 37
+    }
+  },
+  "set_F_sequences": 30,
+  "set_F_rows": 3060,
+  "lost_hit_positive_control_frame": 5,
+  "ride": {
+    "available": true,
+    "chunks": 8,
+    "frames": 11271,
+    "alarm_frames": 111,
+    "alarm_events": 23,
+    "stop_episodes": 26,
+    "advisory_frames": 4764,
+    "alarm_dist": [
+      20.7,
+      155.4
+    ],
+    "health": {
+      "ok": 82,
+      "warn": 11189,
+      "error": 0
+    },
+    "monitored_range_median": 120.0
+  }
+}

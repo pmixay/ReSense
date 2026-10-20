@@ -17,7 +17,7 @@ receipts.HERE, receipts.WORK = HERE, WORK
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument('phase', choices=['gate', 'x3', 'falcon', 'analytic', 'affected', 'tests', 'range'])
+    p.add_argument('phase', choices=['gate', 'x3', 'falcon', 'analytic', 'affected', 'tests', 'range', 'diagnose'])
     p.add_argument('--side', choices=['reference', 'candidate'], default='candidate')
     p.add_argument('--revision', default='a')
     a = p.parse_args()
@@ -55,6 +55,10 @@ def main():
                 'thin_hanging', 'fresh_stop_evidence', 'far_thin', 'near_escalation',
                 'column_collision_core', 'column_axis_anchor', 'column_free_top', 'h4_spare_rearm',
                 'modules', 'core', 'algorithm', 'native', 'low_height_keep', 'f1a_b1')]
+        elif a.phase == 'diagnose':
+            command += ['tests/test_algorithm.py::test_timing_with_accumulation',
+                        'tests/test_lidar_proxy_hook.py::test_child_process_inherits_hook_and_bad_source_fails_closed',
+                        'tests/test_node.py::test_obstacle_is_stop_and_published_in_the_sensor_frame']
     return receipts.run(name, repo, command)
 
 
