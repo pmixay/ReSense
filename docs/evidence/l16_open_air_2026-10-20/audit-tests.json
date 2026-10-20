@@ -1,0 +1,20 @@
+{
+  "full_case_statuses_including_subtests": {
+    "passed": 2340,
+    "failed": 3
+  },
+  "full_failure_names": [
+    "test_child_process_inherits_hook_and_bad_source_fails_closed",
+    "test_status_marker_says_the_decision_and_publishing_errors_are_contained",
+    "test_timing_with_accumulation"
+  ],
+  "affected_passed": 242,
+  "paired_diagnosis_case_statuses_equal": true,
+  "paired_node_tests_passed": 146,
+  "node_a_candidate_ring_field_test_failed": {
+    "passed": 145,
+    "failed": 1
+  },
+  "node_transient_cause": "unverified; exact test and complete later node suites pass",
+  "all_green_suite_claim": false
+}

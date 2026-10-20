@@ -1,0 +1,25 @@
+{
+  "archives": [
+    {
+      "file": "raw-evidence-recordings.tar.gz",
+      "sha256": "81e4e53405e6dc299dd68de995994bfc9332998237527579b23e6201161f33a2",
+      "bytes": 16414705,
+      "members": 620
+    },
+    {
+      "file": "raw-evidence-regression.tar.gz",
+      "sha256": "1f3196a65ff3fa64dfe1070e99aac542f7598d4bfb5b4bee565feb5504ed7fa9",
+      "bytes": 18116808,
+      "members": 552
+    },
+    {
+      "file": "raw-evidence-support.tar.gz",
+      "sha256": "03719e0b84f2a990e9c9837cdcae1dc661b8ea6519a13328bf56cee18126998c",
+      "bytes": 5258734,
+      "members": 67
+    }
+  ],
+  "members": 1239,
+  "every_archived_member_reopened_and_verified": true,
+  "excluded_organizer_input": "new_data_0.db3; its acquisition/row hashes are retained"
+}

@@ -1,0 +1,10 @@
+{
+  "frames": 4443,
+  "decisions": {
+    "FAULT": 1,
+    "GO": 8,
+    "CAUTION": 3070,
+    "STOP": 1364
+  },
+  "equal_to_F1a_author_decisions_detections_warnings_and_mount": true
+}

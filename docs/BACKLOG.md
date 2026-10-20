@@ -6,9 +6,9 @@
 > [`archive/BACKLOG_history_2026-10-19.md`](archive/BACKLOG_history_2026-10-19.md): this file as it stood before the
 > clean-up of 19.10, word for word, with the full text (cause, tasks, acceptance check) of every card.
 > **Audience:** P1 (to distribute the work), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-10-20: `main` detector bytes from `0f02b28` (H1 publication `cefd4c4`), current defaults,
+> **Last verified:** 2026-10-20: main `99dab01` (F1a + merged PR #43), L16 repair `4bf62f3`, measured combined source `afbf9fc`,
 > [`DECISIONS.md`](DECISIONS.md) rows 35–45; fresh paired R3 Set F investigation on `69cf4b8`;
-> committed integration/H1 evidence, GitHub release/CI and open PR #43. `python3 scripts/detector_freeze.py verify`
+> committed integration/H1 evidence, GitHub release/CI and merged PR #43. `python3 scripts/detector_freeze.py verify`
 > re-run: **FAIL** (2 added and 12 changed detector files against the B4 seal). No new seal or release.
 > **Status:** current. "Current plan" below replaces every dated target: **P0** before the code stop, **P1** before the pitch,
 > **P2** after 23.10. Section numbers of the old file are kept where other documents cite them (§1, §3, §4, §6, §9);
@@ -18,15 +18,17 @@
 
 This section replaces every dated target below. **P0** must be in before the code stop (code, configuration, seal);
 **P1** before the pitch on 23.10 (evaluation, documents, deck, rehearsals; no code); **P2** after 23.10 unless time
-remains. **Current detector source: main's 19.10 integration plus the user-authorized partial H1 improvement**
-(published at `cefd4c4`). Its detector bytes equal measured merge `0f02b28`; the R3 follow-up changes reporting only.
+remains. **Current detector source: main's 19.10 integration, the user-authorized partial H1 improvement,
+off-by-default K2 v5c from PR #43, and the L16 A1 repair below**. H1 was published at `cefd4c4`;
+its measured merge was `0f02b28`. The R3 follow-up changes reporting only.
 H1 is still **OPEN**
 ([publication](evidence/h1_partial_integration_2026-10-20/README.md)). The former integration branch
 `claude/optimistic-mccarthy-z5nmwd` has already landed through PR #42.
 
-**Work outside main:** draft [PR #43](https://github.com/pmixay/ReSense/pull/43), head `972d19a`, contains an off-by-default
-K2 v5c candidate, P4 reviews and an N5 supplement. These are available for review, **not merged or accepted as fixes**.
-P4's findings concern pre-H1 source `4cf8e27`; their exposure on current main and any fix still need verification.
+**PR #43 merged** at `8c2bf51` on 20.10 (08:47:54 UTC): head `972d19a` supplies the off-by-default
+K2 v5c candidate, P4 reviews and N5 supplement. Merge does not accept or switch on K2.
+P4's findings concern pre-H1 source `4cf8e27`. L16 A1 was reproduced on current main and repaired;
+the other findings remain subject to their own current-source verification.
 Pinned reports: [shipping review][p4-shipping], [integration review][p4-integration], [N5][p4-n5], [data handoff][p4-handoff].
 
 ### Current detector switches (decisions 41, 44–45; checked against class defaults and both YAMLs)
@@ -37,8 +39,8 @@ Pinned reports: [shipping review][p4-shipping], [integration review][p4-integrat
 | H′ mount cross-check (`cluster.mount_cross_tol` 0.5) | **on** | removes the 8 false STOP frames on the Falcon tunnel ceiling; 0 gate rows change | — |
 | S2 settle (`tracking.settle_min_hits`) | off | can delay an object entering the gauge | — |
 | R3 cable confirmation (P3) | **on** | hanging cable improves; Set F median 34.2 →17.8 m explained by successful coverage 2/6 →4/6, no lost hits ([follow-up](evidence/r3_sustained_2026-10-20/README.md)) | P3: P4 shipping B2 fast confirmation / ego-veto interaction and B3 accumulation limit remain open |
-| L16/S3 orientation (P3) | **on** | rotated ring-free mounts no longer adopt a wrong orientation; gate and Falcon preserved | P3/P4: P4 shipping A1 reports persistent FAULT on synthetic open-air startup; real exposure T1 pending |
-| K2 axis on curves (`track.axis_joint_fit=false`), variant B = v5b without K1 | **held off** (decision 44) | original Falcon attribution was revised in PR #43 (122.27 m first person STOP, 37 person frames without STOP); the marked tunnels cube still loses STOPs (29 → 13 in the 2.5–250 m crop). `small_center` gate loss also remains | **P4 P0**: measured candidate and independent review, then captain's decision; v5c exists only in PR #43 ([report][p4-k2]) |
+| L16/S3 orientation (P3) | **on** | directional recovery and ≤60k search retained; A1 false-forward cue repaired (`4bf62f3`), T1 measured | author acceptance complete: 27,580 paired rows; final F1a-main merge gate/X3/Falcon pass, 489 affected tests pass ([record][l16-open-air]); final-bundle P4 review remains |
+| K2 axis on curves (`track.axis_joint_fit=false`), variant B = v5b without K1 | **held off** (decision 44) | original Falcon attribution was revised in PR #43 (122.27 m first person STOP, 37 person frames without STOP); the marked tunnels cube still loses STOPs (29 → 13 in the 2.5–250 m crop). `small_center` gate loss also remains | **P4 P0**: measured candidate and independent review, then captain's decision; v5c merged off by default ([report][p4-k2]) |
 | K1 per-distance axis smoothing (`track.walls_smoothing_distance`) | off | standing train STOP at 100 m 82 → 255 / 260, but adds a false STOP on `doubleT_platform` (gate A measured on the integration branch) | P4, in the same package |
 | Falcon clear-distance model (`small_target_limit`, falcon_prime) | **on** | reports up to 48.2 m from the measured Falcon raster (density model, as for Pandar) instead of 0 | — |
 | Falcon far range (`farrange.with_falcon_profile`) | off | person STOP 146 m (was 127) but rule 5.1(b) fails (9 vs 8 episodes), no long-range gain on injected targets | P3: improve (route-map variant, second boundary) |
@@ -82,7 +84,8 @@ Pinned reports: [shipping review][p4-shipping], [integration review][p4-integrat
 
 | prio | work | state / depends on |
 |---|---|---|
-| P0 | Triage P4 shipping findings A1 (L16 open-air FAULT), B1 (F1a capped-top miss), B2 (R3 ego-veto race), plus B3/B4 limits; verify on H1 main, propose measured fixes | review reports available in PR #43, not closed; real-data T1/T4 pending ([review][p4-shipping], [handoff][p4-handoff]); after code stop, captain-approved review fixes only |
+| done (author acceptance) | Repair L16/S3 shipping A1 and measure original-start exposure T1 | `4bf62f3`: 450 FAULT →450 GO, all446 positive rows kept; 120 raw frames /12 starts measured; 27,580 paired recorded rows exact; final combined source `afbf9fc`: gate/X3/Falcon pass, 489 affected tests pass ([record][l16-open-air]) |
+| P0 | Triage P4 shipping B1 (F1a capped-top miss), B2 (R3 ego-veto race), plus B3/B4 limits; verify on current main, propose measured fixes | findings in merged PR #43 remain open; T4 pending ([review][p4-shipping], [handoff][p4-handoff]); after code stop, captain-approved review fixes only |
 | done | Investigate Set F cable sustained median 34.2 →17.8 m and repair aggregate-only reporting | fresh 30-sequence paired run, 3,060 rows/side: 0 lost hits, 9 added cable hits, no false-detection increase; coverage 2/6 →4/6, original-success cohort unchanged ([record](evidence/r3_sustained_2026-10-20/README.md)) |
 | P1 | Q&A preparation and mock jury: the algorithm, curves (what K2 ships and costs), why not 300 m, dust, the second lidar, false alarms; technical check of `ALGORITHM.md` and the slides | — |
 | P1 | H1 (tall narrow objects, the open High finding): retain the implemented partial improvement; obtain a validated far-axis reference, resolve remaining misses and complete independent review | user-authorized main integration, **overall OPEN**; A-axis 82 ->114/177, 63 misses remain ([publication](evidence/h1_partial_integration_2026-10-20/README.md)) |
@@ -92,12 +95,13 @@ Pinned reports: [shipping review][p4-shipping], [integration review][p4-integrat
 
 | prio | work | state / depends on |
 |---|---|---|
-| P0 (urgent T1) | Measure real-start exposure to L16/S3's open-air FAULT and F1a capped-top exposure (T4), then hand findings to P3 | registered in [data handoff][p4-handoff]; not measured there (cloud session lacked bag access) |
+| done (T1 measurement) | Measure real-start exposure to L16/S3's open-air FAULT | first10 raw frames of all12 starts independently decoded: 0/120 A1 exposure, minimum above-sensor share 28.2693%; known analytic A1 detected as positive control ([record][l16-open-air]) |
+| P0 (T4) | Measure F1a capped-top exposure and hand findings to P3 | registered in [data handoff][p4-handoff]; remains separate from completed L16 T1 |
 | **P0 (K2/K1)** | **Keep both off.** K2 v5c revision 1 is proposed in PR #43; registered gate/X3/Falcon/standing-person/marked-bag rows are not run. Resolve both the corrected Falcon loss and the in-gauge tunnels cube loss, set O `small_center`, K1 false STOPs and the review items. P3 or a fresh agent reviews P4's candidate; captain decides switch-on | [existing package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md), [v5c][p4-k2], T2/T3 in [handoff][p4-handoff] |
 | P0 | Complete acceptance of what ships on, including **H1**: resolve reported L16/S3, R3 and F1a findings, verify fixes on recordings and review combined source | pre-H1 synthetic shipping review available in PR #43; **not clean acceptance**, reseal still blocked ([review][p4-shipping]) |
 | P0 | Finish independent integration verification from raw outputs of the exact combined source | historical review done where committed files allow; some old per-frame outputs missing. New H1 raw archives exist, independent review pending ([review][p4-integration], [current record](evidence/h1_partial_integration_2026-10-20/README.md)) |
 | P1 | On the final seal: J1 (retarget [`RELEASE_DAY.md`](evidence/rejudge_2026-10-16/RELEASE_DAY.md) from 1.1.0) and the G3 held-out run by a fresh agent | needs the reseal |
-| P1 | N5: review/integrate the marker supplement, then re-score final 1.2.0 | PR #43 adds 34 missing-cube rows and flags 12 unmatched rows; not in main; final H1/reseal scoring pending ([supplement][p4-n5]) |
+| P1 | N5: review the merged marker supplement, then re-score final 1.2.0 | PR #43 adds 34 missing-cube rows and flags 12 unmatched rows; merged, final H1/reseal scoring pending ([supplement][p4-n5]) |
 | P1 | Mock jury at both rehearsals | — |
 | P2 | The dust guard if the organizers' dust re-check fails; X2 false-STOP ledger | after 23.10 |
 
@@ -133,14 +137,14 @@ point estimates and the former dates of every row are in the archive.
 |---|---|---|---|
 | CI | repair CI (account billing) | checked main run on `cefd4c4` fails before steps with billing/spending-limit annotation; blocks E1 | P0 |
 | reseal | reseal 1.2.0 after the last code change | `detector_freeze.py verify` FAILS now; P1 + P4, needs P4's review and the final gate/X3 | P0 |
-| L16/S3 | ring-free orientation + bounded orientation search | **on**; P4 synthetic review reports open-air startup FAULT (PR #43 A1); real exposure/fix/current-source review pending | P0 |
+| L16/S3 | ring-free orientation + bounded orientation search | **on; A1 repair/T1 delivered**, paired recordings/gate/X3 pass; F1a-main merge verified on gate/X3/Falcon +489 tests; general unsupported mounts and final-bundle review remain separate ([record][l16-open-air]) | delivered; P0 bundle review |
 | R3 | thin cables (hanging 5 cm: first STOP 30.1 → 35.1 m) | **on**; Set F aggregate concern resolved: coverage 2/6 →4/6, fixed cohort 34.2 →34.2 m, 0 lost hits. P4 B2/B3 review findings remain open | P0 |
 | F1 | near-field low-object false STOPs | F1a and H′ **on**, S2 settle off; current gate/Falcon done. New P4 capped-top miss (B1) awaits verification/fix; old accepted long-object risk remains | P0 / P2 |
-| K1 / K2 | gauge on curves, standing train | **both off** (`walls_smoothing_distance=0`, `axis_joint_fit=false`), decision 44; v5c proposed only in PR #43, real-data acceptance pending | P0 / P2 |
+| K1 / K2 | gauge on curves, standing train | **both off** (`walls_smoothing_distance=0`, `axis_joint_fit=false`), decision 44; v5c merged off by default, real-data acceptance pending | P0 / P2 |
 | N3 | dust | guard **off** (fails acceptance); organizer dust checked on `4cf8e27`, H1/final-source replay pending | P0 |
 | N7 | Falcon to 300 m | `farrange` **off**: person STOP 146 m (was 127 m), no gain on injected targets, rule 5.1(b) fails | P2 |
 | H1 | tall narrow objects (the open High finding, 8.1) | **partial positive-core improvement implemented and accepted for main; overall OPEN**. A-axis 82 ->114/177, physical controls and merged gate/X3 pass; independent far-axis reference and final review pending ([record](evidence/h1_partial_integration_2026-10-20/README.md)) | P1 |
-| N5 | labels of the new synthetic bags | initial labels done; organizer markers independently checked; PR #43 supplement adds cube/flags 12 rows, not merged; final scoring pending | P1 |
+| N5 | labels of the new synthetic bags | initial labels done; organizer markers independently checked; merged PR #43 supplement adds cube/flags 12 rows; final scoring pending | P1 |
 | J1 | re-judge the final seal | retarget [`RELEASE_DAY.md`](evidence/rejudge_2026-10-16/RELEASE_DAY.md) from 1.1.0; needs the reseal | P1 |
 | G3 | held-out run by a fresh agent | spec registered, no run; on the final 1.2.0 seal | P1 |
 | E1 | tag and release 1.2.0 (1.1.0 is not released) | needs CI, the reseal and the final image | P1 |
@@ -187,9 +191,13 @@ Judge, 4 vCPU: decode + detect p50 78–86 / p95 106–119 ms, 18–34 of 200 fr
 
 #### S3 · Cap the orientation-search cost
 Implemented with L16 (sample once to ≤ 60,000 points before the candidate loop), **on**
-([evidence](evidence/l16_s3_2026-10-19/README.md)). P4's synthetic shipping review is available in PR #43:
-sampling checks pass there, but the associated directional cue can lock the wrong forward axis on an open-air start
-(A1). P3 verifies/fixes it; real-start exposure and final-source acceptance remain open ([review][p4-shipping], T1 in [handoff][p4-handoff]).
+([evidence](evidence/l16_s3_2026-10-19/README.md)). P4 A1 was reproduced on main and repaired at `4bf62f3`:
+the signed-forward cue now also requires a bounded forward cone, so the ground half-space cannot claim forward -Z.
+Analytic open-air startup changes 450 FAULT →450 GO; all446 matched positive rows remain. T1 is measured on120 raw
+frames /12 original starts (no A1 exposure, known analytic positive control detected). Paired 24-rotation startups and
+full representative recordings are exact over27,580 rows per side. Original paired gate/X3 pass; final F1a-main source
+`afbf9fc` also passes fresh gate/X3/Falcon and489 affected tests ([record][l16-open-air]). General
+ring-free/unknown physical mounts without independent orientation evidence remain unsupported; final-bundle review/reseal is separate.
 
 #### S4 · Dual-return duplicates: the track model counts raw points
 Judge probe: deduplication moves squareT CAUTION 446 → 99 frames and doubleT_obstacle STOP 193 → 189. Bisect with
@@ -384,7 +392,7 @@ Owner P1. Reconciled on 20.10 against decisions 35–45, current source/configur
 | extra features | N1 box, N4 interactive launch, Falcon profiles, web prototype, N5 labels | CHANGELOG [1.2.0] | P2 `ui-improvement` (unmerged) |
 | ease of launch | N4 done locally (pause, rate, several bags in one node, Pandar → Falcon switch, software RViz); no published 1.2.0 image | [HOWTO](evidence/n1_n4_2026-10-18/HOWTO.md) | E1 after CI |
 | dust | guard written and **off** (fails acceptance); no dust-attributed STOP/CAUTION in 13 organizer dust frames on 1.1.0 /`4cf8e27`; sparse particles, not dense-dust proof | [N3](evidence/n3_dust_2026-10-18/README.md), [integration](evidence/integration_2026-10-19/README.md) | P0 H1/final-source re-check |
-| second lidar, different axes | Falcon profiles and L16/S3 implemented, **on**; full 4,443-row Falcon check retained on H1 main. P4 reports synthetic open-air startup FAULT outside these recordings | [L16/S3](evidence/l16_s3_2026-10-19/README.md), [H1 checks](evidence/h1_partial_integration_2026-10-20/README.md), [P4][p4-shipping] | real-start T1, P3 fix and final review |
+| second lidar, different axes | Falcon profiles and L16/S3 **on**; A1 repaired, T1 measured; 27,580 paired recorded rows retained; final merged gate/X3 and whole4,443-row ordinary Falcon checked | [L16/S3](evidence/l16_s3_2026-10-19/README.md), [A1/T1][l16-open-air] | final-bundle independent review/reseal |
 
 ### 9c. Card N7 · Stable obstacle detection to 300 m on the Falcon Prime (goal of 19.10)
 
@@ -402,7 +410,7 @@ Verbatim in [`organizers/answers.md`](organizers/answers.md) §12; the order of 
 |---|---|---|
 | **Everything inside the train's gauge is an obstacle** | an in-gauge object reported as `CAUTION` or `GO` is a **miss**; `CAUTION` stays only for objects outside or at the edge. Demotions of in-gauge clusters to advisory are miss risks to measure: the `column` demotion and `column_hold` (H1), `beyond_axis` where the axis is wrong (K2), `explained_run`, the dust guard, the settle switch | P3; C1 re-scoped by P1 |
 | **Objects may move, even chaotically** | review every rule that assumes a static or approaching object: `tracking.ego_veto_min_speed` 4 m/s, the approach requirement of weak far evidence, settle tests, the dust guard, the far confirmation of the Falcon lane. Card **M1** | P3 + P4 |
-| **No labels; marked bags + order of appearance** | intake done 19.10: all 1,667 serialized clouds independently verified byte-identical; N5 matches 1,672 /1,684 rows. PR #43 supplies the missing cube supplement/12 flags, not yet in main. Markers establish obstacle support, **not rail-axis truth**; a missing marker is not a negative | P4 (N5); [intake](evidence/organizer_markers_2026-10-19/README.md), [supplement][p4-n5] |
+| **No labels; marked bags + order of appearance** | intake done 19.10: all 1,667 serialized clouds independently verified byte-identical; N5 matches 1,672 /1,684 rows. Merged PR #43 supplies the missing cube supplement/12 flags. Markers establish obstacle support, **not rail-axis truth**; a missing marker is not a negative | P4 (N5); [intake](evidence/organizer_markers_2026-10-19/README.md), [supplement][p4-n5] |
 | **Dust in every new synthetic bag, at least twice** | 17.10 blanket absence claim corrected: 11 tiny bursts over 13 frames; raw platform subtraction independently verifies 31 dust returns. No dust-attributed STOP/CAUTION on 1.1.0 /`4cf8e27`; H1/final-source replay pending. Background false STOPs are structures, not dust; dense-dust robustness unproved | P1's agent, P4; [intake](evidence/organizer_markers_2026-10-19/README.md) |
 | Not answered: the filter (Q3), bag playback (Q5), O1 | unchanged assumptions | P1 |
 
@@ -415,13 +423,14 @@ Verbatim in [`organizers/answers.md`](organizers/answers.md) §12; the order of 
 * The initial reconciliation checked 71 local link occurrences; the R3 follow-up adds its verified evidence links.
   The five pinned PR #43 document targets exist in the fetched commit. Personal
   Windows-path references in tests/scripts and the three tracked root photos still exist, so their clean-up stays open.
-* PR #43 was inspected at pinned head `972d19a`. Its review findings and N5 work are recorded as **reported/proposed**;
-  neither the candidate nor its proposed fixes are credited to main. Current code still contains the reviewed cue,
-  capped-top rail check and fast-confirmation/ego-veto interaction.
+* PR #43 was inspected at pinned head `972d19a`; GitHub confirms its merge at `8c2bf51`. Its K2 candidate stays off.
+  The L16 follow-up reproduces A1 on that exact main, repairs the cue and independently measures T1 raw inputs.
+  Capped-top/ego-veto findings remain open. Fresh evidence, including full-suite failures, is linked in the L16 record.
 * Hardware/image acceptance, rehearsals, organizer replies and final J1/G3 have **no newer completion receipt in the
   reviewed records**; their existing pending states are retained, not independently observed human outcomes.
 
 [p4-shipping]: https://github.com/pmixay/ReSense/blob/972d19a17aabfe223fd0f45551a2262b9a82e260/docs/evidence/p4_review_shipping_2026-10-20/README.md
+[l16-open-air]: evidence/l16_open_air_2026-10-20/README.md
 [p4-integration]: https://github.com/pmixay/ReSense/blob/972d19a17aabfe223fd0f45551a2262b9a82e260/docs/evidence/p4_review_integration_2026-10-20/README.md
 [p4-n5]: https://github.com/pmixay/ReSense/blob/972d19a17aabfe223fd0f45551a2262b9a82e260/docs/evidence/n5_markers_2026-10-20/README.md
 [p4-k2]: https://github.com/pmixay/ReSense/blob/972d19a17aabfe223fd0f45551a2262b9a82e260/docs/evidence/k2_v5c_2026-10-20/README.md
