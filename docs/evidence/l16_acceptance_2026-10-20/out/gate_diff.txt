@@ -1,0 +1,8 @@
+gate rows that differ, 99dab01 -> 5fa865b:
+recordings.doubleT_obstacle.health.ok                                         201                   167
+recordings.doubleT_obstacle.health.warn                                         0                    34
+recordings.doubleT_platform.health.ok                                         292                   319
+recordings.doubleT_platform.health.warn                                        53                    26
+ride.health.ok                                                              11039                 10580
+ride.health.warn                                                              232                   691
+run.jobs                                                                        4                     3

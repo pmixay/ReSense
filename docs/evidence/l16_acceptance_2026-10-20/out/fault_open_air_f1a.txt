@@ -1,0 +1,5 @@
+tree 99dab01
+open n= 162848 frac above sensor=0.0018 frac behind=0.136 directional_axes= (array([ 0.,  0., -1.]), None)
+   decisions over 450 frames: {'FAULT': 450}; final status=fallback confirmed=False conflict=True msg='no rail pair in 400 frames: configured mapping kept'
+tunnel n= 268803 frac above sensor=0.3201 frac behind=0.143 directional_axes= (None, None)
+   decisions over 450 frames: {'GO': 450}; final status=identity confirmed=True conflict=False msg='configured mapping confirmed'
