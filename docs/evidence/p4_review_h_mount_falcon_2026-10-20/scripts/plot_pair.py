@@ -1,6 +1,6 @@
 """Pictures of a Falcon frame dumped by falcon_pair.py: for the shipped run (``on``) and the H′-off run (``off``),
-a side view (X forward vs Z up, detector frame) and a top view (X vs Y) of the returns within 3 m of the track
-axis and 0-40 m ahead. Drawn: the track model's rail head ``rail_z(X)`` and the calibrated mount's rail-head
+a side view (X forward vs Z up, detector frame) and a top view (X vs Y) of the returns within |Y| < 3 m
+and 0-25 m ahead (the committed crop). Drawn: the track model's rail head ``rail_z(X)`` and the calibrated mount's rail-head
 plane (z = -height) with the envelope top above it; in ``on`` the clusters H′ looked at (red: made advisory
 ``height_conflict``, blue: kept); in both, the clusters of every reported detection / warning (orange: STOP
 detection, green: warning), labelled with their id, decision and kind from the run's records.
@@ -31,13 +31,13 @@ def main():
     for col, tag in enumerate(("on", "off")):
         z = np.load(f"{dump}/f{i:05d}.{tag}.npz")
         r = rec(prefix, tag, i)
-        xyz, dy = z["xyz"], z["dy"]
-        sel = (xyz[:, 0] > 0) & (xyz[:, 0] < 40) & (np.abs(dy) < 3.0)
+        xyz = z["xyz"]
+        sel = (xyz[:, 0] > 0) & (xyz[:, 0] < 25) & (np.abs(xyz[:, 1]) < 3.0)
         a_side, a_top = ax[0, col], ax[1, col]
         for a, k in ((a_side, 2), (a_top, 1)):
             a.scatter(xyz[sel, 0], xyz[sel, k], s=0.3, c="0.6", lw=0)
         g, rz, plane = z["grid"], z["rail_z"], float(z["plane"])
-        m = g <= 40
+        m = g <= 25
         a_side.plot(g[m], rz[m], "k-", lw=1, label="model rail head rail_z(X)")
         a_side.axhline(plane, color="m", lw=1, ls="--", label="mount plane (z = -height)")
         a_side.axhline(plane + 3.0, color="m", lw=0.8, ls=":", label="mount plane + envelope top (3.0 m)")
