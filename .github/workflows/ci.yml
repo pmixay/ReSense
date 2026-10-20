@@ -9,14 +9,16 @@ on:
 # frontend build and the browser suite). A lint error stops a push before the
 # ~20 runner-minutes of stage 2 start.
 # Read-only token (no job writes to the repository). A newer push to the same ref cancels the run it
-# supersedes, except on main, whose runs seed the cold-bag cache and are never cancelled. No job
+# supersedes, except on main (its runs seed the cold-bag cache) and on claude/* (shared by several
+# sessions that push often: cancelling would leave no run to finish; GitHub keeps one running and
+# at most one pending run per group instead). No job
 # uploads an artifact: the repository is out of Actions artifact storage and a failed upload fails
 # the job; evidence stays in the step logs.
 permissions:
   contents: read
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' && !startsWith(github.ref, 'refs/heads/claude/') }}
 jobs:
   checks:
     # ruff: pyflakes + the pycodestyle error classes (ruff's default rule set) over the package, the
