@@ -1,0 +1,47 @@
+{
+  "tests-merged-candidate.xml": {
+    "cases": 2387,
+    "failures": [
+      {
+        "classname": "tests.test_lidar_proxy_hook",
+        "name": "test_child_process_inherits_hook_and_bad_source_fails_closed",
+        "time": "0.645"
+      }
+    ],
+    "skipped": 0,
+    "affected_passed": 448
+  },
+  "tests-a-candidate.xml": {
+    "cases": 2387,
+    "failures": [
+      {
+        "classname": "tests.test_algorithm",
+        "name": "test_timing_with_accumulation",
+        "time": "5.096"
+      },
+      {
+        "classname": "tests.test_lidar_proxy_hook",
+        "name": "test_child_process_inherits_hook_and_bad_source_fails_closed",
+        "time": "1.339"
+      },
+      {
+        "classname": "tests.test_node",
+        "name": "test_obstacle_is_stop_and_published_in_the_sensor_frame",
+        "time": "1.046"
+      }
+    ],
+    "skipped": 0
+  },
+  "diagnose-reference": {
+    "passed": 2,
+    "failed": [
+      "test_child_process_inherits_hook_and_bad_source_fails_closed"
+    ]
+  },
+  "diagnose-candidate": {
+    "passed": 2,
+    "failed": [
+      "test_child_process_inherits_hook_and_bad_source_fails_closed"
+    ]
+  }
+}

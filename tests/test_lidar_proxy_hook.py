@@ -29,6 +29,9 @@ def test_hook_receives_injected_points_and_drops_ring_without_changing_input(tmp
     for key, value in environment(tmp_path).items():
         if key.startswith("RESENSE_N2_"):
             monkeypatch.setenv(key, value)
+    # In-process the detector is already imported: pin the hook to the source it came from (the checkout here, the
+    # installed package in the image). The child-process test below keeps the guard's fail-closed case.
+    monkeypatch.setenv("RESENSE_N2_SOURCE", str(Path(sys.modules[Detector.__module__].__file__).resolve().parents[1]))
     monkeypatch.setattr(sys, "path", list(sys.path))
     seen = []
     monkeypatch.setattr(Detector, "process", lambda self, frame: seen.append(frame) or frame)

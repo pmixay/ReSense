@@ -282,7 +282,9 @@ def scan_axis(xyz: np.ndarray, ring: Optional[np.ndarray]) -> Optional[np.ndarra
 def directional_axes(xyz: np.ndarray) -> tuple[Optional[np.ndarray], Optional[np.ndarray]]:
     """Bounded directional-FOV evidence: signed forward and optional unsigned scan up.
 
-    A unique almost-one-sided axis identifies forward, NEVER roll about forward.
+    A unique almost-one-sided axis within a forward cone identifies forward,
+    NEVER roll about forward. A ground half-space below an open-air scanner is
+    not a directional FOV and must not contradict an otherwise valid mount.
     Under the same upright-scanner assumption as channel cones, well-resolved
     broad horizontal / narrow vertical angular coverage can identify unsigned
     up without channel IDs. This describes sensor coverage, not gravity; cropped,
@@ -291,7 +293,8 @@ def directional_axes(xyz: np.ndarray) -> tuple[Optional[np.ndarray], Optional[np
     """
     p = xyz[::max(1, int(np.ceil(len(xyz) / 16384)))].astype(np.float64)
     length = np.linalg.norm(p, axis=1)
-    p = p[np.isfinite(p).all(axis=1) & (length > 1.0)]
+    valid = np.isfinite(p).all(axis=1) & (length > 1.0)
+    p, length = p[valid], length[valid]
     if len(p) < 500:
         return None, None
     positive = np.mean(p > 0, axis=0)
@@ -302,6 +305,11 @@ def directional_axes(xyz: np.ndarray) -> tuple[Optional[np.ndarray], Optional[np
     forward = np.zeros(3)
     forward[j] = 1.0 if positive[j] > 0.5 else -1.0
     along = p @ forward
+    # Sign concentration describes a half-space, not necessarily a forward
+    # scanner. Require 98% of the sampled rays to lie within 80 degrees of
+    # this axis before using it as a hard orientation constraint (P4 A1).
+    if np.percentile(along / length, 2) <= np.cos(np.radians(80.0)):
+        return None, None
     p, along = p[along > 0], along[along > 0]
     transverse = [k for k in range(3) if k != j]
     angles = np.arctan2(p[:, transverse], along[:, None])

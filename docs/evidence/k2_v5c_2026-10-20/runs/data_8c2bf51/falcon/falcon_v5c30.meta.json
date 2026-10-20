@@ -1,0 +1,22 @@
+{
+ "src": "/dev/stdin",
+ "bytes": 20281548800,
+ "found": 4443,
+ "kept": 4443,
+ "lost": 0,
+ "order_violations": 0,
+ "duplicates": 0,
+ "frames": 4443,
+ "set": [
+  "track.axis_joint_fit=true",
+  "track.axis_joint_range=false",
+  "track.axis_joint_min_curvature=0.0001",
+  "track.axis_joint_reach_cap=true",
+  "track.axis_joint_reach_dual=30.0"
+ ],
+ "repo": "/home/user/wt_main",
+ "resets": [],
+ "wall_s": 697.8,
+ "cpu_s": 365.0,
+ "rss_peak_mb": 1417.4
+}

@@ -1,0 +1,9 @@
+flipped clusters by footprint returns at or above the new reference + margin (5 = 5 or more): {0: 3, 1: 14, 2: 30, 3: 14, 4: 8, 5: 29}
+('centre', 'either') n 1 counts [8]
+('centre', 'reference') n 1 counts [13]
+('centre', 'top') n 1 counts [6]
+('other', 'top') n 1 counts [3]
+('rail', 'either') n 5 counts [1, 2, 6, 6, 10]
+('rail', 'joint') n 2 counts [1, 6]
+('rail', 'reference') n 10 counts [0, 0, 0, 1, 1, 1, 2, 3, 3, 9]
+('rail', 'top') n 77 counts [1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 6, 10, 10, 16, 28, 30, 44, 56, 62, 64, 66, 76, 92, 96, 104, 106, 126, 144, 162, 162, 164]

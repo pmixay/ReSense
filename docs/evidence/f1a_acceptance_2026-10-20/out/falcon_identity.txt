@@ -1,0 +1,4 @@
+4443 vs 4443 rows; differ (non-timing) 0; differ in decision/dets/warns 0 [] set()
+off 4443 STOP rows 1364
+f1a 4443 STOP rows 1364
+x.jsonl (track models): byte-identical

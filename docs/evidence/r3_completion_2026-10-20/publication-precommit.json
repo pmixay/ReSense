@@ -1,0 +1,12 @@
+{
+  "commit": "47b220c982369b321a4576d4609127bad8ed1081",
+  "archives": {
+    "raw-replay.tar.gz": "31ed5c002c5195f570210288ec8469c2e98cfc6c3959e8335dc5691eec3d2bdf",
+    "raw-controls.tar.gz": "25170578f5e4969bc4f4664ca476ecca8e99e808a53d86ff8318f89624e5371c"
+  },
+  "verified_members": 413,
+  "measured_Git_source_files": 40,
+  "verified_local_links": 323,
+  "integrated_main": "5d83c5b",
+  "independent_bundle_acceptance": "pending"
+}

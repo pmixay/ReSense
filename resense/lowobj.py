@@ -300,15 +300,21 @@ def local_rail_reference(c, X: np.ndarray, dy: np.ndarray, h: np.ndarray, cfg: L
     return None
 
 
-def low_free_mask(n: int, clusters) -> np.ndarray:
+def low_free_mask(n: int, clusters, X: Optional[np.ndarray] = None,
+                  dy: Optional[np.ndarray] = None) -> np.ndarray:
     """19.10 (F1a', amendment 6): the frame's returns that belong to no low cluster of ``clusters`` (kind
     ``low``: clean, straddle-continuation or marked alike). The rail lines of :func:`rail_reference_check` are
     measured on these only, so the pieces of one long low object lying along a rail cannot raise each other's
-    reference (independent review 1, finding B1)."""
+    reference (independent review 1, finding B1). With frame X and rail-relative dy, exclude the full
+    footprint, including returns above the low-stage floor: F1a's top check reads these too (20.10)."""
     free = np.ones(int(n), dtype=bool)
     for c in clusters:
         if c.kind == "low" and c.points_idx.size:
             free[c.points_idx] = False
+            if X is not None and dy is not None:
+                d = dy[c.points_idx]
+                free[(X >= c.bbox_min[0]) & (X <= c.bbox_max[0])
+                     & (dy >= d.min()) & (dy <= d.max())] = False
     return free
 
 
@@ -316,12 +322,15 @@ def rail_reference_check(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray,
                          rails_spacing: float, free: Optional[np.ndarray] = None) -> list:
     """19.10 (F1 tasks a and b): the clean low clusters of ``clusters`` (kind ``low``, zone gauge, no
     reason, not weak) that do not rise above the rails around them: (a) ``local_rail_margin`` > 0 and
-    the top (``height_max``) below :func:`local_rail_reference` + margin; (b) ``rail_band_range`` > 0, the
+    the current-frame footprint top below :func:`local_rail_reference` + margin; (b) ``rail_band_range`` > 0, the
     cluster nearer than it, narrow (<= ``rail_start_max_width``), reaching a rail line (within
     ``rail_start_lateral``, as :func:`mark_rail_line`) and its top at most ``rail_band_margin`` above its
     own lateral band's line along the track (0.25 m bins, >= 2 returns, >= 4 bins, within
     ``local_rail_window``; no ``rail_start_min_ref`` condition). ``free`` (amendment 6): the frame's returns
-    the lines may be measured on (:func:`low_free_mask`); None = every return (the first measured version).
+    the independent lines may be measured on (:func:`low_free_mask`). With it, F1a requires both the original
+    and independent reference to reject the cluster; missing either retains ordinary confirmation. Removing
+    low returns can raise a median, so the independent reference is capped by the original one (B1 repair,
+    20.10). None = every return (the original, unsafe ablation).
     Returns them; the detector makes them advisory (``local_rail_advisory``) or weak low evidence. The
     clusters themselves are not modified here."""
     out = []
@@ -332,7 +341,18 @@ def rail_reference_check(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray,
             continue
         top = float(c.height_max)
         if cfg.local_rail_margin > 0:
+            # A plain low cluster contains only points below the envelope floor.
+            # Its upper body can be ordinary corridor evidence (or filtered as
+            # hardware), so height_max alone is not the object's observed top.
+            d = dy[c.points_idx]
+            footprint = ((X >= c.bbox_min[0]) & (X <= c.bbox_max[0])
+                         & (dy >= d.min()) & (dy <= d.max()) & (h < cfg.foot_max_top))
+            if footprint.any():
+                top = max(top, float(h[footprint].max()))
             ref = local_rail_reference(c, Xr, dyr, hr, cfg, rails_spacing)
+            if free is not None and ref is not None:
+                original = local_rail_reference(c, X, dy, h, cfg, rails_spacing)
+                ref = min(ref, original) if original is not None else None
             if ref is not None and top < ref + float(cfg.local_rail_margin):
                 out.append(c)
                 continue
@@ -344,7 +364,7 @@ def rail_reference_check(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray,
                     and any(d0 <= s * half + tol and d1 >= s * half - tol for s in (-1.0, 1.0))):
                 x0, x1, w = float(c.bbox_min[0]), float(c.bbox_max[0]), float(cfg.local_rail_window)
                 line = _band_line(Xr, dyr, hr, d0, d1, x0 - w, x1 + w, x0 - 0.3, x1 + 0.3, 0.25, 2, 4)
-                if line is not None and top <= line + float(cfg.rail_band_margin):
+                if line is not None and float(c.height_max) <= line + float(cfg.rail_band_margin):
                     out.append(c)
     return out
 

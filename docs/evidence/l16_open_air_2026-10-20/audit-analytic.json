@@ -1,0 +1,64 @@
+{
+  "open": {
+    "before": {
+      "FAULT": 450
+    },
+    "after": {
+      "GO": 450
+    },
+    "lost_STOP": [],
+    "added_STOP": [],
+    "positive_fraction": [
+      0.8639160444095108,
+      0.5042862055413637,
+      0.0017930831204558853
+    ],
+    "cue": [
+      null,
+      null
+    ]
+  },
+  "tunnel": {
+    "before": {
+      "GO": 450
+    },
+    "after": {
+      "GO": 450
+    },
+    "lost_STOP": [],
+    "added_STOP": [],
+    "positive_fraction": [
+      0.856668266351194,
+      0.5045144585439895,
+      0.32012663549141934
+    ],
+    "cue": [
+      null,
+      null
+    ]
+  },
+  "positive": {
+    "before": {
+      "FAULT": 4,
+      "STOP": 446
+    },
+    "after": {
+      "GO": 4,
+      "STOP": 446
+    },
+    "lost_STOP": [],
+    "added_STOP": [],
+    "positive_fraction": [
+      0.8639411092965287,
+      0.5043775095470229,
+      0.001866427632952271
+    ],
+    "cue": [
+      null,
+      null
+    ],
+    "before_matched": 446,
+    "after_matched": 446
+  },
+  "instrumentation_rows_equal": 450
+}

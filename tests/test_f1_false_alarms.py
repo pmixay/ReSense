@@ -10,6 +10,8 @@
 """
 from __future__ import annotations
 
+from pathlib import Path
+
 import numpy as np
 import pytest
 
@@ -212,17 +214,18 @@ def test_settled_static_track_needs_a_long_majority():
 
 def test_candidate_values_in_the_class_and_the_yaml():
     """Captain's decisions of 19.10: H' on (0.5, above the envelope only) and F1a on in its best-measured form
-    (margin 0.01, weak mode, no cross-rail rule: review B1 accepted, P3 improves); S2, F1b and F1c opt-in (0).
+    (margin 0.01, weak mode, no cross-rail rule; 20.10 B1: independent low-free reference required);
+    S2, F1b and F1c opt-in (0).
     All off is the aec88d2 behaviour (proved on the full gate and the whole Falcon recording,
     docs/evidence/f1_false_alarms_2026-10-19)."""
     y = DetectorConfig()
-    assert y.lowobj.local_rail_margin == pytest.approx(0.01) and not y.lowobj.local_rail_exclude_low
+    assert y.lowobj.local_rail_margin == pytest.approx(0.01) and y.lowobj.local_rail_exclude_low
     assert y.lowobj.local_rail_cross_tol == 0
     assert not y.lowobj.local_rail_advisory and y.cluster.mount_cross_tol == pytest.approx(0.5)
     assert y.cluster.mount_cross_above_only
     assert y.tracking.settle_min_hits == 0
     assert y.lowobj.rail_band_range == 0 and y.lowobj.no_rail_low_within == 0
-    assert DetectorConfig.from_yaml("configs/default.yaml").to_dict() == y.to_dict()
+    assert DetectorConfig.from_yaml(Path(__file__).resolve().parents[1] / "configs/default.yaml").to_dict() == y.to_dict()
 
 
 def _long_object_on_the_left_rail():

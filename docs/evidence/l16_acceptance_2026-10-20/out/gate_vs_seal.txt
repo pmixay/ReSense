@@ -1,0 +1,19 @@
+recordings.doubleT_platform.alarm_events                                yes          1          0  better
+recordings.doubleT_platform.stop_episodes                               yes          1          0  better
+recordings.doubleT_platform.alarm_frames                                             2          0  better
+five_empty.alarm_events                                                              8          7  better
+five_empty.stop_episodes                                                            12         11  better
+five_empty.alarm_frames                                                             39         37  better
+ride.alarm_events                                                       yes         27         23  better
+ride.stop_episodes                                                      yes         30         26  better
+ride.alarm_frames                                                                  126        111  better
+set_O.objects.thin_hanging.stop_frames                                  yes         15         18  better
+set_O.objects.thin_hanging.first_stop_m                                 yes       30.1       35.1  better
+set_O.objects.thin_hanging.held_from_m                                  yes       31.8       40.0  better
+set_O.objects.thin_hanging.bins.0-50.stop_frames                        yes         15         18  better
+set_O.inside_stop_frames                                                           411        414  better
+set_F_straight.cable.sustained_median_m                                           34.2       17.8  worse
+set_F_straight.cable.recall_0-50                                                    43         50  better
+set_F_straight.cable.recall_50-100                                                  47         49  better
+GATE PASS: no gated metric worse (8 gated better, 0 worse but allowed, 25 information rows changed)
+GATE_EXIT 0

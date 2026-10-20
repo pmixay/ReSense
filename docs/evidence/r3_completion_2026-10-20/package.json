@@ -1,0 +1,15 @@
+{
+  "archives": {
+    "raw-replay.tar.gz": {
+      "bytes": 12702761,
+      "sha256": "31ed5c002c5195f570210288ec8469c2e98cfc6c3959e8335dc5691eec3d2bdf",
+      "verified_members": 376
+    },
+    "raw-controls.tar.gz": {
+      "bytes": 3759178,
+      "sha256": "25170578f5e4969bc4f4664ca476ecca8e99e808a53d86ff8318f89624e5371c",
+      "verified_members": 37
+    }
+  },
+  "total_verified_members": 413
+}

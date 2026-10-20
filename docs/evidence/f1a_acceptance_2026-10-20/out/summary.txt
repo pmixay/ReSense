@@ -1,0 +1,79 @@
+== 1. the trace's verdicts
+cloud_with_fake_obj    checked    11 match    11  A    0  D    0  D-not-A 0  flips    0: 
+doubleT_platform       checked    58 match    58  A   43  D   27  D-not-A 0  flips   16: either.rail 1, reference.rail 2, top.rail 13
+                         rail: top_new - ref_orig min -0.055 median 0.046 max 0.106 m
+new_data_0             checked     8 match     8  A    2  D    1  D-not-A 0  flips    1: top.rail 1
+                         rail: top_new - ref_orig min 0.165 median 0.165 max 0.165 m
+new_data_1             checked    81 match    81  A   50  D   19  D-not-A 0  flips   31: either.centre 1, either.rail 1, reference.rail 2, top.centre 1, top.rail 26
+                         centre: top_new - ref_orig min 0.015 median 0.095 max 0.095 m
+                         rail: top_new - ref_orig min -0.024 median 0.045 max 0.133 m
+new_data_2             checked    87 match    87  A   70  D   36  D-not-A 0  flips   34: joint.rail 1, reference.rail 2, top.rail 31
+                         rail: top_new - ref_orig min -0.092 median 0.041 max 0.110 m
+new_data_3             checked     2 match     2  A    1  D    1  D-not-A 0  flips    0: 
+new_data_4             checked    70 match    70  A   24  D   15  D-not-A 0  flips    9: either.rail 1, joint.rail 1, reference.centre 1, reference.rail 3, top.rail 3
+                         centre: top_new - ref_orig min 0.002 median 0.002 max 0.002 m
+                         rail: top_new - ref_orig min -0.015 median 0.015 max 0.098 m
+new_data_5             checked    29 match    29  A    5  D    2  D-not-A 0  flips    3: top.other 1, top.rail 2
+                         other: top_new - ref_orig min 0.037 median 0.037 max 0.037 m
+                         rail: top_new - ref_orig min 0.035 median 0.062 max 0.062 m
+new_data_6             checked     4 match     4  A    1  D    1  D-not-A 0  flips    0: 
+new_data_7             checked    58 match    58  A   10  D    6  D-not-A 0  flips    4: either.rail 2, reference.rail 1, top.rail 1
+                         rail: top_new - ref_orig min 0.005 median 0.048 max 0.089 m
+total                  checked   408 match   408  A  206  D  108  D-not-A 0  flips   98: either.centre 1, either.rail 5, joint.rail 2, reference.centre 1, reference.rail 10, top.centre 1, top.other 1, top.rail 77
+
+== 2. decision changes and the lineage of the candidate's tracks
+-- doubleT_platform
+row    36 doubleT_platform_0036: S0W0 -> S0W1  old ids S[] W[]  new ids S[] W[44]
+    id   44 warning   34.8 m lat -0.05 kind low    hits   5: flipped 1 [35], both accept 1, not checked 3; first hit row 31
+row    37 doubleT_platform_0037: S0W0 -> S0W1  old ids S[] W[]  new ids S[] W[44]
+    id   44 warning   34.1 m lat -0.05 kind low    hits   5: flipped 1 [35], both accept 1, not checked 3; first hit row 31
+-- new_data_1
+row  1259 new_data_52_0016: S0W1 -> S1W1  old ids S[] W[289]  new ids S[288] W[289]
+    id  288 gauge     42.1 m lat +0.74 kind low    hits   6: flipped 1 [1259], both accept 3, not checked 2; first hit row 1250
+    id  289 warning  172.2 m lat -0.29 kind -      hits   7: flipped 0 [], both accept 0, not checked 7; first hit row 1250
+row  1260 new_data_52_0017: S0W1 -> S1W1  old ids S[] W[289]  new ids S[288] W[289]
+    id  288 gauge     38.9 m lat +1.06 kind -      hits   7: flipped 1 [1259], both accept 3, not checked 3; first hit row 1250
+    id  289 warning  171.2 m lat -0.29 kind -      hits   7: flipped 0 [], both accept 0, not checked 7; first hit row 1250
+row  1261 new_data_52_0018: S0W1 -> S1W1  old ids S[] W[297, 289]  new ids S[288] W[293, 297, 289]
+    id  288 gauge     36.9 m lat +1.06 kind -      hits   7: flipped 1 [1259], both accept 3, not checked 3; first hit row 1250
+    id  293 warning   34.6 m lat +0.78 kind low    hits   5: flipped 3 [1259, 1260, 1261], both accept 0, not checked 2; first hit row 1257
+    id  297 warning   87.4 m lat -0.04 kind -      hits   4: flipped 0 [], both accept 0, not checked 4; first hit row 1257
+    id  289 warning  169.3 m lat -0.62 kind -      hits   8: flipped 0 [], both accept 0, not checked 8; first hit row 1250
+row  1265 new_data_52_0022: S0W1 -> S1W1  old ids S[] W[295, 289]  new ids S[288] W[301, 293, 294, 295, 289]
+    id  288 gauge     35.8 m lat -0.84 kind low    hits   9: flipped 1 [1259], both accept 4, not checked 4; first hit row 1250
+    id  301 warning   37.0 m lat +0.02 kind low    hits   6: flipped 3 [1260, 1263, 1265], both accept 0, not checked 3; first hit row 1260
+    id  293 warning   39.5 m lat -0.24 kind -      hits   7: flipped 4 [1259, 1260, 1261, 1262], both accept 0, not checked 3; first hit row 1257
+    id  294 warning   41.8 m lat +1.15 kind -      hits   6: flipped 2 [1259, 1262], both accept 0, not checked 4; first hit row 1257
+    id  295 warning   47.0 m lat +1.20 kind -      hits   6: flipped 0 [], both accept 0, not checked 6; first hit row 1257
+    id  289 warning  163.5 m lat -0.71 kind -      hits  12: flipped 0 [], both accept 0, not checked 12; first hit row 1250
+row  1266 new_data_52_0023: S0W1 -> S1W1  old ids S[] W[293, 295, 289]  new ids S[305] W[301, 294, 295, 289]
+    id  305 gauge     24.3 m lat -0.79 kind low    hits   5: flipped 4 [1261, 1263, 1264, 1266], both accept 0, not checked 1; first hit row 1261
+    id  301 warning   38.9 m lat +0.02 kind low    hits   6: flipped 3 [1260, 1263, 1265], both accept 0, not checked 3; first hit row 1260
+    id  294 warning   42.7 m lat +1.21 kind -      hits   7: flipped 2 [1259, 1262], both accept 0, not checked 5; first hit row 1257
+    id  295 warning   47.7 m lat +1.17 kind -      hits   7: flipped 0 [], both accept 0, not checked 7; first hit row 1257
+    id  289 warning  165.6 m lat -0.97 kind -      hits  13: flipped 0 [], both accept 0, not checked 13; first hit row 1250
+row  1267 new_data_52_0024: S0W1 -> S1W1  old ids S[] W[293, 295, 289]  new ids S[305] W[302, 301, 294, 295, 289]
+    id  305 gauge     23.6 m lat -0.79 kind low    hits   5: flipped 4 [1261, 1263, 1264, 1266], both accept 0, not checked 1; first hit row 1261
+    id  302 warning   33.6 m lat +0.54 kind -      hits   5: flipped 3 [1260, 1262, 1264], both accept 0, not checked 2; first hit row 1260
+    id  301 warning   36.6 m lat -0.73 kind low    hits   7: flipped 3 [1260, 1263, 1265], both accept 1, not checked 3; first hit row 1260
+    id  294 warning   42.9 m lat +1.21 kind -      hits   7: flipped 2 [1259, 1262], both accept 0, not checked 5; first hit row 1257
+    id  295 warning   47.9 m lat +1.17 kind -      hits   7: flipped 0 [], both accept 0, not checked 7; first hit row 1257
+    id  289 warning  165.8 m lat -1.11 kind -      hits  14: flipped 0 [], both accept 0, not checked 14; first hit row 1250
+-- new_data_2
+row  1342 new_data_81_0029: S0W1 -> S0W0  old ids S[] W[578]  new ids S[] W[]
+-- new_data_4
+row    80 new_data_112_0004: S0W1 -> S1W1  old ids S[] W[57, 49, 54]  new ids S[50] W[57, 59]
+    id   50 gauge     21.8 m lat +1.23 kind -      hits   5: flipped 1 [76], both accept 2, not checked 2; first hit row 72
+    id   57 warning   36.9 m lat +1.25 kind -      hits   7: flipped 0 [], both accept 1, not checked 6; first hit row 74
+    id   59 warning   45.8 m lat +1.31 kind -      hits   5: flipped 0 [], both accept 0, not checked 5; first hit row 76
+row    83 new_data_112_0007: S0W1 -> S0W0  old ids S[] W[60]  new ids S[] W[]
+row    84 new_data_112_0008: S0W1 -> S0W0  old ids S[] W[60]  new ids S[] W[]
+-- new_data_7
+row   621 new_data_205_0029: S0W0 -> S0W1  old ids S[] W[]  new ids S[] W[202]
+    id  202 warning   50.9 m lat +0.74 kind low    hits   6: flipped 0 [], both accept 6, not checked 0; first hit row 616
+row   622 new_data_205_0030: S0W0 -> S0W1  old ids S[] W[]  new ids S[] W[202]
+    id  202 warning   49.7 m lat +0.74 kind low    hits   6: flipped 0 [], both accept 6, not checked 0; first hit row 616
+row   623 new_data_205_0031: S0W0 -> S1W0  old ids S[] W[]  new ids S[202] W[]
+    id  202 gauge     47.6 m lat +0.86 kind low    hits   7: flipped 1 [623], both accept 6, not checked 0; first hit row 616
+row   624 new_data_205_0032: S0W0 -> S1W0  old ids S[] W[]  new ids S[202] W[]
+    id  202 gauge     45.9 m lat +0.86 kind low    hits   7: flipped 1 [623], both accept 6, not checked 0; first hit row 616

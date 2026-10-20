@@ -1,0 +1,854 @@
+{
+  "prefix/falcon": [
+    {
+      "case": 0,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 0,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 1,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 2,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 3,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 4,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 5,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 6,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 7,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 8,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 9,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 10,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 11,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 12,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 13,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 14,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 15,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 16,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 17,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 18,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 19,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 20,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 21,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 22,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 23,
+      "rows": 32,
+      "STOP": 4,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    }
+  ],
+  "prefix/empty-ringfree": [
+    {
+      "case": 0,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 0,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 1,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 2,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 3,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 4,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 5,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 6,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 7,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 8,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 9,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 10,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 11,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 12,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 13,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 14,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 15,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 16,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 17,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 18,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 19,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 20,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 21,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 22,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 23,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    }
+  ],
+  "prefix/positive-ringfree": [
+    {
+      "case": 0,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 0,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 1,
+      "rows": 32,
+      "STOP": 22,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 2,
+      "rows": 32,
+      "STOP": 22,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 3,
+      "rows": 32,
+      "STOP": 22,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 4,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 32
+    },
+    {
+      "case": 5,
+      "rows": 32,
+      "STOP": 27,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 32
+    },
+    {
+      "case": 6,
+      "rows": 32,
+      "STOP": 27,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 31
+    },
+    {
+      "case": 7,
+      "rows": 32,
+      "STOP": 27,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 31
+    },
+    {
+      "case": 8,
+      "rows": 32,
+      "STOP": 22,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 9,
+      "rows": 32,
+      "STOP": 22,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 10,
+      "rows": 32,
+      "STOP": 22,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 11,
+      "rows": 32,
+      "STOP": 22,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 12,
+      "rows": 32,
+      "STOP": 28,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 13,
+      "rows": 32,
+      "STOP": 28,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 14,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 15,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 16,
+      "rows": 32,
+      "STOP": 27,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 31
+    },
+    {
+      "case": 17,
+      "rows": 32,
+      "STOP": 27,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 31
+    },
+    {
+      "case": 18,
+      "rows": 32,
+      "STOP": 27,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 31
+    },
+    {
+      "case": 19,
+      "rows": 32,
+      "STOP": 27,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 31
+    },
+    {
+      "case": 20,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 21,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 22,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 23,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": null,
+      "inherited_ambiguous_rows": 0
+    }
+  ],
+  "prefix/empty-ring": [
+    {
+      "case": 0,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 0,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 1,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 2,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 3,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 4,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 5,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 6,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 7,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 8,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 9,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 10,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 11,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 12,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 13,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 14,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 15,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 16,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 17,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 18,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 19,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 20,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 21,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 22,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 23,
+      "rows": 32,
+      "STOP": 0,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    }
+  ],
+  "prefix/positive-ring": [
+    {
+      "case": 0,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 0,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 1,
+      "rows": 32,
+      "STOP": 22,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 2,
+      "rows": 32,
+      "STOP": 22,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 3,
+      "rows": 32,
+      "STOP": 22,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 4,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 5,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 6,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 7,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 8,
+      "rows": 32,
+      "STOP": 22,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 9,
+      "rows": 32,
+      "STOP": 22,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 10,
+      "rows": 32,
+      "STOP": 22,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 11,
+      "rows": 32,
+      "STOP": 22,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 12,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 13,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 14,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 15,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 16,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 17,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 18,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 19,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 20,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 21,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 22,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    },
+    {
+      "case": 23,
+      "rows": 32,
+      "STOP": 24,
+      "first_mapping": 1,
+      "inherited_ambiguous_rows": 0
+    }
+  ],
+  "paired_rows_exact_except_registered_timing": 3840,
+  "planted_detection_loss_detected": true
+}

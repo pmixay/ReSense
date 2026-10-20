@@ -1,0 +1,11 @@
+/home/user/data/raw/for_hackathon/doubleT_obstacle frame 0: 340888 returns, z>0 0.3087, x<0 0.0594
+  above share as recorded: z>0 0.3087 x<0 0.0594 -> forward None, up None
+  above share       0.100: z>0 0.1000 x<0 0.0561 -> forward None, up None
+  above share       0.050: z>0 0.0500 x<0 0.0550 -> forward None, up None
+  above share       0.030: z>0 0.0300 x<0 0.0546 -> forward None, up None
+  above share       0.025: z>0 0.0250 x<0 0.0546 -> forward None, up None
+  above share       0.020: z>0 0.0200 x<0 0.0546 -> forward None, up None
+  above share       0.015: z>0 0.0150 x<0 0.0545 -> forward [0.0, 0.0, -1.0], up None
+  above share       0.010: z>0 0.0100 x<0 0.0545 -> forward [0.0, 0.0, -1.0], up None
+  above share       0.005: z>0 0.0050 x<0 0.0543 -> forward [0.0, 0.0, -1.0], up None
+  above share       0.002: z>0 0.0020 x<0 0.0543 -> forward [0.0, 0.0, -1.0], up None

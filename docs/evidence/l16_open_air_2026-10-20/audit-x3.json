@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "cases": 40,
+  "rows": 29765,
+  "comparisons": 260,
+  "lost_STOP_or_detection_rows": 0,
+  "planted_loss_detected": true
+}
