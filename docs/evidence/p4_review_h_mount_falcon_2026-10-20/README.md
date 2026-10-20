@@ -19,7 +19,7 @@
 |---|---|
 | removes 8 STOP frames on the Falcon | **confirmed.** With H′ off exactly frames 4394–4401 are STOP where the shipped run is CAUTION; no other frame of 4,443 differs in decision, detections or warnings; STOP frames 1,364 shipped, 1,372 off; no STOP only with H′ on |
 | they are false | **confirmed on the raw returns.** The 8 STOPs stand on clusters at 9.4–11.2 m whose returns are 4.14–4.31 m above the calibrated mount's rail-head plane, on the tunnel ceiling (pictures below). The same frames' only object on the track is the person at 2.5–6 m, and neither run reports a STOP on it there (finding 1) |
-| changes 0 gate rows | **GATE_RESULT** |
+| changes 0 gate rows | **confirmed, with a caveat.** The full gate with H′ off (`--set cluster.mount_cross_tol=0`, seal baseline, no `--allow`): **exit 0**, 8 gated rows better, none worse, the same as the shipped gate. Against the shipped per-frame rows: **15,269 rows, 0 differ** in any non-timing field (735 differ only in the latency-driven health level; the first run, whose set F step failed on a missing libEGL, gave the same 15,269 / 0). Set F straight: only the config hash, the wall time and the ground truth's `gt_vehicle_y_m` (ICP odometry, at most 7e-9 m) differ in 65,121 values; no detector field. The caveat is finding 2: the check is never armed on this data |
 | X3 | not worse: **0 of 260** comparisons fail, and in **40 of 40** cases every row's decision, detections and warnings equal the shipped run's (29,765 rows; 401 rows differ only in the latency health level / message) |
 | no STOP on a real object is lost | **confirmed on the person, the recording's known object:** all 1,360 person STOP frames are STOP in both runs (positive control: below). Not shown for anything else: the gate and X3 contain almost no case the check can act on (finding 2) |
 
@@ -104,6 +104,8 @@ detections. The ceiling is the sheet of returns at Z ≈ +2.5 m in every frame, 
 | 5 | the override takes effect | each X3 worker logs the effective value; the same wrapper with an override known to change results; the Falcon off replica | 40 of 40 workers `mount_cross_tol` 0; `gauge.range_max=40` changes 193 of 201 rows, `mount_cross_tol=0` changes 0 ([`out/x3_set_override_control.txt`](out/x3_set_override_control.txt)); the off replica finds exactly the 8 frames of the claim |
 | 6 | the frame lister is correct | `list_diff.py` against `cmp_frames.py` on a known pair, the F1a repair (`8c2bf51` against the shipped gate rows) | 2,052 + 35 = 2,087 differing rows, as `cmp_frames.py` and the F1a acceptance ([`out/control_list_diff_8c2bf51_vs_shipped.txt`](out/control_list_diff_8c2bf51_vs_shipped.txt)) |
 | 7 | the sets I ran on are the ones the shipped runs used | sha256 of every X3 node-decoded `.npz` and `meta.json` against `x3_l16.json`'s inventory; the six recordings' `metadata.yaml`; frame counts; archive sha256 | 877 / 201 / 545 / 1,510 `.npz` equal, meta equal; archives equal the published (six recordings `e2316680…`, ride `8124b627…`, set O `d41c2fb2…`); counts 201 / 345 / 252 / 268 / 545 / 877 / 1,510 / 11,271 |
+| 7b | the ride cache is the published ride | the archive was streamed again through `scripts/cache_extended_ride.py` (size, sha256, 221 splits × 51 frames, the cache's compact16 / zstd level 3 encoding as the shipped gate's) before the gate ran | `8124b627…` equal to the published; `intake_manifest.json` complete; the first 96 splits (4,896 frames), cached as plain `.npy` before I switched to `--zstd` to save disk, were converted to `.npy.zst` losslessly, each read back and compared |
+| 7c | the H′-off gate | `regression_gate.py --set cluster.mount_cross_tol=0`, 4 jobs, seal baseline, no `--allow`; per frame against `gatework_l16.tar.xz` with `cmp_frames.py` and `list_diff.py`, the gate JSONs with `gate_diff.py`, set F straight leaf by leaf | as in the answer ([`out/identity_gate_hoff_vs_shipped.txt`](out/identity_gate_hoff_vs_shipped.txt), [`out/setF_straight_compare.txt`](out/setF_straight_compare.txt)); the work files' `config.yaml` carry `mount_cross_tol: 0` against the shipped 0.5 |
 | 8 | the 8 frames' cause | the raw returns of the frames (dumps), the clusters H′ looked at with their heights above the mount plane, the track records of both runs | table above; pictures |
 | 9 | the 8 frames are false | by looking at the returns (pictures), the ceiling sheet at Z ≈ +2.5 m in every frame, 4.1–4.3 m above the rail plane; a tunnel ceiling is a physically plausible height, a person is not 4 m tall | ceiling |
 | 10 | H′ does not demote a real object | the 11 person clusters over the threshold that H′ kept (positive control: same tool, a case where it must not demote) | kept; heights 1.2–1.6 m above the plane |
@@ -117,6 +119,8 @@ detections. The ceiling is the sheet of returns at Z ≈ +2.5 m in every frame, 
 * The node path itself: the clear-distance results are a read-only replay of `candidate_ranges` after `evaluate_decision` with
   the node's arguments (`min_points_far`, `max_range`, policy v1, a valid freshness record), not a ROS run. The live node's
   freshness, latch and health overrides are not modelled. `small_candidate` is run and equals `conservative` here.
+* Why `gt_vehicle_y_m` of set F differs by up to 7e-9 m between two runs of one detector (the ground truth is built from ICP odometry with open3d;
+  probably thread order; the two gate runs used 3 and 4 jobs). No detector field differs.
 * How the detector counts `n` for the density check (accumulation, returns held twice in the cloud).
 * Any other switch (F1a, R3, L16/S3, H1 and the rest of the seal) and the test suite: only `tests/test_decision_policy.py` (48 tests)
   was run here; the full suite was not.
@@ -135,7 +139,7 @@ detections. The ceiling is the sheet of returns at Z ≈ +2.5 m in every frame, 
   unchanged battery with overrides); [`scripts/list_diff.py`](scripts/list_diff.py) (every differing row).
 * `out/`: `falcon/` (both replicas' per-frame and track records, the H′ hook and node-path records, the cropped dumps, stream
   sha256 and meta), `x3_hoff.json` and `x3_raw_hoff.tar.xz` (unpack to `/home/user/out/x3/`, the summary's `raw_path`),
-  `x3_compare_hoff.txt`, `gate_hoff/` (the H′-off gate, see below), `gate_trace/` (H′ trace of the gate data), `png/`, the analysis texts.
+  `x3_compare_hoff.txt`, `gate_hoff/` (the H′-off gate JSON, its per-frame rows, both logs), `gate_trace/` (H′ trace of the gate data), `png/`, the analysis texts.
 
 ```
 export OPENBLAS_CORETYPE=Haswell OMP_NUM_THREADS=1

@@ -1,0 +1,4 @@
+gate with H' off (run 1, the per-frame rows of a full replay; its set F step failed on a missing libEGL, rerun as run 2) against the shipped gate rows (l16_acceptance gatework_l16.tar.xz)
+config.yaml: shipped mount_cross_tol: 0.5, H' off mount_cross_tol: 0
+{"files": 15, "rows": 15269, "rows_different": 0, "rows_latency_level_only": 713, "first_differences": [], "setF_straight_equal": null}
+SUMMARY rows 15269; differ in decision/detections/warnings 0; differ only in other non-timing fields 0
