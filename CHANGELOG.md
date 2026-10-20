@@ -4,8 +4,9 @@
 > 19.10, with every measurement, are in [`docs/archive/CHANGELOG_history_2026-10-19.md`](docs/archive/CHANGELOG_history_2026-10-19.md);
 > the full dated history of 15–29.09 in [`docs/archive/CHANGELOG_2026-09.md`](docs/archive/CHANGELOG_2026-09.md).
 > **Audience:** jury (spec §5 "как менялось качество"), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-10-19 (evening): [1.2.0] against `DECISIONS.md` rows 35–42 and the evidence of 19.10; the older
-> sections against the archived text they were cut from.
+> **Last verified:** 2026-10-20, ~19:00 MSK: [1.2.0] state and the 20.10 entries against git (`main` `8453458`), GitHub (PRs #43–#47,
+> CI runs, releases) and `python3 scripts/detector_freeze.py verify` (PASS); the 19.10 entries against `DECISIONS.md` rows 35–44;
+> the older sections against the archived text they were cut from (checked 19.10).
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), loosely; versions up to v0.6.4 are team labels; package 1.0.0
 dates from 25.09. **The published release is v1.0.0 only.** 1.1.0 (sealed 16.10) was not released and will not be (captain,
@@ -13,12 +14,17 @@ dates from 25.09. **The published release is v1.0.0 only.** 1.1.0 (sealed 16.10)
 [`README.md`](README.md), [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
 20-minute, 13 km recording `new_data`.
 
-## [1.2.0] — unreleased: LiDAR integration candidate of 18.10 and the integration of 19.10
+## [1.2.0] — unreleased: LiDAR integration candidate of 18.10, the integration of 19.10 and the work of 20.10
 
-**State, 20.10.** All four version declarations are 1.2.0. `python3 scripts/detector_freeze.py verify` **PASSES** (40 files, R3
-reseal on the measured `0a472d6`); CI on `main` is green at `f56ad5e`. The independent final-bundle review (P4) is open
-([`docs/BACKLOG.md`](docs/BACKLOG.md) "Current plan"). Not a release, not a J1 score, not a G3 run. (State of 19.10 evening, kept
-for the record: `verify` failed with 2 added and 11 changed files until the reseal; CI was red.)
+**State, 20.10 evening (`main` `8453458`).** All four version declarations are 1.2.0. `python3 scripts/detector_freeze.py verify`
+**PASSES** (40 files, R3 integrity reseal on the measured `0a472d6`; it is an integrity seal, not an acceptance). CI on `main` is
+green: all five jobs passed at `5d83c5b` (run #667) and `f56ad5e` (#669); run #680 on `8453458` (PR #47) was not finished at
+19:07 MSK (four jobs green, the web job still in its browser suite).
+PRs #43, #44, #45 and #47 are merged, #46 (P4's review of H′ and the Falcon clear-distance model) is open. **Not released:**
+release, tag and demo image wait for a final source, the last commit before the code stop 20.10 23:59 MSK (captain, 20.10); then
+the reseal, P4's independent acceptance of the final bundle, the image and the tag. Not a J1 score, not a G3 run
+([`docs/BACKLOG.md`](docs/BACKLOG.md) "Current plan"). (State of 19.10 evening, kept for the record: `verify` failed with 2 added
+and 11 changed files until the reseal; CI was red.)
 
 ### 20.10 — R3 B2/B3 completion
 
@@ -33,6 +39,27 @@ for the record: `verify` failed with 2 added and 11 changed files until the rese
   one inherited proxy-hook failure reproduced on both sources, eight external-data deselections.
   Raw evidence and an integrity reseal supplied; independent final-bundle review remains open.
   [Evidence](docs/evidence/r3_completion_2026-10-20/README.md).
+
+### 20.10 — K2 v5c (off) and P4's data run, PRs #43, #44, #45
+
+- **PR #43:** K2 v5c (`track.axis_joint_reach_dual`, **off by default**; K2 itself stays held off, `DECISIONS.md` row 44), the
+  corrected Falcon re-score (first person STOP 122.27 m, 37 person frames without STOP, not 112.97 m / 158), P4's reviews of the
+  19.10 integration and the N5 marker supplement. With every K2 switch off, `8c2bf51` equals `a5b0ede` on 180 synthetic rows,
+  all 15,269 gate rows and all 4,443 Falcon rows. **PR #44:** P4's re-check on `8c2bf51` and on the F1a repair's synthetic scenes.
+- **PR #45**, the data run on the organizers' data: no real start is near the L16 open-air FAULT (lowest above-sensor share
+  28.3 %, T1); K2 v5c fails its registered Falcon and marked-bag rows as scored and only set O `small_center` fails the gate
+  (T2), the tunnels cube is an edge object (T3); F1a made 163 low clusters weak on set O and the ride, none a real object above
+  the rails as far as the pictures show (T4); acceptance runs of the F1a and L16 repairs (below). It decides nothing: the F1a ride
+  cost and K2 stay with the captain. [K2 v5c](docs/evidence/k2_v5c_2026-10-20/README.md),
+  [T1](docs/evidence/l16_exposure_2026-10-20/README.md), [T4](docs/evidence/f1a_exposure_2026-10-20/README.md),
+  [F1a acceptance](docs/evidence/f1a_acceptance_2026-10-20/README.md), [L16 acceptance](docs/evidence/l16_acceptance_2026-10-20/README.md).
+
+### 20.10 — CI and image
+
+- CI runs again: all five jobs passed on `main` at `5d83c5b` and `f56ad5e`. Workflow changes: read-only token, job timeouts, Node 24
+  for the web job, superseded runs cancelled except on `main` and `claude/*`, no artifact upload in the release workflow (the
+  repository is out of artifact storage), lint relaxed for one-off evidence scripts. The Dockerfile copies the fixtures the in-image
+  tests read (including the open-air scene). No detector, config or ROS file changed.
 
 ### 20.10 — L16/S3 open-air startup repair and measured T1 exposure
 
@@ -50,6 +77,17 @@ for the record: `verify` failed with 2 added and 11 changed files until the rese
   Full pytest has2,340 passed, three failures; paired diagnosis and146-node-test reruns are
   retained without an all-green claim.
   Final-bundle review/reseal remain separate. [Evidence](docs/evidence/l16_open_air_2026-10-20/README.md).
+
+### 20.10 — F1a B1 repair (`f07f4b8`, merged with PR #43 at `060bde7`)
+
+- Both B1 mechanisms (the fragmented object's self-reference and P4's capped-top miss): independent rail support that excludes
+  low-cluster footprints (`lowobj.local_rail_exclude_low`) and the observed full-footprint top. P4's raised-rail box regains its 8
+  STOP rows. Gate against the seal baseline **PASS** without exceptions; set F and the 4,443 Falcon rows equal to starting main;
+  X3 40 cases / 29,765 rows with identical STOP rows.
+- **Cost against starting main on the ride:** alarm events **18 → 23**, STOP episodes **24 → 26**. P4's acceptance run (PR #45)
+  reproduces both numbers and traces all 16 changed decisions to rail-head fragments and tracker chains through them. The
+  trade-off is **not decided** (captain). [Evidence](docs/evidence/f1a_b1_2026-10-20/README.md),
+  [P4's acceptance](docs/evidence/f1a_acceptance_2026-10-20/README.md).
 
 ### 20.10 — R3 sustained-range population diagnosis and reporting repair
 
@@ -92,9 +130,11 @@ for the record: `verify` failed with 2 added and 11 changed files until the rese
   candidate ([evidence](docs/evidence/integration_2026-10-19/README.md); [`DECISIONS.md`](docs/DECISIONS.md) row 40).
 - **Switches decided by the captain** (row 41). **On:** F1a local rail reference (`lowobj.local_rail_margin` 0.01; review finding B1
   accepted), H′ mount cross-check (`cluster.mount_cross_tol` 0.5; removes the 8 false STOP frames on the Falcon tunnel ceiling, 0
-  gate rows change), R3, L16/S3, K2 joint axis fit (variant chosen from v3/v4/v5 on 20.10), the Falcon clear-distance model.
-  **Off:** S2 settle, Falcon far range (`farrange`: person STOP 146 m instead of 127 m, but no gain on injected targets and rule
-  5.1(b) fails; no 300 m claim), the dust guard (fails its own acceptance).
+  gate rows change), R3, L16/S3, the Falcon clear-distance model (it acts only in the ROS node's non-default `clear_range_policy`
+  `conservative` / `small_candidate`), K2 joint axis fit (variant B was switched on that evening, row 43, and **held off again
+  later that evening after the Falcon run, row 44**; it is off in 1.2.0). **Off:** S2 settle, Falcon far range (`farrange`:
+  person STOP 146 m instead of 127 m, but no gain on injected targets and rule 5.1(b) fails; no 300 m claim), the dust guard
+  (fails its own acceptance).
 - **P3: L16/S3 and R3** (in `main`; author checks PASS, P4 review pending). L16: ring-free directional orientation, S3: the
   orientation search samples once to ≤ 60,000 points ([evidence](docs/evidence/l16_s3_2026-10-19/README.md)). R3: confirmation of
   thin cables from consecutive current-frame evidence; set O hanging 5 cm object first STOP 30.1 → 35.1 m, standing 5 cm cable
@@ -166,6 +206,13 @@ released: no tag or archive, no J1 score.
   runs, run (KPIs, decisions against labels), 3D player from the cab, comparison, live mode through rosbridge, parameters/presets.
   The same sealed `resense.Detector` runs in a worker; the image does not contain `webapp/`. Known limits: 60 fps not measured, live
   mode tested against a stand-in, no authentication.
+- **Changed (20.10, PR #47, merged):** a reworked Player workspace (a modeled train-interior display, reference-based 3D view,
+  pinned transport and telemetry) and a persistent live preview at https://resense.amdm.life/. Web-only: no file under
+  `resense/`, `native/`, `configs/` or `ros2_ws/` differs from `f56ad5e`, the seal still passes, the release image does not contain
+  `webapp/`. P2 reports 362 frontend, 179 backend and 81 dashboard tests and 75 browser cases in split batches (not one clean
+  suite) on its host, and public checks of the preview ([README](docs/evidence/p2_2026-10-20/README.md),
+  [PUBLISH](docs/evidence/p2_2026-10-20/PUBLISH.md)); `/deployment.json` at ~18:50 MSK named commit `432494f` of branch
+  `ui-improvement` (deployed 18:23 MSK), a pre-merge build.
 - **Changed (09.10):** resumable, checksummed uploads in 8 MiB chunks with adaptive gzip, retries and a second-tab guard; background
   finalize; a background read-ahead thread in processing; the 502 behind the reverse proxy fixed (idle keep-alive 130 s).
 - Tests at 29.09: 149 backend, 278 frontend, 44 browser end-to-end; CI job `webapp` after `checks`.
