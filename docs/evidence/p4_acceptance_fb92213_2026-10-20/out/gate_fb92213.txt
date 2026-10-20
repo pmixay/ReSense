@@ -1,0 +1,12 @@
+GATE on fb92213 (strict: no --allow, default config) against the seal baseline
+GATE PASS: no gated metric worse (8 gated better, 0 worse but allowed, 26 information rows changed)
+GATE_EXIT 0
+passed True allow [] worse_gated [] missing_gated [] worse_allowed [] same 190 better 8
+code fb92213d 1.2.0 [] set [] jobs 3
+info_changed (non-latency): ['recordings.doubleT_platform.alarm_frames', 'recordings.doubleT_platform.advisory_frames', 'five_empty.alarm_events', 'five_empty.stop_episodes', 'five_empty.alarm_frames', 'ride.alarm_frames', 'set_O.inside_stop_frames', 'set_F_straight.cable.sustained_median_m', 'set_F_straight.cable.recall_0-50', 'set_F_straight.cable.recall_50-100']
+
+--- gate rows against the shipped cc6226e rows (cmp_frames.py)
+{"files": 15, "rows": 15269, "rows_different": 1717, "rows_latency_level_only": 840, "first_differences": [["doubleT_platform.jsonl", 31], ["doubleT_platform.jsonl", 32], ["doubleT_platform.jsonl", 34], ["doubleT_platform.jsonl", 35], ["doubleT_platform.jsonl", 36], ["doubleT_platform.jsonl", 37], ["doubleT_platform.jsonl", 38], ["doubleT_platform.jsonl", 39], ["doubleT_platform.jsonl", 76], ["dou
+--- list_diff.py
+SUMMARY rows 15269; differ in decision/detections/warnings 1685; differ only in other non-timing fields 32
+1685

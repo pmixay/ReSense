@@ -1,0 +1,27 @@
+cloud_with_fake_obj.jsonl                     rows differing     0  {}
+doubleT_obstacle.jsonl                        rows differing     0  {}
+doubleT_platform.jsonl                        rows differing   162  {'CAUTION->GO': 2, 'CAUTION->CAUTION': 160}
+new_data_0.jsonl                              rows differing     0  {}
+new_data_1.jsonl                              rows differing   113  {'STOP->CAUTION': 6, 'STOP->STOP': 5, 'CAUTION->CAUTION': 102}
+new_data_2.jsonl                              rows differing   662  {'CAUTION->CAUTION': 659, 'STOP->STOP': 2, 'GO->CAUTION': 1}
+new_data_3.jsonl                              rows differing     0  {}
+new_data_4.jsonl                              rows differing   740  {'CAUTION->CAUTION': 724, 'STOP->CAUTION': 1, 'CAUTION->GO': 5, 'STOP->STOP': 10}
+new_data_5.jsonl                              rows differing     0  {}
+new_data_6.jsonl                              rows differing     0  {}
+new_data_7.jsonl                              rows differing     8  {'CAUTION->GO': 2, 'STOP->GO': 2, 'CAUTION->CAUTION': 4}
+roundT_doubleT.jsonl                          rows differing     0  {}
+roundT_pressureGate_roundT.jsonl              rows differing     0  {}
+roundT_squareT_pressureGate_squareT.jsonl     rows differing     0  {}
+squareT_platform_squareT_switch.jsonl         rows differing     0  {}
+
+recordings.doubleT_platform.alarm_frames           cc6226e 0  fb92213 0
+recordings.doubleT_platform.advisory_frames        cc6226e 182  fb92213 180
+recordings.doubleT_platform.stop_episodes          cc6226e 0  fb92213 0
+five_empty.alarm_events                            cc6226e 7  fb92213 7
+five_empty.stop_episodes                           cc6226e 11  fb92213 11
+five_empty.alarm_frames                            cc6226e 37  fb92213 37
+ride.alarm_events                                  cc6226e 23  fb92213 18
+ride.stop_episodes                                 cc6226e 26  fb92213 24
+ride.alarm_frames                                  cc6226e 111  fb92213 102
+set_O.inside_stop_frames                           cc6226e 414  fb92213 414
+set_O.stop_frames n/a
