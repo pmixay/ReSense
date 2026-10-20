@@ -6,6 +6,7 @@ gate/X3/Falcon/affected checks. This is author acceptance, not independent P4 ap
 Base main `8c2bf51`, registered tests
 `679bca8`, committed detector repair `4bf62f3`. Isolated checkout:
 `/tmp/opencode/l16-open-air-checkout`, branch `fix/l16-open-air`.
+[Publication/merge and source identity](PUBLICATION.md).
 
 ## Why an already delivered task was still open
 
