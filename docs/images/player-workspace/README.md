@@ -13,7 +13,8 @@ data from six-second approach/crossing runs, not detector evaluation evidence.
 
 ## Reference and implementation
 
-The user supplied [`images (1).jpg`](../../../images%20(1).jpg) in commit `5118a17`:
+The user supplied `images (1).jpg` in commit `5118a17` (removed from the checkout
+at the user's request on 20 October 2026):
 a shallow display with rounded black glass, thin silver housing and recessed active
 surface. [`screenDisplay.ts`](../../../webapp/frontend/src/player/screenDisplay.ts)
 builds that form as actual extruded Three.js meshes with beveled edges and lit metal
