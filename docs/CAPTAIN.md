@@ -9,10 +9,11 @@
 > release text of 19.10 before the clean-up and the decision-log rows of 22–29.09 in
 > [`archive/CAPTAIN_history_2026-10-19.md`](archive/CAPTAIN_history_2026-10-19.md).
 > **Audience:** P1, team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-10-20 (branch/seal/CI statements in §4–§5 only; the rest 2026-10-19 evening): §3–§5 and the decision log against GitHub (releases, tags, branches, CI runs),
-> `main` `9621024`, the integration of 19.10 and `python3 scripts/detector_freeze.py verify` (FAIL: the seal of 18.10 no longer
-> matches the sources); earlier: 2026-10-15, D1 pass 1: the judgement of 13.10 (v1.0.0, 66/100), tag `v1.0.0` → `5d6e9b5`,
-> detector baseline and ownership against the current files. The decision log retains its original dates.
+> **Last verified:** 2026-10-20, ~19:00 MSK: §1, §3–§5 and §9 against git (`main` `8453458`), GitHub (branches, PRs #42–#47, CI
+> runs, releases, tags) and `python3 scripts/detector_freeze.py verify` (PASS, 40 files); §2 numbers against SCORECARD and the
+> judgement of 13.10 (v1.0.0, 66/100); §6–§8 paths, the 12 topics and the baseline file against the files; earlier: 2026-10-15,
+> D1 pass 1: tag `v1.0.0` → `5d6e9b5`, detector baseline and ownership against the current files. The decision log retains its
+> original dates.
 > **Status:** current
 
 19.10 D1 supplement: current package/source, release distinction and P2 ownership
@@ -34,8 +35,9 @@ and the team records the video ([`PRESENTATION.md`](PRESENTATION.md)).
 Dates (organizers' README): upload by **29.09 23:59** (target 18:00; the form takes links),
 technical expertise 30.09–14.10, pitch 23.10, awards 30.10. The detector changes only through the seal
 process (branch, protocol, full gate, independent review, reseal by P1: §6 and
-[`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)); the reference seal is the 1.2.0 candidate
-(`detector_freeze_2026-10-18_b4_merged.json`); the working tree no longer matches it until the combined reseal (§5).
+[`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md)); the reference seal is
+[`detector_freeze_2026-10-20_1.2.0_r3.json`](evidence/detector_freeze_2026-10-20_1.2.0_r3.json) (40 files, measured `0a472d6`),
+which the working tree passes; the final reseal follows the final source (§3, §5).
 
 ## 2. The captain's criteria and their score
 
@@ -45,7 +47,7 @@ review scores, not organizer scores; pending work in BACKLOG has not been credit
 
 | criterion | max | score | what of it is the captain's | what costs points | evidence / next check |
 |---|---:|---:|---|---|---|
-| **8.3 Speed** (node side) | 10 | **7** | input, catch-up, freshness, timing evidence | 4 vCPU: 360° node p95 111 ms, only 35/201 results current with README flags; literal player 0/146 current, RSS 3.4 GB; no 8-core run | S1/S2/S5 pending; the historical 29.09 catch-up A/B used explicit step 0.2, not the shipped default 0 |
+| **8.3 Speed** (node side) | 10 | **7** | input, catch-up, freshness, timing evidence | 4 vCPU: 360° node p95 111 ms, only 35/201 results current with README flags; literal player 0/146 current, RSS 3.4 GB; no 8-core run | S1 failed (16.10, removed from the runtime, [`DECISIONS.md`](DECISIONS.md) row 33); S2/S5 pending; the historical 29.09 catch-up A/B used explicit step 0.2, not the shipped default 0 |
 | **8.5 Technical quality** (CI, Docker, docs) | 10 | **7** | CI, Dockerfile, release workflow, README / ARCHITECTURE / ALGORITHM / EVALUATION, this board | Markdown volume and dated process notes; stale statements | 29.09: README cut to the jury path; EXPERIMENTS compacted (full log archived); dated records archived; stale facts fixed across the docs and the GitBook |
 | **8.6 Ease of launch** | 10 | **8** | all of it | `--read-ahead-queue-size 10` and host networking required; build needs internet; non-root player needs HOME | v1.0.0 archive and checksum verified by the judge 13.10; offline node starts in ~3 s; E2 local PASS, tagged run pending |
 | **captain's criteria** | **30** | **22** | | | |
@@ -57,43 +59,55 @@ sealed, so moving those needs the captain to unfreeze it (§6, [`DETECTOR_FREEZE
 
 ## 3. Work to do
 
-**Current work per role (19.10, evening): [`BACKLOG.md`](BACKLOG.md) "Current plan"**: priorities instead of dates, **P0** before
-the code stop (20.10 23:59 MSK), **P1** before the pitch, **P2** after 23.10. The captain's own list there: repair CI (0 of the
-last 100 runs succeeded), reseal 1.2.0 after the last code change with P4's review and the final gate and X3, tag and verify
-v1.2.0 once CI runs, final numbers into the deck and speech, the rehearsals of 20.10 and 22.10, the S5 bench of the final image,
-the human read of the 29.09 safety review (below), and the Falcon results and 1.2.0 status to the organizers if updates are
-allowed. The organizers answered in part on 19.10 ([`organizers/answers.md`](organizers/answers.md) §12); open: the filter, bag
-playback, O1.
+**Current work per role (20.10, evening): [`BACKLOG.md`](BACKLOG.md) "Current plan"**: priorities instead of dates, **P0** before
+the code stop (20.10 23:59 MSK), **P1** before the pitch, **P2** after 23.10. The captain's own list there (P1 table): CI repair,
+done (all five jobs green on `main`, runs #667 and #669); the integrity reseal of the R3 source, done (`verify` passes), with P4's
+acceptance of the bundle still open; the open decisions (the F1a repair's ride cost, K2 off unless a candidate passes review
+before the code stop, R3 B2: §9); E1, tag and release 1.2.0, delayed until the final source exists (the last commit before the
+code stop), then reseal, P4's acceptance, image and tag; final numbers into the deck and speech and the rehearsals (planned
+20.10 and 22.10, no completion record; deck, speech and number edits come after the code stop, and rehearsal 2 on 22.10 is the
+real deadline); the S5 bench of the final image; the human read of the 29.09 safety review (below); the Falcon results and
+1.2.0 status to the organizers if updates are allowed. P1's agent (the second table there): the final gate, X3 and Falcon and
+the dust and marked-bag replay on the final source (both after the code stop), the full-suite disposition and the final
+numerical pass of the documents. The organizers answered in part on 19.10 ([`organizers/answers.md`](organizers/answers.md)
+§12); open: the filter, bag playback, O1.
 
 The full requirement → artifact map and the upload list: [`REQUIREMENTS_MAP.md`](REQUIREMENTS_MAP.md) §4–§5. The submission
 history of 29.09 and the list "after the upload" are in the archive; still binding from them: the pitch on 23.10 with two
 rehearsals and the live remote demo from a second device ([`../web/DEMO_HANDOFF.md`](../web/DEMO_HANDOFF.md), speech in
 [`PRESENTATION.md`](PRESENTATION.md)) · a human read of the safety review of 29.09 night (the agent review: `shell` BLOCKING →
 switched off; `explained_run`, the ego veto NON-BLOCKING with documented limits; P1, P3) · the bench on available hardware
-with `scripts/bench_8core.sh` (captain, 17.10: 2–4 cores are acceptable; release waits for repaired CI).
+with `scripts/bench_8core.sh` (captain, 17.10: 2–4 cores are acceptable; it needs the image, so it waits for the final source).
 
-## 4. Branches (19.10, evening)
+## 4. Branches (20.10, evening)
 
-Remote refs: `main` `9621024`, the integration branch `claude/optimistic-mccarthy-z5nmwd`, `ui-improvement` and the four `det/*`
-agent branches. Older work branches of 15–18.10 are merged (PR #33, #35–#38) or deleted.
+Remote refs (GitHub branch list, 20.10 ~19:00 MSK): `main` `8453458`, `claude/trusting-dirac-ywtapy`, `claude/wonderful-planck-tpv33h`
+and `claude/p1-work-list-verification-o1hdlh`. Gone from the remote: the integration branch `claude/optimistic-mccarthy-z5nmwd`
+(PR #42, merged 19.10 at 23:49 MSK), the four `det/*` agent branches, `ui-improvement` (PR #47, merged 20.10) and the older work
+branches of 15–18.10 (merged: PR #33, #35–#38). Open PRs: only #46.
 
 | branch | state | recommendation |
 |---|---|---|
-| `main` | `9621024`: the 1.2.0 candidate with P3's L16/S3 and R3 (done, switched on; P4 review pending); `detector_freeze.py verify` FAILED then (sealed files changed); CI red then. Update 20.10: `main` `f56ad5e` is resealed (`verify` PASS, 40 files) and CI is green | base of the integration |
-| `claude/optimistic-mccarthy-z5nmwd` | integration of 19.10: `main` + the four agent lanes, merged with an identity proof ([evidence](evidence/integration_2026-10-19/README.md)); F1a and H′ switched on | the base of the final gate, X3 and the combined reseal; P1 merges to `main` after P4's review |
-| `ui-improvement` | P2's web Player work: `main` of 20.10 (`f56ad5e`) merged in with no conflicts; web-only diff, detector, `native/`, configs and tests identical to `main`; preview at resense.amdm.life | P2 merges `main` in; P1 reviews and merges, or keeps it out of the pitch |
-| `det/k1-k2-gauge`, `det/f1-false-alarms`, `det/falcon-long-range`, `det/n3-dust-robustness` | merged into the integration branch 19.10 with every switch off ([`DECISIONS.md`](DECISIONS.md) row 40); the agents are stopped, handoffs written | the remote branches may be deleted |
+| `main` | `8453458` (PR #47 on `f56ad5e`): the 1.2.0 candidate with the 19.10 integration (PR #42), H1 partial, K2 v5c off (PR #43), the F1a, L16 and R3 repairs and P4's data run (PR #44, #45); `detector_freeze.py verify` PASS (40 files, R3 integrity reseal); CI green at `5d83c5b` (#667) and `f56ad5e` (#669); run #680 on `8453458` not finished at 19:07 MSK (four jobs green, the webapp job 29 min in its browser suite, 4 min in #669); not released | base of everything; the final source is the last commit before the code stop 20.10 23:59 MSK |
+| `claude/trusting-dirac-ywtapy` | PR #46, open: P4's review of H′ and the Falcon clear-distance model on `cc6226e`, Falcon and the H′-off gate re-run on `f56ad5e`; no detector, config or ROS file touched (checked with `git diff`), small edits to `DETECTOR_FREEZE.md` and `BACKLOG.md` (11 insertions, 5 deletions) | P1 reads the findings and decides on the merge (its `BACKLOG.md` lines overlap with this reconciliation); the findings for P3 are reported, not fixed |
+| `claude/wonderful-planck-tpv33h` | no PR yet: P4's switch review of R3 and H1 (`docs/evidence/p4_review_r3_h1_2026-10-20/`, head `4192f13`); its README says it is not the independent review of `0a472d6` itself | P1 reads it; P4 opens the PR |
+| `claude/p1-work-list-verification-o1hdlh` | no PR: P1's documentation reconciliation of 20.10 (BACKLOG commits `fe08f4f`, `9018b87`, `4635e9e`: CI, seal, `ui-improvement`, K1/K2 moved to P2); CAPTAIN and CHANGELOG are added to it | P1 merges to `main` |
 
 ## 5. Release and submission
 
 **v1.0.0 is the only published release** (tag `5d6e9b5`, 29.09, with `resense-image-v1.0.0.tar.gz`, its `.sha256` and
-`SHA256SUMS`; the judge verified it on 13.10). **1.1.0 (sealed 16.10) was not released and will not be** (captain, 19.10). The
-sources carry the **1.2.0 candidate**: all four version declarations are 1.2.0 (`tests/test_release.py`). **The detector seal
-passes `verify` since 20.10** (`detector_freeze_2026-10-20_1.2.0_r3.json`, 40 files, measured `0a472d6`; the 19.10 text said it failed
-until the combined reseal); P4's independent final-bundle review remains open (code stop 20.10 23:59 MSK). The next release is **v1.2.0 on the final seal**: `.github/workflows/release.yml` builds the
-runtime image from a pushed `v*` tag, loads the archive back, plays both smoke bags with no internet, runs the E2 check and
-publishes the archive with its checksums. **It needs working CI** (green on `main` at `f56ad5e`, 20.10; 19.10: 0 of the last 100 runs succeeded); fallbacks: `scripts/release.sh`, `scripts/export_image.sh`. Whether an updated archive may be re-run is asked in O1 (sent,
-unanswered).
+`SHA256SUMS`; the judge verified it on 13.10; GitHub lists no other release or tag, checked 20.10). **1.1.0 (sealed 16.10) was
+not released and will not be** (captain, 19.10). The sources carry the **1.2.0 candidate**: all four version declarations are
+1.2.0 (`tests/test_release.py`). **The detector seal passes `verify`** ([`detector_freeze_2026-10-20_1.2.0_r3.json`](evidence/detector_freeze_2026-10-20_1.2.0_r3.json),
+40 files, measured `0a472d6`, re-run 20.10 ~19:05 MSK on `8453458`). It is an **integrity seal only**: the author checks are
+complete, P4's independent acceptance of the final bundle is open. **Release, tag and demo image are delayed (captain, 20.10):**
+development is still active and there is no final source yet; the final source is the last commit before the code stop 20.10
+23:59 MSK, and only then the reseal, P4's acceptance, the image and the tag of **v1.2.0**. `.github/workflows/release.yml`
+builds the runtime image from a pushed `v*` tag, loads the archive back, plays both smoke bags with no internet, runs the E2
+check and publishes the archive with its checksums. **CI works now**: all five jobs passed on `main` at `5d83c5b` (run #667)
+and `f56ad5e` (#669); run #680 on `8453458` (PR #47) was not finished at 19:07 MSK (see §4). 19.10: 0 of the last 100 runs
+succeeded; the failure on `cefd4c4` before any step no longer reproduces; fallbacks: `scripts/release.sh`, `scripts/export_image.sh`. Whether an updated archive may be
+re-run is asked in O1 (sent, unanswered).
 
 ## 6. Freeze and merge rules
 
@@ -164,6 +178,16 @@ The rows of 22–29.09 that are still binding; the full log of 22–29.09 (55 ro
 | 19.10 | code stop 20.10 23:59 MSK; dated targets replaced by priorities (P0 before code stop, P1 before the pitch, P2 after 23.10) | the captain, 19.10; [`DECISIONS.md`](DECISIONS.md) row 42, [`BACKLOG.md`](BACKLOG.md) "Current plan" |
 | 19.10 | K2 on as variant B (v5b without K1), the set O `small_center` gate exception accepted; improving K2/K1 is P4's first P0 | the captain, 19.10; [`DECISIONS.md`](DECISIONS.md) row 43, [package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md) |
 | 19.10 | K2 held off after the Falcon run (variant B stopped the walking person 12 m later: 124.8 → 113.0 m, 158 person STOP frames lost); P4 resolves the problems and brings it back for a new decision | the captain, 19.10; [`DECISIONS.md`](DECISIONS.md) row 44, [package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md) |
+| 20.10 | the partial H1 improvement (positive collision core, `cluster.column_core_margin` 0.02) is published in `main` without closing the finding; H1 / High stays OPEN | the user, 20.10; [`DECISIONS.md`](DECISIONS.md) row 45, [record](evidence/h1_partial_integration_2026-10-20/README.md) |
+| 20.10, in session | release, tag and demo image are delayed: development is still active, there is no final source yet; the final source is the last commit before the code stop 20.10 23:59 MSK, and only then reseal, P4 acceptance, image and tag | the captain, made in session on 20.10 (not yet in `DECISIONS.md`); [`BACKLOG.md`](BACKLOG.md) E1 |
+| 20.10, in session | the dust and marked-bag replay on the final source is delayed for the same reason (it needs the final source) | the captain, in session, 20.10; [`BACKLOG.md`](BACKLOG.md) N3 |
+| 20.10, in session | K1/K2 moved from P4 to P2 (P2 has started; no P2 K1/K2 branch or PR is visible on GitHub yet, checked 20.10 ~19:00 MSK) | the captain, in session, 20.10; [`BACKLOG.md`](BACKLOG.md) P2 table |
+| 20.10, in session | deck, speech and presentation-number edits (`PRESENTATION.md`, `scripts/build_deck.py`, the deck) are done after the code stop; rehearsal 2 on 22.10 is the real deadline for them | the captain, in session, 20.10; [`BACKLOG.md`](BACKLOG.md) PT1/PT2 |
+| 20.10, in session | a separate agent is building a short Falcon demo bag (window of `falcon_test` around 280–330 s); its handoff text is applied after the code stop | the captain, in session, 20.10; no such bag is in the repository yet |
+| 20.10, in session | P4 and P2 are working; no ping needed | the captain, in session, 20.10 |
+| 20.10, **open** | **not decided, owner the captain:** the ride cost of the F1a repair (alarm events 18 → 23, STOP episodes 24 → 26 on the ride) | [F1a repair](evidence/f1a_b1_2026-10-20/README.md), [P4 acceptance run](evidence/f1a_acceptance_2026-10-20/README.md) |
+| 20.10, **open** | **not decided, owner the captain:** K2 stays off unless a candidate passes review before the code stop | [`DECISIONS.md`](DECISIONS.md) row 44; K1/K2 are P2's ([`BACKLOG.md`](BACKLOG.md)) |
+| 20.10, **open** | **not decided, owner the captain:** R3 B2 — P3 says the STOP on co-moving physical targets is correct, P4 leaves the labelling to the captain | [R3 completion](evidence/r3_completion_2026-10-20/README.md), [P4's switch review](https://github.com/pmixay/ReSense/blob/4192f13ea9c44fabb7ce4d96b84ee13d3021fee6/docs/evidence/p4_review_r3_h1_2026-10-20/README.md) (branch `claude/wonderful-planck-tpv33h`) |
 
 *Experimental branch integration of 28.09:* accepted P3 changes and health histogram optimization: measured commits, acceptance
 checks and remaining work in [`P3_SCORE_SYNC_2026-09-28.md`](P3_SCORE_SYNC_2026-09-28.md) and the
