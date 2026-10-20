@@ -101,6 +101,11 @@ decision, detection or warning (in these scenes the base axis is 3.6–5 m off t
 v5b's demotions); positive control: variant B differs from off in 180 rows, 66 of them in decisions or detections. Full suite in this container (revision 1): 1,897 passed, 190 skipped,
 25 failed and 2 errors; the same 27 fail on `main` (`0acb18c`, run with its own checkout first on the path), from
 modules missing here (`open3d` for the synthetic injection and others), not from this change.
+Re-checked on `main` after the merge (`8c2bf51` against `a5b0ede`, same script): K2 off 0 of 180 rows differ,
+variant B 0 of 180; v5c-15 against B on `8c2bf51` differs in 101 rows, none in a decision, detection or warning;
+positive control B against off 180 rows, 66 in decisions or detections. Both trees give the same 28 failures and
+errors in the full suite (`open3d`, `rosbags` and other modules missing here); `8c2bf51` passes 3 more tests, the
+new ones.
 
 ## 3. Offline proxy (not a measurement)
 
@@ -142,6 +147,13 @@ evidence.
 | K1-2 | standing person at 150 m (`S_person_150`) | reported (v5b 0 / 260, base 90 / 259) |
 | ID | every switch off vs the commit without this change | identical per frame (gate and Falcon) |
 | M-1 | the three marked synthetic bags, per marked object ([`per_object.py`](../n5_markers_2026-10-20/scripts/per_object.py) against the K2-off run) | every object's STOP frames and first STOP not worse than K2 off. Registered prediction: **fails** on the tunnels cube (id 19, as variant B: 29 → 13), because that loss is inside the cap (§1b). Added in revision 2 |
+
+**Amendment of 20.10, after PR #43 was merged into `main` (still before any measurement; no row or criterion
+changed).** The measured commit is now `main` at or after `8c2bf51`, which carries H1's collision core (on, DECISIONS
+row 45). The reference is K2 off on that same head. Row ID compares `8c2bf51` with every switch off against `a5b0ede`
+(`main` just before the merge; its detector code equals H1's measured `0f02b28`). The variant B numbers the criteria
+cite come from the pre-H1 integration. H1's publication reports its gate's 208 non-timing metrics equal to that
+integration's gate with K2 off, so the criteria stay comparable. Variant B with H1 on has not been measured.
 
 ## 5. Commands (need the data; `OPENBLAS_CORETYPE=Haswell OMP_NUM_THREADS=1 RESENSE_REPO=<tree>`)
 
