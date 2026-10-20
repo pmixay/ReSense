@@ -1,0 +1,251 @@
+{
+  "gate-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "prefix-empty-ringfree-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "gate-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "full-positive-ring-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "full-empty-ring-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "full-positive-ring-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "full-falcon-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "analytic-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "full-falcon-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "affected-merged-candidate": {
+    "commit": "afbf9fc949f31e920a4d698df8fdfd058afeb308",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "full-empty-ringfree-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "prefix-positive-ring-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "analytic-merged-candidate": {
+    "commit": "afbf9fc949f31e920a4d698df8fdfd058afeb308",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "prefix-positive-ringfree-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "t1-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "full-positive-ringfree-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "trace-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "red-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 1,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "x3-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "x3-merged-candidate": {
+    "commit": "afbf9fc949f31e920a4d698df8fdfd058afeb308",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "nodes-b-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "nodes-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "prefix-empty-ringfree-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "nodes-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 1,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "prefix-empty-ring-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "prefix-empty-ring-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "analytic-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "falcon-merged-candidate": {
+    "commit": "afbf9fc949f31e920a4d698df8fdfd058afeb308",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "gate-merged-candidate": {
+    "commit": "afbf9fc949f31e920a4d698df8fdfd058afeb308",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "full-empty-ring-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "prefix-falcon-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "tests-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 1,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "prefix-falcon-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "x3-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "nodes-b-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "diagnose-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 1,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "full-positive-ringfree-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "prefix-positive-ring-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "full-empty-ringfree-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "diagnose-a-reference": {
+    "commit": "8c2bf51a2e2a2eece7d844da4c42eabbd8b18578",
+    "returncode": 1,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "prefix-positive-ringfree-a-candidate": {
+    "commit": "4bf62f3c303296e0403803ed9893686791f0f16d",
+    "returncode": 0,
+    "source_unchanged": true,
+    "source_snapshot_reopened": true
+  },
+  "paired_source_difference": [
+    "resense/calibration.py"
+  ]
+}

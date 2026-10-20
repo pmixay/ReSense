@@ -1,0 +1,14 @@
+{
+  "unchanged_from_accepted_L16_analytic_cases": {
+    "open": {
+      "GO": 450
+    },
+    "tunnel": {
+      "GO": 450
+    },
+    "positive": {
+      "GO": 4,
+      "STOP": 446
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "non_timing_metric_tuples_equal": 208,
+  "ordinary_rows_equal": 15269,
+  "STOP_rows": 782,
+  "set_F_sequences": 30,
+  "set_F_rows_equal": 3060
+}

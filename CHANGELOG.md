@@ -22,6 +22,23 @@ red. Figures are the team's, measured when a change landed (detector figures on 
 targeted suites pass; the full suite, the final gate, X3 and the whole Falcon recording on the final commit are pending
 ([`docs/BACKLOG.md`](docs/BACKLOG.md) "Current plan"). Not a release, not a J1 score, not a G3 run.
 
+### 20.10 — L16/S3 open-air startup repair and measured T1 exposure
+
+- Reproduce P4 A1 on merged main `8c2bf51`, then reject a ground half-space as signed-forward
+  evidence with the bounded forward-cone guard. Preserve channel/rail evidence, real conflicts,
+  numeric application and the ≤60,000-point orientation-search budget.
+- Original analytic open-air scene: **450 FAULT →450 GO**; tunnel unchanged, all **446 matched
+  positive rows retained**. **242 affected tests pass.** T1 independently decodes120 raw CDR
+  frames /12 original starts: no A1 exposure, known analytic A1 positive control detected.
+- Paired recordings/prefixes: **140 cases /27,580 rows per side**, non-timing results and orientation
+  state equal. Both original gates/X3 pass. Final merge `afbf9fc` includes current F1a main:
+  fresh gate PASS without waivers, standard X3 PASS (40 cases /29,765 rows), whole4,443-row
+  Falcon retained, **489 affected tests pass** (one external-path deselection). Its gate equals
+  F1a's published raw run, including that repair's documented ride false-alarm cost.
+  Full pytest has2,340 passed, three failures; paired diagnosis and146-node-test reruns are
+  retained without an all-green claim.
+  Final-bundle review/reseal remain separate. [Evidence](docs/evidence/l16_open_air_2026-10-20/README.md).
+
 ### 20.10 — R3 sustained-range population diagnosis and reporting repair
 
 - Fresh R3-off/on Set F replay: **30 sequences /3,060 rows per side**, no lost matched hit,
