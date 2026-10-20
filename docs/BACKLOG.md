@@ -407,8 +407,9 @@ Owner P1. Reconciled on 20.10 against decisions 35–45, current source/configur
 * **H1 partial improvement published in main** (row 45): A-axis 82 →114/177, 63 misses remain. H1/High stays OPEN;
   independent far-axis truth and final review are not obtained. Full combined gate, X3 and Falcon checks are complete
   ([record](evidence/h1_partial_integration_2026-10-20/README.md)). PR #43 (merged 20.10, `8c2bf51`) adds the off-by-default v5c switch and P4 review work; nothing in it is accepted.
-* **Code stop 20.10 23:59 MSK**, priorities instead of dates (row 42). The detector seal currently fails `verify`; the
-  combined reseal is pending (P1 + P4).
+* **Code stop 20.10 23:59 MSK**, priorities instead of dates (row 42). The detector seal passes `verify` (integrity
+  reseal of 20.10: 40 files, digest `6d091081…`; re-checked on `f56ad5e` and on `8453458` after PR #47); the final reseal after
+  the last code change, with P4's acceptance, is pending (P1 + P4).
 
 ### 9b. The jury's comments and criteria: status checked 20.10 (historical numbers labelled)
 
@@ -422,7 +423,7 @@ Owner P1. Reconciled on 20.10 against decisions 35–45, current source/configur
 | no false negatives | H1 partially improved **82 →114/177**, inherited High OPEN; small far objects and curves unresolved; new P4 F1a miss reported on synthetic scenes | [H1](evidence/h1_partial_integration_2026-10-20/README.md), [range screen](evidence/range_screen_2026-10-15/README.md), [P4][p4-shipping] | K2 **off**; H1 reference/review; F1a fix/exposure; R1/R2 P2 |
 | real time 10 Hz | Falcon decode+detect ~17–21 ms per frame; Pandar 360° p95 106–119 ms on 4 vCPU (judge); the literal `ros2 bag play` gives stale results (S1 failed) | [N1/N4](evidence/n1_n4_2026-10-18/README.md), SCORECARD | S2, S5 |
 | "the filter" | meaning asked, no answer; tracker confirmation and false-alarm rules exist | [QUESTIONS](QUESTIONS.md) | wait |
-| extra features | N1 box, N4 interactive launch, Falcon profiles, web prototype, N5 labels | CHANGELOG [1.2.0] | P2 `ui-improvement` (unmerged) |
+| extra features | N1 box, N4 interactive launch, Falcon profiles, web prototype, N5 labels | CHANGELOG [1.2.0] | P2 `ui-improvement` merged 20.10 (PR #47, web-only diff, seal unchanged); preview at resense.amdm.life |
 | ease of launch | N4 done locally (pause, rate, several bags in one node, Pandar → Falcon switch, software RViz); no published 1.2.0 image | [HOWTO](evidence/n1_n4_2026-10-18/HOWTO.md) | E1 after CI |
 | dust | guard written and **off** (fails acceptance); no dust-attributed STOP/CAUTION in 13 organizer dust frames on 1.1.0 /`4cf8e27`; sparse particles, not dense-dust proof | [N3](evidence/n3_dust_2026-10-18/README.md), [integration](evidence/integration_2026-10-19/README.md) | P0 H1/final-source re-check |
 | second lidar, different axes | Falcon profiles and L16/S3 **on**; A1 repaired, T1 measured; 27,580 paired recorded rows retained; final merged gate/X3 and whole4,443-row ordinary Falcon checked | [L16/S3](evidence/l16_s3_2026-10-19/README.md), [A1/T1][l16-open-air] | final-bundle independent review/reseal |
