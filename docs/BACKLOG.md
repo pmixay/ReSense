@@ -135,7 +135,7 @@ point estimates and the former dates of every row are in the archive.
 | reseal | reseal 1.2.0 after the last code change | `detector_freeze.py verify` FAILS now; P1 + P4, needs P4's review and the final gate/X3 | P0 |
 | L16/S3 | ring-free orientation + bounded orientation search | **on**; P4 synthetic review reports open-air startup FAULT (PR #43 A1); real exposure/fix/current-source review pending | P0 |
 | R3 | thin cables (hanging 5 cm: first STOP 30.1 → 35.1 m) | **on**; Set F aggregate concern resolved: coverage 2/6 →4/6, fixed cohort 34.2 →34.2 m, 0 lost hits. P4 B2/B3 review findings remain open | P0 |
-| F1 | near-field low-object false STOPs | F1a and H′ **on**, S2 settle off. Author repair of both B1 mechanisms measured in working tree; seal gate PASS, main ride gate FAIL (18 →23 events, 24 →26 episodes); review/ride-cost decision pending ([record](evidence/f1a_b1_2026-10-20/README.md)) | P0 / P2 |
+| F1 | near-field low-object false STOPs | F1a and H′ **on**, S2 settle off. Author repair of both B1 mechanisms published in main on user request; seal gate PASS, starting-main ride gate FAIL (18 →23 events, 24 →26 episodes); independent acceptance/ride-cost decision pending ([record](evidence/f1a_b1_2026-10-20/README.md)) | P0 / P2 |
 | K1 / K2 | gauge on curves, standing train | **both off** (`walls_smoothing_distance=0`, `axis_joint_fit=false`), decision 44; v5c proposed only in PR #43, real-data acceptance pending | P0 / P2 |
 | N3 | dust | guard **off** (fails acceptance); organizer dust checked on `4cf8e27`, H1/final-source replay pending | P0 |
 | N7 | Falcon to 300 m | `farrange` **off**: person STOP 146 m (was 127 m), no gain on injected targets, rule 5.1(b) fails | P2 |
@@ -287,18 +287,21 @@ accepted; P3 improves it), H′ mount cross-check **on** (8 false STOP frames on
 ([handoff](evidence/f1_false_alarms_2026-10-19/HANDOFF.md)). Gate and whole Falcon are complete on `4cf8e27` and the
 combined H1 source. **New P4 shipping B1** is distinct from the previously accepted long-object B1: a low cluster's top
 is capped at the model envelope floor, so a raised local rail reference can weaken a genuine low obstacle (8 →0 STOP
-frames in P4's synthetic case). Committed main still uses that capped top. P3 verifies/fixes; P4 T4 measures real exposure;
-ride/Falcon non-regression and independent review follow ([review][p4-shipping], [handoff][p4-handoff]).
+frames in P4's synthetic case). The user-requested repair below replaces that capped-top check; P4 T4 measures real
+exposure and independent acceptance remains pending ([review][p4-shipping], [handoff][p4-handoff]).
 
-**20.10 author repair (working tree, user-requested):** both B1 mechanisms are addressed with independent low-footprint-free
+**20.10 author repair (published to main on user request, `f07f4b8`):** both B1 mechanisms are addressed with independent low-footprint-free
 rail support and the observed full-footprint top. Fragment controls retain ordinary confirmation (all 12 two-rail tracks);
 the P4 raised-rail box regains its 8 STOP rows. Full gate against the seal baseline **PASS without exceptions**; Set F
 matches starting main, Falcon's 4,443 detection/warning rows match. There is a measured ride cost against starting main:
 chunked gate events **18 →23**, STOP episodes **24 →26**; the continuous replay adds 11 STOP rows (**109 →120**),
 with low-kind episodes **1 →3**. This is **not** clean non-regression against main or final P4 acceptance; the ride
-trade-off needs disposition before integration/reseal. [Repair, source receipts and raw checks](evidence/f1a_b1_2026-10-20/README.md).
+trade-off needs disposition before final acceptance/reseal. Publication is not independent acceptance.
+[Repair, source receipts and raw checks](evidence/f1a_b1_2026-10-20/README.md).
 Author X3 also passes all 40 cases /29,765 rows with identical STOP row sets; this dirty-source byte-identified run
 does not replace final committed-source acceptance or independent P4 review.
+Publication was merged with current remote main (`2a58369`, K2 v5c still off) at `060bde7` without textual conflicts;
+219 affected F1a/K2 tests pass on that combined source ([publication](evidence/f1a_b1_2026-10-20/PUBLICATION.md)).
 
 #### F2 · Far-onset false STOPs at ≥ 100 m (half of all episodes)
 18 of 36 episodes; every earlier filter cost range. Needs the X2 audit and the final seal. P3, P2.

@@ -136,6 +136,17 @@ independent rail reference here means independence from identified low
 footprints, not surveyed rail truth or a guarantee about every unclustered
 return.
 
+## Publication requested by the user
+
+The user explicitly requested committing and pushing the implementation and
+all findings to GitHub. Author source/evidence is committed as `f07f4b8`;
+remote main `2a58369` (including PR #43's default-off K2 v5c) was merged at
+`060bde7` without textual conflicts. The combined source passes **219 affected
+F1a/K2 tests**, with one external-path deselection and no skips.
+[Publication record](PUBLICATION.md) distinguishes this merged-source check
+from the earlier complete gate/X3/Falcon measurements. The measured ride
+regression and independent acceptance remain open after publication.
+
 ## Evidence and reproduction
 
 * [Protocol](PROTOCOL.md), [raw-derived audit](audit.json),
