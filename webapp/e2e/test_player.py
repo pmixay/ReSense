@@ -666,6 +666,7 @@ def test_telemetry_button_keeps_center_scene_and_transport_clear(app, seeded):
     assert real_errors(app.errors) == []
 
 
+@pytest.mark.full_motion  # the parallax is the motion the default prefers-reduced-motion context switches off
 def test_pointer_pressure_parallax_and_reduced_motion(app, seeded):
     page, rid = app.page, seeded['ids']['approach']
     open_player(app, f'/player/{rid}?pos=30')

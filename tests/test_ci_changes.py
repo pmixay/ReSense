@@ -1,4 +1,4 @@
-"""scripts/ci_changes.py: which pushes can change the Docker image or affect the web checks (ci.yml's `changes` job).
+"""scripts/ci_changes.py: which pushes can change the Docker image or affect the web checks (ci.yml's `checks` job).
 
 Most cases use a small inline Dockerfile so that they run where docker/ is absent (the image's own test
 run). The case that reads the repository's Dockerfile carries ``realdata`` on the docker/ folder and is

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""What can a push affect?  Prints ``image=true|false`` and ``web=true|false`` (ci.yml's `changes` job).
+"""What can a push affect?  Prints ``image=true|false`` and ``web=true|false`` (ci.yml's `checks` job).
 
     ci_changes.py BEFORE AFTER      (the push's old and new commit)
 
@@ -8,8 +8,8 @@ outside those paths cannot change the image or the tests run in it, so `docker` 
 20 runner-minutes) are skipped. Always counted: the workflows (.github/), docker/, scripts/ (the CI steps
 run them straight from the checkout), .dockerignore and the bag metadata that the cold-bag cache key hashes.
 
-``web``: the web prototype's checks (the `webapp` job: backend, frontend, the dashboard and the browser
-suite) depend on web/, webapp/, the detector package and its ROS policy module, configs/ and labels/ (the
+``web``: the web prototype's checks (the `webapp` and `webapp-e2e` jobs: backend, frontend, the dashboard and the
+browser suite) depend on web/, webapp/, the detector package and its ROS policy module, configs/ and labels/ (the
 backend reads them), scripts/ and a frozen evidence recording; they read no document's contents. A push
 that touches none of these skips the job. The suites themselves are unchanged and run whole.
 

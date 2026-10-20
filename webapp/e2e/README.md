@@ -2,12 +2,14 @@
 
 Real flows of every page in headless Chromium against a real backend running the sealed detector:
 no mocks, except where a test provokes a failure on purpose (`page.route` holds, fails or aborts a
-backend call). About 6 minutes for the whole suite on 4 cores.
+backend call). About 17 minutes for the whole suite on 4 cores (the 3D player renders with software WebGL at 1–1.5 s per
+frame); CI runs it as four parallel shards.
 
 ```bash
 # from the repository root; the interpreter needs resense_web, pytest, playwright and websockets
 /root/.venvs/resense/bin/python -m pytest -q webapp/e2e              # everything
 /root/.venvs/resense/bin/python -m pytest -q webapp/e2e/test_player.py -x
+WEBAPP_E2E_SHARD=2/4 /root/.venvs/resense/bin/python -m pytest -q webapp/e2e   # one balanced quarter (what a CI shard runs)
 ```
 
 ## How it runs
