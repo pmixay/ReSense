@@ -1,0 +1,924 @@
+{
+  "status": "PASS",
+  "acceptance_scope": "P3 author response, independent bundle acceptance still separate",
+  "b4": {
+    "matrix_cases": 420,
+    "guard_cases": 14,
+    "plain_traced_exact_cases": 420,
+    "demoted_by_shape": {
+      "hanging": 43,
+      "person": 10,
+      "low": 10
+    },
+    "boundary_arithmetic_notes": [],
+    "ceiling_control_demoted": true,
+    "large_error_person_demoted": true,
+    "retention": [
+      {
+        "mount": "valid_mount",
+        "warm_scans": 0,
+        "STOP_scans": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "post_fault_STOP_scans": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ]
+      },
+      {
+        "mount": "valid_mount",
+        "warm_scans": 12,
+        "STOP_scans": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        "post_fault_STOP_scans": [
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ]
+      },
+      {
+        "mount": "wrong_mount",
+        "warm_scans": 0,
+        "STOP_scans": [],
+        "post_fault_STOP_scans": []
+      },
+      {
+        "mount": "wrong_mount",
+        "warm_scans": 12,
+        "STOP_scans": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ],
+        "post_fault_STOP_scans": [
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23
+        ]
+      }
+    ],
+    "injected_observation_heights_finalized": [
+      1.83,
+      2.63,
+      5.03
+    ]
+  },
+  "f1a": {
+    "cases": 72,
+    "rows": 864,
+    "in_gauge_positive_STOP_rows": 120,
+    "matrix": [
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": null,
+        "enabled": false,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": null,
+        "enabled": true,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": -0.02,
+        "enabled": false,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": -0.02,
+        "enabled": true,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.0,
+        "enabled": false,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.0,
+        "enabled": true,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.02,
+        "enabled": false,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.02,
+        "enabled": true,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.05,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.05,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.08,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.08,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.1,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.1,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.12,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.12,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.17,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.17,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.2,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.2,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.25,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.25,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.3,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.0,
+        "top_above_true_rail": 0.3,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": null,
+        "enabled": false,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": null,
+        "enabled": true,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": -0.02,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": -0.02,
+        "enabled": true,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.0,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.0,
+        "enabled": true,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.02,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.02,
+        "enabled": true,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.05,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.05,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.08,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.08,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.1,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.1,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.12,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.12,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.17,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.17,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.2,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.2,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.25,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.25,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.3,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.18,
+        "top_above_true_rail": 0.3,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": null,
+        "enabled": false,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": null,
+        "enabled": true,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": -0.02,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": -0.02,
+        "enabled": true,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.0,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.0,
+        "enabled": true,
+        "matched_STOP_rows": 0
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.02,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.02,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.05,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.05,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.08,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.08,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.1,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.1,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.12,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.12,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.17,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.17,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.2,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.2,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.25,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.25,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.3,
+        "enabled": false,
+        "matched_STOP_rows": 8
+      },
+      {
+        "rail_rise": 0.2,
+        "top_above_true_rail": 0.3,
+        "enabled": true,
+        "matched_STOP_rows": 8
+      }
+    ]
+  },
+  "r3": {
+    "cases": 8,
+    "rows": 320,
+    "matrix": [
+      {
+        "kind": "tall",
+        "carried": true,
+        "enabled": false,
+        "speed_known": true,
+        "matched_STOP_scans": [],
+        "first_STOP_distance": null,
+        "accumulated_track_rows_with_cable_kind": 0,
+        "plain_traced_equal": 18
+      },
+      {
+        "kind": "tall",
+        "carried": true,
+        "enabled": true,
+        "speed_known": true,
+        "matched_STOP_scans": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "first_STOP_distance": 37.0,
+        "accumulated_track_rows_with_cable_kind": 0,
+        "plain_traced_equal": 18
+      },
+      {
+        "kind": "hanging",
+        "carried": true,
+        "enabled": false,
+        "speed_known": true,
+        "matched_STOP_scans": [],
+        "first_STOP_distance": null,
+        "accumulated_track_rows_with_cable_kind": 0,
+        "plain_traced_equal": 18
+      },
+      {
+        "kind": "hanging",
+        "carried": true,
+        "enabled": true,
+        "speed_known": true,
+        "matched_STOP_scans": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "first_STOP_distance": 37.0,
+        "accumulated_track_rows_with_cable_kind": 0,
+        "plain_traced_equal": 18
+      },
+      {
+        "kind": "tall",
+        "carried": false,
+        "enabled": false,
+        "speed_known": false,
+        "matched_STOP_scans": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          46,
+          47,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        "first_STOP_distance": 76.0,
+        "accumulated_track_rows_with_cable_kind": 0,
+        "plain_traced_equal": 62
+      },
+      {
+        "kind": "tall",
+        "carried": false,
+        "enabled": true,
+        "speed_known": false,
+        "matched_STOP_scans": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          44,
+          45,
+          46,
+          47,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        "first_STOP_distance": 78.0,
+        "accumulated_track_rows_with_cable_kind": 0,
+        "plain_traced_equal": 62
+      },
+      {
+        "kind": "tall",
+        "carried": false,
+        "enabled": false,
+        "speed_known": true,
+        "matched_STOP_scans": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        "first_STOP_distance": 76.0,
+        "accumulated_track_rows_with_cable_kind": 0,
+        "plain_traced_equal": 62
+      },
+      {
+        "kind": "tall",
+        "carried": false,
+        "enabled": true,
+        "speed_known": true,
+        "matched_STOP_scans": [
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61
+        ],
+        "first_STOP_distance": 78.0,
+        "accumulated_track_rows_with_cable_kind": 25,
+        "plain_traced_equal": 62
+      }
+    ]
+  },
+  "l16": [
+    {
+      "name": "open",
+      "decisions": {
+        "GO": 450
+      },
+      "matched_STOP": 0,
+      "input_points": 162848,
+      "target_returns": 0
+    },
+    {
+      "name": "tunnel",
+      "decisions": {
+        "GO": 450
+      },
+      "matched_STOP": 0,
+      "input_points": 268803,
+      "target_returns": 0
+    },
+    {
+      "name": "open_person",
+      "decisions": {
+        "GO": 4,
+        "STOP": 446
+      },
+      "matched_STOP": 446,
+      "input_points": 162890,
+      "target_returns": 126
+    }
+  ],
+  "existing_gate": {
+    "raw_rows": 15269,
+    "removed_rail_fragment_STOP": 9,
+    "added_STOP": 0,
+    "candidate_ride": {
+      "alarm_events": 18,
+      "stop_episodes": 24,
+      "alarm_frames": 102
+    }
+  },
+  "tests": {
+    "tests": 257,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "controls": {
+    "planted_B4_label": true,
+    "removed_positive_detection": true,
+    "changed_captured_payload_hash": true,
+    "planted_added_STOP": true
+  }
+}

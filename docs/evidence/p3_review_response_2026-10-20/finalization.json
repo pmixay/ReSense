@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "seal": "9cc33a6838dcc30b3162bbf892d33a962008712060e12d68c363dc315d033507",
+  "author_response_complete": true,
+  "independent_bundle_acceptance": "SEPARATE_PENDING",
+  "production_modified": false,
+  "b4_is_a_confirmed_limitation": true,
+  "b4_matrix": 420,
+  "b4_guards": 14,
+  "b4_retention_exact_rows": 698,
+  "actual_keep_returns_checked": 693,
+  "f1a_arms": 72,
+  "f1a_rows": 864,
+  "empty_controls_global_STOP": 0,
+  "r3_plain_traced_rows": 320,
+  "l16_rows": 1350,
+  "existing_gate_raw_rows_recounted": 15269,
+  "tests_passed": 257,
+  "failed_retention_serialization_capture": {
+    "retained_on_VM": true,
+    "sha256": "9f264674fd21fea42280f35d8f38125508e0b0fd8b8770f83969467169985d8a",
+    "reason": "strict JSON rejected infinite since_clean; corrected serialization, complete experiment repeated"
+  }
+}
