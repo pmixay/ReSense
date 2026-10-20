@@ -1,0 +1,128 @@
+== doubleT_platform.jsonl: rows 345, traced run vs plain gate rows differ in 0; clusters that reached the new branch 16, rejected by it 15
+== new_data_1.jsonl: rows 1409, traced run vs plain gate rows differ in 0; clusters that reached the new branch 31, rejected by it 27
+   row 1259 new_data_52_0016: STOP -> CAUTION; STOP detections old [(42.06, 0.74)] new []
+        new_data_52_0016: new branch rejected d 32.74 lat 0.83 size [0.37, 0.35, 0.02] top 0.163 surface 0.187 (top - surface -0.024) original 0.096
+        new_data_52_0016: new branch rejected d 36.15 lat 0.827 size [0.61, 0.25, 0.03] top 0.174 surface 0.199 (top - surface -0.025) original 0.109
+        new_data_52_0016: new branch rejected d 42.06 lat 0.736 size [1.18, 0.43, 0.07] top 0.234 surface 0.199 (top - surface +0.035) original 0.101
+   row 1260 new_data_52_0017: STOP -> CAUTION; STOP detections old [(38.88, 1.06)] new []
+        new_data_52_0016: new branch rejected d 32.74 lat 0.83 size [0.37, 0.35, 0.02] top 0.163 surface 0.187 (top - surface -0.024) original 0.096
+        new_data_52_0016: new branch rejected d 36.15 lat 0.827 size [0.61, 0.25, 0.03] top 0.174 surface 0.199 (top - surface -0.025) original 0.109
+        new_data_52_0016: new branch rejected d 42.06 lat 0.736 size [1.18, 0.43, 0.07] top 0.234 surface 0.199 (top - surface +0.035) original 0.101
+        new_data_52_0017: new branch rejected d 28.94 lat 0.79 size [0.71, 0.24, 0.03] top 0.195 surface 0.226 (top - surface -0.031) original 0.127
+        new_data_52_0017: new branch rejected d 31.45 lat -0.748 size [1.28, 0.39, 0.07] top 0.191 surface 0.237 (top - surface -0.046) original 0.179
+        new_data_52_0017: new branch rejected d 33.47 lat -0.817 size [0.43, 0.42, 0.01] top 0.221 surface 0.237 (top - surface -0.016) original 0.187
+   row 1261 new_data_52_0018: STOP -> CAUTION; STOP detections old [(36.93, 1.06)] new []
+        new_data_52_0016: new branch rejected d 32.74 lat 0.83 size [0.37, 0.35, 0.02] top 0.163 surface 0.187 (top - surface -0.024) original 0.096
+        new_data_52_0016: new branch rejected d 36.15 lat 0.827 size [0.61, 0.25, 0.03] top 0.174 surface 0.199 (top - surface -0.025) original 0.109
+        new_data_52_0016: new branch rejected d 42.06 lat 0.736 size [1.18, 0.43, 0.07] top 0.234 surface 0.199 (top - surface +0.035) original 0.101
+        new_data_52_0017: new branch rejected d 28.94 lat 0.79 size [0.71, 0.24, 0.03] top 0.195 surface 0.226 (top - surface -0.031) original 0.127
+        new_data_52_0017: new branch rejected d 31.45 lat -0.748 size [1.28, 0.39, 0.07] top 0.191 surface 0.237 (top - surface -0.046) original 0.179
+        new_data_52_0017: new branch rejected d 33.47 lat -0.817 size [0.43, 0.42, 0.01] top 0.221 surface 0.237 (top - surface -0.016) original 0.187
+        new_data_52_0018: new branch rejected d 26.3 lat 0.792 size [0.22, 0.23, 0.01] top 0.151 surface 0.18 (top - surface -0.029) original 0.111
+        new_data_52_0018: new branch rejected d 26.45 lat -0.761 size [0.09, 0.23, 0.0] top 0.152 surface 0.171 (top - surface -0.019) original 0.116
+        new_data_52_0018: new branch rejected d 34.56 lat 0.781 size [1.14, 0.42, 0.06] top 0.246 surface 0.281 (top - surface -0.035) original 0.162
+   row 1262 new_data_52_0019: STOP -> STOP; STOP detections old [(38.25, 1.04), (82.54, -0.22)] new [(82.54, -0.22)]
+        new_data_52_0016: new branch rejected d 32.74 lat 0.83 size [0.37, 0.35, 0.02] top 0.163 surface 0.187 (top - surface -0.024) original 0.096
+        new_data_52_0016: new branch rejected d 36.15 lat 0.827 size [0.61, 0.25, 0.03] top 0.174 surface 0.199 (top - surface -0.025) original 0.109
+        new_data_52_0016: new branch rejected d 42.06 lat 0.736 size [1.18, 0.43, 0.07] top 0.234 surface 0.199 (top - surface +0.035) original 0.101
+        new_data_52_0017: new branch rejected d 28.94 lat 0.79 size [0.71, 0.24, 0.03] top 0.195 surface 0.226 (top - surface -0.031) original 0.127
+        new_data_52_0017: new branch rejected d 31.45 lat -0.748 size [1.28, 0.39, 0.07] top 0.191 surface 0.237 (top - surface -0.046) original 0.179
+        new_data_52_0017: new branch rejected d 33.47 lat -0.817 size [0.43, 0.42, 0.01] top 0.221 surface 0.237 (top - surface -0.016) original 0.187
+        new_data_52_0018: new branch rejected d 26.3 lat 0.792 size [0.22, 0.23, 0.01] top 0.151 surface 0.18 (top - surface -0.029) original 0.111
+        new_data_52_0018: new branch rejected d 26.45 lat -0.761 size [0.09, 0.23, 0.0] top 0.152 surface 0.171 (top - surface -0.019) original 0.116
+        new_data_52_0018: new branch rejected d 34.56 lat 0.781 size [1.14, 0.42, 0.06] top 0.246 surface 0.281 (top - surface -0.035) original 0.162
+        new_data_52_0019: new branch rejected d 32.25 lat -0.799 size [0.83, 0.22, 0.04] top 0.19 surface 0.184 (top - surface +0.006) original 0.111
+        new_data_52_0019: new branch rejected d 35.94 lat 0.816 size [0.82, 0.42, 0.08] top 0.204 surface 0.227 (top - surface -0.023) original 0.16
+   row 1263 new_data_52_0020: STOP -> STOP; STOP detections old [(37.28, 1.04), (87.66, -0.27)] new [(87.66, -0.27)]
+        new_data_52_0017: new branch rejected d 28.94 lat 0.79 size [0.71, 0.24, 0.03] top 0.195 surface 0.226 (top - surface -0.031) original 0.127
+        new_data_52_0017: new branch rejected d 31.45 lat -0.748 size [1.28, 0.39, 0.07] top 0.191 surface 0.237 (top - surface -0.046) original 0.179
+        new_data_52_0017: new branch rejected d 33.47 lat -0.817 size [0.43, 0.42, 0.01] top 0.221 surface 0.237 (top - surface -0.016) original 0.187
+        new_data_52_0018: new branch rejected d 26.3 lat 0.792 size [0.22, 0.23, 0.01] top 0.151 surface 0.18 (top - surface -0.029) original 0.111
+        new_data_52_0018: new branch rejected d 26.45 lat -0.761 size [0.09, 0.23, 0.0] top 0.152 surface 0.171 (top - surface -0.019) original 0.116
+        new_data_52_0018: new branch rejected d 34.56 lat 0.781 size [1.14, 0.42, 0.06] top 0.246 surface 0.281 (top - surface -0.035) original 0.162
+        new_data_52_0019: new branch rejected d 32.25 lat -0.799 size [0.83, 0.22, 0.04] top 0.19 surface 0.184 (top - surface +0.006) original 0.111
+        new_data_52_0019: new branch rejected d 35.94 lat 0.816 size [0.82, 0.42, 0.08] top 0.204 surface 0.227 (top - surface -0.023) original 0.16
+        new_data_52_0020: new branch rejected d 26.1 lat 0.884 size [0.92, 0.25, 0.03] top 0.147 surface 0.224 (top - surface -0.077) original 0.123
+        new_data_52_0020: new branch rejected d 27.52 lat -0.721 size [0.19, 0.29, 0.01] top 0.185 surface 0.216 (top - surface -0.031) original 0.093
+        new_data_52_0020: new branch rejected d 32.08 lat 0.762 size [1.28, 0.43, 0.08] top 0.241 surface 0.246 (top - surface -0.005) original 0.175
+   row 1264 new_data_52_0021: STOP -> STOP; STOP detections old [(36.63, -0.84), (86.36, -0.27)] new [(86.36, -0.27)]
+        new_data_52_0018: new branch rejected d 26.3 lat 0.792 size [0.22, 0.23, 0.01] top 0.151 surface 0.18 (top - surface -0.029) original 0.111
+        new_data_52_0018: new branch rejected d 26.45 lat -0.761 size [0.09, 0.23, 0.0] top 0.152 surface 0.171 (top - surface -0.019) original 0.116
+        new_data_52_0018: new branch rejected d 34.56 lat 0.781 size [1.14, 0.42, 0.06] top 0.246 surface 0.281 (top - surface -0.035) original 0.162
+        new_data_52_0019: new branch rejected d 32.25 lat -0.799 size [0.83, 0.22, 0.04] top 0.19 surface 0.184 (top - surface +0.006) original 0.111
+        new_data_52_0019: new branch rejected d 35.94 lat 0.816 size [0.82, 0.42, 0.08] top 0.204 surface 0.227 (top - surface -0.023) original 0.16
+        new_data_52_0020: new branch rejected d 26.1 lat 0.884 size [0.92, 0.25, 0.03] top 0.147 surface 0.224 (top - surface -0.077) original 0.123
+        new_data_52_0020: new branch rejected d 27.52 lat -0.721 size [0.19, 0.29, 0.01] top 0.185 surface 0.216 (top - surface -0.031) original 0.093
+        new_data_52_0020: new branch rejected d 32.08 lat 0.762 size [1.28, 0.43, 0.08] top 0.241 surface 0.246 (top - surface -0.005) original 0.175
+        new_data_52_0021: new branch rejected d 25.56 lat -0.804 size [0.54, 0.19, 0.08] top 0.116 surface 0.163 (top - surface -0.047) original 0.107
+        new_data_52_0021: new branch rejected d 29.04 lat -0.727 size [0.91, 0.29, 0.04] top 0.181 surface 0.183 (top - surface -0.002) original 0.114
+        new_data_52_0021: new branch rejected d 34.39 lat -0.85 size [0.89, 0.38, 0.07] top 0.19 surface 0.253 (top - surface -0.063) original 0.131
+   row 1265 new_data_52_0022: STOP -> CAUTION; STOP detections old [(35.8, -0.84)] new []
+        new_data_52_0019: new branch rejected d 32.25 lat -0.799 size [0.83, 0.22, 0.04] top 0.19 surface 0.184 (top - surface +0.006) original 0.111
+        new_data_52_0019: new branch rejected d 35.94 lat 0.816 size [0.82, 0.42, 0.08] top 0.204 surface 0.227 (top - surface -0.023) original 0.16
+        new_data_52_0020: new branch rejected d 26.1 lat 0.884 size [0.92, 0.25, 0.03] top 0.147 surface 0.224 (top - surface -0.077) original 0.123
+        new_data_52_0020: new branch rejected d 27.52 lat -0.721 size [0.19, 0.29, 0.01] top 0.185 surface 0.216 (top - surface -0.031) original 0.093
+        new_data_52_0020: new branch rejected d 32.08 lat 0.762 size [1.28, 0.43, 0.08] top 0.241 surface 0.246 (top - surface -0.005) original 0.175
+        new_data_52_0021: new branch rejected d 25.56 lat -0.804 size [0.54, 0.19, 0.08] top 0.116 surface 0.163 (top - surface -0.047) original 0.107
+        new_data_52_0021: new branch rejected d 29.04 lat -0.727 size [0.91, 0.29, 0.04] top 0.181 surface 0.183 (top - surface -0.002) original 0.114
+        new_data_52_0021: new branch rejected d 34.39 lat -0.85 size [0.89, 0.38, 0.07] top 0.19 surface 0.253 (top - surface -0.063) original 0.131
+   row 1266 new_data_52_0023: STOP -> CAUTION; STOP detections old [(24.27, -0.79)] new []
+        new_data_52_0020: new branch rejected d 26.1 lat 0.884 size [0.92, 0.25, 0.03] top 0.147 surface 0.224 (top - surface -0.077) original 0.123
+        new_data_52_0020: new branch rejected d 27.52 lat -0.721 size [0.19, 0.29, 0.01] top 0.185 surface 0.216 (top - surface -0.031) original 0.093
+        new_data_52_0020: new branch rejected d 32.08 lat 0.762 size [1.28, 0.43, 0.08] top 0.241 surface 0.246 (top - surface -0.005) original 0.175
+        new_data_52_0021: new branch rejected d 25.56 lat -0.804 size [0.54, 0.19, 0.08] top 0.116 surface 0.163 (top - surface -0.047) original 0.107
+        new_data_52_0021: new branch rejected d 29.04 lat -0.727 size [0.91, 0.29, 0.04] top 0.181 surface 0.183 (top - surface -0.002) original 0.114
+        new_data_52_0021: new branch rejected d 34.39 lat -0.85 size [0.89, 0.38, 0.07] top 0.19 surface 0.253 (top - surface -0.063) original 0.131
+        new_data_52_0023: new branch rejected d 24.27 lat -0.786 size [0.42, 0.18, 0.09] top 0.15 surface 0.207 (top - surface -0.057) original 0.119
+        new_data_52_0023: new branch rejected d 26.16 lat 0.77 size [0.43, 0.27, 0.05] top 0.162 surface 0.183 (top - surface -0.021) original 0.132
+        new_data_52_0023: new branch rejected d 26.28 lat -0.827 size [0.7, 0.28, 0.03] top 0.153 surface 0.21 (top - surface -0.057) original 0.136
+        new_data_52_0023: new branch rejected d 27.38 lat 0.813 size [0.24, 0.29, 0.01] top 0.189 surface 0.183 (top - surface +0.006) original 0.144
+        new_data_52_0023: new branch rejected d 28.74 lat 0.778 size [0.48, 0.25, 0.02] top 0.214 surface 0.234 (top - surface -0.020) original 0.151
+        new_data_52_0023: new branch rejected d 29.73 lat -0.81 size [1.09, 0.37, 0.08] top 0.216 surface 0.235 (top - surface -0.019) original 0.145
+        new_data_52_0023: new branch rejected d 29.93 lat 0.77 size [1.44, 0.38, 0.07] top 0.224 surface 0.235 (top - surface -0.011) original 0.17
+   row 1267 new_data_52_0024: STOP -> CAUTION; STOP detections old [(23.57, -0.79)] new []
+        new_data_52_0021: new branch rejected d 25.56 lat -0.804 size [0.54, 0.19, 0.08] top 0.116 surface 0.163 (top - surface -0.047) original 0.107
+        new_data_52_0021: new branch rejected d 29.04 lat -0.727 size [0.91, 0.29, 0.04] top 0.181 surface 0.183 (top - surface -0.002) original 0.114
+        new_data_52_0021: new branch rejected d 34.39 lat -0.85 size [0.89, 0.38, 0.07] top 0.19 surface 0.253 (top - surface -0.063) original 0.131
+        new_data_52_0023: new branch rejected d 24.27 lat -0.786 size [0.42, 0.18, 0.09] top 0.15 surface 0.207 (top - surface -0.057) original 0.119
+        new_data_52_0023: new branch rejected d 26.16 lat 0.77 size [0.43, 0.27, 0.05] top 0.162 surface 0.183 (top - surface -0.021) original 0.132
+        new_data_52_0023: new branch rejected d 26.28 lat -0.827 size [0.7, 0.28, 0.03] top 0.153 surface 0.21 (top - surface -0.057) original 0.136
+        new_data_52_0023: new branch rejected d 27.38 lat 0.813 size [0.24, 0.29, 0.01] top 0.189 surface 0.183 (top - surface +0.006) original 0.144
+        new_data_52_0023: new branch rejected d 28.74 lat 0.778 size [0.48, 0.25, 0.02] top 0.214 surface 0.234 (top - surface -0.020) original 0.151
+        new_data_52_0023: new branch rejected d 29.73 lat -0.81 size [1.09, 0.37, 0.08] top 0.216 surface 0.235 (top - surface -0.019) original 0.145
+        new_data_52_0023: new branch rejected d 29.93 lat 0.77 size [1.44, 0.38, 0.07] top 0.224 surface 0.235 (top - surface -0.011) original 0.17
+        new_data_52_0024: new branch rejected d 28.61 lat -0.754 size [0.54, 0.24, 0.02] top 0.124 surface 0.155 (top - surface -0.031) original 0.113
+        new_data_52_0024: new branch rejected d 32.62 lat -0.756 size [0.58, 0.22, 0.03] top 0.057 surface 0.152 (top - surface -0.095) original 0.081
+        new_data_52_0024: new branch rejected d 34.45 lat -0.754 size [0.7, 0.24, 0.03] top 0.194 surface 0.194 (top - surface +0.000) original 0.076
+   row 1320 new_data_53_0026: STOP -> STOP; STOP detections old [(105.1, 0.73)] new [(105.1, 0.73)]
+   row 1321 new_data_53_0027: STOP -> STOP; STOP detections old [(103.98, 0.73)] new [(103.98, 0.73)]
+== new_data_2.jsonl: rows 1409, traced run vs plain gate rows differ in 0; clusters that reached the new branch 34, rejected by it 33
+   row 242 new_data_60_0000: STOP -> STOP; STOP detections old [(96.8, 0.54)] new [(96.8, 0.54)]
+   row 243 new_data_60_0001: STOP -> STOP; STOP detections old [(96.8, 0.54)] new [(96.8, 0.54)]
+== new_data_4.jsonl: rows 1409, traced run vs plain gate rows differ in 0; clusters that reached the new branch 9, rejected by it 6
+   row 80 new_data_112_0004: STOP -> CAUTION; STOP detections old [(21.79, 1.23)] new []
+   row 265 new_data_115_0036: STOP -> STOP; STOP detections old [(28.82, 0.64)] new [(28.82, 0.64)]
+        new_data_115_0034: new branch rejected d 23.85 lat 0.736 size [0.11, 0.18, 0.06] top 0.136 surface 0.158 (top - surface -0.022) original 0.093
+        new_data_115_0036: new branch rejected d 26.0 lat 0.765 size [0.08, 0.18, 0.0] top 0.07 surface 0.122 (top - surface -0.052) original 0.085
+   row 266 new_data_115_0037: STOP -> STOP; STOP detections old [(21.61, 1.14), (28.63, 0.7)] new [(28.63, 0.7)]
+        new_data_115_0034: new branch rejected d 23.85 lat 0.736 size [0.11, 0.18, 0.06] top 0.136 surface 0.158 (top - surface -0.022) original 0.093
+        new_data_115_0036: new branch rejected d 26.0 lat 0.765 size [0.08, 0.18, 0.0] top 0.07 surface 0.122 (top - surface -0.052) original 0.085
+   row 267 new_data_115_0038: STOP -> STOP; STOP detections old [(20.66, 1.14), (27.9, 0.72)] new [(27.9, 0.72)]
+        new_data_115_0036: new branch rejected d 26.0 lat 0.765 size [0.08, 0.18, 0.0] top 0.07 surface 0.122 (top - surface -0.052) original 0.085
+   row 268 new_data_115_0039: STOP -> STOP; STOP detections old [(27.65, 0.72)] new [(27.65, 0.72)]
+        new_data_115_0036: new branch rejected d 26.0 lat 0.765 size [0.08, 0.18, 0.0] top 0.07 surface 0.122 (top - surface -0.052) original 0.085
+   row 1223 new_data_134_0025: STOP -> STOP; STOP detections old [(43.31, -1.2)] new [(43.31, -1.2)]
+   row 1224 new_data_134_0026: STOP -> STOP; STOP detections old [(41.72, -1.22)] new [(41.72, -1.22)]
+   row 1225 new_data_134_0027: STOP -> STOP; STOP detections old [(39.87, -1.22)] new [(39.87, -1.22)]
+   row 1226 new_data_134_0028: STOP -> STOP; STOP detections old [(40.42, -1.27)] new [(40.42, -1.27)]
+   row 1227 new_data_134_0029: STOP -> STOP; STOP detections old [(38.61, -1.29)] new [(38.61, -1.29)]
+   row 1228 new_data_134_0030: STOP -> STOP; STOP detections old [(36.89, -1.24)] new [(36.89, -1.24)]
+== new_data_7.jsonl: rows 1408, traced run vs plain gate rows differ in 0; clusters that reached the new branch 4, rejected by it 2
+   row 623 new_data_205_0031: STOP -> GO; STOP detections old [(47.59, 0.86)] new []
+        new_data_205_0031: new branch rejected d 47.59 lat 0.855 size [0.65, 0.25, 0.02] top 0.192 surface 0.184 (top - surface +0.008) original 0.103
+   row 624 new_data_205_0032: STOP -> GO; STOP detections old [(45.91, 0.86)] new []
+        new_data_205_0031: new branch rejected d 47.59 lat 0.855 size [0.65, 0.25, 0.02] top 0.192 surface 0.184 (top - surface +0.008) original 0.103
+
+decision-word / detection changes in the traced pieces: {'CAUTION->GO': 9, 'CAUTION->CAUTION': 1649, 'STOP->CAUTION': 7, 'STOP->STOP': 17, 'GO->CAUTION': 1, 'STOP->GO': 2}
+clusters rejected by the new branch in these pieces: 83; top - surface: min -0.143 max +0.035; > margin 0
+recomputed rule differs from the detector's verdict on 0 traced clusters

@@ -50,7 +50,7 @@ out semantically identical (checked 19.10 on slides 1-4, 6 and 9):
 
     python scripts/build_deck.py --refresh docs/presentation/ReSense_LCT2026.pptx
 
-The deck of 19.10 shows the version 1.2.0 (``V12``), the second lidar (``FALCON``), the range by track
+The deck of 20.10 shows the version 1.2.0 (``V12``), the second lidar (``FALCON``), the range by track
 shape (``RANGE``) and the gauge display (``GAUGE``); those blocks name their sources.
 
 Needs ``python-pptx`` (``pip install python-pptx``); not part of the runtime image.
@@ -89,14 +89,18 @@ def metres(x):
 
 
 # ==== FINAL — the numbers the regression gate measures, ALL of them here and nowhere else.
-# The final gate of the shipped detector (29.09 night: explained_run and the ego veto on, the shell rule off
-# after the safety review; seal docs/evidence/detector_freeze_2026-09-29_shell_off.json; 1 cm frame cache;
-# docs/evidence/cycle_2026-09-29/shell_off/gate.json = the newest baseline below). A later gate: put its value
+# The final gate of the shipped detector, 20.10: the R3 seal (frozen bytes of f56ad5e, docs/evidence/
+# detector_freeze_2026-10-20_1.2.0_r3.json, 40 files, digest 6d091081...), strict gate without --allow against the
+# 29.09 seal baseline, 1 cm frame cache: docs/evidence/r3_completion_2026-10-20/gate-a-candidate.json. Against the
+# 29.09 gate (7464d80, the deck of 19.10) five values changed: the ride 27 -> 23 events and 30 -> 26 episodes, the five
+# empty recordings 8 -> 7 events and 12 -> 11 episodes, the hanging 5 cm object's first STOP 30.1 -> 35.1 m
+# (changes since 29.09: the F1a repair, L16, R3 and H1; checked 20.10 with --check-gate, which says "GATE matches" for the
+# file named below). A later gate: put its value
 # into each line (the comment names the key), set GATE_RUN / GATE_SOURCE, rebuild; `build_deck.py
 # --check-gate <baseline.json>` lists every line that differs, with the value to write. Everything below GATE
 # derives from it (per km, "без пропусков", ranges, chart bars); the web/demo deck test pins the same keys.
-GATE_RUN = "7464d80 (shell off)"
-GATE_SOURCE = "docs/evidence/results/regression_baseline_2026-09-29_shell_off.json"
+GATE_RUN = "f56ad5e (R3 seal)"
+GATE_SOURCE = "docs/evidence/r3_completion_2026-10-20/gate-a-candidate.json"
 # D1/PT1 pass 1 context, not J1's still-pending measurement of the next released seal.
 # docs/evidence/judgement_2026-10-13/README.md §§3,5: node-faithful raw decode, whole ride in order;
 # Docker node latency is separate from offline decode+detect and from end-to-end result age.
@@ -105,10 +109,10 @@ JUDGE = {"date": "13.10", "ride_episodes": 32, "ride_km": 13, "node_360_p95_ms":
          # §5: the node's 120° p95
          "empty_episodes": 36, "empty_s": 1430, "caution_pct": 43, "node_120_p95_ms": 84}
 GATE = {
-    "empty_events": 8,               # five_empty.alarm_events
-    "empty_episodes": 12,            # five_empty.stop_episodes
-    "ride_events": 27,               # ride.alarm_events            (per km = / 13, derived)
-    "ride_episodes": 30,             # ride.stop_episodes
+    "empty_events": 7,               # five_empty.alarm_events
+    "empty_episodes": 11,            # five_empty.stop_episodes
+    "ride_events": 23,               # ride.alarm_events            (per km = / 13, derived)
+    "ride_episodes": 26,             # ride.stop_episodes
     "obstacle_stop": (193, 201),     # recordings.doubleT_obstacle.alarm_frames, .frames
     "obstacle_first_frame": 8,       # recordings.doubleT_obstacle.first_alarm_frame
     "person": (61, 61),              # recordings.doubleT_obstacle.labelled.per_label.person_crossing hits, frames
@@ -125,7 +129,7 @@ GATE = {
         "small_center": (55.8, 32, 79, True),
         "small_edge_inside": (35.0, 18, 83, True),
         "big_edge_inside": (18.3, 7, 125, False),
-        "thin_hanging": (30.1, 15, 42, True),
+        "thin_hanging": (35.1, 18, 42, True),
     },
     # set_F_straight.kinds.<kind>.first_detection_median_m
     "set_f": {"person": 151.0, "box1.0": 123.9, "trolley": 151.4, "cable": 98.9},
@@ -297,9 +301,28 @@ N = {
 # 1.2.0 gate equals GATE above (`build_deck.py --check-gate docs/evidence/b4_merge_reseal_2026-10-18/gate.json` ->
 # "GATE matches", 19.10; positive control: the 27.09 baseline differs in 7 keys). Sources: CHANGELOG [1.2.0],
 # docs/evidence/b4_merge_reseal_2026-10-18/README.md, docs/evidence/version_1.2.0_2026-10-18/README.md.
-# tests: the full suite on aec88d2, 19.10: 1,969 passed, 8 deselected (no local caches), 0 failed
-# (docs/evidence/falcon_head_check_2026-10-19/out/tests.txt)
-V12 = {"version": "1.2.0", "commit": "aec88d2", "released": "v1.0.0", "judge_score": 66, "tests": "1 969"}
+# 20.10: the shipped detector bytes are those of f56ad5e (the R3 seal; the F1a completion of 20.10 was rejected by its
+# independent review and reverted), `detector_freeze.py verify` PASS, 40 files. tests: P4's independent run on the
+# f56ad5e bytes in the CI-like configuration, 20.10: 2,387 of 2,387 passed, 8 need recorded data
+# (docs/evidence/p4_review_final_bundle_2026-10-20/README.md; 1,969 on aec88d2 on 19.10). "release_tag": None until the
+# release is published; set to "v1.2.0" on 20.10 evening at the captain's request (before the tag existed: check the
+# release page before the deck is shown; None and --refresh put "релиз готовится" back).
+V12 = {"version": "1.2.0", "commit": "f56ad5e", "released": "v1.0.0", "judge_score": 66, "tests": "2 387",
+       "release_tag": "v1.2.0"}
+def release_state():
+    """What the slides and notes say about the 1.2.0 release."""
+    return f"релиз {V12['release_tag']}" if V12["release_tag"] else "релиз готовится"
+
+
+def events_word(n):
+    """Russian plural of 'событие' for a count: 1 событие, 23 события, 27 событий."""
+    if n % 10 == 1 and n % 100 != 11:
+        return "событие"
+    if 2 <= n % 10 <= 4 and not 12 <= n % 100 <= 14:
+        return "события"
+    return "событий"
+
+
 # The second lidar, Seyond Falcon Prime: the organizers' real recording falcon_test_second_dark (16.10), a standing
 # train and a person walking along the track toward it. The whole recording through one detector, 1.1.0:
 # docs/evidence/falcon_full_2026-10-18 (B2, check_v110.json: 4 443 frames, 444 s; first STOP 124.8 m at 297 s;
@@ -358,7 +381,7 @@ def rng(job):
 
 def false_per_hour():
     """'91': false STOP episodes per hour of obstacle-free tunnel, judge 13.10 (36 in 1 430 s, v1.0.0; the 1.2.0
-    gate gives the same decisions on these recordings)"""
+    gate differs on these recordings: five empty ones 7 events, the ride 23 against 27 of 29.09)"""
     return metres(JUDGE["empty_episodes"] * 3600 / JUDGE["empty_s"])
 
 
@@ -546,12 +569,16 @@ TEAM = {
     "formed": None, "study": None, "study_short": None, "city": None, "team_photo": None,
     "cards": [{"name": None, "nick": None, "photo": None} for _ in range(4)],
 }
+# what the team's four roles own, without the internal P1-P4 labels (slide 2)
+ZONES = ("Узел ROS 2, Docker и питч; интерфейс и визуализация",
+         "Алгоритм: модель пути и габарит; данные, метрики и тесты")
+TEAM_ROLES = {"1": "Капитан", "2": "Фронтенд", "3": "Зрение", "4": "Данные"}
 # the public cards (README "Team"): (name line, role, what the member owns)
 PUBLIC_CARDS = [
-    ("P1 · капитан", "Системный аналитик, ROS 2", "требования, архитектура, узел ROS 2 и Docker, питч, сдача"),
-    ("P2 · фронтенд", "Разработчик ПО (Python / JS)", "RViz, Foxglove, веб-дашборд, разметка, слайды, ролик"),
-    ("P3 · зрение", "Инженер компьютерного зрения", "модель пути, габарит, кластеры, трекинг, дальность, скорость"),
-    ("P4 · данные", "Специалист по данным", "датасет, синтетические препятствия, разметка, метрики, тесты, CI"),
+    ("Капитан", "Системный аналитик, ROS 2", "требования, архитектура, узел ROS 2 и Docker, питч, сдача"),
+    ("Фронтенд", "Разработчик ПО (Python / JS)", "RViz, Foxglove, веб-дашборд, разметка, слайды, ролик"),
+    ("Зрение", "Инженер компьютерного зрения", "модель пути, габарит, кластеры, трекинг, дальность, скорость"),
+    ("Данные", "Специалист по данным", "датасет, синтетические препятствия, разметка, метрики, тесты, CI"),
 ]
 # the named build: optional keys of team.json, shown only when given
 OPTIONAL_TEAM = ("formed", "study", "study_short", "city", "team_photo")
@@ -942,7 +969,7 @@ def s07_title(sl, logo_path):
 
 def s08_team(sl):
     fill(shape(sl, 18), [f"КОМАНДА «{TEAM_NAME}»"])
-    zones = ("P1 — узел ROS 2, Docker и питч; P2 — интерфейс", "P3 — алгоритм, P4 — данные, метрики и тесты")
+    zones = ZONES
     if private():   # the named build: what team.json gives, the zones P1-P4 for the rest
         lines = [
             f"**Капитан:** {TEAM['captain']}, {TEAM['captain_specialty']}",
@@ -955,7 +982,7 @@ def s08_team(sl):
             lines.append(f"**Город и регион:** {TEAM['city']}")
     else:   # the public deck: roles, no personal data (README "Team")
         lines = [
-            "**Капитан:** P1 — системный аналитик, ROS 2",
+            "**Капитан:** системный аналитик, ROS 2",
             f"**Кол-во участников:** {TEAM['members']}",
             "**Краткое описание:**",
             (zones[0], {"italic": False}),
@@ -1027,12 +1054,12 @@ def s09_cards(sl):
 
 def s10_history(sl):
     fill(shape(sl, 7), ["ИСТОРИЯ КОМАНДЫ"])
-    fill(shape(sl, 37), ["Четыре роли: ROS 2 и интеграция, визуализация, компьютерное зрение, данные и тесты."], size=15)
-    fill(shape(sl, 43), ["Реальных препятствий мало. Ищем отклонения от геометрии тоннеля; "
-                         "синтетические объекты проверяем на реальных фонах."], size=15)
-    fill(shape(sl, 40), [f"Идеи других команд: {N['rules_tried']} проверили, {N['rules_rejected']} отклонили, "
-                         "3 включили. Одно правило выключили после своей проверки: оно скрывало кабель. "
-                         "Изменения — через шлюз."], size=15)
+    fill(shape(sl, 37), ["Четыре роли, один репозиторий, с 15 сентября: два лидара, "
+                         f"{V12['tests']} тестов, правки — через гейт."], size=15)
+    fill(shape(sl, 43), ["Результат измерим: дальность, габарит, ложные тревоги. Классификатор не нужен — "
+                         "ищем лишнее в нормальном тоннеле."], size=15)
+    fill(shape(sl, 40), ["Мало реальных препятствий: синтетику проверяем на реальных фонах. "
+                         "Свою правку отклонили и откатили: ревью нашло скрытый объект."], size=15)
 
 
 def s11_short(sl):
@@ -1041,7 +1068,7 @@ def s11_short(sl):
         "PointCloud2 → модель пути → габарит 2,1 × 3,0 м → кластеры",
         "GO / CAUTION / STOP / FAULT, расстояние, /resense/status",
         "Лидары: Pandar128 и Falcon Prime",
-        f"Показываем {V12['version']} (не выпущен); эксперты оценивали {V12['released']}",
+        f"Показываем {V12['version']} ({release_state()}); эксперты оценивали {V12['released']}",
     ], size=15, space_before=6)
     fill(shape(sl, 7), [
         "**Применение:** контроль габарита поезда",
@@ -1155,9 +1182,9 @@ def s_hero(sl):             # template slide 13: big white card
               "удержания уже подтверждённого низкого STOP на 0,3 с — подобрано на этой же записи, и мы это говорим. "
               "Здесь поезд стоит; на едущем поезде — синтетика организаторов: ящик 2 × 2 м алгоритм увидел за "
               f"{metres(big[1])} метров, с первого появления (слайд «Объекты организаторов»). "
-              f"Версия {V12['version']} даёт на этой записи те же числа: её полный гейт совпадает с гейтом 29.09 "
-              "(build_deck.py --check-gate docs/evidence/b4_merge_reseal_2026-10-18/gate.json → GATE matches, 19.10). "
-              "Источник чисел: docs/evidence/results/regression_baseline_2026-09-29_shell_off.json; независимая "
+              f"Версия {V12['version']} даёт на этой записи те же числа, что гейт 29.09 (гейт печати R3 отличается "
+              "от него только поездкой, пятью пустыми записями и висящим предметом 5 см, не этой записью). "
+              f"Источник чисел: {GATE_SOURCE}; независимая "
               "оценка 13.10 воспроизвела 193 из 201 и 61 из 61 (docs/evidence/judgement_2026-10-13/README.md §3).")
 
 
@@ -1194,8 +1221,8 @@ def s_results(sl):          # template slide 20: left card + five rows
     rows = [
         f"**Дальность:** прямая {rng('A_person')} м, кривые {rng('B_person')}–{rng('C_person')} м",
         f"**Пропуски:** STOP у {set_o_stopped()} объектов организаторов",
-        f"**Ложные:** {N['ride_events']} событий за {N['ride_km']} км в выборке; "
-        f"≈{num(round(JUDGE['ride_episodes'] / JUDGE['ride_km'], 1))} эпизода/км ({JUDGE['date']})",
+        f"**Ложные:** {per_km()} на км ({N['ride_events']} {events_word(N['ride_events'])} за {N['ride_km']} км, "
+        "в выборке)",
         f"**10 Гц:** Falcon — {FALCON['detect_ms']} мс/кадр; Pandar 360° — p95 {JUDGE['node_360_p95_ms']} мс",
         "**Запуск:** пауза, замедление, смена бэгов без перезапуска",
     ]
@@ -1232,7 +1259,7 @@ def s_range(sl):            # template slide 22: horizontal bar chart + four not
         (21, 18, "Метод судьи 13.10", "лучевая синтетика, реальные фоны"),
         (22, 23, f"Кривые: {rng('B_person')}–{rng('C_person')} м", "ось отстаёт от поворота — в работе"),
         (24, 25, f"С {V12['released']}", f"гермозатвор {metres(RANGE_V100['C_person'])} → {rng('C_person')} м"),
-        (26, 27, f"{V12['version']} = 1.1.0", "на данных Pandar"),
+        (26, 27, "Измерено на 1.1.0", f"на {V12['version']} не перезапускали"),
     ]
     for ti, di, t, d in pairs:
         fill(placeholder(sl, ti), [t], size=16)
@@ -1275,7 +1302,7 @@ def s_fake(sl):             # template slide 21: column chart (turned into bars)
     if not REFRESH:                             # made once, by the build
         gf.height = Emu(gf.height - 300000)
     textbox(sl, Emu(346075), Emu(gf.top + gf.height + 40000), Emu(5749925), Emu(560000),
-            [f"Синтетика; гейт {V12['version']} = 29.09. Сиреневый: неустойчиво."],
+            [f"Синтетика; гейт {V12['version']} (печать R3). Сиреневый: неустойчиво."],
             size=10, color="E6E1F5")
     top = set_o("big_above")
     cards = [
@@ -1300,8 +1327,8 @@ def s_falcon(sl):           # template slide 16: four cards (until 19.10 «На�
                                          "без неё CAUTION, не GO"),
         (50, 39, 40, "Человек", f"Предупреждение со {f['warn_m']} м, STOP с ~{f['stop_m']} м; "
                                 f"от {f['stop_band'][0]} до {f['stop_band'][1]} м — STOP в каждом кадре"),
-        (51, 41, 42, "Ложные", f"{f['false'][0]} кадров STOP за {f['seconds']} с; CAUTION {f['caution_pct']} % — "
-                               "конструкции у края габарита"),
+        (51, 41, 42, "Ложные", f"{f['false'][0]} кадров STOP за {f['seconds']} с; CAUTION {f['caution_pct']} %. "
+                               "Вблизи (2,5–7 м) 38 кадров: «чисто» дальше объекта"),
         (52, 43, 44, "300 м", f"Человек виден с ~{f['seen_m']} м ({f['seen_pts']} точек), полотно — до "
                               f"~{f['bed_m']} м; дальность — в работе"),
     ]
@@ -1314,8 +1341,8 @@ def s_falcon(sl):           # template slide 16: four cards (until 19.10 «На�
 def s_hard(sl):             # template slide 15: five lined rows
     fill(placeholder(sl, 0), ["СЛОЖНЫЕ СЛУЧАИ"])
     rows = [
-        "**Столбы:** высокий узкий объект получает CAUTION, не STOP — не исправлено",
-        f"**Кривые:** ось отстаёт от поворота; первый STOP с {rng('B_person')}–{rng('C_person')} м — в работе",
+        "**Столбы:** высокий узкий объект чаще CAUTION, не STOP — улучшено частично (синтетика: 82 → 114 из 177)",
+        f"**Кривые:** ось отстаёт от поворота; первый STOP с {rng('B_person')}–{rng('C_person')} м — исправление (K1/K2) вне 1.2.0",
         f"**Ложные STOP:** ≈{false_per_hour()} эпизод в час пустого тоннеля ({JUDGE['date']}) — снижаем",
         "**Пыль:** на своей синтетической пыли приёмку не проходим — в работе",
         f"**Мелкое:** кубы 0,3 м — с {cubes()} м; висящий 5 см — с {set_o_first('thin_hanging')} м",
@@ -1331,7 +1358,7 @@ def s_next(sl):             # template slide 17: three cards
     cards = [
         (49, 37, 38, "Что получилось", "ROS 2-модуль на CPU в Docker; два лидара; стабильный 3D-габарит; "
                                        f"пауза и смена бэгов без перезапуска; {V12['tests']} тестов"),
-        (50, 39, 40, "Что дальше", "В работе: габарит по повороту, пыль, дальность Falcon к 300 м, "
+        (50, 39, 40, "Что дальше", "Габарит по повороту (K1/K2 вне 1.2.0), пыль, дальность Falcon к 300 м, "
                                    "меньше ложных STOP"),
         (51, 41, 42, "Внедрение", "docker load → run → run_demo.sh. "
                                   "Адаптер торможения требует разработки и проверки."),
@@ -1351,8 +1378,10 @@ NOTES = {  # speaker notes per template slide (the main shot's are set in s_hero
        "свою часть, код общий.",
     10: "Почему эта задача: реальных препятствий в данных почти нет. Мы описываем нормальный тоннель, "
         "а обученное мнение о треке работает на отрицательных примерах из поездок. Ложные остановки "
-        f"сократились, но остались. Как мы работали с чужими идеями: {rules_story()}. "
-        "Проверка на новых данных нужна.",
+        "сократились, но остались. Как мы работаем со своими правками: детектор меняется только по процедуре — "
+        "приёмочный тест, полный гейт без исключений, независимое ревью, печать (docs/DETECTOR_FREEZE.md). "
+        "Завершение F1a независимое ревью отклонило — оно скрывало объекты 5–20 см над головкой рельса в синтетических "
+        "сценах, — и мы его откатили; K1/K2 не прошли приёмку и выключены. Проверка на новых данных нужна.",
     11: "Одной фразой: описываем нормальный тоннель и ищем препятствия в габарите поезда. "
         "Работает в ROS 2 и Docker. Решает геометрия; обученная часть одна — «мнение» о треке, и оно может "
         f"только отложить сомнительный STOP, не больше чем на {opinion_delay()}, но не отменить его. "
@@ -1416,8 +1445,8 @@ NOTES = {  # speaker notes per template slide (the main shot's are set in s_hero
         f"узла — {N['history_captured'][1]} (было {N['history_captured'][0]}), в стресс-тесте с пропусками и "
         f"догонялками — {events(N['history_stress'][1])} (было {N['history_stress'][0]}; 28.09).",
     15: "Что не сработало и почему: полотно полно железа, станции — главный источник ложных остановок, "
-        "мелкие объекты организаторов видим поздно, тонкие — только вблизи. Два правила 29.09 взяты из "
-        "открытых решений других команд (TunnelGuard, Tactical-Inventor) и прошли полный гейт: «чистая серия» — "
+        "мелкие объекты организаторов видим поздно, тонкие — только вблизи. Два правила 29.09 прошли "
+        "полный гейт: «чистая серия» — "
         "новый STOP у известной инфраструктуры ждёт пять чистых попаданий; запрет эго-движения — трек дальше 25 м, "
         "который едет вместе с поездом, STOP не начинает, пока поезд быстрее 4 м/с. Третье — «обделку» — мы "
         "выключили после своей проверки безопасности: висящий от свода кабель получал STOP лишь с "
@@ -1461,7 +1490,7 @@ NOTES[20] += (f" Пять пустых записей на кэше: {events(N['
               "Эпизод — серия STOP, событие шлюза — подтверждённый трек; сравнивать их как одну метрику нельзя. "
               "Все частоты в выборке. Нода на 4 vCPU: p95 111 мс на 360°, 84 мс на 120°; "
               "это время обработки, не возраст результата. Первая версия графиков — подготовка PT1; "
-              "окончательные числа и речь обновляет P1 после J1 и O1.")
+              "окончательные числа и речь обновляет капитан после J1 и O1.")
 NOTES[22] += (f" Исторические кривые набора F, 24.09: {N['curves'][0]} подходов, {N['curves'][1]} м. "
               f"Устойчивость человека ≥90% каждой 10-метровой полосы — с {N['band_person']} м. "
               "Нынешняя оценка 13.10 v1.0.0: лучевой человекообразный бокс 218 м на прямой, "
@@ -1490,12 +1519,13 @@ NOTES[17] += (" План после оценки: BACKLOG, H1–H6 перед в
 _V = V12["version"]
 _F = FALCON
 SRC_FALCON = ("проверка 19.10, docs/evidence/falcon_head_check_2026-10-19: вся запись через aec88d2, решения совпадают с прогоном 1.1.0 "
-              "docs/evidence/falcon_full_2026-10-18 (B2)")
+              "docs/evidence/falcon_full_2026-10-18 (B2); 20.10 независимый ревьюер воспроизвёл запись целиком на cc6226e и f56ad5e, "
+              "docs/evidence/p4_review_final_bundle_2026-10-20")
 NOTES[11] = (
     "Одной фразой: описываем нормальный тоннель и ищем препятствия в габарите поезда; ROS 2 и Docker, только CPU. "
-    f"Версия: показываем и развиваем {_V} — кандидат, запечатанная сборка разработки на main {V12['commit']} "
-    "(измеренный источник 0779db7, файлы детектора те же; detector_freeze verify PASS, 38 файлов). Она не выпущена, "
-    "даты выпуска нет. 1.1.0 выпускаться не будет (решение капитана 19.10). Опубликован "
+    f"Версия: показываем и развиваем {_V} — {release_state()}; печать детектора R3 (40 файлов, digest 6d091081…, "
+    f"detector_freeze verify PASS), байты детектора — коммит {V12['commit']}; завершение F1a отклонено независимым "
+    "ревью и откатено 20.10. 1.1.0 не выпускалась (решение капитана 19.10). Опубликован "
     f"{V12['released']} — его эксперты оценивали 30.09–14.10; {V12['judge_score']}/100 от 13.10 — оценка нашего "
     "независимого агента-судьи, не организаторов. Лидары: Pandar128 (все записи организаторов) и Falcon Prime "
     "(реальная запись 16.10; профили осей falcon_ros / falcon_native). Решает геометрия; обученная часть одна — "
@@ -1525,7 +1555,7 @@ NOTES[25] += (" Габарит в RViz и веб-виде — 3D-бокс: ши�
               "для картинки, в решения не возвращается; при устаревшем входе бокс сереет и исчезает "
               "(docs/evidence/n1_n4_2026-10-18/HOWTO.md).")
 NOTES[27] = (
-    f"Живой показ — версия {_V} (образ, собранный из main {V12['commit']}). Один узел: сначала Pandar, запись "
+    f"Живой показ — версия {_V} (образ релиза, детектор — печать R3). Один узел: сначала Pandar, запись "
     "doubleT_obstacle — STOP около 56 м в первые секунды; затем без перезапуска контейнера Falcon с профилем "
     "falcon_ros — ориентация с первого кадра, 3D-бокс габарита, CAUTION у конструкций, STOP по человеку. Пробел — "
     "пауза, стрелки вверх и вниз — скорость. Проверено 18.10 на образе разработки cecab1b: 40 из 40 кадров "
@@ -1539,7 +1569,7 @@ NOTES[27] = (
 NOTES[20] = (
     f"По критериям экспертов 16.10. {of(N['person'])}: человек в габарите на реальной записи doubleT_obstacle — "
     f"STOP в каждом кадре, {person_alarm()}; вся запись — {obstacle_run()}; предмет на рельсе — "
-    f"{of(N['rail_object'])} (гейт 29.09 = гейт {_V}; независимая оценка 13.10 воспроизвела). ~{_F['stop_m']} м: "
+    f"{of(N['rail_object'])} (эти числа на записи в гейте {_V} те же, что в гейте 29.09; независимая оценка 13.10 воспроизвела). ~{_F['stop_m']} м: "
     f"Falcon, первый STOP по идущему человеку — 124,8 м на 297 с ({SRC_FALCON}). ≈ {GAUGE['jitter_max']} м: "
     "дрожание видимого (рисуемого) края габарита между кадрами, не оси детектора; p90 на 40 / 80 / 120 м — "
     f"{' / '.join(GAUGE['jitter_set_o'])} м на наборе O при пределах {' / '.join(GAUGE['limits'])} м "
@@ -1550,7 +1580,8 @@ NOTES[20] = (
     f"STOP за {N['ride_km']} км поездки на кэше гейта — в выборке, правила подбирали на этих данных; узловой путь "
     f"судьи {JUDGE['date']} ({V12['released']}): {JUDGE['ride_episodes']} эпизода, ≈2,5 эпизода/км; все пустые "
     f"данные — {JUDGE['empty_episodes']} эпизодов за {num(JUDGE['empty_s'])} с, ≈{false_per_hour()} в час; на "
-    f"этих записях {_V} даёт те же решения. Falcon: {_F['false'][0]} ложных кадров STOP за {_F['seconds']} с. "
+    f"этих записях {_V} решения иные: в гейте {_V} пять пустых записей дают {N['empty_events']} событий "
+    f"(было 8 в гейте 29.09), поездка — {N['ride_events']} (было 27). Falcon: {_F['false'][0]} ложных кадров STOP за {_F['seconds']} с. "
     f"10 Гц: Falcon — детектор {_F['detect_ms']} мс на кадр, медиана (docs/evidence/falcon_head_check_2026-10-19); Pandar 360° — нода "
     f"p95 {JUDGE['node_360_p95_ms']} мс на {JUDGE['vcpus']} vCPU, 120° — {JUDGE['node_120_p95_ms']} мс "
     f"({JUDGE['date']}, {V12['released']}); стенд организаторов не мерили. Запуск: run_demo.sh / play_bag.sh "
@@ -1565,17 +1596,20 @@ NOTES[22] = (
     f"{rng('A_cube03')} м; перед платформой — {rng('D_person')} м; кривые с гермозатвором — {rng('C_person')} м; "
     f"кривая в двухпутный участок — {rng('B_person')} м. На кривых объект виден раньше, но ось пути отстаёт от "
     "поворота (наша кривизна −0,0006…−0,0011 против −0,0025 1/м по трём независимым свидетелям, "
-    "docs/evidence/gauge_stability_2026-10-18/README.md); исправление оси (K1/K2) в работе, результата пока нет. "
+    "docs/evidence/gauge_stability_2026-10-18/README.md); исправление оси (K1/K2) не прошло приёмку и выключено в "
+    f"{_V} (решение капитана 20.10, docs/evidence/k1_k2_review_2026-10-20); работа после питча. "
     f"С {V12['released']} изменилась только кривая с гермозатвором: {metres(RANGE_V100['C_person'])} → "
-    f"{rng('C_person')} м. {_V} = 1.1.0 на данных Pandar: полный гейт и X3 (40 случаев, 29 765 строк) совпадают во "
-    "всех не-временных выходах (docs/evidence/b4_merge_reseal_2026-10-18/README.md); сами задания дальности на "
-    f"{_V} не перезапускались. Источник: docs/evidence/rejudge_2026-10-16/prebuild/summary_1.1.0.json, "
+    f"{rng('C_person')} м. {_V} относительно 1.1.0: на печати B4 (18.10) полный гейт и X3 (40 случаев, 29 765 строк) "
+    "совпадали во всех не-временных выходах (docs/evidence/b4_merge_reseal_2026-10-18/README.md); с тех пор добавлены "
+    f"F1a, L16, R3 и H1 — поездка в гейте {N['ride_events']} событий вместо 27, висящий предмет 5 см — с "
+    f"{set_o_first('thin_hanging')} м; сами задания дальности на {_V} не перезапускались. Источник: docs/evidence/rejudge_2026-10-16/prebuild/summary_1.1.0.json, "
     "range_table.md, RELEASE_DAY.md. Прежний график — наша синтетика в прямой поездке (набор F, гейт 29.09): "
     f"человек {set_f('person')} м, тележка {set_f('trolley')}, ящик 1 м {set_f('crate')}, кабель 3 см "
     f"{set_f('cable')}; со скоростью поезда — {N['speed_person']} м. Pandar в этих записях не даёт отражений "
     "дальше 209–210 м.")
-NOTES[21] += (f" Версия {_V} даёт те же числа: её гейт совпадает с гейтом 29.09 (build_deck.py --check-gate "
-              "docs/evidence/b4_merge_reseal_2026-10-18/gate.json → GATE matches, 19.10).")
+NOTES[21] += (f" Гейт {_V} (печать R3; build_deck.py --check-gate {GATE_SOURCE} → GATE matches, 20.10): от гейта "
+              f"29.09 отличаются поездка ({N['ride_events']} событий вместо 27), пять пустых записей "
+              f"({N['empty_events']} вместо 8) и висящий предмет 5 см (с {set_o_first('thin_hanging')} м вместо 30).")
 NOTES[16] = (
     f"Второй лидар — Seyond Falcon Prime, реальная запись организаторов: {num(_F['frames'])} кадра за "
     f"{_F['seconds']} с, поезд стоит, человек идёт по пути к нему. Оси у Pandar и Falcon разные, профиль "
@@ -1600,27 +1634,35 @@ NOTES[16] = (
 NOTES[15] = (
     "Честно о слабом. Столбы: высокий узкий объект в габарите понижается до CAUTION (правило column) — критичный "
     "пропуск, найден независимой оценкой 13.10; исправление H1 отозвано 16.10, потому что теряло другие "
-    f"положительные (CHANGELOG [1.1.0]); в {_V} не исправлено. Кривые: ось пути отстаёт от поворота, первый STOP "
-    f"{rng('B_person')}–{rng('C_person')} м; исправление оси (K1/K2) в работе. Ложные STOP: судья "
+    f"положительные (CHANGELOG [1.1.0]); в {_V} улучшено частично (H1: на синтетике 82 → 114 из 177, 63 пропуска "
+    "остаются; независимая приёмка заблокирована — при ложной паре рельсов бывают ложные core и STOP, "
+    "docs/evidence/h1_publication_2026-10-20). Кривые: ось пути отстаёт от поворота, первый STOP "
+    f"{rng('B_person')}–{rng('C_person')} м; исправление оси (K1/K2) не прошло приёмку и выключено в {_V}. Ложные STOP: судья "
     f"{JUDGE['date']} — {JUDGE['empty_episodes']} эпизодов за {num(JUDGE['empty_s'])} с пустого тоннеля "
     f"(≈{false_per_hour()} в час), CAUTION на {JUDGE['caution_pct']} % пустых кадров ({V12['released']}; на этих "
-    f"записях {_V} даёт те же решения); главные источники — платформы, стрелки, конструкции у края; работа F1 "
-    "идёт, результата нет. Пыль: свой генератор синтетической пыли и полное измерение — 30 875 прогонов кадров "
+    f"записях гейт {_V} даёт {N['empty_events']} событий на пустых записях и {N['ride_events']} на поездке); главные "
+    "источники — платформы, стрелки, конструкции у края; работа F1 идёт, результата нет. Пыль: свой генератор синтетической пыли и полное измерение — 30 875 прогонов кадров "
     "на 9b92df5 (= 1.1.0); при средней плотности пустые записи дают 22–71 эпизод STOP вместо 0–3, реальный "
     "человек теряется; нашу приёмку детектор не проходит, работа идёт, исправления нет "
     "(docs/evidence/n3_dust_2026-10-18/README.md). Мелкое: кубы 0,3 м — STOP с "
     f"{cubes()} м, ящик 0,5 м на полотне — в {of(N['bed_box_found'])} подходов; висящий предмет 5 см — с "
-    f"{set_o_first('thin_hanging')} м. Как мы работаем с чужими идеями: {rules_story()}. «Мнение» о треке обучено "
+    f"{set_o_first('thin_hanging')} м. Известные ограничения {_V}: вблизи Falcon (кадры 4373–4414, объект 2,5–7 м) в 38 "
+    "кадрах «чистая дистанция» детектора 3–40 м лежит дальше объекта при решении CAUTION — это оценка, не подтверждение "
+    "отсутствия препятствия (docs/evidence/falcon_clear_limit_2026-10-20); ошибка высоты лидара +0,8 м на 5 м может "
+    "скрыть новое висящее тело (B4, docs/evidence/p3_review_response_2026-10-20). Как мы работаем со своими правками: "
+    "завершение F1a (локальная опорная линия рельса) независимое ревью нашло небезопасным — оно скрывало объекты "
+    "5–20 см над головкой рельса в синтетических сценах, — и мы его откатили (docs/evidence/f1a_completion_review_2026-10-20); "
+    "цена ремонта F1a на поездке принята. «Мнение» о треке обучено "
     f"на синтетике: непохожий реальный объект оно может задержать, но {opinion_bounds()}; STOP оно никогда не "
     "отменяет.")
 NOTES[17] = (
     "Итог: работающий ROS 2-модуль на CPU в Docker; два лидара с явными профилями осей; габарит — стабильный "
     "3D-бокс по поддержанной геометрии; запуск с паузой, замедлением и сменой бэгов без перезапуска. Тесты: "
-    f"{V12['tests']} тестов полного набора на aec88d2, 19.10, без падений (docs/evidence/falcon_head_check_2026-10-19/out/tests.txt; "
-    "на cecab1b 18.10 — 1 906, docs/evidence/version_1.2.0_2026-10-18/README.md); слияние B4 — 676 затронутых тестов "
-    "(docs/evidence/b4_merge_reseal_2026-10-18/README.md). В работе, без результатов: габарит синхронно с "
-    "поворотом (K1/K2), устойчивость к пыли, дальность Falcon к 300 м, меньше ложных STOP (F1). "
-    f"{_V} — кандидат, не выпущен: облачный CI заблокирован биллингом аккаунта, даты выпуска нет. Подключение к "
+    f"{V12['tests']} из {V12['tests']} тестов полного набора в CI-подобной конфигурации на байтах {V12['commit']} "
+    "(8 тестов требуют записей), независимый прогон 20.10, docs/evidence/p4_review_final_bundle_2026-10-20/README.md; "
+    "1 969 на aec88d2 19.10, docs/evidence/falcon_head_check_2026-10-19/out/tests.txt. В работе, без результатов: "
+    "габарит синхронно с поворотом (K1/K2 выключены в 1.2.0), устойчивость к пыли, дальность Falcon к 300 м, "
+    f"меньше ложных STOP (F1). {_V}: {release_state()}; облачный CI (печать, тесты, образ, офлайн-сборка) зелёный. Подключение к "
     "торможению требует отдельной разработки и проверки безопасности. Вопросы организаторам — формат питча, "
     "можно ли показать и перепрогнать обновлённую версию, как читать CAUTION, что в скрытом наборе, что такое "
     "«фильтр», новые данные, проигрывание бэгов — отправлены капитаном; ответов пока нет.")
@@ -1685,7 +1727,88 @@ LAYOUTS = {7: "Титульный слайд", 8: "1_Описание коман
 KEEP_ON_REFRESH = (7, 8, 9)
 
 
-def refresh(path, out=None):
+def _set_paragraph(p, text):
+    """Replace a paragraph's text, keeping its first run's formatting."""
+    runs = p.runs
+    if not runs:
+        p.add_run().text = text
+        return
+    runs[0].text = text
+    for r in runs[1:]:
+        r._r.getparent().remove(r._r)
+
+
+def _set_lines(shape, lines, size=None):
+    """Rewrite a text box as one paragraph per line, every paragraph a copy of the first (bullets, font, colour)."""
+    body = shape.text_frame._txBody
+    paragraphs = body.findall(qa("p"))
+    proto = copy.deepcopy(paragraphs[0])
+    for e in proto.findall(qa("endParaRPr")):
+        proto.remove(e)
+    for p in paragraphs:
+        body.remove(p)
+    for line in lines:
+        p = copy.deepcopy(proto)
+        runs = p.findall(qa("r"))
+        runs[0].find(qa("t")).text = line
+        for r in runs[1:]:
+            p.remove(r)
+        if size:
+            rpr = runs[0].find(qa("rPr"))
+            if rpr is None:
+                rpr = etree.Element(qa("rPr"))
+                runs[0].insert(0, rpr)
+            rpr.set("sz", str(int(size * 100)))
+        body.append(p)
+
+
+def team_slide_fixups(prs, contacts=None):
+    """Slides 2-3 of a built deck (``refresh`` keeps them): the internal P1-P4 labels become role names, and the
+    template's own card lines (role, messenger nick, phone, place of study) and the full name come from ``contacts``
+    (``{"members": [{"fio": ..., "nick": ..., "phone": ..., "study": ...}, ... four, in card order]}``) when given.
+    Idempotent. Phones and the like belong in a JSON outside git (docs/presentation/private/)."""
+    members = (contacts or {}).get("members") or []
+    s2, s3 = prs.slides[1], prs.slides[2]
+    for sh in _walk(s2.shapes):
+        if not sh.has_text_frame:
+            continue
+        for p in sh.text_frame.paragraphs:
+            if p.text.startswith("P1 —"):
+                _set_paragraph(p, ZONES[0])
+            elif p.text.startswith("P3 —"):
+                _set_paragraph(p, ZONES[1])
+        if members and members[0].get("fio"):
+            for p in sh.text_frame.paragraphs:
+                for r in p.runs:
+                    if "Кузнецов Пётр" in r.text:
+                        r.text = r.text.replace("Кузнецов Пётр", members[0]["fio"])
+    labels = []
+    for sh in _walk(s3.shapes):
+        if sh.has_text_frame:
+            m = re.match(r"^P([1-4]) · ", sh.text_frame.text)
+            if m:
+                _set_paragraph(sh.text_frame.paragraphs[0], TEAM_ROLES[m.group(1)])
+            if sh.text_frame.text in TEAM_ROLES.values():
+                labels.append(sh)
+    labels.sort(key=lambda s: s.left)
+    if len(labels) != 4:
+        raise SystemExit(f"slide 3: {len(labels)} role labels, expected 4")
+    for k, lab in enumerate(labels):
+        who = members[k] if k < len(members) else {}
+        near = [s for s in s3.shapes if s.has_text_frame and s.text_frame.text.strip() and s is not lab
+                and abs(s.left - lab.left) <= 2000]
+        det = next(s for s in near if s.top > lab.top)
+        name = next((s for s in near if s.top < lab.top), None)
+        extra = [who[key] for key in ("nick", "phone", "study") if who.get(key)]
+        if extra:
+            role = det.text_frame.paragraphs[0].text
+            _set_lines(det, [role] + extra)
+        if who.get("fio") and name is not None:
+            parts = who["fio"].split()
+            _set_lines(name, parts, size=13 if len(parts) > 2 else None)
+
+
+def refresh(path, out=None, contacts=None):
     """Re-fill a deck built by this script (e.g. the committed named deck) in place: the texts, charts and
     notes of every slide but the title and the team slides, as a build from the template writes them now."""
     global REFRESH
@@ -1705,6 +1828,7 @@ def refresh(path, out=None):
                 notes(sl, NOTES[tmpl])
     finally:
         REFRESH = False
+    team_slide_fixups(prs, contacts)
     check_no_fields(prs)
     if audit_deck(prs):
         raise ValueError("deck exceeds PT1's word budget; move detail into speaker notes")
@@ -1780,6 +1904,8 @@ def main():
     ap.add_argument("--audit", metavar="PPTX", help="count visible words and check PT1's 80/slide, 1100 total limits")
     ap.add_argument("--refresh", metavar="PPTX", help="re-fill the texts, charts and notes of a deck this script built "
                                                       "(slides 4-16; title, names and photos kept), in place or to --out")
+    ap.add_argument("--contacts", metavar="JSON", help="with --refresh: the cards' messenger nick, phone, place of study "
+                                                       "and the full name of each member (slide 3), as team_slide_fixups reads them")
     ap.add_argument("--check-node-source", metavar="DECLARATION_JSON", help="verify explicit P4 node-path source references (separate from GATE)")
     ap.add_argument("--render-node-chart", metavar="DIRECTORY", help="with --check-node-source: render the complete source table and shared card input")
     ap.add_argument("--final-node-source", action="store_true", help="require release/raw verification and recorded P1/P4 approvals")
@@ -1796,7 +1922,12 @@ def main():
     if a.audit:
         raise SystemExit(audit_deck(Presentation(a.audit)))
     if a.refresh:
-        refresh(a.refresh, a.out)
+        contacts = None
+        if a.contacts:
+            import json
+            with open(a.contacts, encoding="utf-8") as fh:
+                contacts = json.load(fh)
+        refresh(a.refresh, a.out, contacts)
         return
     if not a.template or not a.out:
         ap.error("--template and --out are required (unless --check-gate, --audit or --refresh)")

@@ -1,0 +1,8 @@
+rows 98
+wt_ref rejected 0
+wt_parent rejected 77
+wt_cand rejected 85
+cand rejects, parent keeps: 10
+parent rejects, cand keeps: 2
+cand rejects, ref keeps   : 85
+ref rejects, cand keeps   : 0

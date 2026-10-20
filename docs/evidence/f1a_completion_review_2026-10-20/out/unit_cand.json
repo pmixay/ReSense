@@ -1,0 +1,1091 @@
+{
+ "repo": "/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scratchpad/f1a_review/wt_cand",
+ "rows": [
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": 1,
+    "head": 0.2,
+    "delta": -0.06
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": 1,
+    "head": 0.2,
+    "delta": -0.02
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": 1,
+    "head": 0.2,
+    "delta": 0.0
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": 1,
+    "head": 0.2,
+    "delta": 0.02
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": 1,
+    "head": 0.2,
+    "delta": 0.04
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": 1,
+    "head": 0.2,
+    "delta": 0.05
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": 1,
+    "head": 0.2,
+    "delta": 0.0501
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": 1,
+    "head": 0.2,
+    "delta": 0.06
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": 1,
+    "head": 0.2,
+    "delta": 0.08
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": 1,
+    "head": 0.2,
+    "delta": 0.1
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": 1,
+    "head": 0.2,
+    "delta": 0.15
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": 1,
+    "head": 0.2,
+    "delta": 0.2
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": -1,
+    "head": 0.2,
+    "delta": -0.06
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": -1,
+    "head": 0.2,
+    "delta": -0.02
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": -1,
+    "head": 0.2,
+    "delta": 0.0
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": -1,
+    "head": 0.2,
+    "delta": 0.02
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": -1,
+    "head": 0.2,
+    "delta": 0.04
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": -1,
+    "head": 0.2,
+    "delta": 0.05
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": -1,
+    "head": 0.2,
+    "delta": 0.0501
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": -1,
+    "head": 0.2,
+    "delta": 0.06
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": -1,
+    "head": 0.2,
+    "delta": 0.08
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": -1,
+    "head": 0.2,
+    "delta": 0.1
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": -1,
+    "head": 0.2,
+    "delta": 0.15
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top",
+   "params": {
+    "side": -1,
+    "head": 0.2,
+    "delta": 0.2
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top_head0.11",
+   "params": {
+    "head": 0.11,
+    "delta": 0.0
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top_head0.11",
+   "params": {
+    "head": 0.11,
+    "delta": 0.02
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top_head0.11",
+   "params": {
+    "head": 0.11,
+    "delta": 0.05
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "sweep_top_head0.11",
+   "params": {
+    "head": 0.11,
+    "delta": 0.0501
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "sweep_top_head0.11",
+   "params": {
+    "head": 0.11,
+    "delta": 0.1
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "head_returns_count",
+   "params": {
+    "n": 0
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "head_returns_count",
+   "params": {
+    "n": 1
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "head_returns_count",
+   "params": {
+    "n": 2
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "head_returns_count",
+   "params": {
+    "n": 3
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "head_slope",
+   "params": {
+    "slope": -0.02,
+    "local_head": 0.2,
+    "top": 0.3
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "head_slope",
+   "params": {
+    "slope": -0.01,
+    "local_head": 0.2,
+    "top": 0.3
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "head_slope",
+   "params": {
+    "slope": -0.006,
+    "local_head": 0.2,
+    "top": 0.3
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "head_slope",
+   "params": {
+    "slope": 0.0,
+    "local_head": 0.2,
+    "top": 0.3
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "head_slope",
+   "params": {
+    "slope": 0.006,
+    "local_head": 0.2,
+    "top": 0.3
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "head_slope",
+   "params": {
+    "slope": 0.008,
+    "local_head": 0.2,
+    "top": 0.3
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "head_slope",
+   "params": {
+    "slope": 0.01,
+    "local_head": 0.2,
+    "top": 0.3
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "head_slope",
+   "params": {
+    "slope": 0.012,
+    "local_head": 0.2,
+    "top": 0.3
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "head_slope",
+   "params": {
+    "slope": 0.02,
+    "local_head": 0.2,
+    "top": 0.3
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "head_slope",
+   "params": {
+    "slope": 0.04,
+    "local_head": 0.2,
+    "top": 0.3
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "object_own_unclustered_returns",
+   "params": {
+    "strays_x": 40.5,
+    "top": 0.21,
+    "head": 0.11
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "object_own_unclustered_returns",
+   "params": {
+    "strays_x": 41.0,
+    "top": 0.21,
+    "head": 0.11
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "object_own_unclustered_returns",
+   "params": {
+    "strays_x": 41.5,
+    "top": 0.21,
+    "head": 0.11
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "object_own_unclustered_returns",
+   "params": {
+    "strays_x": 43.0,
+    "top": 0.21,
+    "head": 0.11
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "object_own_unclustered_returns",
+   "params": {
+    "strays_x": 44.5,
+    "top": 0.21,
+    "head": 0.11
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "object_own_unclustered_returns",
+   "params": {
+    "strays_x": 46.0,
+    "top": 0.21,
+    "head": 0.11
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "object_own_unclustered_returns_ABOVE_rail_edge",
+   "params": {
+    "strays_x": 40.5,
+    "top": 0.31,
+    "head": 0.11
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "object_own_unclustered_returns_ABOVE_rail_edge",
+   "params": {
+    "strays_x": 43.0,
+    "top": 0.31,
+    "head": 0.11
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "object_own_unclustered_returns_ABOVE_rail_edge",
+   "params": {
+    "strays_x": 46.0,
+    "top": 0.31,
+    "head": 0.11
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "object_own_unclustered_returns",
+   "params": {
+    "strays_x": 47.0,
+    "top": 0.21,
+    "head": 0.11,
+    "note": "6.7 m after, outside window"
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "head_before_only",
+   "params": {},
+   "decision": "HIDE"
+  },
+  {
+   "name": "head_after_only",
+   "params": {},
+   "decision": "HIDE"
+  },
+  {
+   "name": "local_rise_on_rail_line",
+   "params": {
+    "at_x": 36.0,
+    "rise_h": 0.3,
+    "head": 0.2,
+    "top": 0.3
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "local_rise_on_rail_line",
+   "params": {
+    "at_x": 36.0,
+    "rise_h": 0.25,
+    "head": 0.2,
+    "top": 0.3
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "local_rise_on_rail_line",
+   "params": {
+    "at_x": 44.0,
+    "rise_h": 0.3,
+    "head": 0.2,
+    "top": 0.3
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "local_rise_on_rail_line",
+   "params": {
+    "at_x": 46.0,
+    "rise_h": 0.3,
+    "head": 0.2,
+    "top": 0.3
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "local_rise_on_rail_line",
+   "params": {
+    "at_x": 47.0,
+    "rise_h": 0.3,
+    "head": 0.2,
+    "top": 0.3
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "local_rise_on_rail_line_top0.34",
+   "params": {
+    "at_x": 36.0,
+    "rise_h": 0.3,
+    "head": 0.2,
+    "top": 0.34
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "local_rise_on_rail_line_top0.34",
+   "params": {
+    "at_x": 36.0,
+    "rise_h": 0.34,
+    "head": 0.2,
+    "top": 0.34
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.28,
+    "delta": 0.02,
+    "top": 0.3
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.28,
+    "delta": 0.05,
+    "top": 0.33
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.28,
+    "delta": 0.1,
+    "top": 0.349
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.3,
+    "delta": 0.02,
+    "top": 0.32
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.3,
+    "delta": 0.05,
+    "top": 0.349
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.3,
+    "delta": 0.1,
+    "top": 0.349
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.32,
+    "delta": 0.02,
+    "top": 0.34
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.32,
+    "delta": 0.05,
+    "top": 0.349
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.32,
+    "delta": 0.1,
+    "top": 0.349
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.34,
+    "delta": 0.02,
+    "top": 0.349
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.34,
+    "delta": 0.05,
+    "top": 0.349
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.34,
+    "delta": 0.1,
+    "top": 0.349
+   },
+   "decision": "HIDE"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.36,
+    "delta": 0.02,
+    "top": 0.349
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.36,
+    "delta": 0.05,
+    "top": 0.349
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "high_head_cap",
+   "params": {
+    "head": 0.36,
+    "delta": 0.1,
+    "top": 0.349
+   },
+   "decision": "KEEP"
+  },
+  {
+   "name": "not_on_rail_centre",
+   "params": {},
+   "decision": "KEEP"
+  },
+  {
+   "name": "wide_cluster",
+   "params": {},
+   "decision": "KEEP"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "pessimistic",
+    "sigma": 0.01,
+    "delta": 0.06,
+    "trials": 500,
+    "hide_fraction": 0.666
+   },
+   "decision": "333/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "pessimistic",
+    "sigma": 0.01,
+    "delta": 0.08,
+    "trials": 500,
+    "hide_fraction": 0.1
+   },
+   "decision": "50/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "pessimistic",
+    "sigma": 0.01,
+    "delta": 0.1,
+    "trials": 500,
+    "hide_fraction": 0.002
+   },
+   "decision": "1/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "pessimistic",
+    "sigma": 0.015,
+    "delta": 0.06,
+    "trials": 500,
+    "hide_fraction": 0.776
+   },
+   "decision": "388/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "pessimistic",
+    "sigma": 0.015,
+    "delta": 0.08,
+    "trials": 500,
+    "hide_fraction": 0.326
+   },
+   "decision": "163/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "pessimistic",
+    "sigma": 0.015,
+    "delta": 0.1,
+    "trials": 500,
+    "hide_fraction": 0.058
+   },
+   "decision": "29/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "pessimistic",
+    "sigma": 0.02,
+    "delta": 0.06,
+    "trials": 500,
+    "hide_fraction": 0.808
+   },
+   "decision": "404/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "pessimistic",
+    "sigma": 0.02,
+    "delta": 0.08,
+    "trials": 500,
+    "hide_fraction": 0.494
+   },
+   "decision": "247/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "pessimistic",
+    "sigma": 0.02,
+    "delta": 0.1,
+    "trials": 500,
+    "hide_fraction": 0.198
+   },
+   "decision": "99/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "pessimistic",
+    "sigma": 0.03,
+    "delta": 0.06,
+    "trials": 500,
+    "hide_fraction": 0.816
+   },
+   "decision": "408/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "pessimistic",
+    "sigma": 0.03,
+    "delta": 0.08,
+    "trials": 500,
+    "hide_fraction": 0.652
+   },
+   "decision": "326/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "pessimistic",
+    "sigma": 0.03,
+    "delta": 0.1,
+    "trials": 500,
+    "hide_fraction": 0.456
+   },
+   "decision": "228/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "sparse",
+    "sigma": 0.01,
+    "delta": 0.06,
+    "trials": 500,
+    "hide_fraction": 0.172
+   },
+   "decision": "86/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "sparse",
+    "sigma": 0.01,
+    "delta": 0.08,
+    "trials": 500,
+    "hide_fraction": 0.0
+   },
+   "decision": "0/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "sparse",
+    "sigma": 0.01,
+    "delta": 0.1,
+    "trials": 500,
+    "hide_fraction": 0.0
+   },
+   "decision": "0/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "sparse",
+    "sigma": 0.015,
+    "delta": 0.06,
+    "trials": 500,
+    "hide_fraction": 0.264
+   },
+   "decision": "132/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "sparse",
+    "sigma": 0.015,
+    "delta": 0.08,
+    "trials": 500,
+    "hide_fraction": 0.02
+   },
+   "decision": "10/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "sparse",
+    "sigma": 0.015,
+    "delta": 0.1,
+    "trials": 500,
+    "hide_fraction": 0.0
+   },
+   "decision": "0/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "sparse",
+    "sigma": 0.02,
+    "delta": 0.06,
+    "trials": 500,
+    "hide_fraction": 0.296
+   },
+   "decision": "148/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "sparse",
+    "sigma": 0.02,
+    "delta": 0.08,
+    "trials": 500,
+    "hide_fraction": 0.056
+   },
+   "decision": "28/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "sparse",
+    "sigma": 0.02,
+    "delta": 0.1,
+    "trials": 500,
+    "hide_fraction": 0.004
+   },
+   "decision": "2/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "sparse",
+    "sigma": 0.03,
+    "delta": 0.06,
+    "trials": 500,
+    "hide_fraction": 0.324
+   },
+   "decision": "162/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "sparse",
+    "sigma": 0.03,
+    "delta": 0.08,
+    "trials": 500,
+    "hide_fraction": 0.138
+   },
+   "decision": "69/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "sparse",
+    "sigma": 0.03,
+    "delta": 0.1,
+    "trials": 500,
+    "hide_fraction": 0.046
+   },
+   "decision": "23/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "dense",
+    "sigma": 0.01,
+    "delta": 0.06,
+    "trials": 500,
+    "hide_fraction": 0.156
+   },
+   "decision": "78/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "dense",
+    "sigma": 0.01,
+    "delta": 0.08,
+    "trials": 500,
+    "hide_fraction": 0.002
+   },
+   "decision": "1/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "dense",
+    "sigma": 0.01,
+    "delta": 0.1,
+    "trials": 500,
+    "hide_fraction": 0.0
+   },
+   "decision": "0/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "dense",
+    "sigma": 0.015,
+    "delta": 0.06,
+    "trials": 500,
+    "hide_fraction": 0.23
+   },
+   "decision": "115/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "dense",
+    "sigma": 0.015,
+    "delta": 0.08,
+    "trials": 500,
+    "hide_fraction": 0.024
+   },
+   "decision": "12/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "dense",
+    "sigma": 0.015,
+    "delta": 0.1,
+    "trials": 500,
+    "hide_fraction": 0.0
+   },
+   "decision": "0/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "dense",
+    "sigma": 0.02,
+    "delta": 0.06,
+    "trials": 500,
+    "hide_fraction": 0.274
+   },
+   "decision": "137/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "dense",
+    "sigma": 0.02,
+    "delta": 0.08,
+    "trials": 500,
+    "hide_fraction": 0.05
+   },
+   "decision": "25/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "dense",
+    "sigma": 0.02,
+    "delta": 0.1,
+    "trials": 500,
+    "hide_fraction": 0.01
+   },
+   "decision": "5/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "dense",
+    "sigma": 0.03,
+    "delta": 0.06,
+    "trials": 500,
+    "hide_fraction": 0.278
+   },
+   "decision": "139/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "dense",
+    "sigma": 0.03,
+    "delta": 0.08,
+    "trials": 500,
+    "hide_fraction": 0.126
+   },
+   "decision": "63/500 HIDE"
+  },
+  {
+   "name": "noise_mc",
+   "params": {
+    "scenario": "dense",
+    "sigma": 0.03,
+    "delta": 0.1,
+    "trials": 500,
+    "hide_fraction": 0.038
+   },
+   "decision": "19/500 HIDE"
+  }
+ ]
+}

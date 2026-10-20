@@ -1,0 +1,5 @@
+manifest files: 40 mismatches: 0
+execution record (candidate) vs manifest: 37 files in both, differing: []; only in record: 10, only in manifest: 3
+execution record (reference) vs manifest: 37 files in both, differing: ['resense/lowobj.py']; only in record: 10, only in manifest: 3
+validation file docs/evidence/f1a_completion_2026-10-20/gate-c-candidate.json manifest fbd0924b2da2191e actual fbd0924b2da2191e OK
+source_commit d280dc3d8ce8705a65e89d0b4746d6d4a030572b measured_commit a77d884bd749f8b90e4350c32baa0e13d65ca64b

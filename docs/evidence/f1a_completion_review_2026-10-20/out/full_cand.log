@@ -1,0 +1,81 @@
+............................................................. [  2%]
+........................................................................ [  5%]
+........................................................................ [  8%]
+........................................................................ [ 11%]
+........................................................................ [ 14%]
+........................................................................ [ 17%]
+.................................................................. [ 20%]
+........................................................................ [ 23%]
+........................................................................ [ 26%]
+........................................................................ [ 29%]
+........................................................................ [ 32%]
+........................................................................ [ 35%]
+........................................................................ [ 38%]
+........................................................................ [ 41%]
+........................................................................ [ 44%]
+........................................................................ [ 47%]
+...........................................F............................ [ 50%]
+........................................................................ [ 53%]
+........................................................................ [ 56%]
+........................................................................ [ 59%]
+........................................................................ [ 62%]
+........................................................................ [ 65%]
+........................................................................ [ 68%]
+........................................................................ [ 71%]
+........................................................................ [ 74%]
+........................................................................ [ 77%]
+........................................................................ [ 80%]
+........................................................................ [ 83%]
+........................................................................ [ 86%]
+........................................................................ [ 89%]
+........................................................................ [ 92%]
+........................................................................ [ 95%]
+........................................................................ [ 98%]
+..............................................                           [100%]
+=================================== FAILURES ===================================
+_________ test_child_process_inherits_hook_and_bad_source_fails_closed _________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-43/test_child_process_inherits_ho0')
+
+    def test_child_process_inherits_hook_and_bad_source_fails_closed(tmp_path):
+        env = environment(tmp_path / "valid")
+        code = (
+            "from resense.detector import Detector; from resense.config import DetectorConfig; "
+            "from resense.frame import Frame; import numpy as np; "
+            "assert Detector.process.n2_transformed_input; "
+            "Detector(DetectorConfig()).process(Frame(np.zeros((0,3),np.float32),np.zeros(0,np.float32)))"
+        )
+        result = subprocess.run([sys.executable, "-c", code], env=env, capture_output=True, text=True)
+        assert result.returncode == 0, result.stderr
+        assert len(list((tmp_path / "valid").glob("activated_*.json"))) == 1
+        assert len(list((tmp_path / "valid").glob("frames_*.jsonl"))) == 1
+        env["RESENSE_N2_SOURCE"] = str(tmp_path / "missing-source")
+        result = subprocess.run([sys.executable, "-c", "raise SystemExit(0)"], env=env,
+                                capture_output=True, text=True)
+>       assert result.returncode == 86 and "outside the pinned source" in result.stderr
+E       assert (86 == 86 and 'outside the pinned source' in 'Traceback (most recent call last):\n  File "/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scr...y", line 20, in install\n    from resense.detector import Detector\nModuleNotFoundError: No module named \'resense\'\n')
+E        +  where 86 = CompletedProcess(args=['/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scratchpad/f1a_review/ve...", line 20, in install\n    from resense.detector import Detector\nModuleNotFoundError: No module named \'resense\'\n').returncode
+E        +  and   'Traceback (most recent call last):\n  File "/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scr...y", line 20, in install\n    from resense.detector import Detector\nModuleNotFoundError: No module named \'resense\'\n' = CompletedProcess(args=['/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scratchpad/f1a_review/ve...", line 20, in install\n    from resense.detector import Detector\nModuleNotFoundError: No module named \'resense\'\n').stderr
+
+tests/test_lidar_proxy_hook.py:72: AssertionError
+=============================== warnings summary ===============================
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data_127.db3-expected1]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[doubleT_obstacle-expected2]
+  /usr/lib/python3.12/tarfile.py:2301: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+    warnings.warn(
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+--------- 8 test(s) deselected: their recorded data cache is not here ----------
+  tests/test_evidence_coherence.py::test_measured_remaining_inventory_is_133_track_frames (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_interval_rule_is_not_a_single_false_history_separator (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_293_fields_and_reference_change_are_not_identity_evidence (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_association_residuals_do_not_prove_wrong_association (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_sparse_edge_positive_rows_are_unchanged_by_fresh_onset_replay (no C:/Users/alikh/AppData/Local/Temp/opencode/fresh-stop-positive-stress)
+  tests/test_evidence_coherence.py::test_all_saved_stop_rows_validate_against_base_and_source (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_fresh_support_analysis.py::test_direct_fresh_selected_events_and_positive_counterexample_when_capture_available (no C:/Users/alikh/AppData/Local/Temp/opencode/direct-fresh-support-all)
+  tests/test_rail_start.py::test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop (no /data/cache/new_data)
+1 failed, 2404 passed, 8 deselected, 5 warnings, 17 subtests passed in 458.26s (0:07:38)
+exit 1

@@ -1,0 +1,5 @@
+family empty: 3 scenes; columns = matched frames of 12 for ref, cand
+empty   raise 0.00 d   40 side +1 L 0.3 W 0.3 delta +0.00 bed :  0  0   frames differing 0
+empty   raise 0.10 d   40 side +1 L 0.3 W 0.3 delta +0.00 bed :  0  0   frames differing 0
+empty   raise 0.18 d   40 side +1 L 0.3 W 0.3 delta +0.00 bed :  0  0   frames differing 0
+scenes with different counts: 0

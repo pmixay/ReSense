@@ -64,6 +64,7 @@ def test_site_navigation_stays_pinned(app, width, height):
         expect(page.locator("main")).to_have_js_property("scrollTop", 0)
 
 
+@pytest.mark.full_motion
 @pytest.mark.parametrize('width,height', [(1280, 720), (1366, 768), (1440, 900), (1920, 1080)])
 def test_train_doors_cover_navigation_before_revealing_destination(app, width, height):
     page = app.page
@@ -127,6 +128,7 @@ def test_train_doors_reduced_motion_uses_fade(app):
     expect(doors).to_be_hidden()
 
 
+@pytest.mark.full_motion
 def test_section_pages_follow_direction_with_continuous_blurred_intermediates(app):
     page = app.page
     app.goto('/runs')
@@ -156,6 +158,7 @@ def test_section_pages_follow_direction_with_continuous_blurred_intermediates(ap
     assert app.errors == []
 
 
+@pytest.mark.full_motion
 def test_long_journey_contains_every_station_without_visiting_its_url(app):
     page = app.page
     app.goto('/upload')
@@ -198,6 +201,7 @@ def test_long_journey_contains_every_station_without_visiting_its_url(app):
     assert app.errors == []
 
 
+@pytest.mark.full_motion
 def test_resize_finishes_travel_without_leaving_a_stale_strip(app):
     page = app.page
     app.goto('/runs')
@@ -220,6 +224,7 @@ def test_resize_finishes_travel_without_leaving_a_stale_strip(app):
     assert app.errors == []
 
 
+@pytest.mark.full_motion
 def test_failed_raster_preparation_reveals_page_and_recovers_next_navigation(app):
     page = app.page
     app.goto('/runs')
@@ -270,6 +275,7 @@ def test_failed_raster_preparation_reveals_page_and_recovers_next_navigation(app
     assert app.errors == []
 
 
+@pytest.mark.full_motion
 def test_hidden_player_suspends_only_its_renderer_during_frozen_travel(app):
     page = app.page
     app.goto('/queue')
@@ -288,6 +294,7 @@ def test_hidden_player_suspends_only_its_renderer_during_frozen_travel(app):
     assert app.errors == []
 
 
+@pytest.mark.full_motion
 @pytest.mark.parametrize('source,target,label,expected', [
     ('/upload', '/player', 'Плеер', ['upload', 'queue', 'runs', 'player']),
     ('/player', '/upload', 'Загрузка', ['player', 'runs', 'queue', 'upload']),

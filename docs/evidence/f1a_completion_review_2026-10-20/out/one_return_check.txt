@@ -1,0 +1,5 @@
+('new_data_52_0019', 5) top 0.189 S 0.227 n_near 1 would be rejected with a bar of 1: True
+('new_data_81_0027', 10) top 0.106 S 0.209 n_near 1 would be rejected with a bar of 1: True
+('new_data_112_0000', 7) top 0.075 S 0.189 n_near 1 would be rejected with a bar of 1: True
+('new_data_115_0035', 1) top 0.125 S 0.11 n_near 1 would be rejected with a bar of 1: True
+rejected with a bar of 1: 4 of 4 (total would be 89 of 98)

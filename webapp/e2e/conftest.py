@@ -44,6 +44,39 @@ PYTHON = os.environ.get("RESENSE_PYTHON", sys.executable)
 CHROMIUM_CANDIDATES = ("/opt/pw-browsers/chromium-1194/chrome-linux/chrome", "/opt/pw-browsers/chromium")
 CHROMIUM_ARGS = ["--use-gl=angle", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"]
 ACTIVE = ("queued", "running")
+# The 3D views and the section travel render with software WebGL (SwiftShader): on a 2-vCPU runner the
+# page's main thread stalls for seconds (a Player frame takes 1–1.5 s on 4 cores, about twice that on the
+# runner, and the page answers nothing in between), so the Playwright defaults (5 s assertions, 30 s
+# actions) are too tight for the whole suite, not only for the Player. A timeout only costs time when a
+# test fails; a passing test does not wait for it. Overridable for a faster or slower machine.
+EXPECT_MS = int(os.environ.get("WEBAPP_E2E_EXPECT_MS", "45000"))
+ACTION_MS = int(os.environ.get("WEBAPP_E2E_TIMEOUT_MS", "120000"))
+# CI runs the suite as WEBAPP_E2E_SHARD=k/n parallel jobs (see pytest_collection_modifyitems). Seconds per
+# unit on a 4-core machine (setup + call, pytest --durations=0, 75 tests in 995 s, 20.10); a unit not listed weighs DEFAULT_WEIGHT. Only a module's tests that depend on
+# nothing but its own fixtures may be split: test_player.py (every test takes the module's `seeded` stand
+# and none changes it), so its tests are units of their own; every other module is one unit, because its
+# tests run in order and build on each other.
+SHARD_WEIGHTS: dict[str, float] = {
+    "test_navigation.py": 127, "test_analysis.py": 116, "test_data.py": 76, "test_system.py": 45,
+    "test_upload_resume.py": 18, "test_track_shader.py": 1,
+    "test_player.py::test_workspace_resizes_without_clipping": 125,
+    "test_player.py::test_loading_and_backend_errors": 64,
+    "test_player.py::test_fullscreen_orbit_and_back": 63,
+    "test_player.py::test_run_menu_switch_and_browser_back": 62,
+    "test_player.py::test_events_scrubber_loop_and_end": 50,
+    "test_player.py::test_pointer_pressure_parallax_and_reduced_motion": 47,
+    "test_player.py::test_deep_link_shows_real_values": 34,
+    "test_player.py::test_autoplay_keyboard_and_url": 31,
+    "test_player.py::test_picker_lists_runs_with_clouds_first": 25,
+    "test_player.py::test_taller_display_preserves_width_and_returns_to_normal": 23,
+    "test_player.py::test_schematic_and_fault_runs": 23,
+    "test_player.py::test_telemetry_button_keeps_center_scene_and_transport_clear": 22,
+    "test_player.py::test_lost_3d_view_keeps_the_console": 16,
+    "test_player.py::test_paused_steps_bring_their_clouds": 15,
+    "test_player.py::test_empty_picker_and_unknown_run": 11,
+}
+DEFAULT_WEIGHT = 5.0
+SPLIT_MODULES = ("test_player.py",)
 # what a build depends on: a dist/ older than any of these is stale
 BUILD_INPUTS = ("src", "public", "index.html", "vite.config.ts", "package.json", "package-lock.json", "tsconfig.json")
 
@@ -275,10 +308,28 @@ class App:
         return self.page.url[len(self.base):]
 
 
+def pytest_configure(config):
+    config.addinivalue_line("markers", "full_motion: run with the section travel's full animation (the default is "
+                                       "prefers-reduced-motion: reduce); only the tests of the travel itself need it")
+
+
+@pytest.fixture(autouse=True)
+def _patient_expect():
+    """Every assertion gets EXPECT_MS (see the constant); the global default is restored afterwards."""
+    expect = pytest.importorskip("playwright.sync_api").expect
+    expect.set_options(timeout=EXPECT_MS)
+    yield
+    expect.set_options(timeout=5_000)
+
+
 @pytest.fixture
-def app(browser, backend) -> App:
-    ctx = browser.new_context(viewport={"width": 1600, "height": 1000}, base_url=backend.url)
-    ctx.set_default_timeout(30_000)
+def app(request, browser, backend) -> App:
+    # prefers-reduced-motion: reduce is the app's own accessible path: the section change is a short fade
+    # instead of the door travel's snapshots and compositor animations, which is what stalls a slow runner.
+    # The tests that exercise the travel itself opt back in with @pytest.mark.full_motion.
+    motion = "no-preference" if request.node.get_closest_marker("full_motion") else "reduce"
+    ctx = browser.new_context(viewport={"width": 1600, "height": 1000}, base_url=backend.url, reduced_motion=motion)
+    ctx.set_default_timeout(ACTION_MS)
     page = ctx.new_page()
     errors: list[str] = []
     page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
@@ -287,3 +338,41 @@ def app(browser, backend) -> App:
         yield App(page=page, base=backend.url, errors=errors)
     finally:
         ctx.close()
+
+
+def pytest_collection_modifyitems(config, items):
+    """WEBAPP_E2E_SHARD=k/n (1-based) keeps the k-th of n balanced groups of tests and deselects the rest.
+
+    Units (a whole module, or one test of SPLIT_MODULES) are dealt out heaviest first to the lightest group,
+    and each group keeps the file order. The sum of all groups is the whole suite; a shard that ends up
+    without a test fails the run (an empty selection would pass silently)."""
+    spec = os.environ.get("WEBAPP_E2E_SHARD")
+    if not spec:
+        return
+    try:
+        k, n = (int(x) for x in spec.split("/"))
+        assert 1 <= k <= n
+    except (ValueError, AssertionError):
+        raise pytest.UsageError(f"WEBAPP_E2E_SHARD={spec!r}: expected k/n with 1 <= k <= n") from None
+    units: dict[str, list] = {}
+    for item in items:
+        module = Path(str(item.fspath)).name
+        units.setdefault(f"{module}::{item.name}" if module in SPLIT_MODULES else module, []).append(item)
+
+    def weight(key: str) -> float:
+        return SHARD_WEIGHTS.get(key, DEFAULT_WEIGHT * len(units[key]))
+
+    loads = [0.0] * n
+    groups: list[set[str]] = [set() for _ in range(n)]
+    for key in sorted(units, key=lambda u: (-weight(u), u)):
+        g = min(range(n), key=lambda i: (loads[i], i))
+        loads[g] += weight(key)
+        groups[g].add(key)
+    keep = [it for key in groups[k - 1] for it in units[key]]
+    kept = set(map(id, keep))
+    deselected = [it for it in items if id(it) not in kept]
+    items[:] = [it for it in items if id(it) in kept]
+    config.hook.pytest_deselected(items=deselected)
+    if not items:
+        raise pytest.UsageError(f"WEBAPP_E2E_SHARD={spec}: no test in this shard")
+    print(f"\ne2e shard {k}/{n}: {len(items)} tests, estimated load {loads[k - 1]:.0f} s of {sum(loads):.0f} s")

@@ -1,0 +1,38 @@
+{
+ "src": "https://disk.yandex.ru/d/SfBeRHbs8bNJAQ",
+ "out": "/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scratchpad/falcon_demo_bag",
+ "window": {
+  "first_frame": 2719,
+  "last_frame": 3150
+ },
+ "topic": "/iv_points",
+ "topic_id": 3,
+ "frames": 432,
+ "first_frame": 2719,
+ "last_frame": 3150,
+ "first_bag_time_ns": 1791508738888110464,
+ "last_bag_time_ns": 1791508781988909624,
+ "t0_bag_time_ns": 1791508466987445231,
+ "first_s": 271.9007,
+ "last_s": 315.0015,
+ "max_gap_s": 0.1085,
+ "duplicates": 0,
+ "other_topic_messages_skipped": 0,
+ "recovered": 3205,
+ "lost": 0,
+ "found": 3205,
+ "bytes_streamed": 14629732352,
+ "wall_s": 282.8,
+ "cpu_s": 248.2,
+ "rss_peak_mb": 1124.4,
+ "files": {
+  "falcon_demo_0.db3": {
+   "bytes": 1971884032,
+   "sha256": "b2c4a8261692c35a4e1289e4a4a9cce656fb89a514ff24e792800ab804185735"
+  },
+  "metadata.yaml": {
+   "bytes": 967,
+   "sha256": "542c7549db2e05e1f040b6b4f412d807c5f47604871bb9f68b591eb847af4119"
+  }
+ }
+}

@@ -1,0 +1,81 @@
+== centre raise 0.18 d 40.0 side 1 L 0.3 W 0.3 delta 0.05 bed: matched ref 8 cand 8
+   f00 surface_calls [None] clusters [(39.98, -0.006, 0.209, 0.117, 'keep')] matched ref False cand False
+   f01 surface_calls [None] clusters [(39.98, -0.006, 0.209, 0.112, 'keep')] matched ref False cand False
+   f02 surface_calls [None] clusters [(39.98, -0.006, 0.209, 0.11, 'keep')] matched ref False cand False
+   f03 surface_calls [None] clusters [(39.98, -0.006, 0.21, 0.11, 'keep')] matched ref False cand False
+   f04 surface_calls [None] clusters [(39.99, -0.006, 0.21, 0.109, 'keep')] matched ref True cand True
+   f05 surface_calls [None] clusters [(39.98, 0.001, 0.209, 0.109, 'keep')] matched ref True cand True
+   f06 surface_calls [None] clusters [(39.99, -0.013, 0.209, 0.108, 'keep')] matched ref True cand True
+   f08 surface_calls [None] clusters [(39.99, -0.012, 0.21, 0.107, 'keep')] matched ref True cand True
+   f09 surface_calls [None] clusters [(40.0, -0.012, 0.21, 0.106, 'keep')] matched ref True cand True
+   f10 surface_calls [None] clusters [(39.98, -0.012, 0.209, 0.106, 'keep')] matched ref True cand True
+   f11 surface_calls [None] clusters [(39.99, -0.012, 0.21, 0.103, 'keep')] matched ref True cand True
+== centre raise 0.18 d 40.0 side 1 L 0.3 W 0.3 delta 0.1 bed: matched ref 8 cand 8
+   f00 surface_calls [None] clusters [(39.98, -0.006, 0.209, 0.117, 'keep')] matched ref False cand False
+   f01 surface_calls [None] clusters [(39.98, -0.006, 0.209, 0.112, 'keep')] matched ref False cand False
+   f02 surface_calls [None] clusters [(39.98, -0.006, 0.209, 0.11, 'keep')] matched ref False cand False
+   f03 surface_calls [None] clusters [(39.98, -0.006, 0.21, 0.11, 'keep')] matched ref False cand False
+   f04 surface_calls [None] clusters [(39.99, -0.006, 0.21, 0.109, 'keep')] matched ref True cand True
+   f05 surface_calls [None] clusters [(39.98, 0.001, 0.209, 0.109, 'keep')] matched ref True cand True
+   f06 surface_calls [None] clusters [(39.99, -0.013, 0.209, 0.108, 'keep')] matched ref True cand True
+   f08 surface_calls [None] clusters [(39.99, -0.012, 0.21, 0.107, 'keep')] matched ref True cand True
+   f09 surface_calls [None] clusters [(40.0, -0.012, 0.21, 0.106, 'keep')] matched ref True cand True
+   f10 surface_calls [None] clusters [(39.98, -0.012, 0.209, 0.106, 'keep')] matched ref True cand True
+   f11 surface_calls [None] clusters [(39.99, -0.012, 0.21, 0.103, 'keep')] matched ref True cand True
+== centre raise 0.18 d 40.0 side 1 L 0.3 W 0.3 delta 0.2 bed: matched ref 8 cand 8
+   f00 surface_calls [None] clusters [(39.98, -0.006, 0.209, 0.117, 'keep')] matched ref False cand False
+   f01 surface_calls [None] clusters [(39.98, -0.006, 0.209, 0.111, 'keep')] matched ref False cand False
+   f02 surface_calls [None] clusters [(39.98, -0.011, 0.209, 0.109, 'keep')] matched ref False cand False
+   f03 surface_calls [None] clusters [(39.98, -0.013, 0.21, 0.109, 'keep')] matched ref False cand False
+   f04 surface_calls [None] clusters [(39.99, 0.001, 0.209, 0.108, 'keep')] matched ref True cand True
+   f05 surface_calls [None] clusters [(39.98, -0.006, 0.209, 0.108, 'keep')] matched ref True cand True
+   f06 surface_calls [None] clusters [(40.0, -0.006, 0.209, 0.106, 'keep')] matched ref True cand True
+   f07 surface_calls [None] clusters [(39.98, -0.012, 0.209, 0.106, 'keep')] matched ref True cand True
+   f08 surface_calls [None] clusters [(39.99, -0.012, 0.21, 0.106, 'keep')] matched ref True cand True
+   f09 surface_calls [None] clusters [(40.0, -0.012, 0.21, 0.105, 'keep')] matched ref True cand True
+   f10 surface_calls [None] clusters [(39.98, -0.012, 0.209, 0.105, 'keep')] matched ref True cand True
+   f11 surface_calls [None] clusters [(39.99, -0.012, 0.21, 0.102, 'keep')] matched ref True cand True
+== rail raise 0.18 d 40.0 side 1 L 0.3 W 0.3 delta 0.04 bed: matched ref 0 cand 0
+   f01 surface_calls [0.1711] clusters [(39.98, 0.741, 0.28, 0.115, 'REJ')] matched ref False cand False
+   f02 surface_calls [0.1991] clusters [(39.99, 0.742, 0.28, 0.11, 'REJ')] matched ref False cand False
+   f10 surface_calls [0.198] clusters [(39.98, 0.735, 0.28, 0.111, 'REJ')] matched ref False cand False
+== rail raise 0.18 d 40.0 side 1 L 0.3 W 0.3 delta 0.05 bed: matched ref 0 cand 0
+   f01 surface_calls [0.1711] clusters [(39.98, 0.741, 0.28, 0.115, 'REJ')] matched ref False cand False
+   f02 surface_calls [0.1991] clusters [(39.99, 0.742, 0.28, 0.11, 'REJ')] matched ref False cand False
+   f10 surface_calls [0.198] clusters [(39.98, 0.735, 0.28, 0.111, 'REJ')] matched ref False cand False
+== rail raise 0.18 d 40.0 side 1 L 0.3 W 0.3 delta 0.06 bed: matched ref 0 cand 0
+   f01 surface_calls [0.1711] clusters [(39.98, 0.741, 0.28, 0.115, 'REJ')] matched ref False cand False
+   f02 surface_calls [0.1991] clusters [(39.99, 0.742, 0.28, 0.11, 'REJ')] matched ref False cand False
+   f10 surface_calls [0.198] clusters [(39.98, 0.735, 0.28, 0.111, 'REJ')] matched ref False cand False
+== rail raise 0.18 d 40.0 side 1 L 0.3 W 0.3 delta 0.08 bed: matched ref 0 cand 0
+   f01 surface_calls [0.1711] clusters [(39.98, 0.741, 0.28, 0.115, 'REJ')] matched ref False cand False
+   f02 surface_calls [0.1991] clusters [(39.99, 0.742, 0.28, 0.11, 'REJ')] matched ref False cand False
+   f10 surface_calls [0.198] clusters [(39.98, 0.735, 0.28, 0.111, 'REJ')] matched ref False cand False
+== rail raise 0.18 d 40.0 side 1 L 0.3 W 0.3 delta 0.1 bed: matched ref 0 cand 0
+   f01 surface_calls [0.1711] clusters [(39.98, 0.741, 0.28, 0.115, 'REJ')] matched ref False cand False
+   f02 surface_calls [0.1991] clusters [(39.99, 0.742, 0.28, 0.11, 'REJ')] matched ref False cand False
+   f10 surface_calls [0.198] clusters [(39.98, 0.735, 0.28, 0.111, 'REJ')] matched ref False cand False
+== rail raise 0.18 d 40.0 side 1 L 0.3 W 0.3 delta 0.2 bed: matched ref 0 cand 0
+   f01 surface_calls [0.3089] clusters [(39.98, 0.741, 0.28, 0.115, 'REJ')] matched ref False cand False
+   f02 surface_calls [0.3052] clusters [(39.99, 0.742, 0.28, 0.109, 'REJ')] matched ref False cand False
+   f10 surface_calls [0.1975] clusters [(39.98, 0.735, 0.28, 0.11, 'keep')] matched ref False cand False
+== rail raise 0.18 d 40.0 side 1 L 4.0 W 0.3 delta 0.04 bed: matched ref 0 cand 0
+   f01 surface_calls [None] clusters [(39.98, 0.741, 0.28, 0.115, 'keep')] matched ref False cand False
+   f02 surface_calls [None] clusters [(39.99, 0.742, 0.28, 0.11, 'keep')] matched ref False cand False
+   f10 surface_calls [None] clusters [(39.98, 0.735, 0.28, 0.11, 'keep')] matched ref False cand False
+== rail raise 0.18 d 40.0 side 1 L 4.0 W 0.3 delta 0.05 bed: matched ref 0 cand 0
+   f01 surface_calls [0.2191] clusters [(39.98, 0.741, 0.28, 0.115, 'REJ')] matched ref False cand False
+   f02 surface_calls [0.2135] clusters [(39.99, 0.742, 0.28, 0.11, 'REJ')] matched ref False cand False
+   f10 surface_calls [0.2136] clusters [(39.98, 0.735, 0.28, 0.111, 'REJ')] matched ref False cand False
+== rail raise 0.18 d 40.0 side 1 L 4.0 W 0.3 delta 0.06 bed: matched ref 0 cand 0
+   f01 surface_calls [0.2292] clusters [(39.98, 0.741, 0.28, 0.115, 'REJ')] matched ref False cand False
+   f02 surface_calls [0.2234] clusters [(39.99, 0.742, 0.28, 0.11, 'REJ')] matched ref False cand False
+   f10 surface_calls [0.2238] clusters [(39.98, 0.735, 0.28, 0.111, 'REJ')] matched ref False cand False
+== rail raise 0.18 d 40.0 side 1 L 4.0 W 0.3 delta 0.08 bed: matched ref 0 cand 0
+   f01 surface_calls [0.2494] clusters [(39.98, 0.741, 0.28, 0.115, 'REJ')] matched ref False cand False
+   f02 surface_calls [0.2438] clusters [(39.99, 0.742, 0.28, 0.11, 'REJ')] matched ref False cand False
+   f10 surface_calls [0.2441] clusters [(39.98, 0.735, 0.28, 0.111, 'REJ')] matched ref False cand False
+== rail raise 0.18 d 40.0 side 1 L 4.0 W 0.3 delta 0.1 bed: matched ref 0 cand 0
+   f01 surface_calls [0.2696] clusters [(39.98, 0.741, 0.28, 0.115, 'REJ')] matched ref False cand False
+   f02 surface_calls [0.2641] clusters [(39.99, 0.742, 0.28, 0.11, 'REJ')] matched ref False cand False
+   f10 surface_calls [0.2644] clusters [(39.98, 0.735, 0.28, 0.111, 'REJ')] matched ref False cand False

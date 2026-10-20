@@ -1,0 +1,209 @@
+{
+ "bag": "/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scratchpad/falcon_demo_bag",
+ "first_frame_of_bag": 2719,
+ "skip": 0,
+ "replay_first_frame": 2719,
+ "replay_last_frame": 3150,
+ "frames": 432,
+ "replay_seconds": 43.1,
+ "frames_with_wrong_receive_time_or_stamp": [],
+ "decisions_replay": {
+  "GO": 9,
+  "CAUTION": 275,
+  "STOP": 147,
+  "FAULT": 1
+ },
+ "decisions_record_same_frames": {
+  "GO": 0,
+  "CAUTION": 297,
+  "STOP": 135,
+  "FAULT": 0
+ },
+ "frames_with_different_decision": 32,
+ "different_decision_frames_first_40": [
+  2719,
+  2720,
+  2721,
+  2722,
+  2723,
+  2724,
+  2911,
+  2912,
+  2913,
+  2914,
+  2950,
+  2951,
+  2952,
+  2972,
+  2973,
+  2974,
+  2975,
+  2981,
+  2982,
+  2983,
+  2984,
+  2985,
+  2986,
+  2987,
+  2988,
+  2989,
+  2993,
+  3003,
+  3007,
+  3008,
+  3058,
+  3107
+ ],
+ "decision_identical_from_frame": 3108,
+ "frames_with_any_different_nonlatency_field": 432,
+ "row_identical_from_frame": null,
+ "first_stop_replay": {
+  "frame": 2950,
+  "s_from_replay_start": 23.1,
+  "nearest_m": 127.18,
+  "run_frames": 3
+ },
+ "first_stop_record": {
+  "frame": 2972,
+  "s_from_replay_start": 25.3,
+  "nearest_m": 124.84,
+  "run_frames": 4
+ },
+ "stop_runs_replay": [
+  [
+   2950,
+   2952
+  ],
+  [
+   2981,
+   2989
+  ],
+  [
+   2993,
+   3003
+  ],
+  [
+   3007,
+   3038
+  ],
+  [
+   3058,
+   3106
+  ],
+  [
+   3108,
+   3150
+  ]
+ ],
+ "stop_runs_record": [
+  [
+   2972,
+   2975
+  ],
+  [
+   2994,
+   3002
+  ],
+  [
+   3009,
+   3038
+  ],
+  [
+   3059,
+   3150
+  ]
+ ],
+ "stop_frames_replay": 147,
+ "stop_frames_record": 135,
+ "stop_in_replay_not_in_record": [
+  2950,
+  2951,
+  2952,
+  2981,
+  2982,
+  2983,
+  2984,
+  2985,
+  2986,
+  2987,
+  2988,
+  2989,
+  2993,
+  3003,
+  3007,
+  3008,
+  3058
+ ],
+ "stop_in_record_not_in_replay": [
+  2972,
+  2973,
+  2974,
+  2975,
+  3107
+ ],
+ "fault_frames_replay": [
+  2719
+ ],
+ "fault_frames_record": [],
+ "mount_ok_from_frame_replay": 2911,
+ "mount_ok_from_frame_record": 2719,
+ "first_rows": [
+  {
+   "frame": 2719,
+   "decision": "FAULT",
+   "level": "error",
+   "mount": "pending",
+   "nearest": null,
+   "msgs": [
+    "6 of 6 central 10 deg sectors without returns: view blocked",
+    "track visible to 3 m only (< 60 m)"
+   ]
+  },
+  {
+   "frame": 2720,
+   "decision": "GO",
+   "level": "ok",
+   "mount": "pending",
+   "nearest": null,
+   "msgs": []
+  },
+  {
+   "frame": 2721,
+   "decision": "GO",
+   "level": "ok",
+   "mount": "pending",
+   "nearest": null,
+   "msgs": []
+  },
+  {
+   "frame": 2722,
+   "decision": "GO",
+   "level": "ok",
+   "mount": "pending",
+   "nearest": null,
+   "msgs": []
+  },
+  {
+   "frame": 2723,
+   "decision": "GO",
+   "level": "ok",
+   "mount": "pending",
+   "nearest": null,
+   "msgs": []
+  },
+  {
+   "frame": 2724,
+   "decision": "GO",
+   "level": "ok",
+   "mount": "pending",
+   "nearest": null,
+   "msgs": []
+  }
+ ],
+ "resets": [],
+ "decode_plus_detect_ms_median": 29.9,
+ "decode_plus_detect_ms_max": 83.7,
+ "wall_s": 16.3,
+ "native": "native (_resense_native.so)",
+ "resense_repo": "/tmp/claude-0/-home-user-ReSense/2f98805c-ba30-5c4f-b1a6-a591bfc61cdc/scratchpad/eval_tree"
+}

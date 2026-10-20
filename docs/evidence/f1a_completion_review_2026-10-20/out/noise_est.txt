@@ -1,0 +1,10 @@
+snapshots 97
+S         min -0.036 p10 0.156 p50 0.191 p90 0.234 max 0.297
+n_near    min 1.000 p10 2.000 p50 6.000 p90 113.000 max 149.000
+n_window  min 2.000 p10 9.000 p50 25.000 p90 472.000 max 613.000
+sd_top    min 0.000 p10 0.005 p50 0.014 p90 0.019 max 0.024
+gap2      min 0.000 p10 0.000 p50 0.007 p90 0.042 max 0.169
+slope of the head-hit per-metre maxima (bins within 0.08 of S, >= 3 bins) along the track (m/m), n=78: p10 -0.0179 p50 +0.0049 p90 +0.0090; |slope| p50 0.0074 p90 0.0179 max 0.0220; share |slope| >= 0.01: 0.35
+S >= 0.28: 3  S >= 0.30 (S+0.05 >= foot_max_top 0.35): 0
+my S equals the production function's surface in 85 of 85 snapshots where the production function returned a surface
+snapshots where the production function returned None: 12 [('new_data_21_0038', 0, 1, 0.297), ('new_data_52_0017', 5, 2, 0.285), ('new_data_52_0019', 5, 1, 0.227), ('new_data_52_0019', 9, 7, 0.034), ('new_data_52_0022', 2, 7, 0.01), ('new_data_81_0027', 10, 1, 0.209), ('new_data_112_0000', 4, 6, -0.036), ('new_data_112_0000', 7, 1, 0.189), ('new_data_115_0035', 1, 1, 0.11), ('new_data_161_0040', 0, 4, 0.173), ('new_data_200_0013', 0, 4, 0.199), ('new_data_205_0041', 1, 1, 0.23)]

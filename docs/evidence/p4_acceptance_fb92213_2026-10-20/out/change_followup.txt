@@ -1,0 +1,25 @@
+== which detection fields differ in the STOP->STOP rows
+  new_data_1 row 1320: same STOP distances kept; fields that differ: {'id': 1}
+  new_data_1 row 1321: same STOP distances kept; fields that differ: {'id': 1}
+  new_data_2 row 242: same STOP distances kept; fields that differ: {'id': 1}
+  new_data_2 row 243: same STOP distances kept; fields that differ: {'id': 1}
+  new_data_4 row 265: same STOP distances kept; fields that differ: {'id': 1}
+  new_data_4 row 266: same STOP distances kept; fields that differ: {'<detection absent in new>': 1, 'id': 1}
+  new_data_4 row 1223: same STOP distances kept; fields that differ: {'id': 1}
+  new_data_4 row 1224: same STOP distances kept; fields that differ: {'id': 1}
+  new_data_4 row 1228: same STOP distances kept; fields that differ: {'id': 1}
+
+== ride 4 row 80 (new_data_112_0004): new-branch rejections in the 12 frames before it
+  row 74 new_data_111_0049: d 31.44 lat 0.765 size [0.87, 0.22, 0.03] top 0.167 surface 0.194 first_rule False surface_rule True rejected True
+  row 74 new_data_111_0049: d 36.0 lat -0.757 size [0.58, 0.25, 0.02] top 0.147 surface 0.204 first_rule False surface_rule True rejected True
+  row 74 new_data_111_0049: d 41.51 lat -0.793 size [1.35, 0.33, 0.04] top 0.189 surface 0.204 first_rule False surface_rule True rejected True
+  row 76 new_data_112_0000: d 39.12 lat -0.038 size [0.02, 0.41, 0.0] top 0.065 surface None first_rule False surface_rule False rejected False
+  row 76 new_data_112_0000: d 45.61 lat 0.806 size [1.25, 0.32, 0.04] top 0.075 surface None first_rule False surface_rule False rejected False
+  tracks matched around row 80 (stem, id, hits, reported, zone, kind, centroid):
+    74 []
+    75 [[58, 1, 1, False, 'gauge', 'low', [36.307, -0.922]]]
+    76 [[49, 5, 5, False, 'gauge', 'low', [39.127, -0.158]], [50, 2, 5, False, 'gauge', 'low', [46.236, 0.66]], [56, 2, 3, False, 'gauge', 'low', [41.358, 0.657]]]
+    77 [[49, 6, 6, True, 'gauge', 'low', [41.71, -0.928]], [54, 4, 5, True, 'warning', '', [44.394, 1.097]], [58, 2, 3, False, 'gauge', 'low', [37.683, -0.17]]]
+    78 [[54, 5, 6, True, 'warning', '', [46.262, 1.12]], [56, 4, 5, True, 'warning', '', [37.817, 0.983]], [57, 4, 4, False, 'gauge', 'low', [35.8, 0.646]]]
+    79 [[54, 6, 7, True, 'warning', '', [44.818, 1.113]], [57, 5, 5, True, 'warning', '', [36.655, 0.943]]]
+    80 [[54, 7, 8, True, 'warning', '', [45.916, 1.113]], [56, 5, 7, True, 'warning', '', [32.541, 1.059]], [57, 6, 6, True, 'warning', '', [37.337, 1.089]]]

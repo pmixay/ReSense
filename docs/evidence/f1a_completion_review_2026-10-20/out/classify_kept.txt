@@ -1,0 +1,15 @@
+doubleT_platform_0033:8 d=49.69 lat=0.812 w=0.34 top=0.067 -> no_side
+new_data_21_0038:0 d=41.81 lat=0.958 w=0.17 top=0.261 -> not_rail
+new_data_52_0017:5 d=33.76 lat=0.732 w=0.46 top=0.222 -> wide
+new_data_52_0019:5 d=32.66 lat=0.811 w=0.41 top=0.189 -> one_return
+new_data_52_0019:9 d=41.24 lat=-0.023 w=0.29 top=0.162 -> not_rail
+new_data_52_0022:2 d=36.95 lat=0.02 w=0.39 top=0.18 -> not_rail
+new_data_81_0027:10 d=41.91 lat=-0.848 w=0.31 top=0.106 -> one_return
+new_data_112_0000:4 d=39.12 lat=-0.038 w=0.41 top=0.065 -> not_rail
+new_data_112_0000:7 d=45.61 lat=0.806 w=0.32 top=0.075 -> one_return
+new_data_115_0035:1 d=26.08 lat=0.703 w=0.19 top=0.125 -> one_return
+new_data_161_0040:0 d=28.12 lat=0.549 w=0.2 top=0.136 -> not_rail
+new_data_200_0013:0 d=26.59 lat=0.661 w=0.24 top=0.15 -> no_side
+new_data_205_0041:1 d=50.57 lat=0.608 w=0.18 top=0.129 -> no_side
+{'rejected': 85, 'no_side': 3, 'not_rail': 5, 'wide': 1, 'one_return': 4}
+mismatches between my classification and the production replay: []

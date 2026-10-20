@@ -1,0 +1,50 @@
+family approach_bed: 48 scenes; columns = matched frames for apb_ref, apb_cand
+rail    raise 0.10 d   58 side +1 L 0.3 W 0.3 delta +0.05 bed : 24 24   frames differing 0
+rail    raise 0.10 d   58 side +1 L 0.3 W 0.3 delta +0.10 bed : 27 27   frames differing 0
+rail    raise 0.10 d   58 side +1 L 0.3 W 0.3 delta +0.20 bed : 27 27   frames differing 0
+rail    raise 0.10 d   58 side +1 L 1.0 W 0.3 delta +0.05 bed : 24 23   frames differing 1  <-- DIFFERENT
+rail    raise 0.10 d   58 side +1 L 1.0 W 0.3 delta +0.10 bed : 26 25   frames differing 1  <-- DIFFERENT
+rail    raise 0.10 d   58 side +1 L 1.0 W 0.3 delta +0.20 bed : 27 26   frames differing 1  <-- DIFFERENT
+rail    raise 0.10 d   58 side +1 L 4.0 W 0.3 delta +0.05 bed : 22 22   frames differing 0
+rail    raise 0.10 d   58 side +1 L 4.0 W 0.3 delta +0.10 bed : 23 22   frames differing 1  <-- DIFFERENT
+rail    raise 0.10 d   58 side +1 L 4.0 W 0.3 delta +0.20 bed : 24 22   frames differing 2  <-- DIFFERENT
+rail    raise 0.10 d   58 side +1 L 4.0 W 0.1 delta +0.05 bed :  0  0   frames differing 0
+rail    raise 0.10 d   58 side +1 L 4.0 W 0.1 delta +0.10 bed :  0  0   frames differing 0
+rail    raise 0.10 d   58 side +1 L 4.0 W 0.1 delta +0.20 bed :  0  0   frames differing 0
+rail    raise 0.10 d   58 side -1 L 0.3 W 0.3 delta +0.05 bed : 22 22   frames differing 0
+rail    raise 0.10 d   58 side -1 L 0.3 W 0.3 delta +0.10 bed : 31 30   frames differing 1  <-- DIFFERENT
+rail    raise 0.10 d   58 side -1 L 0.3 W 0.3 delta +0.20 bed : 31 31   frames differing 0
+rail    raise 0.10 d   58 side -1 L 1.0 W 0.3 delta +0.05 bed : 22 22   frames differing 0
+rail    raise 0.10 d   58 side -1 L 1.0 W 0.3 delta +0.10 bed : 28 27   frames differing 1  <-- DIFFERENT
+rail    raise 0.10 d   58 side -1 L 1.0 W 0.3 delta +0.20 bed : 32 31   frames differing 1  <-- DIFFERENT
+rail    raise 0.10 d   58 side -1 L 4.0 W 0.3 delta +0.05 bed : 23 23   frames differing 0
+rail    raise 0.10 d   58 side -1 L 4.0 W 0.3 delta +0.10 bed : 26 15   frames differing 11  <-- DIFFERENT
+rail    raise 0.10 d   58 side -1 L 4.0 W 0.3 delta +0.20 bed : 29 20   frames differing 9  <-- DIFFERENT
+rail    raise 0.10 d   58 side -1 L 4.0 W 0.1 delta +0.05 bed :  0  0   frames differing 0
+rail    raise 0.10 d   58 side -1 L 4.0 W 0.1 delta +0.10 bed :  0  0   frames differing 0
+rail    raise 0.10 d   58 side -1 L 4.0 W 0.1 delta +0.20 bed :  0  0   frames differing 0
+rail    raise 0.18 d   58 side +1 L 0.3 W 0.3 delta +0.05 bed : 16 11   frames differing 5  <-- DIFFERENT
+rail    raise 0.18 d   58 side +1 L 0.3 W 0.3 delta +0.10 bed : 14 13   frames differing 1  <-- DIFFERENT
+rail    raise 0.18 d   58 side +1 L 0.3 W 0.3 delta +0.20 bed : 19 16   frames differing 3  <-- DIFFERENT
+rail    raise 0.18 d   58 side +1 L 1.0 W 0.3 delta +0.05 bed : 16 12   frames differing 4  <-- DIFFERENT
+rail    raise 0.18 d   58 side +1 L 1.0 W 0.3 delta +0.10 bed : 15 14   frames differing 1  <-- DIFFERENT
+rail    raise 0.18 d   58 side +1 L 1.0 W 0.3 delta +0.20 bed : 23 19   frames differing 4  <-- DIFFERENT
+rail    raise 0.18 d   58 side +1 L 4.0 W 0.3 delta +0.05 bed : 16 12   frames differing 4  <-- DIFFERENT
+rail    raise 0.18 d   58 side +1 L 4.0 W 0.3 delta +0.10 bed : 19 12   frames differing 7  <-- DIFFERENT
+rail    raise 0.18 d   58 side +1 L 4.0 W 0.3 delta +0.20 bed : 25 24   frames differing 1  <-- DIFFERENT
+rail    raise 0.18 d   58 side +1 L 4.0 W 0.1 delta +0.05 bed :  0  0   frames differing 0
+rail    raise 0.18 d   58 side +1 L 4.0 W 0.1 delta +0.10 bed :  0  0   frames differing 0
+rail    raise 0.18 d   58 side +1 L 4.0 W 0.1 delta +0.20 bed : 18 18   frames differing 0
+rail    raise 0.18 d   58 side -1 L 0.3 W 0.3 delta +0.05 bed : 15 13   frames differing 2  <-- DIFFERENT
+rail    raise 0.18 d   58 side -1 L 0.3 W 0.3 delta +0.10 bed : 17 17   frames differing 0
+rail    raise 0.18 d   58 side -1 L 0.3 W 0.3 delta +0.20 bed : 28 28   frames differing 0
+rail    raise 0.18 d   58 side -1 L 1.0 W 0.3 delta +0.05 bed : 15 13   frames differing 2  <-- DIFFERENT
+rail    raise 0.18 d   58 side -1 L 1.0 W 0.3 delta +0.10 bed : 15 15   frames differing 0
+rail    raise 0.18 d   58 side -1 L 1.0 W 0.3 delta +0.20 bed : 24 24   frames differing 0
+rail    raise 0.18 d   58 side -1 L 4.0 W 0.3 delta +0.05 bed : 15 13   frames differing 2  <-- DIFFERENT
+rail    raise 0.18 d   58 side -1 L 4.0 W 0.3 delta +0.10 bed : 17 13   frames differing 4  <-- DIFFERENT
+rail    raise 0.18 d   58 side -1 L 4.0 W 0.3 delta +0.20 bed : 28 28   frames differing 0
+rail    raise 0.18 d   58 side -1 L 4.0 W 0.1 delta +0.05 bed :  0  0   frames differing 0
+rail    raise 0.18 d   58 side -1 L 4.0 W 0.1 delta +0.10 bed :  0  0   frames differing 0
+rail    raise 0.18 d   58 side -1 L 4.0 W 0.1 delta +0.20 bed :  8  8   frames differing 0
+scenes with different counts: 23
