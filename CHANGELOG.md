@@ -17,7 +17,7 @@ dates from 25.09. **The published release is v1.0.0 only.** 1.1.0 (sealed 16.10)
 ## [1.2.0] — unreleased: LiDAR integration candidate of 18.10, the integration of 19.10 and the work of 20.10
 
 **State, 20.10 evening (`main` `8453458`).** All four version declarations are 1.2.0. `python3 scripts/detector_freeze.py verify`
-**PASSES** (40 files, R3 integrity reseal on the measured `0a472d6`; it is an integrity seal, not an acceptance). CI on `main` was
+**PASSES** (40 files, R3 integrity reseal on the measured `0a472d6`; it is an integrity seal, not an acceptance; the F1a completion merged at `769d075` was reverted the same evening after its independent review, so the frozen bytes are those of `f56ad5e` again). CI on `main` was
 green at `5d83c5b` (run #667) and `f56ad5e` (#669), all five jobs; run #680 on `8453458` (PR #47) failed in the web job's browser
 suite (22 of 75 end-to-end tests; four jobs green), so `main` is red since the UI merge.
 PRs #43–#49 are merged (#46, #48, #49 are P4's reviews of H′ and the Falcon clear-distance model, of R3 and H1, and the dust and marked-bag run). **Not released:**
@@ -27,6 +27,8 @@ the reseal, P4's independent acceptance of the final bundle, the image and the t
 and 11 changed files until the reseal; CI was red.)
 
 ### 20.10 — F1a completion: the rail head's own top surface as the reference
+
+**Reverted (captain, 20.10 evening).** The independent review of this completion (P1's agent, not the author) says **REJECT as sealed**: in the repo's ray-cast approach scenes an object 5–20 cm above the rail head is rejected as 'rail head' in 59 frames of 23 of 48 scenes (STOP frames 831 → 762, none gained, first STOP up to 8.8 m later), because the 'head surface' the rule reads can be the object's own top face; it is also a ±5 m maximum, so a slope of 1 cm/m or a local rise of 5–10 cm hides a 10 cm object. The ride gain (9 false STOP frames) reproduces; the 'no loss' evidence never reaches the rejecting path. [Review](docs/evidence/f1a_completion_review_2026-10-20/README.md). `resense/lowobj.py` and the seal pointer are back at `f56ad5e` (R3 seal, digest `6d091081…`); the B1 repair's ride cost (events 18 → 23, episodes 24 → 26) stays accepted. **The text below is the author's claim as it stood before the review; it does not describe the shipped source.**
 
 - The B1 repair's ride cost is **removed**. The frame's rail returns are bimodal: the lower mode is the rail
   *web*, the upper mode the head's *top surface*; on the ride both rails read both modes synchronously, so the
