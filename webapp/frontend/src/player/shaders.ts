@@ -18,6 +18,7 @@ uniform vec4 uCrop;
 uniform vec3 uFloorC;
 uniform vec2 uFloorR;
 uniform vec4 uAxis;
+uniform vec2 uAxisStep; // curvature step, knot distance; zero step preserves legacy tracks
 uniform vec3 uRamp[6];
 uniform vec3 uBedLo;
 uniform vec3 uBedHi;
@@ -54,7 +55,8 @@ bool bit(float f, float b) { return mod(floor(f / b + 0.001), 2.0) > 0.5; }
 void main() {
   vec3 p = position;
   float hf = p.z - floorZ(p.x);
-  float cy = uAxis.x + uAxis.y * p.x + 0.5 * uAxis.z * p.x * p.x;
+  float dx = max(p.x - uAxisStep.y, 0.0);
+  float cy = uAxis.x + uAxis.y * p.x + 0.5 * uAxis.z * p.x * p.x + 0.5 * uAxisStep.x * dx * dx;
   float dy = p.y - cy;
   bool hide = hf > uCeil;
   if (uCrop.y > uCrop.x) hide = hide || p.x < uCrop.x || p.x > uCrop.y || abs(p.y - uCrop.z) > uCrop.w;

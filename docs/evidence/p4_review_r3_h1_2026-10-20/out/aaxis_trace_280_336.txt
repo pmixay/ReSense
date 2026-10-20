@@ -1,0 +1,56 @@
+traced == plain (summary and every row): True
+k 280 X  83.37 STOP    hit 1 | clusters gauge/- h2.39 core1 ng30 | tracks id2 hits100 rep1 col0/10 hold2 core3 q1
+k 281 X  81.92 STOP    hit 1 | clusters gauge/- h2.339 core1 ng30 | tracks id2 hits101 rep1 col0/10 hold2 core4 q1
+k 282 X  80.47 STOP    hit 1 | clusters gauge/- h2.491 core1 ng33 | tracks id2 hits102 rep1 col0/10 hold2 core5 q1
+k 283 X  79.02 STOP    hit 1 | clusters gauge/- h2.438 core1 ng30 | tracks id2 hits103 rep1 col0/10 hold2 core6R q1
+k 284 X  77.57 STOP    hit 1 | clusters gauge/- h2.632 core1 ng50 | tracks id2 hits104 rep1 col0/10 hold2 core7R q1
+k 285 X  76.10 STOP    hit 1 | clusters gauge/- h2.574 core1 ng48 | tracks id2 hits105 rep1 col0/10 hold2 core8R q1
+k 286 X  74.63 STOP    hit 1 | clusters gauge/- h2.472 core1 ng50 | tracks id2 hits106 rep1 col0/10 hold2 core9R q1
+k 287 X  73.16 STOP    hit 1 | clusters gauge/- h2.613 core1 ng36 | tracks id2 hits107 rep1 col0/10 hold2 core10R q1
+k 288 X  71.69 STOP    hit 1 | clusters gauge/- h2.562 core1 ng33 | tracks id2 hits108 rep1 col0/10 hold2 core11R q1
+k 289 X  70.21 STOP    hit 1 | clusters gauge/- h2.501 core1 ng34 | tracks id2 hits109 rep1 col0/10 hold2 core12R q1
+k 290 X  68.73 STOP    hit 1 | clusters gauge/- h2.526 core1 ng53 | tracks id2 hits110 rep1 col0/10 hold2 core13R q1
+k 291 X  67.25 STOP    hit 1 | clusters gauge/- h2.585 core1 ng51 | tracks id2 hits111 rep1 col0/10 hold2 core14R q1
+k 292 X  65.76 STOP    hit 1 | clusters gauge/- h2.529 core1 ng49 | tracks id2 hits112 rep1 col0/10 hold2 core15R q1
+k 293 X  64.27 STOP    hit 1 | clusters gauge/- h2.473 core1 ng49 | tracks id2 hits113 rep1 col0/10 hold2 core16R q1
+k 294 X  62.77 STOP    hit 1 | clusters gauge/- h2.544 core1 ng48 | tracks id2 hits114 rep1 col0/10 hold2 core17R q1
+k 295 X  61.28 STOP    hit 1 | clusters gauge/- h2.583 core1 ng60 | tracks id2 hits115 rep1 col0/10 hold2 core18R q1
+k 296 X  59.78 STOP    hit 1 | clusters gauge/- h2.517 core1 ng41 | tracks id2 hits116 rep1 col0/10 hold2 core19R q1
+k 297 X  58.29 STOP    hit 1 | clusters gauge/- h2.585 core1 ng42; gauge/- h0.028 core0 ng3 | tracks id2 hits117 rep1 col0/10 hold2 core20R q1
+k 298 X  56.79 STOP    hit 1 | clusters gauge/- h2.638 core1 ng48; gauge/- h0.032 core0 ng4 | tracks id2 hits118 rep1 col0/10 hold2 core21R q1
+k 299 X  55.30 STOP    hit 1 | clusters gauge/- h2.447 core1 ng45 | tracks id2 hits119 rep1 col0/10 hold2 core22R q1
+k 300 X  53.80 STOP    hit 1 | clusters gauge/- h2.518 core1 ng67 | tracks id2 hits120 rep1 col0/10 hold2 core23R q1
+k 301 X  52.31 STOP    hit 1 | clusters gauge/- h2.442 core1 ng62 | tracks id2 hits121 rep1 col0/10 hold2 core24R q1
+k 302 X  50.82 STOP    hit 1 | clusters gauge/- h2.497 core1 ng68 | tracks id2 hits122 rep1 col0/10 hold2 core25R q1
+k 303 X  49.32 STOP    hit 1 | clusters gauge/- h2.541 core1 ng78; gauge/- h0.013 core0 ng4 | tracks id2 hits123 rep1 col0/10 hold2 core26R q1
+k 304 X  47.83 STOP    hit 1 | clusters warning/column h2.541 core0 ng77; gauge/- h0.085 core0 ng3 | tracks id2 hits124 rep1 col1/10 hold2 core0 q1
+k 305 X  46.34 STOP    hit 1 | clusters gauge/- h2.591 core0 ng55; gauge/- h0.041 core0 ng3 | tracks id2 hits125 rep1 col1/10 hold2 core0 q1
+k 306 X  44.86 CAUTION hit 0 | clusters warning/column h2.606 core0 ng82; gauge/- h0.023 core0 ng3 | tracks id2 hits126 rep1 col2/10 hold2 core0 q1
+k 307 X  43.37 CAUTION hit 0 | clusters warning/column h2.592 core0 ng94; gauge/- h0.007 core0 ng3 | tracks id2 hits127 rep1 col3/10 hold2 core0 q1
+k 308 X  41.89 CAUTION hit 0 | clusters warning/column h2.518 core0 ng104; gauge/- h0.032 core0 ng4 | tracks id2 hits128 rep1 col4/10 hold2 core0 q1
+k 309 X  40.41 CAUTION hit 0 | clusters warning/column h2.536 core0 ng146; gauge/- h0.086 core0 ng6 | tracks id2 hits129 rep1 col5/10 hold2 core0 q1
+k 310 X  38.92 CAUTION hit 0 | clusters warning/column h2.442 core0 ng102; gauge/- h0.073 core0 ng7 | tracks id2 hits130 rep1 col6/10 hold2 core0 q1
+k 311 X  37.45 CAUTION hit 0 | clusters warning/column h2.428 core0 ng99; gauge/- h0.024 core0 ng4 | tracks id2 hits131 rep1 col7/10 hold2 core0 q1
+k 312 X  35.96 CAUTION hit 0 | clusters warning/column h2.411 core0 ng96; gauge/- h0.082 core0 ng4 | tracks id2 hits132 rep1 col8/10 hold2 core0 q1
+k 313 X  34.49 CAUTION hit 0 | clusters warning/column h2.596 core0 ng86; gauge/- h0.021 core0 ng3 | tracks id2 hits133 rep1 col9/10 hold2 core0 q1
+k 314 X  33.01 CAUTION hit 0 | clusters warning/column h2.563 core0 ng109; gauge/- h0.071 core0 ng8 | tracks id2 hits134 rep1 col9/10 hold2 core0 q1
+k 315 X  31.53 CAUTION hit 0 | clusters warning/column h2.458 core0 ng112; gauge/- h0.068 core0 ng5 | tracks id2 hits135 rep1 col10/10 hold2 core0 q1
+k 316 X  30.05 CAUTION hit 0 | clusters warning/column h2.394 core0 ng118; gauge/- h0.08 core0 ng9 | tracks id2 hits136 rep1 col10/10 hold2 core0 q1
+k 317 X  28.58 CAUTION hit 0 | clusters warning/column h2.554 core0 ng109; gauge/- h0.082 core0 ng7 | tracks id2 hits137 rep1 col10/10 hold2 core0 q1
+k 318 X  27.10 CAUTION hit 0 | clusters warning/column h2.485 core0 ng146; gauge/- h0.087 core0 ng7 | tracks id2 hits138 rep1 col10/10 hold2 core0 q1
+k 319 X  25.63 CAUTION hit 0 | clusters gauge/- h2.635 core1 ng107; gauge/- h0.022 core0 ng5 | tracks id2 hits139 rep1 col9/10 hold2 core1 q1
+k 320 X  24.16 CAUTION hit 0 | clusters gauge/- h2.521 core1 ng123; gauge/- h0.064 core0 ng5 | tracks id2 hits140 rep1 col8/10 hold2 core2 q1
+k 321 X  22.69 CAUTION hit 0 | clusters gauge/- h2.625 core1 ng126; gauge/- h0.087 core0 ng7 | tracks id2 hits141 rep1 col7/10 hold2 core3 q1
+k 322 X  21.22 CAUTION hit 0 | clusters gauge/- h2.504 core1 ng151; gauge/- h0.09 core0 ng9 | tracks id2 hits142 rep1 col6/10 hold2 core4 q1
+k 323 X  19.75 CAUTION hit 0 | clusters gauge/- h2.571 core1 ng151; gauge/- h0.068 core0 ng10 | tracks id2 hits143 rep1 col5/10 hold2 core5 q1
+k 324 X  18.28 STOP    hit 1 | clusters gauge/- h2.627 core1 ng253; gauge/- h0.08 core0 ng12 | tracks id2 hits144 rep1 col4/10 hold2 core6R q1
+k 325 X  16.82 STOP    hit 1 | clusters gauge/- h2.619 core1 ng167; gauge/- h0.089 core0 ng10 | tracks id2 hits145 rep1 col3/10 hold2 core7R q1
+k 326 X  15.35 STOP    hit 1 | clusters gauge/- h2.627 core1 ng183; gauge/- h0.088 core0 ng10 | tracks id2 hits146 rep1 col2/10 hold2 core8R q1
+k 327 X  13.90 STOP    hit 1 | clusters gauge/- h2.602 core1 ng220; gauge/- h0.089 core0 ng17 | tracks id2 hits147 rep1 col1/10 hold2 core9R q1
+k 328 X  12.45 STOP    hit 1 | clusters gauge/- h2.642 core1 ng288; gauge/- h0.089 core0 ng11 | tracks id2 hits148 rep1 col0/10 hold2 core10R q1
+k 329 X  11.02 STOP    hit 1 | clusters gauge/- h2.638 core1 ng238; gauge/- h0.086 core0 ng15 | tracks id2 hits149 rep1 col0/10 hold2 core11R q1
+k 330 X   9.58 STOP    hit 1 | clusters gauge/- h2.682 core1 ng257; gauge/- h0.046 core0 ng8 | tracks id2 hits150 rep1 col0/10 hold2 core12R q1
+k 331 X   8.15 STOP    hit 1 | clusters gauge/- h2.616 core1 ng311; gauge/- h0.074 core0 ng14 | tracks id2 hits151 rep1 col0/10 hold2 core13R q1
+k 332 X   6.72 STOP    hit 1 | clusters gauge/- h2.622 core1 ng487; gauge/- h0.087 core0 ng15 | tracks id2 hits152 rep1 col0/10 hold2 core14R q1
+k 333 X   5.28 STOP    hit 1 | clusters gauge/- h2.342 core1 ng415; gauge/- h0.089 core0 ng30 | tracks id2 hits153 rep1 col0/10 hold2 core15R q1
+k 334 X   3.85 STOP    hit 1 | clusters gauge/- h1.987 core0 ng492; gauge/- h0.09 core0 ng38 | tracks id2 hits154 rep1 col0/10 hold2 core0 q1

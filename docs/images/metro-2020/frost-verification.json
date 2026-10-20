@@ -1,0 +1,8 @@
+{
+  "method": "Chromium 1440x900 actual closed CSS doors; uniform black/white backing and 32px checkerboard below the real pane, with tint/filter removed as positive control. Pixel crop x130 y260 240x120, 8px neighbor contrast.",
+  "meanBlackWhiteBackingDifference": 17.885277777777777,
+  "frostedCheckerboardContrast": 0.9150568181818182,
+  "unfilteredPositiveControlContrast": 121.60482954545455,
+  "attenuation": 0.9924751605540487,
+  "result": "PASS"
+}

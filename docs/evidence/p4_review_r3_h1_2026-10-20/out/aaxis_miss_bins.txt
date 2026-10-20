@@ -1,0 +1,10 @@
+visible 177, H1 on hits 114 misses 63 | H1 off hits 82
+  miss run of 12: k 152..163, X 228.36..219.23 m decisions {'CAUTION': 10, 'GO': 2}
+  miss run of  2: k 171..174, X 212.37..209.63 m decisions {'GO': 2}
+  miss run of  5: k 176..180, X 207.77..203.99 m decisions {'CAUTION': 5}
+  miss run of  1: k 196..196, X 188.07..188.07 m decisions {'GO': 1}
+  miss run of 16: k 224..239, X 157.05..138.85 m decisions {'CAUTION': 16}
+  miss run of  9: k 248..256, X 127.33..116.79 m decisions {'CAUTION': 9}
+  miss run of 18: k 306..323, X 44.86..19.75 m decisions {'CAUTION': 18}
+frames H1 turns from CAUTION to STOP (32): k 285..305, X 76.1..46.34 m and k 324..334, X 18.28..3.85 m
+speed from X steps: median 13.1 m/s at 10 Hz

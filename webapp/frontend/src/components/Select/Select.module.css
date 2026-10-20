@@ -57,3 +57,31 @@
 .disabled .native {
   cursor: not-allowed;
 }
+.native:focus-visible { box-shadow: var(--focus); }
+.native option { color: var(--ink); background: var(--card); font: inherit; }
+/* Customizable native select keeps OS keyboard/typeahead semantics with a themed picker. */
+@supports (appearance: base-select) {
+  .native, .native::picker(select) { appearance: base-select; }
+  .native { display: flex; align-items: center; }
+  .native::picker-icon { display: none; }
+  .native::picker(select) {
+    border: 0;
+    border-radius: var(--r-sm);
+    background: var(--card);
+    color: var(--ink);
+    padding: 6px;
+    margin-block: 6px;
+    box-shadow: var(--shadow-pop);
+    max-height: min(360px, 50vh);
+    min-width: anchor-size(width);
+    overflow: auto;
+    scrollbar-color: var(--hair-2) var(--card);
+    font-family: var(--f-body);
+    font-size: var(--fs-body);
+  }
+  .native option { padding: 11px 12px; gap: 10px; min-height: 40px; border-radius: 10px; font-weight: 600; }
+  .native option:hover, .native option:focus { background: var(--well); outline: none; }
+  .native option:checked { color: var(--red-deep); background: var(--well-3); font-weight: 800; }
+  .native option::checkmark { color: var(--red); margin-left: auto; order: 1; }
+  .native option:disabled { color: var(--hair-2); cursor: not-allowed; }
+}

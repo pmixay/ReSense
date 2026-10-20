@@ -1,11 +1,11 @@
-// /player without a run: the runs to open, in the same cab — runs with stored clouds first.
+// /player without a run: ordinary page-flow selection, with stored-cloud runs first.
 import { Link } from 'react-router-dom';
 import { useRuns } from '../../api/hooks';
 import type { Run } from '../../api/types';
 import { Button, Chip, DecisionChip, DecisionStrip, EmptyState, ErrorBanner, Icon, Spinner } from '../../components';
 import { worstDecision } from '../../lib/decisions';
 import { FRAMES, RUNS, fmtCount, fmtDuration, fmtRelDate } from '../../lib/format';
-import { sortRunsForPlayer } from './Roof';
+import { sortRunsForPlayer } from './ViewControls';
 import styles from './Player.module.css';
 
 function RunCard({ r }: { r: Run }) {
@@ -25,11 +25,11 @@ function RunCard({ r }: { r: Run }) {
           {fmtCount(r.summary.n_frames, FRAMES)} · {fmtDuration(r.summary.duration_s)}
         </span>
         {r.has_clouds ? (
-          <Chip variant="glass" size="sm" icon="cube">
+          <Chip variant="well" size="sm" icon="cube">
             3D
           </Chip>
         ) : (
-          <Chip variant="glass" size="sm">
+          <Chip variant="well" size="sm">
             без облака
           </Chip>
         )}
@@ -84,7 +84,7 @@ export function RunPickerGlass() {
     <div className={styles.pick}>
       <div className={styles.pickHead}>
         <h1 className={styles.pickTitle}>Выберите прогон</h1>
-        <Chip variant="glass">{fmtCount(withClouds, RUNS)} в 3D</Chip>
+        <Chip variant="well">{fmtCount(withClouds, RUNS)} в 3D</Chip>
       </div>
       <div className={styles.pickGrid}>
         {list.map((r) => (

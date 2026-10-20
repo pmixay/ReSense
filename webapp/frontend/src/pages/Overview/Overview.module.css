@@ -1,6 +1,7 @@
 .ov {
   grid-template-rows: minmax(0, 262fr) minmax(0, 462fr);
 }
+
 /* fits 1280×800 without a page scroll (the foundation's floor is 600 px) */
 .ov:global(.fill-viewport) {
   min-height: 540px;

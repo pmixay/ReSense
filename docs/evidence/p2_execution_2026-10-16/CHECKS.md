@@ -21,7 +21,7 @@ not real sensor observations. See [scope and pending acceptance](README.md).
 | Frontend `npm --prefix webapp/frontend run build` | PASS, including final Live CSS | `checks/role2-build.txt` |
 | Node, shared policy, chart sources, complete backend suite | PASS: 360 tests; one dependency deprecation warning | `checks/role2-python-final.txt` |
 | `web/demo` and `tests/test_overview_video.py` | PASS: 94 tests, no skips | `checks/role2-static-final.txt` |
-| Static boundary follow-up after mobile canvas correction | PASS | `checks/role2-static-followup.txt` |
+| Static boundary follow-up after canvas correction | PASS | `checks/role2-static-followup.txt` |
 | Full webapp browser suite | PASS: 47 tests on frozen final frontend build | `checks/role2-e2e-frozen.txt` |
 | C1 browser transition and viewport-width check | PASS on final responsive build: 1 test, 8 deselected | `checks/role2-c1-browser.txt` |
 | Ruff on changed Python code and tests | PASS | command below |
@@ -66,14 +66,12 @@ the frozen-build run passed all 47 tests in 406.11 seconds.
 `screenshots/dashboard-*.png`: local static dashboard, manually supplied C1 CAUTION
 contract frame, both known reasons. `screenshots/live-caution-*.png`: built React app,
 fake rosbridge publisher from the E2E harness, both known reasons and a fixture-only
-health message. Captures cover 1280×720, 1920×1080 and 390×844 browser viewports;
+health message. Retained captures cover 1280×720 and 1920×1080 browser viewports;
 full-page captures can be taller than the viewport. They are not second-device proof.
 
-Reviewed desktop and mobile captures exposed canvas clipping and a Live card height
-problem. Subsequent mobile review also exposed shared navigation overflow and rail
-label collisions; responsive header, navigation and rail rules now contain them.
-Final captures follow those fixes; the focused browser check asserts viewport-width
-containment at all three sizes as well as reason display and GO/stale transitions.
+Reviewed captures exposed canvas clipping and a Live card height problem. Final
+desktop captures follow those fixes; the focused browser check covers reason
+display and GO/stale transitions.
 Actual ROS/RViz/Foxglove visual sign-off,
 release-matched media and P1 approval remain open. Producer examples in
 `checks/role2-node-examples.json` come from node fixtures, not a real recording.

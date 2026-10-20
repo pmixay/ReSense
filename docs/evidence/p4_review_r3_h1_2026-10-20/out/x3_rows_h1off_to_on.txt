@@ -1,0 +1,1 @@
+TOTAL {"cases_differ": 0, "dec_rows": 0, "stop_added": 0, "stop_added_matched": 0, "stop_lost": 0, "other_rows": 0} other non-timing fields in rows with equal decision/dets/warns: {}

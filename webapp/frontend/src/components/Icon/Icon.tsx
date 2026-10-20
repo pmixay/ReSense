@@ -63,6 +63,7 @@ const P = {
   target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/>',
   trash: '<path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/>',
   'view-top': '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 4v16"/>',
+  'display-height': '<path d="M4 5h16M4 19h16M12 8v8M9 10l3-3 3 3M9 14l3 3 3-3"/>',
   'view-back': '<path d="M3 17l9-10 9 10"/>',
   retry: '<path d="M20 11a8 8 0 10-2.3 5.7"/><path d="M20 4v7h-7"/>',
   search: '<circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/>',

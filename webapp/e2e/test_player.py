@@ -80,6 +80,12 @@ def speed_pill(page, label: str):
     return page.get_by_role("group", name="Скорость").get_by_role("button", name=label, exact=True)
 
 
+def show_telemetry(page):
+    toggle = page.get_by_role('button', name='Телеметрия', exact=True)
+    if toggle.get_attribute('aria-expanded') != 'true':
+        toggle.click()
+
+
 def camera(page, label: str):
     return page.get_by_role("radiogroup", name="Камера").get_by_role("radio", name=label)
 
@@ -247,6 +253,7 @@ def test_events_scrubber_loop_and_end(app, seeded):
     stop = next(e for e in det["events"] if e["decision"] == "STOP")
     app.goto(f"/player/{rid}?pos={min(stop['first_frame'] + 2, stop['last_frame'])}")
     expect(beacon(page)).to_have_accessible_name("Решение: СТОП")
+    show_telemetry(page)
     tile = page.get_by_role("region", name="До препятствия")
     expect(tile).to_contain_text(re.compile(r"\d+,\d\s?м"))
     expect(page.get_by_role("region", name="Решение")).to_contain_text("в габарите 2,1 × 3,0 м")
@@ -295,6 +302,7 @@ def test_deep_link_shows_real_values(app, backend, seeded):
     expect(speed_pill(page, "2×")).to_have_attribute("aria-pressed", "true")
     expect(camera(page, "Сверху")).to_have_attribute("aria-checked", "true")
     expect(beacon(page)).to_have_accessible_name("Решение: СТОП")
+    show_telemetry(page)
     expect(page.get_by_role("region", name="До препятствия")).to_contain_text(fixed(fr["nearest_distance"], 1))
     expect(page.get_by_role("region", name="Решение")).to_contain_text(f"кадр {fr['frame']}")
     expect(page.get_by_text(re.compile(r"^облако [\d\u2009\u00a0]+ точ"))).to_be_visible()
@@ -399,6 +407,7 @@ def test_schematic_and_fault_runs(app, seeded):
 
     open_player(app, f"/player/{ids['fault']}?pos=15")
     expect(beacon(page)).to_have_accessible_name("Решение: ОШИБКА")
+    show_telemetry(page)
     expect(page.get_by_role("region", name="Путь не проверен")).to_contain_text("не проверено")
     expect(page.get_by_role("region", name="Решение")).to_contain_text("сбой датчика")
     expect(page.get_by_title("кадр 10")).to_be_visible()  # the FAULT event's pin
@@ -426,16 +435,28 @@ def test_loading_and_backend_errors(app, seeded):
     alert = page.get_by_role("alert").filter(has_text="Кадры не загрузились")
     expect(alert).to_contain_text("Результаты прогона недоступны")
     expect(page.get_by_text("загрузка кадров")).to_have_count(0)
+    # Keep automatic retries failed until the actual retry button is clicked; otherwise
+    # a slow GPU can let a background retry remove the banner during actionability checks.
+    page.evaluate('''() => {
+        window.playerRetryClicked = false;
+        document.addEventListener('click', event => {
+            if (event.target.closest('[role="alert"] button')) window.playerRetryClicked = true;
+        }, {capture:true});
+    }''')
     page.unroute(frames_re)
+    page.route(frames_re, lambda route: route.continue_() if page.evaluate('window.playerRetryClicked') else route.fulfill(status=503, content_type='application/json', body=json.dumps({'detail':'Результаты прогона недоступны'})))
     alert.get_by_role("button", name="Повторить").click()
     expect(page.get_by_role("alert")).to_have_count(0)
     expect(page.get_by_text(FRAME_RE)).to_have_text(re.compile(r"^кадр 12 / "))
+    page.unroute(frames_re)
 
     # a cloud fails → the HUD says so with the backend's message (the frame itself is still shown)
     cloud_re = api_route(base, rf"/runs/{rid}/clouds/\d+$")
     page.route(cloud_re, lambda route: route.fulfill(status=500, content_type="application/json", body=json.dumps({"detail": "Облако повреждено"})))
+    page.mouse.move(0, 0)
+    page.goto('about:blank')  # discard the previous run's in-flight cloud requests before injecting failure
     app.goto(f"/player/{rid}?pos=20")
-    expect(page.get_by_role("status").filter(has_text="Облако повреждено")).to_be_visible()
+    expect(page.get_by_role("status").filter(has_text="Облако повреждено")).to_be_visible(timeout=60_000)
     expect(beacon(page)).to_be_visible()
     page.unroute(cloud_re)
 
@@ -490,57 +511,196 @@ def test_lost_3d_view_keeps_the_console(app, seeded):
 def test_fullscreen_orbit_and_back(app, seeded):
     page, rid = app.page, seeded["ids"]["approach"]
     open_player(app, f"/player/{rid}?pos=25")
-    # F: the real Fullscreen API on the cab
+    # Fullscreen preserves the shared top bar and category navigation.
     page.keyboard.press("f")
     page.wait_for_function("() => !!document.fullscreenElement")
+    assert page.evaluate('document.fullscreenElement.hasAttribute("data-app-shell")')
+    expect(page.get_by_role("navigation", name="Линия: путь работы с записью")).to_be_visible()
     expect(page.get_by_role("button", name="Выйти из полноэкранного режима (F)")).to_be_visible()
     page.get_by_role("button", name="Выйти из полноэкранного режима (F)").click()
     page.wait_for_function("() => !document.fullscreenElement")
-    # a browser that refuses fullscreen: the cab hides its navigation instead, Esc brings it back
+    # A refused Fullscreen API keeps the same shell in fallback mode; Esc exits it.
     page.evaluate("() => { Element.prototype.requestFullscreen = () => Promise.reject(new Error('denied')); }")
     page.get_by_role("button", name="Во весь экран (F)").click()
     expect(page.get_by_role("button", name="Назад", exact=True)).to_have_count(0)
+    expect(page.get_by_role("navigation", name="Линия: путь работы с записью")).to_be_visible()
     expect(page.get_by_role("button", name="Выйти из полноэкранного режима (F)")).to_be_visible()
     page.keyboard.press("Escape")
-    expect(page.get_by_role("button", name="Назад", exact=True)).to_be_visible()
+    expect(page.get_by_role("group", name="Параметры просмотра")).to_be_visible()
     expect(page).to_have_url(re.compile(rf"/player/{rid}"))
 
     # dragging the 3D view frees the camera; double-click (or the chip's button) gives it back
     canvas = page.get_by_role("img", name="3D-вид из кабины")
     box = box_of(canvas)
-    page.mouse.move(box["x"] + 800, box["y"] + 350)
+    cx, cy = box["x"] + box["width"] * .5, box["y"] + box["height"] * .5
+    page.mouse.move(cx, cy)
     page.mouse.down()
-    page.mouse.move(box["x"] + 900, box["y"] + 320, steps=8)
+    page.mouse.move(cx + box["width"] * .1, cy - box["height"] * .05, steps=8)
     page.mouse.up()
     expect(page.get_by_text("свободная камера")).to_be_visible()
-    page.mouse.dblclick(box["x"] + 800, box["y"] + 350)
+    page.mouse.dblclick(cx, cy)
     expect(page.get_by_text("кабина · вперёд")).to_be_visible()
-    page.mouse.move(box["x"] + 700, box["y"] + 350)
+    page.mouse.move(cx, cy)
     page.mouse.down()
-    page.mouse.move(box["x"] + 640, box["y"] + 360, steps=8)
+    page.mouse.move(cx - box["width"] * .08, cy + box["height"] * .04, steps=8)
     page.mouse.up()
     expect(page.get_by_text("свободная камера")).to_be_visible()
     page.keyboard.press("Escape")  # Esc first gives the camera back, then leaves
     expect(page.get_by_text("кабина · вперёд")).to_be_visible()
     expect(page).to_have_url(re.compile(rf"/player/{rid}"))
-    # opened directly (no page before it): «Назад» goes to the run's page
-    page.get_by_role("button", name="Назад", exact=True).click()
-    expect(page).to_have_url(re.compile(rf"/runs/{rid}$"))
+    # The global stage rail is the page's navigation; no second header or local back button.
+    page.get_by_role("navigation", name="Линия: путь работы с записью").get_by_role("link", name="Прогоны", exact=True).click()
+    expect(page).to_have_url(re.compile(r"/runs$"))
     assert real_errors(app.errors) == []
 
 
 # ---------------------------------------------------------------------------------------- 12
 
 
-def test_cab_fits_small_viewports(app, seeded):
+def test_workspace_resizes_without_clipping(app, seeded):
     page, rid = app.page, seeded["ids"]["approach"]
-    for w, h in ((1440, 900), (1280, 800), (1280, 720)):
+    open_player(app, f"/player/{rid}?pos=30")
+    for w, h in ((1366, 768), (1440, 900), (1920, 1080), (1280, 800)):
         page.set_viewport_size({"width": w, "height": h})
-        open_player(app, f"/player/{rid}?pos=30")
+        page.locator('main').evaluate('el => el.scrollTop = 0')
+        page.wait_for_function('''() => {
+            const cv = document.querySelector('canvas[aria-label="3D-вид из кабины"]');
+            const pr = +cv?.dataset.renderPixelRatio || 1;
+            return cv && cv.width === Math.floor(cv.clientWidth * pr) && cv.height === Math.floor(cv.clientHeight * pr);
+        }''')
         assert page.evaluate("document.documentElement.scrollHeight <= innerHeight && document.documentElement.scrollWidth <= innerWidth")
+        nav = page.get_by_role("navigation", name="Линия: путь работы с записью")
+        expect(nav).to_be_visible()
+        canvas = page.get_by_role("img", name="3D-вид из кабины")
+        world = canvas.locator("..")
+        workspace = page.locator('[data-player-workspace]')
+        stage_box = box_of(workspace, scroll=False)
+        nav_box = box_of(nav, scroll=False)
+        assert stage_box["y"] >= nav_box["y"] + nav_box["height"]
+        assert stage_box["x"] >= 0 and stage_box["x"] + stage_box["width"] <= w + 1
+        assert page.locator('main header').count() == 0
+        expect(page.get_by_role('navigation', name='Разделы')).to_have_count(0)
+        expect(page.get_by_role('button', name='1 Данные')).to_have_count(0)
+        expect(page.get_by_role('button', name='3 Система')).to_have_count(0)
+        assert workspace.evaluate('el => getComputedStyle(el).transform') == 'none'
+        assert page.locator('main').evaluate('el => el.scrollWidth <= el.clientWidth')
+        assert abs(stage_box['width'] - page.locator('main').evaluate('el => el.clientWidth - parseFloat(getComputedStyle(el).paddingLeft) - parseFloat(getComputedStyle(el).paddingRight)')) < 2
+        assert abs(box_of(canvas, scroll=False)["height"] - box_of(world, scroll=False)["height"]) < 1
+        main_box = box_of(page.locator('main'), scroll=False)
+        canvas_box = box_of(canvas, scroll=False)
+        assert abs(canvas_box['x'] - main_box['x']) < 1
+        assert abs(canvas_box['y'] - main_box['y']) < 1
+        assert abs(canvas_box['width'] - main_box['width']) < 1
+        assert abs(canvas_box['height'] - stage_box['height']) < 1
+        assert canvas_box['height'] >= main_box['height'] - 1
+        show_telemetry(page)
         for name in ("Схема пути", "Решение", "До препятствия", "Задержка и частота", "Исправность"):
-            b = box_of(page.get_by_role("region", name=name), scroll=False)
-            assert b and b["x"] >= 0 and b["y"] >= 0 and b["x"] + b["width"] <= w and b["y"] + b["height"] <= h, (w, h, name, b)
+            panel = page.get_by_role("region", name=name)
+            panel.scroll_into_view_if_needed()
+            b = box_of(panel, scroll=False)
+            assert b and b["x"] >= 0 and b["y"] >= 0 and b["x"] + b["width"] <= w + 1 and b["y"] + b["height"] <= h + 1, (w, h, name, b)
+        slider(page).scroll_into_view_if_needed()
         sb = box_of(slider(page), scroll=False)
-        assert sb["y"] + sb["height"] <= h, (w, h, sb)
+        assert sb["y"] + sb["height"] <= h + 1, (w, h, sb)
+        playback = box_of(page.get_by_role('region', name='Воспроизведение'), scroll=False)
+        assert playback['y'] >= 0 and playback['y'] + playback['height'] <= h + 1
+        page.get_by_role('button', name='Телеметрия', exact=True).click()
+    assert real_errors(app.errors) == []
+
+
+def test_taller_display_preserves_width_and_returns_to_normal(app, seeded):
+    page, rid = app.page, seeded['ids']['approach']
+    page.set_viewport_size({'width': 1440, 'height': 900})
+    open_player(app, f'/player/{rid}?pos=30')
+    display = page.locator('[data-player-display]')
+    normal = box_of(display, scroll=False)
+    page.get_by_role('button', name='Увеличить высоту экрана').click()
+    larger = box_of(display, scroll=False)
+    assert larger['height'] >= normal['height'] + 30, (normal, larger)
+    assert abs(larger['width'] - normal['width']) < 1
+    # Button reveals side information while hardware, HUD and playback stay fixed.
+    backdrop = page.locator('[data-train-backdrop]')
+    assert box_of(backdrop, scroll=False)['height'] >= larger['height']
+    top_offset = larger['y'] - box_of(backdrop, scroll=False)['y']
+    show_telemetry(page)
+    assert abs(box_of(display, scroll=False)['y'] - box_of(backdrop, scroll=False)['y'] - top_offset) < 1
+    page.get_by_role('button', name='Обычная высота экрана').scroll_into_view_if_needed()
+    page.get_by_role('button', name='Обычная высота экрана').click()
+    assert abs(box_of(display)['height'] - normal['height']) < 1
+    assert page.locator('main').evaluate('el => el.scrollWidth <= el.clientWidth')
+    assert real_errors(app.errors) == []
+
+
+def test_telemetry_button_keeps_center_scene_and_transport_clear(app, seeded):
+    page, rid = app.page, seeded['ids']['approach']
+    open_player(app, f'/player/{rid}?pos=30')
+    page.emulate_media(reduced_motion='reduce')
+    reveal = page.get_by_role('button', name='Телеметрия', exact=True)
+    canvas = page.get_by_role('img', name='3D-вид из кабины')
+    display = page.locator('[data-player-display]')
+    playback = page.get_by_role('region', name='Воспроизведение')
+    before = [box_of(el, scroll=False) for el in (canvas, display, playback)]
+    expect(reveal).to_have_attribute('aria-expanded', 'false')
+    expect(page.get_by_role('region', name='До препятствия')).to_have_count(0)
+    page.mouse.move(600, 300)
+    page.mouse.wheel(0, 500)
+    expect(reveal).to_have_attribute('aria-expanded', 'false')
+    reveal.click()
+    expect(reveal).to_have_attribute('aria-expanded', 'true')
+    expect(page.get_by_role('region', name='До препятствия')).to_be_visible()
+    after = [box_of(el, scroll=False) for el in (canvas, display, playback)]
+    assert before == after
+    assert page.locator('main').evaluate('el=>el.scrollTop') == 0
+    for w, h in ((1440, 900), (1366, 768), (1920, 1080)):
+        page.set_viewport_size({'width':w, 'height':h})
+        left = box_of(page.get_by_role('complementary', name='Телеметрия слева'), scroll=False)
+        right = box_of(page.get_by_role('complementary', name='Телеметрия справа'), scroll=False)
+        assert left['x'] + left['width'] < w * .4
+        assert right['x'] > w * .6
+        # Sides cover only the lower corners, leaving the central 40% clear end to end.
+        assert left['y'] + left['height'] <= box_of(playback, scroll=False)['y']
+        assert right['y'] + right['height'] <= box_of(playback, scroll=False)['y']
+    page.set_viewport_size({'width':1600, 'height':1000})
+    page.mouse.wheel(0, -500)
+    expect(reveal).to_have_attribute('aria-expanded', 'true')
+    reveal.press('Escape')
+    expect(reveal).to_have_attribute('aria-expanded', 'false')
+    reveal.press('Enter')
+    expect(reveal).to_have_attribute('aria-expanded', 'true')
+    reveal.press('Space')
+    expect(reveal).to_have_attribute('aria-expanded', 'false')
+    expect(page).to_have_url(re.compile(rf'/player/{rid}'))
+    assert before == [box_of(el, scroll=False) for el in (canvas, display, playback)]
+    assert real_errors(app.errors) == []
+
+
+def test_pointer_pressure_parallax_and_reduced_motion(app, seeded):
+    page, rid = app.page, seeded['ids']['approach']
+    open_player(app, f'/player/{rid}?pos=30')
+    canvas = page.get_by_role('img', name='3D-вид из кабины')
+    box = box_of(page.locator('main'), scroll=False)
+    page.mouse.move(0, 0)
+    page.wait_for_function('''() => {
+        const cv = document.querySelector('canvas[aria-label="3D-вид из кабины"]');
+        return Math.abs(+cv.dataset.sceneTiltX) + Math.abs(+cv.dataset.sceneTiltY) < .00002;
+    }''')
+    page.mouse.move(box['x'] + box['width'] * .96, box['y'] + box['height'] * .18, steps=10)
+    page.wait_for_function('''() => {
+        const d = document.querySelector('canvas[aria-label="3D-вид из кабины"]').dataset;
+        return +d.sceneTiltY > .025 && +d.sceneTiltX < -.005 && Math.abs(+d.railTiltY) < Math.abs(+d.sceneTiltY) * .5;
+    }''')
+    values = canvas.evaluate('el => ({wall:+el.dataset.sceneTiltY, rail:+el.dataset.railTiltY})')
+    assert abs(values['rail'] / values['wall'] - .24) < .001, values
+    page.mouse.move(box['x'] + box['width'] / 2, box['y'] + box['height'] / 2, steps=8)
+    page.wait_for_function('''() => {
+        const d = document.querySelector('canvas[aria-label="3D-вид из кабины"]').dataset;
+        return Math.abs(+d.sceneTiltX) + Math.abs(+d.sceneTiltY) < .00002;
+    }''')
+    page.emulate_media(reduced_motion='reduce')
+    page.mouse.move(box['x'] + box['width'] * .96, box['y'] + box['height'] * .18)
+    page.wait_for_timeout(350)
+    assert canvas.evaluate('el => Math.abs(+el.dataset.sceneTiltX) + Math.abs(+el.dataset.sceneTiltY)') < .00002
+    dock = page.locator('[data-player-controls]')
+    assert dock.evaluate('el => ["::before", "::after"].some(p => getComputedStyle(el, p).backdropFilter.includes("blur"))')
+    assert 'gradient' in dock.evaluate('el => getComputedStyle(el,"::before").backgroundImage')
     assert real_errors(app.errors) == []

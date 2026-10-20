@@ -4,7 +4,8 @@ One JSON message per frame at 10 Hz x ``speed``: the run's ``/frames`` dict plus
 ``{"node": {"fps", "latency_ms", "frames", "dropped_frames"}, "snapshot_kind": "frame",
 "sim": true, "cloud_pos"}``. The client may send ``{"cmd": "pause" | "play" | "seek" | "speed",
 "pos"?: number, "speed"?: number}``. At the end the replay loops (``loop=true``) or closes with
-1000. Close codes: 4400 bad query, 4404 unknown run.
+1000. ``paused=true`` opens without advancing until a seek/play command arrives.
+Close codes: 4400 bad query, 4404 unknown run.
 """
 from __future__ import annotations
 
@@ -243,6 +244,10 @@ async def live_sim(websocket: WebSocket) -> None:
     if loop_raw not in _TRUE | _FALSE:
         await _close(websocket, CLOSE_BAD_REQUEST, "Параметр loop: true или false")
         return
+    paused_raw = q.get("paused", "false").strip().lower()
+    if paused_raw not in _TRUE | _FALSE:
+        await _close(websocket, CLOSE_BAD_REQUEST, "Параметр paused: true или false")
+        return
     run_dir = _runs_dir(websocket) / run_id
     res = _Results(run_dir / "results.jsonl")
     try:
@@ -252,7 +257,7 @@ async def live_sim(websocket: WebSocket) -> None:
         await _close(websocket, CLOSE_NOT_FOUND, "Прогон не найден")
         return
     clouds = await asyncio.to_thread(_cloud_positions, run_dir)
-    st = _State(total=total, speed=speed, loop=loop_raw in _TRUE)
+    st = _State(total=total, speed=speed, loop=loop_raw in _TRUE, paused=paused_raw in _TRUE)
     wake = asyncio.Event()
     receiver = asyncio.create_task(_receive(websocket, st, wake))
     try:

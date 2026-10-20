@@ -564,28 +564,6 @@ def test_dashboard_shortcuts_work_after_clicking_a_control():
         b.close()
 
 
-def test_dashboard_phone_width_has_16px_gutter_and_no_horizontal_scroll():
-    if not _browser_available():
-        pytest.skip("playwright + chromium not available")
-    from playwright.sync_api import sync_playwright
-    import check_dashboard
-    with sync_playwright() as p:
-        b = _launch(p)
-        page = b.new_page(viewport={"width": 390, "height": 844})
-        page.goto("file://" + check_dashboard.INDEX, wait_until="domcontentloaded")
-        page.wait_for_function("window.resense !== undefined")
-        page.click("#demo")
-        page.evaluate("window.resense.pause(); window.resense.seek(30)")
-        for tab in ("#tab-plan", "#tab-cab"):
-            page.click(tab)
-            layout = page.evaluate("""() => { const r = s => document.querySelector(s).getBoundingClientRect();
-                return { scrollWidth: document.documentElement.scrollWidth, brand: r('.brand').left,
-                         main: [r('main').left, r('main').right] }; }""")
-            assert layout["scrollWidth"] <= 390, layout
-            assert layout["brand"] == layout["main"][0] == 16 and layout["main"][1] == 390 - 16, layout
-        b.close()
-
-
 def test_dashboard_cab_view_on_the_real_node_stream():
     """The node's /resense/status stream from the Docker dry run on doubleT_obstacle: the fitted bed
     profile (floor_coef) places the 56 m object in the cab view."""

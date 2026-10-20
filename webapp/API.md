@@ -289,14 +289,14 @@ Points kept per frame: every corridor / object point, then a uniform random samp
 
 | method | path | notes |
 |---|---|---|
-| WS | `/api/live/sim?run_id=<id>&speed=<0.25..10>&loop=<bool>` | server pushes one JSON message per frame at 10 Hz × speed: the `/frames` dict plus `{"node": {"fps", "latency_ms", "frames", "dropped_frames"}, "snapshot_kind": "frame", "sim": true, "cloud_pos": number \| null}`. Client may send `{"cmd": "pause" \| "play" \| "seek" \| "speed", "pos"?: number, "speed"?: number}`. |
+| WS | `/api/live/sim?run_id=<id>&speed=<0.25..10>&loop=<bool>&paused=<bool>` | server pushes one JSON message per frame at 10 Hz × speed: the `/frames` dict plus `{"node": {"fps", "latency_ms", "frames", "dropped_frames"}, "snapshot_kind": "frame", "sim": true, "cloud_pos": number \| null}`. Client may send `{"cmd": "pause" \| "play" \| "seek" \| "speed", "pos"?: number, "speed"?: number}`. Optional `paused` defaults to `false`; `true` waits for seek/play before sending any frames, preserving pause across reconnection. |
 
 Live details: `node.fps` is the measured send rate, `node.latency_ms` = the frame's `timing_ms.total`,
 `node.frames` counts messages of this connection, `dropped_frames` is 0. `cloud_pos` is the frame's own
 stored cloud, else the nearest earlier one. `speed` is honoured in any command and clipped to 0.25..10;
 `pos` is clipped to the run. A `seek` sends that frame at once, also while paused. At the end the
 replay loops (`loop=true`) or closes with 1000. Close codes: 1000 end of the run, 4400 bad query
-(`run_id` / `speed` / `loop`), 4404 unknown run, 1011 unreadable results line.
+(`run_id` / `speed` / `loop` / `paused`), 4404 unknown run, 1011 unreadable results line.
 
 Real node: the browser connects directly to rosbridge (`ws://<host>:9090`, topic `/resense/status`,
 `std_msgs/String` JSON with the same keys) — no backend involvement.

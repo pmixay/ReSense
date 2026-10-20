@@ -1,5 +1,5 @@
 .card {
-  background: var(--card);
+  background: var(--surface-sheen);
   border-radius: var(--r-lg);
   box-shadow: var(--shadow);
   position: relative;

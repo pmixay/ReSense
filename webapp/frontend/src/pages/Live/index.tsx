@@ -17,6 +17,7 @@ import { TimelineCard } from './TimelineCard';
 import { store } from './storage';
 import { ViewCard } from './ViewCard';
 import styles from './Live.module.css';
+import { useNavigationPreview } from '../../lib/navigationPreview';
 
 const RECONNECT_MS = 3000;
 const KEY_SOURCE = 'resense.live.source';
@@ -42,6 +43,7 @@ export function defaultRun(runs: readonly Run[] | undefined): Run | undefined {
 const OWN_SPACE = 'input, textarea, select, button, a[href], [role="radio"], [role="slider"], [role="option"], [role="listbox"], [contenteditable="true"]';
 
 export default function Live() {
+  const preview = useNavigationPreview();
   const [params, setParams] = useSearchParams();
   const [kind, setKind] = useState<SourceKind>(() => {
     const q = params.get('source') ?? store.get(KEY_SOURCE);
@@ -72,8 +74,8 @@ export default function Live() {
   }, [list, runId]);
   const run = list?.find((r) => r.id === runId);
 
-  useEffect(() => store.set(KEY_SOURCE, kind), [kind]);
-  useEffect(() => store.set(KEY_URL, url), [url]);
+  useEffect(() => { if (!preview) store.set(KEY_SOURCE, kind); }, [kind, preview]);
+  useEffect(() => { if (!preview) store.set(KEY_URL, url); }, [url, preview]);
 
   // the address bar follows the choice (a link or a reload opens the same source and run)
   useEffect(() => {
@@ -99,6 +101,7 @@ export default function Live() {
     latest.current = { kind, run, snap, speed, loop };
   });
   useEffect(() => {
+    if (preview) return;
     const onKey = (e: KeyboardEvent) => {
       const { kind: k, run: r, snap: sn, speed: sp, loop: lp } = latest.current;
       if (k !== 'sim' || !r) return;
@@ -114,7 +117,7 @@ export default function Live() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [feed]);
+  }, [feed, preview]);
 
   const fresh = snap.view === 'live';
   // the 3D view follows the run on air (it may differ from the selection until «Запустить»)

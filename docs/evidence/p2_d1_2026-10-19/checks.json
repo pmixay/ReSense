@@ -1,0 +1,92 @@
+{
+  "scope": "stored-receipt/integrity reconciliation; no detector rerun or external approval",
+  "starting_commit": "6bcd2e3",
+  "package_version": "1.2.0",
+  "local_tags": [
+    "v1.0.0"
+  ],
+  "verified_frozen_files": 38,
+  "measured_commit": "0779db74beddc07fcb8cb89cda6e2837e31e4d62",
+  "source_sha256": "68dee667f19e862913575c72fada3820199ec29cf497697cd7194b9e897f16d3",
+  "positive_control": true,
+  "ordinary_rows_recounted": 15269,
+  "set_f_rows_recounted": 3060,
+  "x3_cases_recounted": 40,
+  "x3_rows_recounted": 29765,
+  "verified_archive_hashes": [
+    "gate-reference.tar.gz",
+    "gate.tar.gz",
+    "x3-reference_raw.tar.gz",
+    "x3_raw.tar.gz",
+    "b4.tar.gz"
+  ],
+  "score": {
+    "max": 100,
+    "score": 66
+  },
+  "video_duration_s": 180,
+  "current_p4_export": {
+    "cases": 343,
+    "numbers": 3396,
+    "direct_numbers_independently_checked": 3250,
+    "derived_numbers": 146,
+    "p4_check_stdout": "cases 343 {'X3': 120, 'X1': 22, 'J1': 12, 'J1-range': 74, 'SYN': 6, 'B2': 1, 'B3': 4, 'B6': 20, 'G3': 84}; numbers 3396 (146 derived); source mismatches 0"
+  },
+  "video_codec": "h264",
+  "relative_links_checked": 349,
+  "missing_relative_links": [],
+  "reviewed_stale_claim_search": [
+    {
+      "file": "docs/CAPTAIN.md",
+      "line": 191,
+      "text": "| 25.09 | the overview video ships captioned and silent (`docs/video/resense_overview.mp4`, 2:50, Russian subtitles burned in and as `.srt`); a voice-over is optional, muxed on without re-editing; C20 done | C20, action 9, PRESENTATION \u00ab\u0421\u0431\u043e\u0440\u043a\u0430 \u0440\u043e\u043b\u0438\u043a\u0430\u00bb |",
+      "review": "dated history, registered task description or explicitly historical wording; not a current release/UI assertion"
+    },
+    {
+      "file": "docs/ROLE_2_PLAN.md",
+      "line": 122,
+      "text": "   duration described as both 2:50 and 3:00 (measure the actual file with `ffprobe`).",
+      "review": "dated history, registered task description or explicitly historical wording; not a current release/UI assertion"
+    },
+    {
+      "file": "docs/ROLE_2_PLAN.md",
+      "line": 151,
+      "text": "4. Replace misleading unqualified GO wording (`\u0421\u0412\u041e\u0411\u041e\u0414\u041d\u041e` in `src/lib/decisions.ts`) with",
+      "review": "dated history, registered task description or explicitly historical wording; not a current release/UI assertion"
+    },
+    {
+      "file": "docs/PLAN.md",
+      "line": 52,
+      "text": "| 25\u201327.09 | Sprint 3 \u2014 \u0434\u043e\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0438 \u0437\u0430\u043c\u043e\u0440\u043e\u0437\u043a\u0430: \u044f\u0434\u0440\u0430 C++, \u0434\u043e\u0441\u0442\u0430\u0432\u043a\u0430 \u0430\u0440\u0445\u0438\u0432\u043e\u043c, \u0440\u0435\u0433\u0440\u0435\u0441\u0441\u0438\u043e\u043d\u043d\u044b\u0439 \u0448\u043b\u044e\u0437, \u0446\u0438\u043a\u043b \u043a\u0430\u0447\u0435\u0441\u0442\u0432\u0430 | \u0434\u0435\u0442\u0435\u043a\u0442\u043e\u0440 \u0437\u0430\u043f\u0435\u0447\u0430\u0442\u0430\u043d 27.09; CI \u0441 \u0438\u0441\u0445\u043e\u0434\u043d\u044b\u043c\u0438 \u0431\u044d\u0433\u0430\u043c\u0438; \u0432\u0438\u0434\u0435\u043e 2:50, \u043a\u043e\u043b\u043e\u0434\u0430 16 \u0441\u043b\u0430\u0439\u0434\u043e\u0432 |",
+      "review": "dated history, registered task description or explicitly historical wording; not a current release/UI assertion"
+    },
+    {
+      "file": "web/P2_REVIEW.md",
+      "line": 22,
+      "text": "| \u00a75, \u00a77.2: short video, accessible documentation | current overview is 3:00 (180.000 s remeasured by ffprobe 19.10), H.264/AAC with subtitles; older 2:50 descriptions are historical. The source-backed 18-slide draft is separate from the earlier 16-slide deck | final release-matched video, deck numbers and P1 approval remain pending; [media source](../docs/video/README.md) |",
+      "review": "dated history, registered task description or explicitly historical wording; not a current release/UI assertion"
+    },
+    {
+      "file": "docs/evidence/p2_d1_2026-10-19/README.md",
+      "line": 13,
+      "text": "| 2. C1, version, branch/review state, demo ownership, measured media duration | C1 producer/consumers are implemented, not absent; current package 1.2.0 replaces CAPTAIN's stale current-1.1.0 statement; P1 owns pitch/rehearsals, P2 supports visuals/devices; ffprobe and frame-count/rate both give 180.000 s | PASS; historical 2:50 records retain their dates |",
+      "review": "dated history, registered task description or explicitly historical wording; not a current release/UI assertion"
+    }
+  ],
+  "document_sha256": {
+    "README.md": "ff09182868d228ce6fbf7c4c83097270133bd73af22479c8e511229db1d60a4e",
+    "docs/CAPTAIN.md": "c16f758d76f35db1e0d8409370f726898279501970bc5f48e40be98c6d9f2cae",
+    "docs/README.md": "d732abaaf4e269a62805b771e65fd6d14150043df526aafb9317acba048e36d6",
+    "docs/ROLE_2_PLAN.md": "8d0402591344e0919ca253c8bc794a2d4898520a06acce4dc4e64dd076e2b034",
+    "docs/PLAN.md": "8cb48cccb10da2249909c8f9a3a8ec1818e309cc697801020440ec0a872b758c",
+    "docs/REQUIREMENTS_MAP.md": "38bb46fc0f95a29bcf986bb0b02ca10a0ab27da2a44c7219bfea4cdc3e2491d1",
+    "web/P2_STATUS.md": "c2bedfd5cd54eae19fbb1db9cc0e9de9bb10c057a19e8c3aac83c66a788d5443",
+    "web/P2_REVIEW.md": "96de6e56b53331c3809520c35047070ab7c4e856b7343fef0639457e08c1ab17",
+    "web/DEMO_HANDOFF.md": "523ec8193012522bd7c2d205076bdf97c5bac8aeb5a52b142d62a01b6fd75537",
+    "webapp/README.md": "c7562cf2132f7421b77aabc8d447f9c8c589b8a4acec85c678b894a1f0b6af86",
+    "gitbook/getting-started/read-the-output.md": "06e6ed5ef53a7d0fbf443c1bb66a4322fc59780a2405a0421dc7854c32322921",
+    "gitbook/getting-started/run-on-a-bag.md": "4f1a4b7fa5f1baf6085b4fbb7b4b8ac56b68264f41ee1b2095ea2a2a1c3c0dbd",
+    "gitbook/visualisation/web-prototype.md": "3c32a625f3e995c79eeb800ce0b42a48d3ad886fac28e665d4184f7899125e05",
+    "docs/evidence/p2_d1_2026-10-19/README.md": "c68e0e3619505e17e3687fa01c51f07fb02fe92272e6a09bc9fdea7740852547"
+  }
+}

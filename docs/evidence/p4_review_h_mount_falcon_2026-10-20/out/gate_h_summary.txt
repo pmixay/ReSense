@@ -1,0 +1,16 @@
+cloud_with_fake_obj.h.ndjson                  frames  1510  final mount  1320  clusters looked at   117  over threshold   0  made advisory   0  max(diff - thr) -0.505 at cloud_with_fake_obj_0202 d 4.82
+doubleT_obstacle.h.ndjson                     frames   201  final mount    11  clusters looked at     0  over threshold   0  made advisory   0  max(diff - thr) -
+doubleT_platform.h.ndjson                     frames   345  final mount   141  clusters looked at     0  over threshold   0  made advisory   0  max(diff - thr) -
+new_data_0.h.ndjson                           frames  1409  final mount  1219  clusters looked at     0  over threshold   0  made advisory   0  max(diff - thr) -
+new_data_1.h.ndjson                           frames  1409  final mount  1219  clusters looked at    20  over threshold   0  made advisory   0  max(diff - thr) -1.392 at new_data_54_0019 d 18.19
+new_data_2.h.ndjson                           frames  1409  final mount  1217  clusters looked at     9  over threshold   0  made advisory   0  max(diff - thr) -1.152 at new_data_67_0018 d 14.7
+new_data_3.h.ndjson                           frames  1409  final mount  1219  clusters looked at     0  over threshold   0  made advisory   0  max(diff - thr) -
+new_data_4.h.ndjson                           frames  1409  final mount  1093  clusters looked at     0  over threshold   0  made advisory   0  max(diff - thr) -
+new_data_5.h.ndjson                           frames  1409  final mount  1219  clusters looked at     4  over threshold   0  made advisory   0  max(diff - thr) -1.712 at new_data_161_0040 d 28.12
+new_data_6.h.ndjson                           frames  1409  final mount  1219  clusters looked at     0  over threshold   0  made advisory   0  max(diff - thr) -
+new_data_7.h.ndjson                           frames  1408  final mount  1218  clusters looked at     7  over threshold   0  made advisory   0  max(diff - thr) -0.502 at new_data_200_0012 d 3.02
+roundT_doubleT.h.ndjson                       frames   252  final mount    62  clusters looked at     0  over threshold   0  made advisory   0  max(diff - thr) -
+roundT_pressureGate_roundT.h.ndjson           frames   268  final mount    78  clusters looked at     0  over threshold   0  made advisory   0  max(diff - thr) -
+roundT_squareT_pressureGate_squareT.h.ndjson  frames   545  final mount   355  clusters looked at     0  over threshold   0  made advisory   0  max(diff - thr) -
+squareT_platform_squareT_switch.h.ndjson      frames   877  final mount   687  clusters looked at     0  over threshold   0  made advisory   0  max(diff - thr) -
+TOTAL {'frames': 15269, 'ran': 12277, 'rows': 157, 'over': 0, 'dem': 0}
