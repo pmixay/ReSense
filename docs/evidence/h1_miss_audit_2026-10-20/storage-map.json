@@ -1,0 +1,106 @@
+{
+  "schema": "resense-h1-publication-storage-map-v1",
+  "replay_repeated": false,
+  "git_operations": false,
+  "vm_only_directory": "/tmp/opencode/h1-miss-audit/vm-only",
+  "operations": [
+    {
+      "operation": "preserve_original_before_publication_edit",
+      "original_name": "README.md",
+      "old_path": "/home/aiops/resense/docs/evidence/h1_miss_audit_2026-10-20/README.md",
+      "new_path": "/tmp/opencode/h1-miss-audit/vm-only/README.production.md",
+      "sha256": "c354f27ddafb831024c2409275a74cb09d66e9f66e7ec00acbf750155cdb2b3d",
+      "bytes": 17260,
+      "historical_checksum_resolution": "/tmp/opencode/h1-miss-audit/vm-only/README.production.md",
+      "current_path_is_publication_edition": true
+    },
+    {
+      "operation": "preserve_original_before_publication_edit",
+      "original_name": "PROTOCOL.md",
+      "old_path": "/home/aiops/resense/docs/evidence/h1_miss_audit_2026-10-20/PROTOCOL.md",
+      "new_path": "/tmp/opencode/h1-miss-audit/vm-only/PROTOCOL.production.md",
+      "sha256": "99c951945180b78f41b5d3708c327a8f1103d65250cb2b7e1c394234c7532c5e",
+      "bytes": 3995,
+      "historical_checksum_resolution": "/tmp/opencode/h1-miss-audit/vm-only/PROTOCOL.production.md",
+      "current_path_is_publication_edition": true
+    },
+    {
+      "operation": "move_without_deletion",
+      "original_name": "raw-captures.tar.gz",
+      "old_path": "/home/aiops/resense/docs/evidence/h1_miss_audit_2026-10-20/raw-captures.tar.gz",
+      "new_path": "/tmp/opencode/h1-miss-audit/vm-only/raw-captures.tar.gz",
+      "sha256": "5e6519cff0a1c9cce8d8e8cd9088252c5320940ecbe6afd30078cd3815651f7f",
+      "bytes": 1009663897,
+      "historical_checksum_resolution": "/tmp/opencode/h1-miss-audit/vm-only/raw-captures.tar.gz"
+    },
+    {
+      "operation": "move_without_deletion",
+      "original_name": "miss-snapshots.pkl.gz",
+      "old_path": "/home/aiops/resense/docs/evidence/h1_miss_audit_2026-10-20/miss-snapshots.pkl.gz",
+      "new_path": "/tmp/opencode/h1-miss-audit/vm-only/miss-snapshots.pkl.gz",
+      "sha256": "c42a19c47a34473e67783bc59343eb1622c10833f9c9fa7f9229f86dc7df8da2",
+      "bytes": 68835044,
+      "historical_checksum_resolution": "/tmp/opencode/h1-miss-audit/vm-only/miss-snapshots.pkl.gz"
+    },
+    {
+      "operation": "move_without_deletion",
+      "original_name": "report-initial.json",
+      "old_path": "/home/aiops/resense/docs/evidence/h1_miss_audit_2026-10-20/report-initial.json",
+      "new_path": "/tmp/opencode/h1-miss-audit/vm-only/report-initial.json",
+      "sha256": "3be521f317cfc909482bc1a027ce18570993b5d503feee349e8444dcd090be5b",
+      "bytes": 31918404,
+      "historical_checksum_resolution": "/tmp/opencode/h1-miss-audit/vm-only/report-initial.json"
+    },
+    {
+      "operation": "move_without_deletion",
+      "original_name": "inspection.json",
+      "old_path": "/home/aiops/resense/docs/evidence/h1_miss_audit_2026-10-20/inspection.json",
+      "new_path": "/tmp/opencode/h1-miss-audit/vm-only/inspection.json",
+      "sha256": "3855bff9e448d1600420bad2c74197f6aa0fe62e0282d317023e95a9a56e15c9",
+      "bytes": 13554124,
+      "historical_checksum_resolution": "/tmp/opencode/h1-miss-audit/vm-only/inspection.json"
+    }
+  ],
+  "original_production_receipts": {
+    "SHA256SUMS": {
+      "sha256": "d8534f8b052dfe51eaf8b5a2f0aceda305533ae196fb77d265cd50d35b4fb5c4",
+      "bytes": 2822
+    },
+    "artifact-manifest.json": {
+      "sha256": "a764f6a9cda0bf5dac88552c88a22481aecf8cbabeb0f50032f9aca90346cf87",
+      "bytes": 4567
+    },
+    "archive-manifest.json": {
+      "sha256": "71dbecb9e041b34969efa38f315b62fff47e386a175e9232b8f70f8f0cc3c881",
+      "bytes": 36612
+    },
+    "checksum-verification.json": {
+      "sha256": "156a50183d25db22b8cb04dd2a6eb472705c0c1ef9fa9e9f0087507342ca2e11",
+      "bytes": 954
+    }
+  },
+  "receipt_semantics": "Immutable production record. Resolve historical names through operations; do not rewrite SHA256SUMS.",
+  "retained_vm_capture_files": {
+    "plain.pkl.gz": {
+      "path": "/tmp/opencode/h1-miss-audit/plain.pkl.gz",
+      "sha256": "69c8cbc566bf4ee7d28dbf7af78a9da246cfadb1d05e6b4fded67235dcad8f61",
+      "bytes": 355306028
+    },
+    "traced.pkl.gz": {
+      "path": "/tmp/opencode/h1-miss-audit/traced.pkl.gz",
+      "sha256": "117987539f3e8e9e2c921fc795f9cf761d74cc1b716935189adfea34d0d82483",
+      "bytes": 374593403
+    },
+    "traced-attempt1.pkl.gz": {
+      "path": "/tmp/opencode/h1-miss-audit/traced-attempt1.pkl.gz",
+      "sha256": "cb9e528f4f08dc4881a7abb88a40ad27a7ce705076501f768c440468d6a6b981",
+      "bytes": 284643604
+    }
+  },
+  "retained_source_archive": {
+    "path": "/home/aiops/resense/docs/evidence/h1_miss_audit_2026-10-20/source-tools-input-metadata.tar.gz",
+    "sha256": "fd48b441f9fd02979c4cd1c144dfcdf208ed5adefd7a6cb8e29c605cba4ec1f9",
+    "published": false
+  },
+  "cache_policy": "Original decoded/source caches remain in place on the evaluation VM; not published."
+}

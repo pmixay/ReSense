@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "method": "Separate verifier; no detector or primary recheck module imported",
+  "current_report_sha256": "aa46dcc82e83e097dbb61300df7321f4e4a89fec7e1693b7c84b52e1ce797680",
+  "A_frames_compared_to_both_old_plain_and_traced": 340,
+  "visible_matching_rows": 177,
+  "hits": 114,
+  "misses": 63,
+  "exact_miss_set_equal": true,
+  "directed_full_field_and_tracker_rows": 518,
+  "directed_sequences": 31,
+  "provenance_based_false_core_rows": 56,
+  "false_target_STOP_rows": 40,
+  "actual_floor_held_rows": [
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27
+  ],
+  "late_core_release_snapshots": {
+    "318": [
+      {
+        "id": 2,
+        "core_hits": 0,
+        "core_span": 0.0,
+        "core_ready": false,
+        "reported": true
+      },
+      {
+        "id": 73,
+        "core_hits": 0,
+        "core_span": 0.0,
+        "core_ready": false,
+        "reported": false
+      }
+    ],
+    "319": [
+      {
+        "id": 2,
+        "core_hits": 1,
+        "core_span": 0.09999406337738037,
+        "core_ready": false,
+        "reported": true
+      }
+    ],
+    "323": [
+      {
+        "id": 2,
+        "core_hits": 5,
+        "core_span": 0.49992799758911133,
+        "core_ready": false,
+        "reported": true
+      }
+    ],
+    "324": [
+      {
+        "id": 2,
+        "core_hits": 6,
+        "core_span": 0.5999060869216919,
+        "core_ready": true,
+        "reported": true
+      },
+      {
+        "id": 74,
+        "core_hits": 0,
+        "core_span": 0.0,
+        "core_ready": false,
+        "reported": false
+      }
+    ]
+  },
+  "difference_artifact_empty": true,
+  "positive_controls": {
+    "deleted_known_positive_detection": true
+  },
+  "original_f56_report_and_script_unchanged": true,
+  "current_sources_and_index_unchanged": true
+}

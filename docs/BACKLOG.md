@@ -14,7 +14,7 @@
 > follows the last code change. [`DECISIONS.md`](DECISIONS.md) rows 35–46;
 > [record](evidence/f1a_completion_2026-10-20/README.md). Independent final-bundle acceptance and the
 > release remain open.
-> Merged here with `origin/main` `769d075`: PRs #43–#49 are merged (#46, #48, #49 at 19:17–19:20 MSK). `python3 scripts/detector_freeze.py verify`
+> Merged here with `origin/main` `fb92213` (the two commits after `769d075` are the H1 independent-review evidence, docs only; no frozen file changed): PRs #43–#49 are merged (#46, #48, #49 at 19:17–19:20 MSK). `python3 scripts/detector_freeze.py verify`
 > **PASS** on the merged tree (`detector_freeze_2026-10-20_1.2.0_f1a.json`, 40 files, digest `9cc33a68…`).
 > **CI re-checked 20.10 ~18:00 and ~19:05 MSK:** the billing block is gone; main runs
 > [#667](https://github.com/pmixay/ReSense/actions/runs/39432683938) (`5d83c5b`) and
@@ -51,6 +51,14 @@ before the code stop 20.10 23:59 MSK. The final reseal with P4's acceptance, J1/
 the dust and marked-bag replay all run on it, after it exists. P4 ran the dust and marked-bag replay on `f56ad5e` (PR #49,
 merged); the F1a completion changed `resense/lowobj.py` after it, so it is repeated on the final source.
 
+**H1 independent closure check, evening 20.10: BLOCKED.** All 63 misses are now traced and independently
+reviewed; actual wrong-selected-pair and no-rail tests are complete, with failures rather than acceptance.
+Fresh replay on the F1a-completion source `520e7dc` preserves all 63 misses and the directed wrong-pair
+counterexamples. An independently validated far-axis reference is still missing. See the
+[current-source check](evidence/h1_current_source_2026-10-20/README.md),
+[independent review](evidence/h1_final_review_2026-10-20/README.md) and
+[publication summary](evidence/h1_publication_2026-10-20/README.md).
+
 **PR #43 merged 20.10** ([PR #43](https://github.com/pmixay/ReSense/pull/43), squash `8c2bf51`): main now also carries
 the off-by-default K2 v5c switch (`track.axis_joint_reach_dual`, 0 = off; code in `resense/track.py`,
 `resense/detector.py`, `resense/config.py` and both YAMLs), P4's reviews, the N5 supplement and the data handoff.
@@ -82,10 +90,10 @@ image and the tag, and the captain's open decisions (P1 table).
 | L16/S3 orientation (P3) | **on** | directional recovery and ≤60k search retained; A1 false-forward cue repaired (`4bf62f3`), T1 measured | author acceptance complete: 27,580 paired rows; final F1a-main merge gate/X3/Falcon pass, 489 affected tests pass ([record][l16-open-air]); final-bundle P4 review remains |
 | K2 axis on curves (`track.axis_joint_fit=false`), variant B = v5b without K1 | **held off** (decision 44) | original Falcon attribution was revised in PR #43 (122.27 m first person STOP, 37 person frames without STOP); the marked tunnels cube still loses STOPs (29 → 13 in the 2.5–250 m crop). `small_center` gate loss also remains | **P2 P0** (transferred from P4 by the captain, 20.10; P2 has started): resolve the measured losses, independent review, then captain's decision; v5c merged off by default; P4's measurements stay as input ([report][p4-k2]) |
 | K1 per-distance axis smoothing (`track.walls_smoothing_distance`) | off | standing train STOP at 100 m 82 → 255 / 260, but adds a false STOP on `doubleT_platform` (gate A measured on the integration branch) | P2 (transferred from P4 with K2), in the same package |
-| Falcon clear-distance model (`small_target_limit`, falcon_prime) | **on**, only in the node's non-default `clear_range_policy` (conservative / small_candidate) | reports up to 48.2 m from the measured Falcon raster (density model, as for Pandar) instead of 0 | P4 review 20.10: 48.2 m reproduced, no decision changes; it lets the detector's clear distance through where there was 0, and that value is wrong in 38 frames at the recording's end ([record][p4-h-falcon]) |
+| Falcon clear-distance model (`small_target_limit`, falcon_prime) | **on**, only in the node's non-default `clear_range_policy` (conservative / small_candidate) | reports up to 48.2 m from the measured Falcon raster (density model, as for Pandar) instead of 0 | P4 review 20.10: 48.2 m reproduced, no decision changes; it lets the detector's clear distance through where there was 0, and that value is wrong in 38 frames at the recording's end ([record][p4-h-falcon]); **that finding is P2's since 20.10 evening** (P2 table) |
 | Falcon far range (`farrange.with_falcon_profile`) | off | person STOP 146 m (was 127) but rule 5.1(b) fails (9 vs 8 episodes), no long-range gain on injected targets | P3: improve (route-map variant, second boundary) |
 | Dust guard (`dust.enabled`) | off | fails its own acceptance; 13 organizer dust frames checked on `4cf8e27`, no dust-attributed STOP/CAUTION | P1/P4: repeat on the final source, delayed until it exists (captain, 20.10); old check is not a dense-dust robustness result |
-| H1 positive collision core (`cluster.column_core_margin` 0.02) | **on**, partial improvement | A-axis 82 →114/177; merged gate/X3 pass; inherited High remains OPEN (decision 45) | P3/P4: far-axis reference, 63 misses, independent review; withdrawn `column_free_max_top=0` stays off. P4's switch review ([README][p4-r3-h1]) reproduces 82 →114/177 and reports that H1 never fires on the recorded data (no core cluster in 15,269 gate frames), so its benefit is shown on injected objects only |
+| H1 positive collision core (`cluster.column_core_margin` 0.02) | **on**, partial improvement; independent acceptance **BLOCKED** | A-axis 82 →114/177; 63 misses remain on `520e7dc`. Actual wrong-pair scenes produce false core/STOP and inside misses | Independent review completed; P3/P4 must repair the measured failures and obtain a validated far-axis reference ([current check](evidence/h1_current_source_2026-10-20/README.md)); withdrawn `column_free_max_top=0` stays off. P4's switch review ([README][p4-r3-h1]) reproduces 82 →114/177 and reports that H1 never fires on the recorded data (no core cluster in 15,269 gate frames), so its benefit is shown on injected objects only |
 
 ### P1 · captain
 
@@ -119,6 +127,7 @@ image and the tag, and the captain's open decisions (P1 table).
 |---|---|---|
 | P0 | Move the image files out of the repository root: `git ls-tree HEAD` (20.10 ~19:00 MSK) lists **five**, not three: `1591221.jpeg`, `IMG_8349.jpeg`, `IMG_8350.jpeg` (commit `7e38c01`), `images (1).jpg` and one long-named `.jpg` (`nBkSUhL2…Xw.jpg`; both added by PR #47). Into the deck's assets if used and licensed, otherwise delete | `git grep` (20.10): the three photos are referenced by `DESIGN.md`, `PRODUCT.md`, `docs/images/metro-2020/README.md` (links), `docs/images/moskva-doors/` and `.impeccable/surfaces/`; `images (1).jpg` by `DESIGN.md`, `PRODUCT.md`, `docs/images/player-workspace/README.md`, `webapp/frontend/README.md` and `screenDisplay.ts`; the long-named file has no reference. Moving a referenced file means updating those references |
 | **P0 (K2/K1)** | Transferred from P4 by the captain, 20.10 (P2 has started; no P2 K1/K2 branch or PR is visible on GitHub yet, checked 20.10 ~19:00 MSK). **Keep both off unless a candidate passes.** K2 v5c revision 1 is in main, off (PR #43). P4's T2 rows (PR #45) are run: v5c fails the Falcon row as scored (122.27 m first person STOP) and the tunnels cube (29 → 13 STOP frames); only set O `small_center` fails the gate. Resolve the Falcon loss, the cube loss, `small_center`, K1 false STOPs and the review items. Any change under `resense/` or `configs/` follows [`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md) (acceptance first, full gate without `--allow`, independent review, reseal) and must land before the code stop 20.10 23:59 MSK; otherwise it stays off. P3 or a fresh agent reviews; captain decides switch-on | [existing package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md), [v5c][p4-k2], T2/T3 in [handoff][p4-handoff]; P3 owns `resense/track.py`, so tell P3 |
+| **P0 (Falcon clear distance)** | Transferred from P3 by the captain, 20.10 evening (not yet started; no P2 branch or PR visible on GitHub). In 38 of the Falcon frames 4373–4414 (the recording's end) the detector's own clear distance (3.0–40.0 m, `clear_range_policy` conservative / small_candidate) lies beyond a person-like object 2.5–7 m ahead while the frame is not STOP. Decide **before ~22:15 MSK**: (a) document it as a known limit of the Falcon clear-distance model (no code; recommended, there is no time to gate and review a fix), or (b) a fix, which is a detector change: [`DETECTOR_FREEZE.md`](DETECTOR_FREEZE.md) (acceptance first, full gate without `--allow`, independent review, reseal), must land before 22:30 MSK and needs P3 for `resense/` | P4's review of H′ and the clear-distance model ([review][p4-h-falcon], PR #46); the 38 frames and their raw returns are in its record |
 | P1 | Short Falcon demo bag with the person: a window of `falcon_test` around 280–330 s (not the 100-frame prefix: it holds a false STOP at 115 m); check that `ros2 bag play` opens it; update the demo handoff | **built 20.10** by the agent started at ~18:40 MSK ([record](evidence/falcon_demo_bag_2026-10-20/README.md), script `scripts/make_falcon_demo_bag.py`): frames 2719–3150 = 271.9–315.0 s, 432 messages, 43.1 s, 1.97 GB, db3 sha256 `b2c4a826…`; re-read independently here: 432 messages, 43.10 s, ~10 Hz, ~4.56 MB each. **The bag is not in git** (it sits in the build session's scratchpad: copy it out, or regenerate in ~4.5 min from the organizers' archive link with the command in the record). Cold start (judge replica): first STOP at bag frame 2950 = 23.1 s in, **127.18 m** (the whole recording: 124.84 m at frame 2972); 32 of 432 decisions differ from the whole-recording run, identical from frame 3108; time to the first STOP ~26 s at `--rate 1.0`, ~49 s at `--rate 0.5` (outside the 30 s rehearsal criterion). **`ros2 bag play` on it and live-node stale results are UNVERIFIED** (no ROS and no image in the build session). Its handoff text is applied after the code stop (captain, 20.10) |
 | P1 | Second demo device (RViz / web) and a fallback clip re-recorded on the 1.2.0 image (the clip is from 23.09) | needs an image, so it waits for the final source (captain, 20.10) |
 | P1 | Deck visuals: range-by-geometry chart (straight / curve / double track) and the Falcon slide | deck text updated 19.10; deck edits come after the code stop (captain, 20.10) |
@@ -130,11 +139,11 @@ image and the tag, and the captain's open decisions (P1 table).
 |---|---|---|
 | done (author acceptance) | Repair L16/S3 shipping A1 and measure original-start exposure T1 | `4bf62f3`: 450 FAULT →450 GO, all446 positive rows kept; 120 raw frames /12 starts measured; 27,580 paired recorded rows exact; final combined source `afbf9fc`: gate/X3/Falcon pass, 489 affected tests pass ([record][l16-open-air]) |
 | done (author acceptance) | Complete F1a: remove the B1 repair's ride cost without losing a detection | the reference reads the rail head's **own top surface**, the same feature the uncapped top reads; ride events 23 → 18, episodes 26 → 24, alarm frames 111 → 102 (the pre-repair values), 9 STOP frames removed and 0 added, every set O object unchanged, Falcon 4,443 rows identical, X3 0 of 260 failed, 363 affected tests pass ([record](evidence/f1a_completion_2026-10-20/README.md)) |
-| P0 | Resolve remaining P4 shipping dispositions: F1a review/ride cost and B4 mount-height limit | F1a author completion delivered (the ride cost is removed); R3 B2/B3 author repair/disposition complete; independent final-bundle review and the other findings remain separate ([review][p4-shipping], [handoff][p4-handoff]); after code stop, captain-approved review fixes only. Reported to P3 by P4's review (PR #46, merged), not fixed: in 38 of the Falcon frames 4373–4414 the detector's own clear distance (3.0–40.0 m) lies beyond a person-like object 2.5–7 m ahead while the frame is not STOP ([review][p4-h-falcon]) |
+| P0 | Resolve remaining P4 shipping dispositions: F1a review/ride cost and B4 mount-height limit | F1a author completion delivered (the ride cost is removed); R3 B2/B3 author repair/disposition complete; independent final-bundle review and the other findings remain separate ([review][p4-shipping], [handoff][p4-handoff]); after code stop, captain-approved review fixes only. The Falcon frames 4373–4414 finding of P4's review (PR #46) was **moved to P2** by the captain on 20.10 evening (P2 table); P3 is asked only if a code fix is chosen |
 | done (author acceptance) | Complete R3 B2/B3 on current main | current-only voxel/shape support in accumulated clusters; resolved moving cables are not demoted by static-world ego-veto; strict gate, paired X3/Falcon/E6,576 analytic rows and448 affected tests verified ([record](evidence/r3_completion_2026-10-20/README.md)) |
 | done | Investigate Set F cable sustained median 34.2 →17.8 m and repair aggregate-only reporting | fresh 30-sequence paired run, 3,060 rows/side: 0 lost hits, 9 added cable hits, no false-detection increase; coverage 2/6 →4/6, original-success cohort unchanged ([record](evidence/r3_sustained_2026-10-20/README.md)) |
 | P1 | Q&A preparation and mock jury: the algorithm, curves (what K2 ships and costs), why not 300 m, dust, the second lidar, false alarms; technical check of `ALGORITHM.md` and the slides | — |
-| P1 | H1 (tall narrow objects, the open High finding): retain the implemented partial improvement; obtain a validated far-axis reference, resolve remaining misses and complete independent review | user-authorized main integration, **overall OPEN**; A-axis 82 ->114/177, 63 misses remain ([publication](evidence/h1_partial_integration_2026-10-20/README.md)) |
+| P1 | H1: obtain a validated far-axis reference and repair the attributed misses and actual wrong-pair failures | **OPEN/BLOCKED**. Independent audit/review complete; all 63 misses and wrong-pair failures reproduced on F1a-completion `520e7dc`, with 104 H1 tests passing ([current check](evidence/h1_current_source_2026-10-20/README.md)) |
 | P2 | F1a B1: author repair and its completion both implemented on user request; the ride cost of the first repair (accepted 20.10 by the captain's delegate) is removed by the completion; the independent final-bundle review remains ([completion](evidence/f1a_completion_2026-10-20/README.md)); Falcon far range (route-map variant, second boundary); M1 moving-object probes (the organizers: objects may move); C1, R1/R2, S4, N6 | F1a worked on 20.10; other items after 23.10 |
 
 ### P4 · data / evaluation
@@ -145,7 +154,7 @@ image and the tag, and the captain's open decisions (P1 table).
 | done (T4, F1a acceptance run) | Measure F1a capped-top exposure and hand findings to P3; run the F1a repair on the recordings | PR #45. T4: F1a made 163 low clusters weak on set O and the ride, 114 with a rail reference ≥ 0.11 m (all on the ride, none on set O); the pictures show rail fragments and track-level surfaces, no real object above the rails ([T4](evidence/f1a_exposure_2026-10-20/README.md)). Acceptance run of the repair on `99dab01` ([record](evidence/f1a_acceptance_2026-10-20/README.md)): gate PASS against the seal baseline; against `8c2bf51` ride alarm events 18 →23 and STOP episodes 24 →26, all 16 changed decisions traced, X3 40/40 cases equal. The ride cost was accepted 20.10 (P1 table). |
 | moved | K2/K1 is now P2's (see the P2 table), captain 20.10. P4's v5c, the T2/T3 rows (PR #45) and the package stay as inputs | [existing package](evidence/k1_k2_gauge_2026-10-19/P4_PACKAGE.md), [v5c][p4-k2], T2/T3 in [handoff][p4-handoff] |
 | P0 | Complete acceptance of what ships on, including **H1**: resolve reported L16/S3, R3 and F1a findings, verify fixes on recordings and review combined source | pre-H1 synthetic shipping review in main (PR #43); its A1/B1/B2 re-run on H1 main `8c2bf51` gave identical results before the A1 repair ([review][p4-shipping]). Since then: L16 and F1a repair acceptance runs delivered (PR #45, rows above); H′ and the Falcon clear-distance model **reviewed in PR #46 (open)** on `cc6226e`, Falcon and the H′-off gate re-run on `f56ad5e`, X3 not re-run there ([review][p4-h-falcon]); R3 and H1 **switch review written** on branch `claude/wonderful-planck-tpv33h` (head `4192f13`, no PR yet, [README][p4-r3-h1]; not the independent review of `0a472d6` itself). **Reviewed or in progress, not accepted**: no final-bundle acceptance, reseal still blocked |
-| P0 | Finish independent integration verification from raw outputs of the exact combined source | historical review done where committed files allow; some old per-frame outputs missing. New H1 raw archives exist, independent review pending ([review][p4-integration], [current record](evidence/h1_partial_integration_2026-10-20/README.md)). PR #45, PR #46 and the interim R3/H1 runs re-derive gate (15,269 rows), Falcon (4,443 rows) and X3 pieces on `cc6226e` / `f56ad5e`; the exact final source is not known yet P4's independent final-bundle review of `f56ad5e` is on branch `claude/sleepy-bohr-nedkui` (no PR yet, [README](https://github.com/pmixay/ReSense/blob/7b8f63827ae95661b5c6f4efa615294ae2140a3d/docs/evidence/p4_review_final_bundle_2026-10-20/README.md)): R3's 208 metrics and 18,329 rows reproduce, no blocking defect, accept B2; it predates the F1a completion (`resense/lowobj.py`), which it does not cover |
+| P0 | Finish independent integration verification from raw outputs of the exact combined source | historical review done where committed files allow; some old per-frame outputs missing. New H1 raw archives exist, independent review pending ([review][p4-integration], [current record](evidence/h1_partial_integration_2026-10-20/README.md)). PR #45, PR #46 and the interim R3/H1 runs re-derive gate (15,269 rows), Falcon (4,443 rows) and X3 pieces on `cc6226e` / `f56ad5e`; the exact final source is not known yet P4's independent final-bundle review of `f56ad5e` is on branch `claude/sleepy-bohr-nedkui` (no PR yet, [README](https://github.com/pmixay/ReSense/blob/7b8f63827ae95661b5c6f4efa615294ae2140a3d/docs/evidence/p4_review_final_bundle_2026-10-20/README.md)): R3's 208 metrics and 18,329 rows reproduce, no blocking defect, accept B2; it predates the F1a completion (`resense/lowobj.py`), which it does not cover. H1-specific review **complete, BLOCKED** (main, evening 20.10): 340 A outputs and 518 directed rows checked independently, then exactly reproduced on `520e7dc` ([review](evidence/h1_final_review_2026-10-20/README.md), [current check](evidence/h1_current_source_2026-10-20/README.md)) |
 | P1 | On the final seal: J1 (retarget [`RELEASE_DAY.md`](evidence/rejudge_2026-10-16/RELEASE_DAY.md) from 1.1.0) and the G3 held-out run by a fresh agent | needs the final source and its reseal |
 | P1 | N5: review the merged marker supplement, then re-score final 1.2.0 | PR #43 adds 34 missing-cube rows and flags 12 unmatched rows; merged, final H1/reseal scoring pending ([supplement][p4-n5]) |
 | P1 | Mock jury at both rehearsals | — |
@@ -189,7 +198,7 @@ point estimates and the former dates of every row are in the archive.
 | K1 / K2 | gauge on curves, standing train | **both off** (`walls_smoothing_distance=0`, `axis_joint_fit=false`), decision 44; P2's since 20.10 (captain; no P2 K1/K2 branch or PR visible on GitHub yet); v5c merged off by default, its registered rows measured in PR #45 (F-1 and M-1 fail as scored); K2 stays off unless a candidate passes review before the code stop (open decision, captain) | P0 / P2 |
 | N3 | dust | guard **off** (fails acceptance); organizer dust replayed by P4 on `f56ad5e` (no dust-attributed STOP/CAUTION, [record](evidence/p4_dust_markers_final_2026-10-20/README.md)); repeated on the final source, because `resense/lowobj.py` changed after it (captain, 20.10) | P0 |
 | N7 | Falcon to 300 m | `farrange` **off**: person STOP 146 m (was 127 m), no gain on injected targets, rule 5.1(b) fails | P2 |
-| H1 | tall narrow objects (the open High finding, 8.1) | **partial positive-core improvement implemented and accepted for main; overall OPEN**. A-axis 82 ->114/177, physical controls and merged gate/X3 pass; independent far-axis reference and final review pending ([record](evidence/h1_partial_integration_2026-10-20/README.md)) | P1 |
+| H1 | tall narrow objects (the open High finding, 8.1) | **OPEN/BLOCKED after independent review**. A-axis 114/177, all 63 misses attributed; actual wrong-pair false core/STOP and inside misses confirmed. Fresh F1a-source check: all 858 directed/A outputs identical. Far-axis reference and repairs remain ([record](evidence/h1_publication_2026-10-20/README.md)) | P1 |
 | N5 | labels of the new synthetic bags | initial labels done; organizer markers independently checked; merged PR #43 supplement adds cube/flags 12 rows; final scoring pending | P1 |
 | J1 | re-judge the final seal | retarget [`RELEASE_DAY.md`](evidence/rejudge_2026-10-16/RELEASE_DAY.md) from 1.1.0; needs the final source and its reseal | P1 |
 | G3 | held-out run by a fresh agent | spec registered, no run; on the final 1.2.0 seal, so after the final source | P1 |
@@ -292,15 +301,59 @@ byte for byte against the old archive; marker boxes give obstacle support, not s
 ([withdrawal](evidence/integration_2026-10-16/h4_fixes/columns/WITHDRAWAL_RESULTS.md)). A new positive current-frame
 collision core with fresh rail anchors is implemented (`column_core_margin=0.02`); it releases only column suppression
 after ordinary uninterrupted confirmation. A-axis improves **82 ->114/177**, leaving **63 visible unmatched frames**.
-All 32 stationary physical scenes match after confirmation; 280 outside controls have no false STOP. Nominal moving
+All 32 stationary physical scenes match after confirmation; 280 historical outside controls have no false STOP. Nominal moving
 physical scenes have continuous STOP from **130.8 /135.2 m**, a simulation result only. Merged source `0f02b28` passes
 the full gate; fresh combined-tree X3 passes 40 cases /29,765 rows. The full suite retains one inherited proxy-hook
 failure (2,276 passed +17 subtests). The user explicitly authorized publishing this partial improvement in main without
 claiming closure. Still needed: independently validated far rail axis/trajectory, remaining miss resolution,
-wrong-pair/no-rail limits and independent final review/reseal.
+repair of the observed failures and independent final acceptance/reseal.
+
+**Evening 20.10 independent review: completed, acceptance BLOCKED.** Fresh A replay on `f56ad5e`
+checks all 340 raw results with exact plain/traced equality and independently matches all 177 visible rows.
+The 63 misses have actual executed primary mechanisms: **43 column hold, 9 axis limit, 7 zone-vote delay,
+2 merged wall-segment filters, 1 height-reference limit, 1 tracker confirmation**. All labels are checked
+against full snapshots; primary labels do not claim a unique counterfactual cause
+([miss audit](evidence/h1_miss_audit_2026-10-20/README.md)).
+
+The new physical matrix actually selects distractor rails. Four outside-target sequences produce
+**56 false-core rows /40 false target-STOP rows**; four inside-target sequences miss all 14 scans each.
+For the ±1.50 m targets the entire body is outside the true host envelope by at least **0.22 m**.
+Rail-free cold starts produce no fresh core in 42 scans, but a visible target's old STOP survives rail loss
+for four scans through the unchanged zone vote. These are bounded synthetic results, not a prevalence
+estimate or universal guarantee ([rail limits](evidence/h1_rail_limits_2026-10-20/README.md)).
+
+A fresh independent reviewer re-derives all 63 labels, 837 rail-estimator calls and 518 directed outputs;
+the far-reference audit checks 11 raw databases and all 36 failed direct comparisons. The supplied
+Falcon and organizer-folder links identify the already investigated data, not an external rail/pose
+reference ([reference audit](evidence/h1_independent_2026-10-20/README.md),
+[final review](evidence/h1_final_review_2026-10-20/README.md)).
+
+After concurrent F1a completion, fresh plain replay on pinned **`520e7dc`** reproduces **all 858 outputs**
+(A340 + directed518) exactly outside timing, including all 63 miss IDs and wrong-pair failures;
+104 H1 tests and the current 40-file F1a integrity seal pass
+([delta acceptance](evidence/h1_current_source_2026-10-20/README.md)). No H1 repair or safety reseal is
+claimed. Required next input: independently checked left/right rail-head geometry and host-path identity
+at 100–150 m in identified A/C frames, with uncertainty, or validated synchronized relative SE(3) and
+extrinsics/error budget. The **63 misses remain unresolved**.
 [Publication](evidence/h1_partial_integration_2026-10-20/README.md),
 [repair](evidence/h1_reference_2026-10-19/README.md),
 [rejected reference attempts](evidence/h1_trajectory_2026-10-19/README.md).
+
+**H1-REF — required missing input, explicitly confirmed by the user (20.10). Status: MISSING / BLOCKED.**
+To continue H1 validation, obtain either:
+
+1. **Verified geometry of both rail heads and the correct host-path identity at 100–150 m in specific A/C
+   frames, with quantified spatial uncertainty**; or
+2. **An independently verified synchronized trajectory**, with sensor extrinsics and an error budget,
+   sufficient to transfer independently checked rail-head observations into those A/C frames.
+
+Here **A** is `roundT_squareT_pressureGate_squareT` and **C** is `roundT_pressureGate_roundT`.
+The handoff must identify the source recording, frame IDs and timestamps, coordinate system and
+sensor transforms, measurement support, uncertainty, and the independent validation method/reviewer.
+The supplied Falcon and organizer-folder links have already been checked; access to those recordings
+alone does not satisfy H1-REF. Until the spatial input is received and independently validated,
+**H1 remains OPEN/BLOCKED**. Receiving it enables the remaining repairs and acceptance checks;
+it does not by itself resolve the 63 misses or the wrong-pair failures.
 
 #### K1 · Standing train: far axis jitter → STOP flicker at 100–150 m, perturbation-sensitive platform false STOPs
 Distance-based smoothing of the wall fit is **off** (`track.walls_smoothing_distance=0`). Historical v4: standing person

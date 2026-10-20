@@ -1,0 +1,200 @@
+{
+  "status": "PASS_REQUESTED_A_AXIS_REPLAY_AND_FACTUAL_MISS_ATTRIBUTION",
+  "does_not_close_overall_H1": true,
+  "source_commit": "f56ad5e62d9d051811c804734c7731b6951eae90",
+  "branch": "main",
+  "freeze": {
+    "returncode": 0,
+    "stdout": "Detector freeze PASS: 40 files; source 6d091081769104657ecc2c0b06f53049647d4f6c7327b7429bbda92673782452\nIntegrity check only; no recordings replayed.\n"
+  },
+  "source_files_hashed": 207,
+  "input_files_hashed": 548,
+  "source_digest": "4642b6be17dfadaffcae126b5fb2b51875696d46020090ce008a1e1bade62920",
+  "input_digest": "fa3a011aede37450d6eb3024a30d5092acaa03c6c0ca0cd11c77e352b6628850",
+  "source_input_index_unchanged": true,
+  "only_new_git_status_entry": "?? docs/evidence/h1_miss_audit_2026-10-20/",
+  "exact_frames": 340,
+  "exact_fields": [
+    "stamp",
+    "obstacle",
+    "warning",
+    "nearest_distance",
+    "detections",
+    "warnings",
+    "candidates",
+    "track",
+    "corridor_idx",
+    "n_points",
+    "ego_speed",
+    "ego_speed_source",
+    "n_accumulated",
+    "ego_speed_estimate",
+    "ego_speed_confidence",
+    "health",
+    "mount",
+    "clear_distance",
+    "xyz"
+  ],
+  "exact_ieee_verified": true,
+  "visible_rows": 177,
+  "hits": 114,
+  "misses": 63,
+  "verified_miss_snapshots": 63,
+  "primary_label_counts": {
+    "axis_limit": 9,
+    "zone_vote_delay": 7,
+    "tracker_unconfirmed": 1,
+    "merged_wall_segment_filter": 2,
+    "height_reference_limit": 1,
+    "column_hold": 43
+  },
+  "historical_miss_set_exactly_equal": true,
+  "controls": {
+    "lost_hit": {
+      "k": 164,
+      "original_hit": true,
+      "planted_hit": false,
+      "recomputed_from_raw_hit": true,
+      "detected": true,
+      "deleted_matching_payload_detected": true
+    },
+    "trace_difference": {
+      "k": 164,
+      "scalar_mutation_path": "result.detections[0].distance:value",
+      "array_mutation_path": "result.xyz:array_bytes",
+      "scalar_and_array_fingerprints_detected": true,
+      "timing_only_ignored": true
+    },
+    "historical_set": {
+      "planted_added": 164,
+      "planted_removed": 152,
+      "both_detected": true
+    },
+    "observed_label_positive_controls": {
+      "column_hold": 224,
+      "axis_limit": 152,
+      "height_reference_limit": 178,
+      "zone_vote_delay": 157,
+      "merged_wall_segment_filter": 177,
+      "tracker_unconfirmed": 152
+    }
+  },
+  "ieee_controls": {
+    "float_ulp": {
+      "comparator_detected": true,
+      "hash_detected": true
+    },
+    "float_signed_zero": {
+      "comparator_detected": true,
+      "hash_detected": true
+    },
+    "array_dtype": {
+      "comparator_detected": true,
+      "hash_detected": true
+    },
+    "array_shape": {
+      "comparator_detected": true,
+      "hash_detected": true
+    }
+  },
+  "core_calls_checked": 172,
+  "core_miss_calls_checked": 61,
+  "robust_mask_failures": [
+    {
+      "k": 306,
+      "retained_returns": 0,
+      "retained_voxels": 0
+    },
+    {
+      "k": 307,
+      "retained_returns": 0,
+      "retained_voxels": 0
+    },
+    {
+      "k": 308,
+      "retained_returns": 0,
+      "retained_voxels": 0
+    },
+    {
+      "k": 309,
+      "retained_returns": 0,
+      "retained_voxels": 0
+    },
+    {
+      "k": 310,
+      "retained_returns": 0,
+      "retained_voxels": 0
+    },
+    {
+      "k": 311,
+      "retained_returns": 0,
+      "retained_voxels": 0
+    },
+    {
+      "k": 312,
+      "retained_returns": 0,
+      "retained_voxels": 0
+    },
+    {
+      "k": 313,
+      "retained_returns": 0,
+      "retained_voxels": 0
+    },
+    {
+      "k": 314,
+      "retained_returns": 0,
+      "retained_voxels": 0
+    },
+    {
+      "k": 315,
+      "retained_returns": 0,
+      "retained_voxels": 0
+    },
+    {
+      "k": 316,
+      "retained_returns": 0,
+      "retained_voxels": 0
+    },
+    {
+      "k": 317,
+      "retained_returns": 0,
+      "retained_voxels": 0
+    },
+    {
+      "k": 318,
+      "retained_returns": 0,
+      "retained_voxels": 0
+    }
+  ],
+  "raw_examples_visually_reviewed": [
+    152,
+    159,
+    174,
+    177,
+    178,
+    196,
+    224,
+    306,
+    319,
+    323
+  ],
+  "raw_archive_sha256": "5e6519cff0a1c9cce8d8e8cd9088252c5320940ecbe6afd30078cd3815651f7f",
+  "source_archive_sha256": "fd48b441f9fd02979c4cd1c144dfcdf208ed5adefd7a6cb8e29c605cba4ec1f9",
+  "runtime_libs": "runtime-libraries.json",
+  "unresolved_attribution_rows": [],
+  "limitations": [
+    "Injection follows a cached detector baseline; no independently validated in-gauge truth.",
+    "Primary labels describe the observed executed path, not unique counterfactual root causes.",
+    "Wrong selected rail pairs and missing-rails generalization are outside this audit.",
+    "No real-world detection-range or braking-sufficiency claim.",
+    "Sparse/height/ring guards are reported from executed states; disabled/unexercised guards are not certified."
+  ],
+  "audit_failures_corrected": [
+    "First traced attempt failed because the audit treated a float local named b as a blob; preserved.",
+    "Initial attribution left vote/structure rows unresolved; full branch-state verification resolves them.",
+    "Initial geometry-near attribution included background tracker failures at k310/k314; final attribution requires actual injected-return provenance.",
+    "Initial trace-difference control was behind an unvisited visibility branch; final controls execute on a known positive k164.",
+    "Verifier accepts repeated multiline assignment line events only after exact state equality.",
+    "Final status comparator excludes the audit directory on both sides: the initial manifest was created after the pre-replay protocol already existed."
+  ]
+}

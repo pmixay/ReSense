@@ -1,0 +1,15 @@
+{
+  "replay_repeated": false,
+  "git_operations": false,
+  "visible_rows": 177,
+  "miss_snapshots": 63,
+  "full_snapshot_hashes": 340,
+  "branch_events": 3285,
+  "candidate_local_support_points": 31206,
+  "compressed_bytes": 5411599,
+  "sha256": "92d9882e36cdb56bf9836c1d1fede5ce8ec32511ef2ea3e122672971933bc954",
+  "source_captures_verified_against_production_archive_manifest": true,
+  "all_frame_result_ieee_hashes_verified": true,
+  "whole_clouds_published": false,
+  "storage_map_sha256": "6ddc85b9bbea39df7cb0bf864d3d5c5ee07f93edb0a038e2118b4a4cb7f62e45"
+}
