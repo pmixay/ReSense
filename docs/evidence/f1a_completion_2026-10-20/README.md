@@ -52,18 +52,18 @@ diagnostics that produced the head/web reading are in [`out/`](out).
 
 | check | method | result |
 |---|---|---|
-| strict gate | `regression_gate.py` on the clean `a77d884` tree, seal baseline, `--jobs 2`, no `--allow`; both sides run | **PASS**, no waiver, no missing or worse gated row ([`out/gate_rows.txt`](out/gate_rows.txt)) |
-| ride against main | the two gates' per-frame JSONL, row by row | 19 changed frames: **9 STOP frames removed, 0 added**; 10 advisory-only changes; the removed frames are exactly the ones P4 traced to the repair (ride 1 tracks 288/305, ride 4 track 50, ride 7 track 202) ([`out/changed_frames.txt`](out/changed_frames.txt)) |
+| strict gate | `regression_gate.py` on the clean `a77d884` tree, seal baseline, `--jobs 2`, no `--allow`; both sides run | **PASS**, no waiver, no missing or worse gated row ([`gate-rows.txt`](gate-rows.txt)) |
+| ride against main | the two gates' per-frame JSONL, row by row | 19 changed frames: **9 STOP frames removed, 0 added**; 10 advisory-only changes; the removed frames are exactly the ones P4 traced to the repair (ride 1 tracks 288/305, ride 4 track 50, ride 7 track 202) ([`changed-frames.txt`](changed-frames.txt)) |
 | ride against the pre-repair rule | the recorded `8c2bf51` numbers of P4's acceptance | **18 / 24 / 102** — the pre-repair values, exactly |
 | no detection lost | set O per object and `doubleT_obstacle`'s labelled hits, candidate against reference | identical for **every** object; `long_low_on_rails` 52 frames / 87.2 m, `small_on_rail` 23 / 42.7 m unchanged |
 | the other recordings | per-recording rows of the two gates | identical, except `doubleT_platform`'s advisory frames 182 → 180 (the repair's 2 advisory frames) |
-| physical scenes | the P4 raised-rail scenes (3 rail elevations × 4 box tops × empty controls, plus a 45-frame approach) on both trees | 32 scenes, **0 differing rows**: the 5 positive cases keep 8 matched STOP rows each, all 6 empty controls stay empty, the approach keeps its 38 matched rows from 54 m ([`out/physical_compare.txt`](out/physical_compare.txt)) |
-| B1 controls | `tests/test_f1a_b1.py` and `tests/test_f1_false_alarms.py` | 12 two-rail fragments confirm as ordinary gauge tracks; the fragmented object, the missing-support, the cant and the both-rails-raised cases hold ([`out/targeted.xml`](out/targeted.xml)) |
+| physical scenes | the P4 raised-rail scenes (3 rail elevations × 4 box tops × empty controls, plus a 45-frame approach) on both trees | 32 scenes, **0 differing rows**: the 5 positive cases keep 8 matched STOP rows each, all 6 empty controls stay empty, the approach keeps its 38 matched rows from 54 m ([`physical-compare.txt`](physical-compare.txt)) |
+| B1 controls | `tests/test_f1a_b1.py` and `tests/test_f1_false_alarms.py` | 12 two-rail fragments confirm as ordinary gauge tracks; the fragmented object, the missing-support, the cant and the both-rails-raised cases hold ([`targeted-tests.xml`](targeted-tests.xml)) |
 | the new rule | `tests/test_f1a_continuation.py` | the head's top surface rejects an uncapped fragment on both rails and under a slope; a body above it does not; a single stray return, a neighbouring object's returns, a wide cross-track surface and an originally accepted top do not reject |
-| which flips are explained | P4's archived raw snapshots of all 98 flipped clusters, the production function applied to them | **85 of 98** explained by an independently observed head surface; the 13 remaining are listed with their cause ([`out/flips.json`](out/flips.json)) |
+| which flips are explained | P4's archived raw snapshots of all 98 flipped clusters, the production function applied to them | **85 of 98** explained by an independently observed head surface; the 13 remaining are listed with their cause ([`flips.json`](flips.json)) |
 | whole Falcon | the 13.10 judge probe over the whole stream, both trees | 4,443 rows, **0 differing fields**, identical decisions (1,364 STOP / 3,070 CAUTION / 8 GO / 1 FAULT) |
 | X3 | the standing battery with the unchanged judge probe, fresh on both trees, candidate against reference | **0 of 260 comparisons failed**, 40 cases; one raw field differs: the `clear` distance in one `roll_p2` row (4.8 → 26.6 m), which **restores** the pre-repair value — the near low cluster that capped it is weak again; the detection and the decision are identical |
-| tests | affected suites, then the full suite | 363 affected tests pass (1 external-data deselection); the full suite's result is in [out/full-tests.xml](out/full-tests.xml) |
+| tests | affected suites, then the full suite | 363 affected tests pass (1 external-data deselection); the full suite's result is in [full-tests.xml](full-tests.xml) |
 
 **Positive controls.** The audit's own comparison is not vacuous: damaging a metric makes it fail, and the same
 tools are run on a case with a known answer (the raised-rail box, 8 STOP rows; the empty controls, 0). The 13
@@ -87,7 +87,7 @@ archived P4 trace) and the plain gate rows were already shown equal outside timi
 
 ## Files and reproduce
 
-`out/`: the gate reports of both sides, the per-frame comparison, the physical comparison, the flip analysis, the
+The gate reports of both sides, the per-frame comparison, the physical comparison, the flip analysis, the
 targeted and full test XML. `PROTOCOL.md`: the registered acceptance and its amendments.
 
 ```

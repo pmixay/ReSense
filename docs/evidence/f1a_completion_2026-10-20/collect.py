@@ -7,7 +7,7 @@ import sys
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parent
 WORK = Path('/tmp/opencode/f1a-completion-work')
-OUT = HERE / 'out'
+OUT = HERE
 sys.path.insert(0, str(ROOT / 'scripts'))
 import regression_gate as gate  # noqa: E402
 
@@ -23,7 +23,9 @@ def rows(path):
 def main():
     OUT.mkdir(exist_ok=True)
     for side in ('reference', 'candidate'):
-        shutil.copy2(HERE / f'gate-c-{side}.json', OUT / f'gate-c-{side}.json')
+        source = HERE / f'gate-c-{side}.json'
+        if source.resolve() != (OUT / f'gate-c-{side}.json').resolve():
+            shutil.copy2(source, OUT / f'gate-c-{side}.json')
     reference, candidate = load(HERE / 'gate-c-reference.json'), load(HERE / 'gate-c-candidate.json')
 
     # the gated rows, candidate against reference
@@ -43,7 +45,7 @@ def main():
     lines.append('recorded pre-repair 8c2bf51: ride alarm_events 18, stop_episodes 24, alarm_frames 102')
     lines.append('gate: reference passed %s, candidate passed %s, candidate waivers %s'
                  % (reference['gate']['passed'], candidate['gate']['passed'], candidate['gate']['allow']))
-    (OUT / 'gate_rows.txt').write_text('\n'.join(lines) + '\n')
+    (OUT / 'gate-rows.txt').write_text('\n'.join(lines) + '\n')
 
     # the changed frames
     changed = []
@@ -59,7 +61,7 @@ def main():
     text.append(f'changed frames {len(changed)}; removed STOP frames '
                 f'{sum(1 for c in changed if c[2] and not c[3])}; added STOP frames '
                 f'{sum(1 for c in changed if not c[2] and c[3])}')
-    (OUT / 'changed_frames.txt').write_text('\n'.join(text) + '\n')
+    (OUT / 'changed-frames.txt').write_text('\n'.join(text) + '\n')
 
     # the physical scenes
     a, b = load(WORK / 'physical-b-reference.json'), load(WORK / 'physical-c-candidate.json')
@@ -70,7 +72,7 @@ def main():
                         f'candidate {sum(r["matched_stop"] for r in b[scene])}, identical {same}')
     physical.append(f'scenes {len(a)}; differing rows '
                     f'{sum(1 for s in a for ra, rb in zip(a[s], b[s]) if ra["matched_stop"] != rb["matched_stop"])}')
-    (OUT / 'physical_compare.txt').write_text('\n'.join(physical) + '\n')
+    (OUT / 'physical-compare.txt').write_text('\n'.join(physical) + '\n')
 
     # the flip analysis
     flips = load(WORK / 'continuation-production.json')
@@ -79,10 +81,10 @@ def main():
     for name in ('targeted-c.xml', 'tests-c-candidate.xml'):
         source = WORK / name
         if source.exists():
-            shutil.copy2(source, OUT / ('targeted.xml' if name.startswith('targeted') else 'full-tests.xml'))
+            shutil.copy2(source, OUT / ('targeted-tests.xml' if name.startswith('targeted') else 'full-tests.xml'))
     print('\n'.join(lines))
     print('\n'.join(text[-1:]))
-    print((OUT / 'physical_compare.txt').read_text().splitlines()[-1])
+    print((OUT / 'physical-compare.txt').read_text().splitlines()[-1])
 
 
 if __name__ == '__main__':
