@@ -86,7 +86,7 @@ and 11 changed files until the reseal; CI was red.)
   X3 40 cases / 29,765 rows with identical STOP rows.
 - **Cost against starting main on the ride:** alarm events **18 → 23**, STOP episodes **24 → 26**. P4's acceptance run (PR #45)
   reproduces both numbers and traces all 16 changed decisions to rail-head fragments and tracker chains through them. The
-  trade-off is **not decided** (captain). [Evidence](docs/evidence/f1a_b1_2026-10-20/README.md),
+  trade-off was **accepted on 20.10** (delegated by the captain; the repaired ride is still better than the registered baseline: 27 → 23 events, 30 → 26 episodes, 126 → 111 alarm frames). [Evidence](docs/evidence/f1a_b1_2026-10-20/README.md),
   [P4's acceptance](docs/evidence/f1a_acceptance_2026-10-20/README.md).
 
 ### 20.10 — R3 sustained-range population diagnosis and reporting repair
