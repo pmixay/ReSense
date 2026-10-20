@@ -1,0 +1,11 @@
+person frames: 1496 (2912-4407), of them reference STOP anchors 1360
+/home/user/out/falcon_main/off.jsonl
+  first person STOP (2972, 124.84); person STOP frames 1360; STOP frames not on the person 4: [159, 2312, 2313, 2314]
+/home/user/out/falcon_main/off.jsonl
+  first person STOP (2972, 124.84); person STOP frames 1360; STOP frames not on the person 4: [159, 2312, 2313, 2314]
+/home/user/out/falcon/ref_k2B_c9e8daa.jsonl
+  first person STOP (2994, 122.27); person STOP frames 1330; STOP frames not on the person 2: [4410, 4411]
+/home/user/out/falcon_main/v5c15.jsonl
+  first person STOP (2979, 124.02); person STOP frames 1366; STOP frames not on the person 2: [4410, 4411]
+/home/user/out/falcon_main/v5c30.jsonl
+  first person STOP (2950, 127.18); person STOP frames 1374; STOP frames not on the person 2: [4410, 4411]

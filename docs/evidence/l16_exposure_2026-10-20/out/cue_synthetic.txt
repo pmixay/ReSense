@@ -1,0 +1,6 @@
+full rev, 0.2 % above                  pos-frac [0.857 0.505 0.002] -> forward [ 0.  0. -1.], up None
+full rev, 1 % above                    pos-frac [0.859 0.502 0.01 ] -> forward [ 0.  0. -1.], up None
+full rev, 3 % above                    pos-frac [0.857 0.5   0.029] -> forward None, up None
+full rev, 10 % above                   pos-frac [0.857 0.507 0.091] -> forward None, up None
+forward +-50, 0.2 % above (control)    pos-frac [1.    0.499 0.002] -> forward None, up None
+forward +-50, 10 % above               pos-frac [1.    0.5   0.091] -> forward [1. 0. 0.], up [0. 0. 1.]

@@ -1,0 +1,32 @@
+/home/user/resense/docs/evidence/k2_v5c_2026-10-20/runs/data_8c2bf51/gate/gate_parent.json
+  commit a5b0ede475  passed True  worse_gated 0  missing_gated 0  better 8
+  ride STOP episodes 24  alarm events 18  alarm frames 102
+  five empty STOP episodes 11  squareT_platform STOP episodes 11
+  set O small_center: STOP frames 32  first STOP 55.8 m  held from 60.8 m
+/home/user/resense/docs/evidence/k2_v5c_2026-10-20/runs/data_8c2bf51/gate/gate_off.json
+  commit 8c2bf51a2e  passed True  worse_gated 0  missing_gated 0  better 8
+  ride STOP episodes 24  alarm events 18  alarm frames 102
+  five empty STOP episodes 11  squareT_platform STOP episodes 11
+  set O small_center: STOP frames 32  first STOP 55.8 m  held from 60.8 m
+/home/user/resense/docs/evidence/k2_v5c_2026-10-20/runs/data_8c2bf51/gate/gate_v5c15.json
+  commit 8c2bf51a2e  passed False  worse_gated 6  missing_gated 0  better 11
+    worse/missing: set_O.objects.small_center.stop_frames
+    worse/missing: set_O.objects.small_center.first_stop_m
+    worse/missing: set_O.objects.small_center.held_from_m
+    worse/missing: set_O.objects.small_center.max_missed_streak_frames
+    worse/missing: set_O.objects.small_center.max_missed_span_m
+    worse/missing: set_O.objects.small_center.bins.50-100.stop_frames
+  ride STOP episodes 10  alarm events 8  alarm frames 26
+  five empty STOP episodes 0  squareT_platform STOP episodes 0
+  set O small_center: STOP frames 30  first STOP 52.5 m  held from 57.5 m
+/home/user/resense/docs/evidence/k2_v5c_2026-10-20/runs/data_8c2bf51/gate/gate_v5c30.json
+  commit 8c2bf51a2e  passed False  worse_gated 6  missing_gated 0  better 11
+    worse/missing: set_O.objects.small_center.stop_frames
+    worse/missing: set_O.objects.small_center.first_stop_m
+    worse/missing: set_O.objects.small_center.held_from_m
+    worse/missing: set_O.objects.small_center.max_missed_streak_frames
+    worse/missing: set_O.objects.small_center.max_missed_span_m
+    worse/missing: set_O.objects.small_center.bins.50-100.stop_frames
+  ride STOP episodes 10  alarm events 8  alarm frames 26
+  five empty STOP episodes 0  squareT_platform STOP episodes 0
+  set O small_center: STOP frames 30  first STOP 52.5 m  held from 57.5 m

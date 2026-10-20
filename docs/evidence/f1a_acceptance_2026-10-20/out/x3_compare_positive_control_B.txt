@@ -1,0 +1,9 @@
+
+cases with every row's decision, detections and warnings equal: 0 of 40
+battery comparison: 6 failed of 260
+   doubleT_obstacle/roll_p2                           positive_recording.stop_frames           ref 192 -> 188 (worse by 4, tol 2)
+   doubleT_obstacle/roll_p2                           objects.person_crossing.inside_stop_rows ref 60 -> 56 (worse by 4, tol 2)
+   doubleT_obstacle/drop30_s2                         objects.person_crossing.inside_stop_rows ref 61 -> 58 (worse by 3, tol 2)
+   doubleT_obstacle/dedup                             objects.person_crossing.inside_stop_rows ref 61 -> 58 (worse by 3, tol 2)
+   cloud_with_fake_obj/hz5                            positive_recording.stop_frames           ref 218 -> 214 (worse by 4, tol 2)
+   cloud_with_fake_obj/hz5                            objects.small_center.inside_stop_rows    ref 18 -> 14 (worse by 4, tol 2)

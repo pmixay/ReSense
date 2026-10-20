@@ -1,0 +1,25 @@
+old tree (8c2bf51), pieces 1 2 4 7: {'checked': 296, 'match': 296, 'fixed_code': 0, 'A': 154, 'actual': 154}
+-- old run new_data_2 track 578 up to row 1342
+  row 1337 new_data_81_0024 hits 1 age 1 rep 0 zone warning kind - XY [35.506, 1.2] tag None
+  row 1338 new_data_81_0025 hits 2 age 2 rep 0 zone warning kind - XY [36.874, 1.18] tag None
+  row 1339 new_data_81_0026 hits 3 age 3 rep 0 zone warning kind - XY [37.874, 1.001] tag None
+  row 1340 new_data_81_0027 hits 4 age 4 rep 0 zone warning kind - XY [37.605, 0.891] tag None
+  row 1342 new_data_81_0029 hits 5 age 6 rep 1 zone warning kind - XY [36.112, 0.931] tag None
+-- old run new_data_4 track 60 up to row 84
+  row 77 new_data_112_0001 hits 1 age 1 rep 0 zone warning kind - XY [41.876, 1.174] tag None
+  row 80 new_data_112_0004 hits 2 age 4 rep 0 zone warning kind - XY [43.45, 1.123] tag None
+  row 81 new_data_112_0005 hits 3 age 5 rep 1 zone warning kind - XY [44.535, 1.096] tag None
+  row 82 new_data_112_0006 hits 4 age 6 rep 1 zone warning kind - XY [45.429, 1.097] tag None
+  row 83 new_data_112_0007 hits 5 age 7 rep 1 zone warning kind - XY [44.017, 1.13] tag None
+-- old run new_data_7 rows 614-624: matched tracks with XY X > 44
+  614 new_data_205_0022 []
+  615 new_data_205_0023 [(198, 3, 0, 'gauge', 'low', [45.41, -1.899]), (201, 1, 0, 'gauge', 'low', [48.41, -2.178])]
+  616 new_data_205_0024 [(201, 2, 0, 'gauge', 'low', [46.313, -2.04]), (202, 1, 0, 'gauge', 'low', [51.075, -2.546])]
+  617 new_data_205_0025 [(202, 2, 0, 'gauge', 'low', [52.837, -2.773])]
+  618 new_data_205_0026 [(202, 3, 0, 'gauge', 'low', [56.423, -3.31]), (203, 1, 0, 'gauge', 'low', [51.36, -2.625])]
+  619 new_data_205_0027 [(202, 4, 0, 'gauge', 'low', [54.802, -3.054])]
+  620 new_data_205_0028 [(203, 2, 0, 'gauge', 'low', [53.127, -2.807]), (205, 1, 0, 'gauge', 'low', [48.234, -2.226])]
+  621 new_data_205_0029 [(203, 3, 0, 'gauge', 'low', [51.319, -2.567]), (205, 2, 0, 'gauge', 'low', [46.782, -2.06])]
+  622 new_data_205_0030 [(207, 1, 0, 'gauge', 'low', [59.328, -3.762])]
+  623 new_data_205_0031 []
+  624 new_data_205_0032 []

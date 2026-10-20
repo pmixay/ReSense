@@ -1,0 +1,92 @@
+-- new_data_4 track 50 up to row 80
+  row 72 new_data_111_0047 hits 1 age 1 reported 0 zone gauge kind low XY [48.788, -0.994] checked k4 lat -0.60 d 48.08 size [1.27, 0.25, 0.03] top 0.077->0.077 ref 0.023/0.023 A0 D0 
+  row 76 new_data_112_0000 hits 2 age 5 reported 0 zone gauge kind low XY [46.236, 0.66] checked k7 lat +0.81 d 45.61 size [1.25, 0.32, 0.04] top 0.075->0.075 ref 0.079/0.062 A1 D0 reference
+  row 77 new_data_112_0001 hits 3 age 6 reported 0 zone warning kind - XY [41.876, 1.174]
+  row 78 new_data_112_0002 hits 4 age 7 reported 0 zone gauge kind low XY [35.8, 0.646] checked k1 lat +0.78 d 35.36 size [0.77, 0.37, 0.03] top 0.063->0.063 ref 0.05/0.05 A0 D0 
+  row 79 new_data_112_0003 hits 5 age 8 reported 1 zone warning kind - XY [28.612, 1.099]
+-- new_data_1 track 288 up to row 1267
+  row 1253 new_data_52_0010 hits 3 age 4 reported 0 zone gauge kind low XY [54.581, -0.31] checked k0 lat +0.02 d 54.52 size [0.13, 0.38, 0.27] top 0.137->0.137 ref None/None A0 D0 
+  row 1257 new_data_52_0014 hits 4 age 8 reported 0 zone gauge kind - XY [46.03, 0.932]
+  row 1258 new_data_52_0015 hits 5 age 9 reported 0 zone gauge kind - XY [44.398, 0.859]
+  row 1259 new_data_52_0016 hits 6 age 10 reported 1 zone gauge kind low XY [42.793, 0.5] checked k5 lat +0.74 d 42.06 size [1.18, 0.43, 0.07] top 0.108->0.234 ref 0.101/0.102 A1 D0 top
+  row 1260 new_data_52_0017 hits 7 age 11 reported 1 zone warning kind - XY [40.794, 0.823]
+  row 1262 new_data_52_0019 hits 8 age 13 reported 1 zone gauge kind - XY [38.848, 0.849]
+  row 1264 new_data_52_0021 hits 9 age 15 reported 1 zone gauge kind low XY [37.193, -1.078] checked k5 lat -0.84 d 36.63 size [1.15, 0.37, 0.08] top 0.117->0.131 ref 0.101/0.093 A0 D0 
+-- new_data_7 track 202 up to row 624
+  row 616 new_data_205_0024 hits 1 age 1 reported 0 zone gauge kind low XY [51.075, -2.546] checked k1 lat +0.33 d 50.82 size [0.41, 0.38, 0.55] top 0.171->0.171 ref None/None A0 D0 
+  row 617 new_data_205_0025 hits 2 age 2 reported 0 zone gauge kind low XY [52.837, -2.773] checked k0 lat +0.40 d 52.03 size [1.33, 0.17, 0.03] top 0.077->0.077 ref None/None A0 D0 
+  row 618 new_data_205_0026 hits 3 age 3 reported 0 zone gauge kind low XY [56.423, -3.31] checked k1 lat +0.29 d 56.4 size [0.06, 0.3, 0.0] top 0.081->0.081 ref None/None A0 D0 
+  row 619 new_data_205_0027 hits 4 age 4 reported 0 zone gauge kind low XY [54.802, -3.054] checked k2 lat +0.46 d 54.79 size [0.02, 0.19, 0.0] top 0.102->0.102 ref None/None A0 D0 
+  row 620 new_data_205_0028 hits 5 age 5 reported 0 zone gauge kind low XY [53.127, -2.807] checked k1 lat +0.62 d 53.11 size [0.04, 0.28, 0.0] top 0.078->0.078 ref None/None A0 D0 
+  row 621 new_data_205_0029 hits 6 age 6 reported 1 zone gauge kind low XY [51.319, -2.567] checked k1 lat +0.74 d 50.93 size [0.58, 0.27, 0.08] top 0.116->0.124 ref 0.061/-0.063 A0 D0 
+  row 623 new_data_205_0031 hits 7 age 8 reported 1 zone gauge kind low XY [47.952, -2.196] checked k0 lat +0.85 d 47.59 size [0.65, 0.25, 0.02] top 0.108->0.192 ref 0.103/0.062 A1 D0 either
+-- doubleT_platform track 44 up to row 37
+  row 31 doubleT_platform_0031 hits 1 age 1 reported 0 zone gauge kind - XY [36.138, 0.754]
+  row 32 doubleT_platform_0032 hits 2 age 2 reported 0 zone warning kind - XY [35.983, 0.887]
+  row 34 doubleT_platform_0034 hits 3 age 4 reported 0 zone warning kind - XY [37.041, 1.003]
+  row 35 doubleT_platform_0035 hits 4 age 5 reported 0 zone gauge kind low XY [35.652, -0.988] checked k3 lat -0.78 d 35.25 size [0.78, 0.24, 0.03] top 0.065->0.14 ref 0.06/0.082 A1 D0 top
+  row 36 doubleT_platform_0036 hits 5 age 6 reported 1 zone gauge kind low XY [34.796, -0.26] checked k1 lat -0.05 d 34.79 size [0.02, 0.36, 0.0] top 0.075->0.075 ref 0.055/0.051 A0 D0 
+flips piece 7: [(6, 'new_data_200_0013', 26.59, 0.661, 'top'), (35, 'new_data_205_0027', 50.05, 0.65, 'either'), (42, 'new_data_205_0031', 47.59, 0.855, 'either'), (47, 'new_data_205_0041', 50.57, 0.608, 'reference')]
+-- fix run new_data_7 rows 600-624: matched tracks with 44 < X < 60
+  600 new_data_205_0008 []
+  601 new_data_205_0009 []
+  602 new_data_205_0010 []
+  603 new_data_205_0011 []
+  604 new_data_205_0012 []
+  605 new_data_205_0013 []
+  606 new_data_205_0014 []
+  607 new_data_205_0015 []
+  608 new_data_205_0016 []
+  609 new_data_205_0017 []
+  610 new_data_205_0018 []
+  611 new_data_205_0019 []
+  612 new_data_205_0020 [(197, 1, 0, 'gauge', 'low', [46.307, -1.96], None), (198, 1, 0, 'gauge', 'low', [50.565, -2.57], None)]
+  613 new_data_205_0021 [(197, 2, 0, 'gauge', 'low', [44.623, -1.825], None), (198, 2, 0, 'gauge', 'low', [48.91, -2.254], None)]
+  614 new_data_205_0022 []
+  615 new_data_205_0023 [(198, 3, 0, 'gauge', 'low', [45.41, -1.899], None), (201, 1, 0, 'gauge', 'low', [48.41, -2.178], None)]
+  616 new_data_205_0024 [(201, 2, 0, 'gauge', 'low', [46.313, -2.04], None), (202, 1, 0, 'gauge', 'low', [51.075, -2.546], None)]
+  617 new_data_205_0025 [(202, 2, 0, 'gauge', 'low', [52.837, -2.773], None)]
+  618 new_data_205_0026 [(202, 3, 0, 'gauge', 'low', [56.423, -3.31], None), (203, 1, 0, 'gauge', 'low', [51.36, -2.625], None)]
+  619 new_data_205_0027 [(202, 4, 0, 'gauge', 'low', [54.802, -3.054], None), (203, 2, 0, 'gauge', 'low', [50.088, -2.408], 'either')]
+  620 new_data_205_0028 [(202, 5, 0, 'gauge', 'low', [53.127, -2.807], None), (203, 3, 0, 'gauge', 'low', [48.234, -2.226], None)]
+  621 new_data_205_0029 [(202, 6, 1, 'gauge', 'low', [51.319, -2.567], None), (203, 4, 0, 'gauge', 'low', [46.782, -2.06], None)]
+  622 new_data_205_0030 [(206, 1, 0, 'gauge', 'low', [59.328, -3.762], None)]
+  623 new_data_205_0031 [(202, 7, 1, 'gauge', 'low', [47.952, -2.196], 'either')]
+  624 new_data_205_0032 []
+-- old run new_data_7 rows 600-614
+  600 new_data_205_0008 []
+  601 new_data_205_0009 []
+  602 new_data_205_0010 []
+  603 new_data_205_0011 []
+  604 new_data_205_0012 []
+  605 new_data_205_0013 []
+  606 new_data_205_0014 []
+  607 new_data_205_0015 []
+  608 new_data_205_0016 []
+  609 new_data_205_0017 []
+  610 new_data_205_0018 []
+  611 new_data_205_0019 []
+  612 new_data_205_0020 [(197, 1, 0, 'gauge', 'low', [46.307, -1.96]), (198, 1, 0, 'gauge', 'low', [50.565, -2.57])]
+  613 new_data_205_0021 [(197, 2, 0, 'gauge', 'low', [44.623, -1.825]), (198, 2, 0, 'gauge', 'low', [48.91, -2.254])]
+  614 new_data_205_0022 []
+-- piece 2: fix run, tracks matched near XY (35-38, 0.9-1.2) rows 1337-1342
+  1335 [(574, 4, 9, 0, 'warning', '-', [36.991, 0.874], None)]
+  1336 [(574, 5, 10, 0, 'warning', '-', [37.275, 0.875], None), (581, 3, 4, 0, 'gauge', 'low', [34.531, 0.589], 'top')]
+  1337 [(574, 6, 11, 0, 'warning', '-', [38.055, 1.065], None), (587, 1, 1, 0, 'warning', '-', [35.506, 1.2], None)]
+  1338 [(574, 7, 12, 1, 'warning', '-', [38.861, 0.879], None), (587, 2, 2, 0, 'warning', '-', [36.874, 1.18], None)]
+  1339 [(587, 3, 3, 0, 'warning', '-', [37.874, 1.001], None)]
+  1340 [(587, 4, 4, 0, 'warning', '-', [37.605, 0.891], None)]
+  1341 []
+  1342 [(592, 2, 3, 0, 'warning', '-', [36.112, 0.931], None)]
+flips piece 2 rows 1300-1342: [(21, 'new_data_81_0014', 40.58, -0.769, 'top'), (23, 'new_data_81_0017', 39.5, 0.748, 'top'), (33, 'new_data_81_0020', 38.32, -0.745, 'reference'), (36, 'new_data_81_0021', 28.55, 0.749, 'top'), (38, 'new_data_81_0021', 31.53, 0.746, 'top'), (44, 'new_data_81_0022', 31.88, 0.765, 'top'), (45, 'new_data_81_0022', 32.53, -0.76, 'top'), (48, 'new_data_81_0022', 35.28, -0.785, 'top'), (50, 'new_data_81_0023', 30.05, 0.76, 'top'), (52, 'new_data_81_0023', 32.01, 0.778, 'top'), (53, 'new_data_81_0023', 32.41, -0.776, 'top'), (54, 'new_data_81_0023', 34.07, 0.778, 'top'), (57, 'new_data_81_0023', 41.29, -0.879, 'top'), (60, 'new_data_81_0024', 31.78, 0.775, 'top'), (68, 'new_data_81_0027', 27.31, -0.749, 'top'), (69, 'new_data_81_0027', 27.38, 0.812, 'top'), (72, 'new_data_81_0027', 30.77, 0.83, 'top'), (74, 'new_data_81_0027', 36.29, -0.786, 'top'), (76, 'new_data_81_0027', 41.91, -0.848, 'reference')]
+-- piece 2 fix run: track 592 and 587; old run: 578 rows 1338-1342
+ fix 1338 [(587, 2, 2, 'warning', '-', [36.874, 1.18], None)]
+ old 1338 [(578, 2, 2, 'warning', '-', [36.874, 1.18], None)]
+ fix 1339 [(587, 3, 3, 'warning', '-', [37.874, 1.001], None)]
+ old 1339 [(578, 3, 3, 'warning', '-', [37.874, 1.001], None)]
+ fix 1340 [(587, 4, 4, 'warning', '-', [37.605, 0.891], None), (592, 1, 1, 'gauge', 'low', [37.057, -1.003], [8, True, False, 'top'])]
+ old 1340 [(578, 4, 4, 'warning', '-', [37.605, 0.891], None)]
+ fix 1341 []
+ old 1341 []
+ fix 1342 [(592, 2, 3, 'warning', '-', [36.112, 0.931], None)]
+ old 1342 [(578, 5, 6, 'warning', '-', [36.112, 0.931], None)]

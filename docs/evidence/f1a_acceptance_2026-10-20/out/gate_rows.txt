@@ -1,0 +1,49 @@
+gate_off.json
+  commit 8c2bf51a2e  passed True  worse_gated 0  missing_gated 0  better 8
+  ride STOP episodes 24  alarm events 18  alarm frames 102
+  five empty STOP episodes 11  squareT_platform STOP episodes 11
+  set O small_center: STOP frames 32  first STOP 55.8 m  held from 60.8 m
+gate_f1a.json
+  commit 99dab01250  passed True  worse_gated 0  missing_gated 0  better 8
+  ride STOP episodes 26  alarm events 23  alarm frames 111
+  five empty STOP episodes 11  squareT_platform STOP episodes 11
+  set O small_center: STOP frames 32  first STOP 55.8 m  held from 60.8 m
+
+rows that differ, 8c2bf51 -> 99dab01 (gate_diff.py):
+config.file_sha256                                           d18f49ffc228095fa492b7acd12a0c5710604e12  e95c9d0625b57e4153a41e2a66775e57f6f0ebd1
+config.sha256                                                c8641f57ed873a2aab08f6dc3bbb4cd315100d8e  debeb58455f0a24deec885864a02d91c70d7eb7a
+five_empty.advisory_frames                                                   1004                  1006
+recordings.doubleT_obstacle.health.ok                                         198                   201
+recordings.doubleT_obstacle.health.warn                                         3                     0
+recordings.doubleT_platform.advisory_frames                                   180                   182
+recordings.doubleT_platform.health.ok                                         290                   292
+recordings.doubleT_platform.health.warn                                        55                    53
+ride.advisory_frames                                                         4765                  4764
+ride.alarm_dist                                                     [27.6, 155.4]         [20.7, 155.4]
+ride.alarm_events                                                              18                    23
+ride.alarm_frames                                                             102                   111
+ride.health.ok                                                              11075                 11039
+ride.health.warn                                                              196                   232
+ride.stop_episodes                                                             24                    26
+run.jobs                                                                        1                     4
+
+99dab01 against the seal baseline (regression_gate.py):
+recordings.doubleT_platform.alarm_events                                yes          1          0  better
+recordings.doubleT_platform.stop_episodes                               yes          1          0  better
+recordings.doubleT_platform.alarm_frames                                             2          0  better
+five_empty.alarm_events                                                              8          7  better
+five_empty.stop_episodes                                                            12         11  better
+five_empty.alarm_frames                                                             39         37  better
+ride.alarm_events                                                       yes         27         23  better
+ride.stop_episodes                                                      yes         30         26  better
+ride.alarm_frames                                                                  126        111  better
+set_O.objects.thin_hanging.stop_frames                                  yes         15         18  better
+set_O.objects.thin_hanging.first_stop_m                                 yes       30.1       35.1  better
+set_O.objects.thin_hanging.held_from_m                                  yes       31.8       40.0  better
+set_O.objects.thin_hanging.bins.0-50.stop_frames                        yes         15         18  better
+set_O.inside_stop_frames                                                           411        414  better
+set_F_straight.cable.sustained_median_m                                           34.2       17.8  worse
+set_F_straight.cable.recall_0-50                                                    43         50  better
+set_F_straight.cable.recall_50-100                                                  47         49  better
+GATE PASS: no gated metric worse (8 gated better, 0 worse but allowed, 25 information rows changed)
+GATE_EXIT 0

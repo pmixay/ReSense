@@ -2,7 +2,7 @@
 # Cold-disk startup and separate warm-cache full-rate checks using the organizers' bags. A small rosbag2
 # read-ahead queue avoids turning the 20 s recording into a burst while the cold 4.8 GB SQLite
 # file is preloaded; storage stalls remain real and the node still gets the original point clouds.
-# Requires Docker and runs on the integration/score/P3 branches, retained working branches and main.
+# Requires Docker and runs on main (and on any branch added to FULL in .github/workflows/ci.yml and to the case below).
 # The two bags come from scripts/fetch_cold_bags.sh: DATASET_DIR=<dir> keeps them there (CI
 # restores that directory from its cache, job "docker") and reuses them while their sha256 still
 # match scripts/cold_bags.sha256, so that Google Drive is asked for the 3.7 GB archive only when
@@ -10,8 +10,8 @@
 set -euo pipefail
 
 case "${GITHUB_REF:-}" in
-  refs/heads/gpt-score-push-20260928|refs/heads/integration/p3-score-sync-20260928|refs/heads/integration/2026-10-15-16|refs/heads/experiment/cross-ring-sparse-evidence|refs/heads/testovaya-gpt|refs/heads/claude/nifty-pascal-lzgl78|refs/heads/claude/p1-p2-supported-playback-20260927|refs/heads/claude/amazing-fermi-t67v8g|refs/heads/main) ;;
-  *) echo "skip: original-bag cold-disk test runs on the integration/score/P3 branches, retained working branches and main"; exit 0 ;;
+  refs/heads/main) ;;
+  *) echo "skip: original-bag cold-disk test runs on main (the list is env FULL in .github/workflows/ci.yml)"; exit 0 ;;
 esac
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
