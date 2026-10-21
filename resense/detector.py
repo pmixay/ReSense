@@ -21,7 +21,7 @@ from resense.frame import Frame
 from resense.gauge import (has_edge_margin, axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
                            corridor_mask, gauge_core_mask, point_in_polygon, reference_offset, union_shift,
                            widened_profile)
-from resense.health import HealthMonitor
+from resense.health import HealthMonitor, bed_off_mount_plane
 from resense.lowobj import (BedTemplate, low_candidates, low_free_mask, mark_rail_line, no_rail_advisory,
                             rail_reference_check)
 from resense.opinion import observation
@@ -433,9 +433,15 @@ class Detector:
         t6 = time.perf_counter()
         mount = self.calib.state.to_dict()
         drift = self.track.wall_drift
+        bed_conflict = False
+        if cfg.health.clear_lost_bed:       # amendment 1 of falcon_clear_distance_2026-10-21: the bed against the mount plane
+            st = self.calib.state
+            if st.height is not None and st.status in ("ok", "identity") and np.isfinite(st.height):
+                bed_conflict = bed_off_mount_plane(self.track, -float(st.height), cfg.cluster.mount_cross_tol,
+                                                   cfg.cluster.mount_cross_grade, cfg.cluster.mount_cross_range)
         health = self.health.update(xyz, frame.meta, self.track, cfg.gauge, valid, cfg.track.rails_min_score,
                                     previous_latency_ms, mount, gauge[0].distance if gauge else None, cap,
-                                    wall_drift=drift if drift < 1e9 else None)
+                                    wall_drift=drift if drift < 1e9 else None, bed_conflict=bed_conflict)
         health["latency_basis"] = "previous_complete_process"
         health["latency_sample_age_frames"] = 1 if previous_latency_ms is not None else None
         if dust_removed is not None:
