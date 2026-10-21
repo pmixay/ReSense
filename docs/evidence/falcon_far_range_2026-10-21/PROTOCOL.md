@@ -183,3 +183,16 @@ of frames and to 172 m in 26 %; a contradiction after 142 m in 49 %. **Revised e
 ≈ 120–170 m on this recording.** Negative controls after the change: 92/92 required cases fail-safe; unit
 tests 19/19. All `cand` / `map300` numbers reported are from the commit after this amendment; the
 `3de4534` replay is kept as history (`raw/`).
+
+### A3 (21.10, after the second `cand` replay at `bff848b`; in-sample)
+
+`bff848b`: 5 STOP episodes, **1 without a person** (frames 912–913, the 115 m structure again), first STOP
+on the main person 127.07 m (= baseline), CAUTION 0.218, far trust 116–127 m (p10–p95). Trace: every
+observed contradiction was aged and kept for 1 s with the minimum taken, so isolated contradictions (the
+right row breaking after 82 or 112 m in 0.5–1.7 % of frames) pulled the trust down to 64–79 m for up to
+ten frames (frames 905–915), and the frequent one after 142 m (49 %) minus up to 22 m of ageing held it
+near 120 m. Change: **this frame's contradiction caps at once (unchanged); older contradictions cap once two
+frames agree** (the second-lowest aged one), the same rule as for supports. A variant without the
+current-frame cap was rejected because it failed the registered acceptance test
+`test_stable_contradiction_caps_the_history_at_once`. Unit tests 19/19, negative controls 92/92 required
+fail-safe after the change.

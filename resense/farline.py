@@ -362,7 +362,8 @@ class FarAxisTracker:
 
     def _update_stable(self, xyz, model, max_range, dt) -> Optional[FarAxis]:
         """21.10 (C7-C9): the support is the second-highest of the last frames' two-sided supports, each aged by
-        ``axis_history_speed`` x the elapsed time, capped by the aged contradictions; no two-sided support, no far
+        ``axis_history_speed`` x the elapsed time, capped by this frame's contradiction, the second-lowest aged one
+        and this frame's divergence of two fitted walls; no two-sided support, no far
         axis (unless a straight section is declared). A frame failing the line tests keeps the existing hold."""
         cfg = self.cfg
         if model is None:
@@ -388,7 +389,10 @@ class FarAxisTracker:
             return None
         v, j = cfg.axis_history_speed, cfg.axis_join
         aged = sorted(two - v * (self.t - t) for t, two, _ in self.hist if two is not None)
-        caps = [c - v * (self.t - t) for t, _, c in self.hist if np.isfinite(c)]
+        # this frame's contradiction caps at once; older ones, like supports, once two frames agree (second-lowest aged)
+        caps = sorted(c - v * (self.t - t) for t, _, c in self.hist if np.isfinite(c))[1:2]
+        if m is not None and np.isfinite(m["contra"]):
+            caps.append(m["contra"])
         used, sides = None, 2
         if len(aged) >= max(cfg.axis_history_min, 1):
             used = aged[-max(cfg.axis_history_min, 1)]
