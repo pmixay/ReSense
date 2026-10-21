@@ -793,6 +793,24 @@ class Detector:
         return merged, n_acc
 
     # -- 5 -------------------------------------------------------------------------------------
+    def _corridor_clusters(self, corr: Candidates, valid: float, floor_valid: float, factor: float, dy_alt,
+                           keep_thin: bool, hd, n_acc: int) -> List[Cluster]:
+        """The corridor clustering of ``_cluster`` for one candidate group (21.10, A8: split by hypothesis)."""
+        cfg = self.cfg
+        acc = cfg.accumulation
+        return _clusters_of(corr, cfg.cluster, axis_valid=valid,
+                            height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
+                                min_points_factor=factor, factor_range=acc.min_range,
+                                smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
+                                smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge,
+                                dy_alt=dy_alt, keep_thin=keep_thin,
+                                weak_from=cfg.tracking.thin_far_min_distance
+                                if cfg.cluster.weak_min_points > 0 or cfg.cluster.weak_min_rings > 0 else 0.0,
+                                frame_xyz=self._frame_xyz if cfg.cluster.column_free_max_top > 0
+                                or cfg.cluster.column_core_margin > 0 else None,
+                                 frame_ring=self._frame_ring, frame_dy=hd[0], frame_h=hd[1],
+                                 frame_track=self.track, frame_track_cfg=cfg.track)
+
     def _cluster(self, cand: Candidates, n_acc: int, valid: float, floor_valid: float,
                  straddle: Optional[Candidates], near: Optional[Candidates] = None) -> List[Cluster]:
         """Voxelise, cluster, describe and filter: the corridor candidates (count thresholds
@@ -814,18 +832,22 @@ class Detector:
                 dy_alt = corr.dy + reg[1]
         keep_thin = cfg.tracking.stop_keep_thin > 0 or cfg.tracking.thin_far_min_distance > 0
         hd = self._frame_hd or (None, None)
-        clusters = _clusters_of(corr, cfg.cluster, axis_valid=valid,
-                                height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
-                                min_points_factor=factor, factor_range=acc.min_range,
-                                smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
-                                smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge,
-                                dy_alt=dy_alt, keep_thin=keep_thin,
-                                weak_from=cfg.tracking.thin_far_min_distance
-                                if cfg.cluster.weak_min_points > 0 or cfg.cluster.weak_min_rings > 0 else 0.0,
-                                frame_xyz=self._frame_xyz if cfg.cluster.column_free_max_top > 0
-                                or cfg.cluster.column_core_margin > 0 else None,
-                                 frame_ring=self._frame_ring, frame_dy=hd[0], frame_h=hd[1],
-                                 frame_track=self.track, frame_track_cfg=cfg.track)
+        groups = [corr]
+        far = self._far_axis
+        if (far is not None and self._union_shift is not None and cfg.farrange.axis_union_separate
+                and dy_alt is None and len(corr)):
+            # 21.10 (A8): beyond far.valid the points that kept the near model's lateral are clustered on their own;
+            # up to far.valid and the points the union gave the far line are clustered together as before
+            ok = corr.idx >= 0
+            took = np.zeros(len(corr), dtype=bool)
+            took[ok] = self._union_shift[corr.idx[ok]] != 0
+            near_hyp = (corr.xyz[:, 0] > far.valid) & ~took & ok
+            if near_hyp.any() and not near_hyp.all():
+                groups = [corr.subset(~near_hyp), corr.subset(near_hyp)]
+        clusters = []
+        for grp in groups:
+            clusters += self._corridor_clusters(grp, valid, floor_valid, factor, dy_alt, keep_thin, hd, n_acc)
+        clusters.sort(key=lambda c: c.distance)
         if keep_thin:
             # 26.09 (tracking.stop_keep_thin, on since 26.09): the clusters flatter than min_height go
             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them

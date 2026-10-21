@@ -310,3 +310,23 @@ centre is farther than that from the continued far line. Through the existing `w
 `health.update`: "the corridor beyond is not where the track is". Detection, trust and clustering are
 unchanged, so no STOP can be lost by it. The union stays (it adds person detections where they do not merge).
 Hard rows and reporting as A6.
+
+### A8 (21.10, after the A7 replays at `50bfc0c`; in-sample)
+
+`50bfc0c`:
+* GO with the person inside clear and monitored is **0** at all 6 start frames (v1.2.0: 0 / 0 / 0 / 0 / 0 / 1).
+* First person STOP 150.4–150.5 m at every start. Held STOP 129.4–135.5 m (v1.2.0 114.4–123.0; `0eb4dda` 127.4–130.2).
+* Whole recording: 13 STOP episodes, 0 without a person, no v1.2.0 person-STOP frame lost.
+* The start at 1800 has 1 false episode (frames 2704–2705): a STOP detection at 152–156 m, 0.95–1.5 m left of
+  the track reference (the left wall, which the near hypothesis places at the corridor centre; or the person
+  merged with it).
+
+The A7 trace showed the mechanism: beyond `far.valid`, the near-hypothesis points (here the left wall) and the
+far-hypothesis points (the person) are clustered together. The person is then lost in a 10 m wall blob, or the
+wall is reported.
+
+Change (`farrange.axis_union_separate`, on with `axis_union_beyond`): the corridor candidates beyond `far.valid`
+that kept the near model's lateral are clustered on their own. Everything else is clustered together as before:
+everything up to far.valid, and the points the union gave the far line. So an object seen in one hypothesis is
+not merged with structures seen only in the other. Hard rows and reporting as A6. If this costs a v1.2.0 STOP
+(H2) or adds false episodes beyond the bound, it is switched off and A7 is the final state.

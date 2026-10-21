@@ -739,6 +739,8 @@ class FarRangeConfig:
     axis_frame_dt: float = 0.1         # s, elapsed time per frame when the caller gives none
     axis_union_beyond: bool = True     # 21.10 (A6, review F1): beyond the far line's trusted end, up to the near model's trusted range, the
                                        # corridor is the union of the near model's and the continued far line's laterals (axis_stable only)
+    axis_union_separate: bool = True   # 21.10 (A8): beyond far.valid the candidates that kept the near model's lateral are clustered on their
+                                       # own (a person on the far line is not merged with a wall the near hypothesis puts in the corridor)
     axis_report_tolerance: float = 1.05  # m (A7, review F1): beyond far.valid the reported monitored / clear range ends where the near
                                        # model's corridor centre is farther than this from the continued far line (0 = off)
     axis_max_boundary_lateral: float = 2.5  # m (A6, C3): a side whose boundary stands farther from the axis confirms nothing (two-track box,
