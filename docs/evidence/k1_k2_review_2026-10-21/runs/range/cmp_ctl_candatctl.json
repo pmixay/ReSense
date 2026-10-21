@@ -1,0 +1,596 @@
+{
+ "A_cube03": {
+  "A": {
+   "vis": 157,
+   "stop": 29,
+   "first": 44.86,
+   "held": 49.32
+  },
+  "B": {
+   "vis": 157,
+   "stop": 29,
+   "first": 44.86,
+   "held": 49.32
+  },
+  "lost": [],
+  "gained": []
+ },
+ "A_cube05": {
+  "A": {
+   "vis": 180,
+   "stop": 66,
+   "first": 135.06,
+   "held": 83.37
+  },
+  "B": {
+   "vis": 180,
+   "stop": 66,
+   "first": 135.06,
+   "held": 83.37
+  },
+  "lost": [],
+  "gained": []
+ },
+ "A_cube05_drop": {
+  "A": {
+   "vis": 157,
+   "stop": 63,
+   "first": 118.12,
+   "held": 83.37
+  },
+  "B": {
+   "vis": 157,
+   "stop": 63,
+   "first": 118.12,
+   "held": 83.37
+  },
+  "lost": [],
+  "gained": []
+ },
+ "A_cube1": {
+  "A": {
+   "vis": 185,
+   "stop": 104,
+   "first": 151.1,
+   "held": 161.73
+  },
+  "B": {
+   "vis": 185,
+   "stop": 104,
+   "first": 151.1,
+   "held": 161.73
+  },
+  "lost": [],
+  "gained": []
+ },
+ "A_cube1_drop": {
+  "A": {
+   "vis": 184,
+   "stop": 105,
+   "first": 151.1,
+   "held": 162.89
+  },
+  "B": {
+   "vis": 184,
+   "stop": 105,
+   "first": 151.1,
+   "held": 162.89
+  },
+  "lost": [],
+  "gained": []
+ },
+ "A_lowbox_rail": {
+  "A": {
+   "vis": 119,
+   "stop": 29,
+   "first": 44.86,
+   "held": 49.32
+  },
+  "B": {
+   "vis": 119,
+   "stop": 29,
+   "first": 44.86,
+   "held": 49.32
+  },
+  "lost": [],
+  "gained": []
+ },
+ "A_person": {
+  "A": {
+   "vis": 185,
+   "stop": 158,
+   "first": 218.38,
+   "held": 221.78
+  },
+  "B": {
+   "vis": 185,
+   "stop": 158,
+   "first": 218.38,
+   "held": 221.78
+  },
+  "lost": [],
+  "gained": []
+ },
+ "A_person_drop": {
+  "A": {
+   "vis": 179,
+   "stop": 141,
+   "first": 208.7,
+   "held": 203.99
+  },
+  "B": {
+   "vis": 179,
+   "stop": 141,
+   "first": 208.7,
+   "held": 203.99
+  },
+  "lost": [],
+  "gained": []
+ },
+ "A_person_latm05": {
+  "A": {
+   "vis": 185,
+   "stop": 158,
+   "first": 218.38,
+   "held": 221.78
+  },
+  "B": {
+   "vis": 185,
+   "stop": 158,
+   "first": 218.38,
+   "held": 221.78
+  },
+  "lost": [],
+  "gained": []
+ },
+ "A_person_latp05": {
+  "A": {
+   "vis": 185,
+   "stop": 159,
+   "first": 218.38,
+   "held": 222.61
+  },
+  "B": {
+   "vis": 185,
+   "stop": 159,
+   "first": 218.38,
+   "held": 222.61
+  },
+  "lost": [],
+  "gained": []
+ },
+ "B_cube03": {
+  "A": {
+   "vis": 68,
+   "stop": 22,
+   "first": 41.19,
+   "held": 44.72
+  },
+  "B": {
+   "vis": 68,
+   "stop": 22,
+   "first": 41.19,
+   "held": 44.72
+  },
+  "lost": [],
+  "gained": []
+ },
+ "B_cube05": {
+  "A": {
+   "vis": 86,
+   "stop": 27,
+   "first": 50.03,
+   "held": 55.34
+  },
+  "B": {
+   "vis": 86,
+   "stop": 27,
+   "first": 50.03,
+   "held": 55.34
+  },
+  "lost": [],
+  "gained": []
+ },
+ "B_cube1": {
+  "A": {
+   "vis": 113,
+   "stop": 27,
+   "first": 50.03,
+   "held": 55.34
+  },
+  "B": {
+   "vis": 113,
+   "stop": 27,
+   "first": 50.03,
+   "held": 55.34
+  },
+  "lost": [],
+  "gained": []
+ },
+ "B_person": {
+  "A": {
+   "vis": 119,
+   "stop": 28,
+   "first": 51.8,
+   "held": 57.11
+  },
+  "B": {
+   "vis": 119,
+   "stop": 28,
+   "first": 51.8,
+   "held": 57.11
+  },
+  "lost": [],
+  "gained": []
+ },
+ "C_cube03": {
+  "A": {
+   "vis": 129,
+   "stop": 27,
+   "first": 41.58,
+   "held": 46.0
+  },
+  "B": {
+   "vis": 129,
+   "stop": 27,
+   "first": 41.58,
+   "held": 46.0
+  },
+  "lost": [],
+  "gained": []
+ },
+ "C_cube05": {
+  "A": {
+   "vis": 151,
+   "stop": 50,
+   "first": 75.42,
+   "held": 82.77
+  },
+  "B": {
+   "vis": 151,
+   "stop": 50,
+   "first": 75.42,
+   "held": 82.77
+  },
+  "lost": [],
+  "gained": []
+ },
+ "C_cube1": {
+  "A": {
+   "vis": 153,
+   "stop": 57,
+   "first": 85.72,
+   "held": 94.58
+  },
+  "B": {
+   "vis": 153,
+   "stop": 57,
+   "first": 85.72,
+   "held": 94.58
+  },
+  "lost": [],
+  "gained": []
+ },
+ "C_person": {
+  "A": {
+   "vis": 153,
+   "stop": 55,
+   "first": 82.77,
+   "held": 91.63
+  },
+  "B": {
+   "vis": 153,
+   "stop": 55,
+   "first": 82.77,
+   "held": 91.63
+  },
+  "lost": [],
+  "gained": []
+ },
+ "D_cube03": {
+  "A": {
+   "vis": 292,
+   "stop": 83,
+   "first": 84.59,
+   "held": null
+  },
+  "B": {
+   "vis": 292,
+   "stop": 83,
+   "first": 84.59,
+   "held": null
+  },
+  "lost": [],
+  "gained": []
+ },
+ "D_cube05": {
+  "A": {
+   "vis": 316,
+   "stop": 121,
+   "first": 104.78,
+   "held": null
+  },
+  "B": {
+   "vis": 316,
+   "stop": 120,
+   "first": 104.78,
+   "held": null
+  },
+  "lost": [
+   330
+  ],
+  "gained": []
+ },
+ "D_cube1": {
+  "A": {
+   "vis": 318,
+   "stop": 186,
+   "first": 105.82,
+   "held": 112.68
+  },
+  "B": {
+   "vis": 318,
+   "stop": 186,
+   "first": 105.82,
+   "held": 112.68
+  },
+  "lost": [],
+  "gained": []
+ },
+ "D_person": {
+  "A": {
+   "vis": 318,
+   "stop": 165,
+   "first": 105.82,
+   "held": null
+  },
+  "B": {
+   "vis": 318,
+   "stop": 165,
+   "first": 105.82,
+   "held": null
+  },
+  "lost": [],
+  "gained": []
+ },
+ "E1_cross150": {
+  "A": {
+   "vis": 96,
+   "stop": 20,
+   "first": 129.63,
+   "held": null
+  },
+  "B": {
+   "vis": 96,
+   "stop": 20,
+   "first": 129.63,
+   "held": null
+  },
+  "lost": [],
+  "gained": []
+ },
+ "E2_cross80": {
+  "A": {
+   "vis": 60,
+   "stop": 26,
+   "first": 53.33,
+   "held": null
+  },
+  "B": {
+   "vis": 60,
+   "stop": 26,
+   "first": 53.33,
+   "held": null
+  },
+  "lost": [],
+  "gained": []
+ },
+ "E3_recede5": {
+  "A": {
+   "vis": 108,
+   "stop": 101,
+   "first": 97.14,
+   "held": 100.0
+  },
+  "B": {
+   "vis": 108,
+   "stop": 101,
+   "first": 97.14,
+   "held": 100.0
+  },
+  "lost": [],
+  "gained": []
+ },
+ "E3_recede8": {
+  "A": {
+   "vis": 110,
+   "stop": 101,
+   "first": 96.15,
+   "held": 100.0
+  },
+  "B": {
+   "vis": 110,
+   "stop": 101,
+   "first": 96.15,
+   "held": 100.0
+  },
+  "lost": [],
+  "gained": []
+ },
+ "E4_appear100": {
+  "A": {
+   "vis": 66,
+   "stop": 61,
+   "first": 91.98,
+   "held": 99.03
+  },
+  "B": {
+   "vis": 66,
+   "stop": 61,
+   "first": 91.98,
+   "held": 99.03
+  },
+  "lost": [],
+  "gained": []
+ },
+ "E4_appear60": {
+  "A": {
+   "vis": 39,
+   "stop": 35,
+   "first": 53.8,
+   "held": 58.29
+  },
+  "B": {
+   "vis": 39,
+   "stop": 35,
+   "first": 53.8,
+   "held": 58.29
+  },
+  "lost": [],
+  "gained": []
+ },
+ "E5_pole_c": {
+  "A": {
+   "vis": 177,
+   "stop": 114,
+   "first": 218.38,
+   "held": 19.75
+  },
+  "B": {
+   "vis": 177,
+   "stop": 114,
+   "first": 218.38,
+   "held": 19.75
+  },
+  "lost": [],
+  "gained": []
+ },
+ "E5_pole_side": {
+  "A": {
+   "vis": 176,
+   "stop": 0,
+   "first": null,
+   "held": null
+  },
+  "B": {
+   "vis": 176,
+   "stop": 0,
+   "first": null,
+   "held": null
+  },
+  "lost": [],
+  "gained": []
+ },
+ "E6_cable_low_c": {
+  "A": {
+   "vis": 59,
+   "stop": 34,
+   "first": 86.25,
+   "held": 61.28
+  },
+  "B": {
+   "vis": 59,
+   "stop": 34,
+   "first": 86.25,
+   "held": 61.28
+  },
+  "lost": [],
+  "gained": []
+ },
+ "S_cube05_100": {
+  "A": {
+   "vis": 260,
+   "stop": 94,
+   "first": 100.0,
+   "held": 99.99
+  },
+  "B": {
+   "vis": 260,
+   "stop": 94,
+   "first": 100.0,
+   "held": 99.99
+  },
+  "lost": [],
+  "gained": []
+ },
+ "S_cube05_150": {
+  "A": {
+   "vis": 243,
+   "stop": 0,
+   "first": null,
+   "held": null
+  },
+  "B": {
+   "vis": 243,
+   "stop": 0,
+   "first": null,
+   "held": null
+  },
+  "lost": [],
+  "gained": []
+ },
+ "S_cube05_60": {
+  "A": {
+   "vis": 260,
+   "stop": 255,
+   "first": 60.0,
+   "held": 60.0
+  },
+  "B": {
+   "vis": 260,
+   "stop": 255,
+   "first": 60.0,
+   "held": 60.0
+  },
+  "lost": [],
+  "gained": []
+ },
+ "S_person_100": {
+  "A": {
+   "vis": 260,
+   "stop": 82,
+   "first": 100.0,
+   "held": 99.99
+  },
+  "B": {
+   "vis": 260,
+   "stop": 82,
+   "first": 100.0,
+   "held": 99.99
+  },
+  "lost": [],
+  "gained": []
+ },
+ "S_person_150": {
+  "A": {
+   "vis": 259,
+   "stop": 90,
+   "first": 150.0,
+   "held": null
+  },
+  "B": {
+   "vis": 259,
+   "stop": 90,
+   "first": 150.0,
+   "held": null
+  },
+  "lost": [],
+  "gained": []
+ },
+ "S_person_60": {
+  "A": {
+   "vis": 260,
+   "stop": 255,
+   "first": 60.0,
+   "held": 60.0
+  },
+  "B": {
+   "vis": 260,
+   "stop": 255,
+   "first": 60.0,
+   "held": 60.0
+  },
+  "lost": [],
+  "gained": []
+ }
+}
