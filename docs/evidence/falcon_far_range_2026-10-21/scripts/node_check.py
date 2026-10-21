@@ -62,7 +62,9 @@ def main():
         return res
     D.Detector.process = process
     node = DetectorNode()
-    assert node.sensor_profile == "falcon_ros" and node.cfg.farrange.enabled == bool(far.get("with_falcon_profile", False))
+    from resense.config import DetectorConfig
+    expect = far.get("with_falcon_profile", DetectorConfig.from_yaml(str(cfg_path)).farrange.with_falcon_profile)
+    assert node.sensor_profile == "falcon_ros" and node.cfg.farrange.enabled == bool(expect)
     info = {"farrange": {k: getattr(node.cfg.farrange, k) for k in ("enabled", "with_falcon_profile", "axis_stable")},
             "max_range": node.cfg.sensor.max_range, "config": str(cfg_path)}
     print(info, flush=True)
