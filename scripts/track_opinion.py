@@ -102,7 +102,8 @@ def collect_recording(job):
 
 
 def collect_injected(job):
-    (files, stamps, speeds, kind, d0, lateral, refl, seed, cfg_path, sets, place, piece, cross) = job
+    (files, stamps, speeds, kind, d0, lateral, refl, seed, cfg_path, sets, place, piece, cross) = job[:13]
+    move = job[13] if len(job) > 13 else 0.0     # 21.10: the object's own speed towards the train (m/s; < 0 = away)
     from far_range_eval import legacy_placement, placement_match
     from resense.frame import frame_from_compact
     from resense.synthetic import inject_obstacles
@@ -115,10 +116,10 @@ def collect_injected(job):
         t = stamps.get(stem)
         if prev_t is not None and t is not None:
             dt = t - prev_t
-            d -= spd * (dt if 0 < dt < 10 else 0.1)
+            d -= (spd + move) * (dt if 0 < dt < 10 else 0.1)
             lateral = float(np.clip(lateral + cross * (dt if 0 < dt < 10 else 0.1), -2.2, 2.2))
         prev_t = t
-        if d < 8.0:
+        if d < 8.0 or d > 260.0:
             break
         fr = frame_from_compact(np.load(f), cfg.sensor, stamp=t or 0.0, frame_id=stem)
         spec, tm = legacy_placement(fr.xyz, cfg.track, det.track, kind, d, lateral, refl, place)
@@ -159,8 +160,10 @@ def cmd_collect(a):
                 d0 = float(rng.uniform(*(float(v) for v in a.start.split(":")))) if ":" in a.start else float(a.start)
                 jobs.append((files, stamps, speeds, kind, d0, float(rng.uniform(lo, hi)),
                              float(rng.uniform(*OBJECT_CATALOGUE[kind].reflectivity)), int(rng.integers(1 << 30)),
-                             a.config, a.set, place, f"syn:{fn}:{kind}:p{piece_of[start]}",
-                             float(rng.choice([-1.0, 1.0]) * a.cross) if a.cross else 0.0))
+                             a.config, a.set, place, f"syn:{fn}:{kind}{a.piece_tag}:p{piece_of[start]}",
+                             float(rng.choice([-1.0, 1.0]) * a.cross) if a.cross else 0.0,
+                             float(rng.uniform(*(float(v) for v in a.move.split(":")))) if ":" in a.move
+                             else float(a.move)))
         fn_ = collect_injected
     else:
         for name in a.bag.split(","):
@@ -217,9 +220,13 @@ def export_gbm(clf, features) -> dict:
     return {"features": list(features), "init": f0, "learning_rate": float(clf.learning_rate), "trees": trees}
 
 
-def fit(X, y, a):
+def fit(X, y, a, sw=None):
     from sklearn.ensemble import GradientBoostingClassifier
     w = np.where(y == 1, 0.5 / y.mean(), 0.5 / (1 - y.mean()))          # class-balanced
+    if sw is not None:                                                  # 21.10: x per-row weights (mean 1 per class)
+        for c in (0, 1):
+            m = y == c
+            w[m] *= sw[m] / sw[m].mean()
     clf = GradientBoostingClassifier(n_estimators=a.trees, max_depth=a.depth, learning_rate=a.lr,
                                      subsample=0.8, min_samples_leaf=a.min_leaf, random_state=0)
     return clf.fit(X, y, sample_weight=w)
@@ -260,7 +267,11 @@ def cmd_train(a):
     from sklearn.metrics import roc_auc_score
     from resense.opinion import FEATURES, TrackOpinion
     drop = [f for f in a.drop.split(",") if f]
-    cols = [i for i, f in enumerate(FEATURES) if f not in drop]
+    keep = [f for f in a.features.split(",") if f] or FEATURES
+    unknown = [f for f in keep if f not in FEATURES]
+    if unknown:
+        raise SystemExit(f"unknown features {unknown}")
+    cols = [i for i, f in enumerate(FEATURES) if f in keep and f not in drop]
     feats = [FEATURES[i] for i in cols]
     Xn, Pn, Mn = load(a.neg)
     Xp, Pp, Mp = load(a.pos)
@@ -281,12 +292,19 @@ def cmd_train(a):
                                                              "positive_sequences": len(set(Pp[tp]))},
            "groups": sorted(set(G))}
     # grouped CV: each ride piece (with the objects injected into it) / empty recording held out
+    # 21.10: --seq-weight gives every positive sequence the same total weight (long sequences of one
+    # easy object do not dominate); negatives keep one weight per row
+    sw = None
+    if a.seq_weight:
+        names = np.r_[Pn[tn], Pp[tp]]
+        cnt = {k: v for k, v in zip(*np.unique(names[y == 1], return_counts=True))}
+        sw = np.array([1.0 / cnt[n] if yy == 1 else 1.0 for n, yy in zip(names, y)])
     oof = np.full(len(y), np.nan)
     for g in sorted(set(G)):
         te = G == g
-        oof[te] = fit(X[~te], y[~te], a).predict_proba(X[te])[:, 1]
+        oof[te] = fit(X[~te], y[~te], a, None if sw is None else sw[~te]).predict_proba(X[te])[:, 1]
     rep["heldout_auc"] = round(float(roc_auc_score(y, oof)), 4)
-    clf = fit(X, y, a)
+    clf = fit(X, y, a, sw)
     spec = export_gbm(clf, feats)
     op = TrackOpinion(spec)
     Xf = np.zeros((min(300, len(y)), len(FEATURES)))
@@ -326,6 +344,26 @@ def cmd_train(a):
                 "ride_events": [r[0], r[1]], "ride_stop_rows": [r[2], r[3]], "empty_events": [e[0], e[1]],
                 "synthetic_delayed_rows": len(s[4]), "synthetic_delayed_sequences": len({d[0] for d in s[4]}),
                 "test_delayed": t[4]})
+    # 21.10: the chosen threshold (--pick: a factor below the highest that delays no held-out synthetic
+    # sequence, rounded down to the config's 4 decimals) and what it does on held-out groups
+    first = [r for r in rep["simulation"] if r["positive_quantile"] == "max_delayed"][0]
+    best = first["threshold"]
+    if best is not None:
+        thr = float(np.floor(best * a.pick * 1e4) / 1e4)
+        extra = int(a.extra.split(",")[0])
+        r = simulate(Pn[ride], Mn[ride], pn[ride], thr, extra, a.near, a.sticky)
+        e = simulate(Pn[~ride], Mn[~ride], pn[~ride], thr, extra, a.near, a.sticky)
+        sp = simulate(Pp, Mp, pp, thr, extra, a.near, a.sticky)
+        t = simulate(Pt, Mt, pt, thr, extra, a.near, a.sticky)
+        rep["heldout"] = {"max_delayed_threshold": best, "pick": a.pick, "threshold": thr, "extra": extra,
+                          "ride_events": [r[0], r[1]], "ride_stop_rows": [r[2], r[3]], "empty_events": [e[0], e[1]],
+                          "delayed_rows_at_threshold": len(sp[4]),
+                          "delayed_sequences_at_threshold": len({d[0] for d in sp[4]}),
+                          "min_positive_onset_score": round(float(np.min(oof[y == 1])), 5),
+                          "test_delayed_rows": len(t[4]), "test_delayed": t[4][:200]}
+    if a.oof_out:
+        np.savez_compressed(a.oof_out, oof=oof, y=y, G=G, names=np.r_[Pn[tn], Pp[tp]], X=X, features=np.array(feats),
+                            pt=pt, Pt=Pt, Mt=Mt)
     rep["importance"] = {f: round(float(v), 3) for f, v in sorted(zip(feats, clf.feature_importances_),
                                                                    key=lambda t: -t[1])}
     print(json.dumps(rep, indent=1))
@@ -352,6 +390,8 @@ def main():
     c.add_argument("--lateral", default="-0.8:0.8")
     c.add_argument("--seed", type=int, default=1)
     c.add_argument("--cross", type=float, default=0.0, help="m/s: the objects cross the track laterally (a walking person)")
+    c.add_argument("--move", default="0", help="m/s, or lo:hi (uniform per sequence): the object's own speed towards the train (< 0 = away)")
+    c.add_argument("--piece-tag", default="", help="21.10: appended to the sequence name (distinguishes positive sets)")
     c.add_argument("--config", default=os.path.join(ROOT, "configs/default.yaml"))
     c.add_argument("--set", action="append", default=[])
     c.add_argument("--jobs", type=int, default=1)
@@ -368,6 +408,10 @@ def main():
     t.add_argument("--neg-all-range", action="store_true", help="negatives: STOP rows at every range (not only beyond --near)")
     t.add_argument("--near", type=float, default=30.0)
     t.add_argument("--drop", default="")
+    t.add_argument("--features", default="", help="21.10: the feature columns (comma-separated; default all FEATURES)")
+    t.add_argument("--seq-weight", action="store_true", help="21.10: equal total weight per positive sequence")
+    t.add_argument("--pick", type=float, default=0.5, help="21.10: chosen threshold = max_delayed threshold x this")
+    t.add_argument("--oof-out", default="", help="21.10: out-of-fold scores and the training matrix (.npz)")
     t.add_argument("--exclude", default="", help="groups (new_data:K, a recording) left out of training and simulation")
     t.add_argument("--trees", type=int, default=60)
     t.add_argument("--depth", type=int, default=3)
