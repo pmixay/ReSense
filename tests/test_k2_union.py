@@ -166,17 +166,17 @@ def test_union_missing_bed_fit_adds_nothing_and_keeps_the_base_hold():
     assert c.curve is not None
 
 
-def test_union_curve_seen_track_is_released_when_the_opinion_rises(tmp_path):
-    """Revision 1 (marked platform object 23, frames 106-112): a track that matched a cluster of the curve gauge is
-    asked again every withheld frame, so an earlier doubtful onset cannot withhold it past the frame where the
-    opinion rises; the same track without a curve cluster keeps the sticky rule (positive control)."""
+def test_union_curve_seen_track_keeps_the_sticky_opinion(tmp_path):
+    """Revision 3 (ride piece 2 frames 1062-1072, piece 5 frames 310-314 of cc703d1): a track that matched a cluster
+    of the curve gauge keeps the sticky opinion rule of every other track, so a doubtful base track is not released
+    by a curve match; the same model with doubt_sticky false releases it (positive control)."""
     from resense.config import TrackingConfig
     from resense.tracking import Tracker
     from tests.test_track_opinion import _cl, _stump
     m = _stump(tmp_path, "rise.json", 75.5, 5.0, -5.0)          # p low beyond 75.5 m, high within
-    kw = dict(doubt_model=m, doubt_extra_hits=6, doubt_near=30.0, doubt_sticky=True)
 
-    def run(curve):
+    def run(curve, sticky):
+        kw = dict(doubt_model=m, doubt_extra_hits=6, doubt_near=30.0, doubt_sticky=sticky)
         tr, out = Tracker(TrackingConfig(**kw)), []
         for k in range(14):
             c = _cl(80.0 - k)
@@ -184,13 +184,12 @@ def test_union_curve_seen_track_is_released_when_the_opinion_rises(tmp_path):
                 c.curve = True
             tr.update([c], ego_shift=1.0, frame_dt=0.1)
             t = [t for t in tr.tracks if t.id == 1][0]
-            out.append((t.reported, t.zone))
+            out.append((t.reported, t.zone, t.curve_seen))
         return out
-    sticky, loose = run(False), run(True)
-    first = next(i for i, (r, z) in enumerate(loose) if r)
-    first = next(i for i in range(first, 14) if sticky[i][0] and sticky[i][1] == "warning")
-    assert sticky[first + 1] == (True, "warning")                      # sticky: still withheld
-    assert loose[first] == (True, "warning") and loose[first + 1] == (True, "gauge")
+    plain, curve, loose = run(False, True), run(True, True), run(True, False)
+    assert [r[:2] for r in curve] == [r[:2] for r in plain] and curve[-1][2] and not plain[-1][2]
+    first = next(i for i, r in enumerate(plain) if r[0] and r[1] == "warning")
+    assert curve[first + 1][:2] == (True, "warning") and loose[first + 1][:2] == (True, "gauge")
 
 
 def test_union_added_cluster_keeps_the_base_observation_and_lateral():
