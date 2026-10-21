@@ -41,6 +41,9 @@ sys.path.insert(0, HERE)
 LABELS = {"cloud_with_fake_obj": "labels/cloud_with_fake_obj.json", "doubleT_obstacle": "labels/doubleT_obstacle.json"}
 SIX = ("doubleT_obstacle", "doubleT_platform", "roundT_doubleT", "roundT_pressureGate_roundT",
        "roundT_squareT_pressureGate_squareT", "squareT_platform_squareT_switch")
+# 21.10: .npy and verified .npy.zst caches (scripts/cache_extended_ride.py) alike
+from cache_io import cache_file_stem, cache_files, load_cache_array  # noqa: E402
+
 META = ["piece", "frame", "track", "stop", "onset", "dist", "lat", "label"]
 
 
@@ -81,9 +84,9 @@ def collect_recording(job):
     gt = load_gt(os.path.join(ROOT, LABELS[name])) if name in LABELS else None
     prev, rows = {}, []
     for i, f in enumerate(files):
-        stem = os.path.splitext(os.path.basename(f))[0]
+        stem = cache_file_stem(f)
         idx = int(stem.rsplit("_", 1)[1])
-        fr = frame_from_compact(np.load(f), cfg.sensor, stamp=stamps.get(stem, i * 0.1), frame_id=stem)
+        fr = frame_from_compact(load_cache_array(f), cfg.sensor, stamp=stamps.get(stem, i * 0.1), frame_id=stem)
         det.process(fr)
         frame = idx if name in SIX else i
         if gt is None:
@@ -112,7 +115,7 @@ def collect_injected(job):
     if cross:                           # a person crossing the track at |cross| m/s, from outside the corridor
         lateral = -2.0 if cross > 0 else 2.0
     for k, (f, spd) in enumerate(zip(files, speeds)):
-        stem = os.path.splitext(os.path.basename(f))[0]
+        stem = cache_file_stem(f)
         t = stamps.get(stem)
         if prev_t is not None and t is not None:
             dt = t - prev_t
@@ -121,7 +124,7 @@ def collect_injected(job):
         prev_t = t
         if d < 8.0 or d > 260.0:
             break
-        fr = frame_from_compact(np.load(f), cfg.sensor, stamp=t or 0.0, frame_id=stem)
+        fr = frame_from_compact(load_cache_array(f), cfg.sensor, stamp=t or 0.0, frame_id=stem)
         spec, tm = legacy_placement(fr.xyz, cfg.track, det.track, kind, d, lateral, refl, place)
         rng = np.random.default_rng(np.random.SeedSequence([seed, k, 1]))
         inj = inject_obstacles(fr, tm, [spec], rng=rng, dropout_start=60.0, dropout_full=200.0)
@@ -141,7 +144,7 @@ def cmd_collect(a):
         from resense.synthetic import OBJECT_CATALOGUE
         nd = os.path.join(a.cache, "new_data")
         stamps = load_cache_stamps(nd)
-        allf = sorted(glob.glob(os.path.join(nd, "*.npy")), key=_natural_key)
+        allf = cache_files(nd)
         pieces = np.array_split(np.arange(len(allf)), 8)
         piece_of = np.zeros(len(allf), dtype=int)
         for k, p in enumerate(pieces):
@@ -167,7 +170,7 @@ def cmd_collect(a):
         fn_ = collect_injected
     else:
         for name in a.bag.split(","):
-            files = sorted(glob.glob(os.path.join(a.cache, name, "*.npy")), key=_natural_key)
+            files = cache_files(os.path.join(a.cache, name))
             n = a.chunks if name == "new_data" else 1
             for k, part in enumerate(np.array_split(np.array(files), n)):
                 jobs.append((name, list(part), f"{name}:{k}" if n > 1 else name, a.config, a.set, a.cache))
