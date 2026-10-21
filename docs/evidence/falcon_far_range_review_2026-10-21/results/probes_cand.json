@@ -1,0 +1,1171 @@
+{
+ "axis_19_10": [
+  {
+   "case": "P0_author_J",
+   "R": 300.0,
+   "accepted_frames": 96,
+   "max_err": 8.88,
+   "max_valid": 175.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 73,
+    "err": 0.74,
+    "at": 175.0,
+    "valid": 175.0,
+    "sides": 1,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 75,
+    "X": 175.0,
+    "err": 1.04,
+    "sigma": 0.4,
+    "valid": 175.0
+   }
+  },
+  {
+   "case": "P0_author_J",
+   "R": 600.0,
+   "accepted_frames": 96,
+   "max_err": 4.44,
+   "max_valid": 175.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 78,
+    "err": 0.8,
+    "at": 175.0,
+    "valid": 175.0,
+    "sides": 1,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 79,
+    "X": 175.0,
+    "err": 0.91,
+    "sigma": 0.4,
+    "valid": 175.0
+   }
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 0.0,
+   "R": 300.0,
+   "curve_start0": 230.0,
+   "frames": 60,
+   "accepted_frames": 24,
+   "max_err": 0.09,
+   "max_valid": 175.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 0.0,
+   "R": 300.0,
+   "curve_start0": 175.0,
+   "frames": 60,
+   "accepted_frames": 26,
+   "max_err": 0.07,
+   "max_valid": 143.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 0.0,
+   "R": 1000.0,
+   "curve_start0": 230.0,
+   "frames": 60,
+   "accepted_frames": 24,
+   "max_err": 0.09,
+   "max_valid": 175.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 0.0,
+   "R": 1000.0,
+   "curve_start0": 175.0,
+   "frames": 60,
+   "accepted_frames": 26,
+   "max_err": 0.07,
+   "max_valid": 143.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 10.0,
+   "R": 300.0,
+   "curve_start0": 230.0,
+   "frames": 60,
+   "accepted_frames": 25,
+   "max_err": 0.14,
+   "max_valid": 175.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 10.0,
+   "R": 300.0,
+   "curve_start0": 175.0,
+   "frames": 60,
+   "accepted_frames": 16,
+   "max_err": 0.01,
+   "max_valid": 135.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 10.0,
+   "R": 1000.0,
+   "curve_start0": 230.0,
+   "frames": 60,
+   "accepted_frames": 25,
+   "max_err": 0.14,
+   "max_valid": 175.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 10.0,
+   "R": 1000.0,
+   "curve_start0": 175.0,
+   "frames": 60,
+   "accepted_frames": 16,
+   "max_err": 0.01,
+   "max_valid": 135.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 25.0,
+   "R": 300.0,
+   "curve_start0": 230.0,
+   "frames": 60,
+   "accepted_frames": 26,
+   "max_err": 0.11,
+   "max_valid": 175.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 25.0,
+   "R": 300.0,
+   "curve_start0": 175.0,
+   "frames": 42,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 25.0,
+   "R": 1000.0,
+   "curve_start0": 230.0,
+   "frames": 60,
+   "accepted_frames": 26,
+   "max_err": 0.11,
+   "max_valid": 175.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 25.0,
+   "R": 1000.0,
+   "curve_start0": 175.0,
+   "frames": 42,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 30.0,
+   "R": 300.0,
+   "curve_start0": 230.0,
+   "frames": 53,
+   "accepted_frames": 26,
+   "max_err": 0.1,
+   "max_valid": 175.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 30.0,
+   "R": 300.0,
+   "curve_start0": 175.0,
+   "frames": 35,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 30.0,
+   "R": 1000.0,
+   "curve_start0": 230.0,
+   "frames": 53,
+   "accepted_frames": 26,
+   "max_err": 0.1,
+   "max_valid": 175.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 30.0,
+   "R": 1000.0,
+   "curve_start0": 175.0,
+   "frames": 35,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 40.0,
+   "R": 300.0,
+   "curve_start0": 230.0,
+   "frames": 40,
+   "accepted_frames": 30,
+   "max_err": 0.05,
+   "max_valid": 171.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 40.0,
+   "R": 300.0,
+   "curve_start0": 175.0,
+   "frames": 26,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 40.0,
+   "R": 1000.0,
+   "curve_start0": 230.0,
+   "frames": 40,
+   "accepted_frames": 30,
+   "max_err": 0.05,
+   "max_valid": 171.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 40.0,
+   "R": 1000.0,
+   "curve_start0": 175.0,
+   "frames": 26,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V2_speed_dt0.2",
+   "v": 25.0,
+   "R": 300.0,
+   "accepted_frames": 19,
+   "max_err": 0.0,
+   "max_valid": 167.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V2_speed_dt0.2",
+   "v": 30.0,
+   "R": 300.0,
+   "accepted_frames": 16,
+   "max_err": 0.0,
+   "max_valid": 167.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "S_skewed_pair",
+   "slope": 0.003,
+   "accepted_frames": 8,
+   "max_err": 0.38,
+   "max_valid": 175.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "S_skewed_pair",
+   "slope": 0.006,
+   "accepted_frames": 5,
+   "max_err": 0.75,
+   "max_valid": 175.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 7,
+    "err": 0.75,
+    "at": 175.0,
+    "valid": 175.0,
+    "sides": 1,
+    "sigma": 0.4
+   },
+   "object_lost": null
+  },
+  {
+   "case": "S_skewed_pair",
+   "slope": 0.009,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 100.0,
+   "R": 600.0,
+   "accepted_frames": 8,
+   "max_err": 4.69,
+   "max_valid": 175.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 4,
+    "err": 4.69,
+    "at": 175.0,
+    "valid": 175.0,
+    "sides": 1,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 4,
+    "X": 135.0,
+    "err": 1.02,
+    "sigma": 0.3,
+    "valid": 175.0
+   }
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 100.0,
+   "R": 1000.0,
+   "accepted_frames": 8,
+   "max_err": 2.81,
+   "max_valid": 175.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 4,
+    "err": 2.81,
+    "at": 175.0,
+    "valid": 175.0,
+    "sides": 1,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 4,
+    "X": 145.0,
+    "err": 1.01,
+    "sigma": 0.32,
+    "valid": 175.0
+   }
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 100.0,
+   "R": 3000.0,
+   "accepted_frames": 8,
+   "max_err": 0.94,
+   "max_valid": 175.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 4,
+    "err": 0.94,
+    "at": 175.0,
+    "valid": 175.0,
+    "sides": 1,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 4,
+    "X": 175.0,
+    "err": 0.94,
+    "sigma": 0.4,
+    "valid": 175.0
+   }
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 130.0,
+   "R": 600.0,
+   "accepted_frames": 8,
+   "max_err": 1.69,
+   "max_valid": 175.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 4,
+    "err": 1.69,
+    "at": 175.0,
+    "valid": 175.0,
+    "sides": 1,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 4,
+    "X": 165.0,
+    "err": 1.02,
+    "sigma": 0.38,
+    "valid": 175.0
+   }
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 130.0,
+   "R": 1000.0,
+   "accepted_frames": 8,
+   "max_err": 1.01,
+   "max_valid": 175.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 4,
+    "err": 1.01,
+    "at": 175.0,
+    "valid": 175.0,
+    "sides": 1,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 4,
+    "X": 175.0,
+    "err": 1.01,
+    "sigma": 0.4,
+    "valid": 175.0
+   }
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 130.0,
+   "R": 3000.0,
+   "accepted_frames": 8,
+   "max_err": 0.34,
+   "max_valid": 175.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 160.0,
+   "R": 600.0,
+   "accepted_frames": 8,
+   "max_err": 0.19,
+   "max_valid": 175.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 160.0,
+   "R": 1000.0,
+   "accepted_frames": 8,
+   "max_err": 0.11,
+   "max_valid": 175.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 160.0,
+   "R": 3000.0,
+   "accepted_frames": 8,
+   "max_err": 0.04,
+   "max_valid": 175.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "O_other_track_row",
+   "xc": 120.0,
+   "R": 600.0,
+   "accepted_frames": 8,
+   "max_err": 0.18,
+   "max_valid": 139.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "O_other_track_row",
+   "xc": 120.0,
+   "R": 3000.0,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "O_other_track_row",
+   "xc": 160.0,
+   "R": 600.0,
+   "accepted_frames": 8,
+   "max_err": 0.08,
+   "max_valid": 171.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "O_other_track_row",
+   "xc": 160.0,
+   "R": 3000.0,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  }
+ ],
+ "axis_stable": [
+  {
+   "case": "P0_author_J",
+   "R": 300.0,
+   "accepted_frames": 19,
+   "max_err": 0.0,
+   "max_valid": 219.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "P0_author_J",
+   "R": 600.0,
+   "accepted_frames": 19,
+   "max_err": 0.0,
+   "max_valid": 219.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 0.0,
+   "R": 300.0,
+   "curve_start0": 230.0,
+   "frames": 60,
+   "accepted_frames": 21,
+   "max_err": 0.09,
+   "max_valid": 187.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 0.0,
+   "R": 300.0,
+   "curve_start0": 175.0,
+   "frames": 60,
+   "accepted_frames": 22,
+   "max_err": 0.07,
+   "max_valid": 134.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 0.0,
+   "R": 1000.0,
+   "curve_start0": 230.0,
+   "frames": 60,
+   "accepted_frames": 21,
+   "max_err": 0.09,
+   "max_valid": 187.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 0.0,
+   "R": 1000.0,
+   "curve_start0": 175.0,
+   "frames": 60,
+   "accepted_frames": 22,
+   "max_err": 0.07,
+   "max_valid": 134.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 10.0,
+   "R": 300.0,
+   "curve_start0": 230.0,
+   "frames": 60,
+   "accepted_frames": 20,
+   "max_err": 0.14,
+   "max_valid": 184.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 10.0,
+   "R": 300.0,
+   "curve_start0": 175.0,
+   "frames": 60,
+   "accepted_frames": 12,
+   "max_err": 0.01,
+   "max_valid": 132.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 10.0,
+   "R": 1000.0,
+   "curve_start0": 230.0,
+   "frames": 60,
+   "accepted_frames": 20,
+   "max_err": 0.14,
+   "max_valid": 184.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 10.0,
+   "R": 1000.0,
+   "curve_start0": 175.0,
+   "frames": 60,
+   "accepted_frames": 12,
+   "max_err": 0.01,
+   "max_valid": 132.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 25.0,
+   "R": 300.0,
+   "curve_start0": 230.0,
+   "frames": 60,
+   "accepted_frames": 19,
+   "max_err": 0.11,
+   "max_valid": 182.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 25.0,
+   "R": 300.0,
+   "curve_start0": 175.0,
+   "frames": 42,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 25.0,
+   "R": 1000.0,
+   "curve_start0": 230.0,
+   "frames": 60,
+   "accepted_frames": 19,
+   "max_err": 0.11,
+   "max_valid": 182.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 25.0,
+   "R": 1000.0,
+   "curve_start0": 175.0,
+   "frames": 42,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 30.0,
+   "R": 300.0,
+   "curve_start0": 230.0,
+   "frames": 53,
+   "accepted_frames": 22,
+   "max_err": 0.12,
+   "max_valid": 179.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 30.0,
+   "R": 300.0,
+   "curve_start0": 175.0,
+   "frames": 35,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 30.0,
+   "R": 1000.0,
+   "curve_start0": 230.0,
+   "frames": 53,
+   "accepted_frames": 22,
+   "max_err": 0.12,
+   "max_valid": 179.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 30.0,
+   "R": 1000.0,
+   "curve_start0": 175.0,
+   "frames": 35,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 40.0,
+   "R": 300.0,
+   "curve_start0": 230.0,
+   "frames": 40,
+   "accepted_frames": 21,
+   "max_err": 0.03,
+   "max_valid": 174.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 40.0,
+   "R": 300.0,
+   "curve_start0": 175.0,
+   "frames": 26,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 40.0,
+   "R": 1000.0,
+   "curve_start0": 230.0,
+   "frames": 40,
+   "accepted_frames": 21,
+   "max_err": 0.03,
+   "max_valid": 174.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V_speed_curve_in_gap",
+   "v": 40.0,
+   "R": 1000.0,
+   "curve_start0": 175.0,
+   "frames": 26,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V2_speed_dt0.2",
+   "v": 25.0,
+   "R": 300.0,
+   "accepted_frames": 13,
+   "max_err": 0.0,
+   "max_valid": 169.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "V2_speed_dt0.2",
+   "v": 30.0,
+   "R": 300.0,
+   "accepted_frames": 10,
+   "max_err": 0.0,
+   "max_valid": 169.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "S_skewed_pair",
+   "slope": 0.003,
+   "accepted_frames": 8,
+   "max_err": 0.44,
+   "max_valid": 197.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "S_skewed_pair",
+   "slope": 0.006,
+   "accepted_frames": 8,
+   "max_err": 0.51,
+   "max_valid": 137.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "S_skewed_pair",
+   "slope": 0.009,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 100.0,
+   "R": 600.0,
+   "accepted_frames": 8,
+   "max_err": 63.02,
+   "max_valid": 377.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 4,
+    "err": 63.02,
+    "at": 375.0,
+    "valid": 377.0,
+    "sides": 2,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 4,
+    "X": 140.0,
+    "err": 1.33,
+    "sigma": 0.15,
+    "valid": 377.0
+   }
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 100.0,
+   "R": 1000.0,
+   "accepted_frames": 8,
+   "max_err": 37.81,
+   "max_valid": 377.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 4,
+    "err": 37.81,
+    "at": 375.0,
+    "valid": 377.0,
+    "sides": 2,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 4,
+    "X": 150.0,
+    "err": 1.25,
+    "sigma": 0.15,
+    "valid": 377.0
+   }
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 100.0,
+   "R": 3000.0,
+   "accepted_frames": 8,
+   "max_err": 12.61,
+   "max_valid": 377.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 4,
+    "err": 12.61,
+    "at": 375.0,
+    "valid": 377.0,
+    "sides": 2,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 4,
+    "X": 185.0,
+    "err": 1.2,
+    "sigma": 0.15,
+    "valid": 377.0
+   }
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 130.0,
+   "R": 600.0,
+   "accepted_frames": 8,
+   "max_err": 50.02,
+   "max_valid": 377.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 4,
+    "err": 50.02,
+    "at": 375.0,
+    "valid": 377.0,
+    "sides": 2,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 4,
+    "X": 170.0,
+    "err": 1.33,
+    "sigma": 0.15,
+    "valid": 377.0
+   }
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 130.0,
+   "R": 1000.0,
+   "accepted_frames": 8,
+   "max_err": 30.01,
+   "max_valid": 377.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 4,
+    "err": 30.01,
+    "at": 375.0,
+    "valid": 377.0,
+    "sides": 2,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 4,
+    "X": 180.0,
+    "err": 1.25,
+    "sigma": 0.15,
+    "valid": 377.0
+   }
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 130.0,
+   "R": 3000.0,
+   "accepted_frames": 8,
+   "max_err": 10.01,
+   "max_valid": 377.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 4,
+    "err": 10.01,
+    "at": 375.0,
+    "valid": 377.0,
+    "sides": 2,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 4,
+    "X": 215.0,
+    "err": 1.2,
+    "sigma": 0.15,
+    "valid": 377.0
+   }
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 160.0,
+   "R": 600.0,
+   "accepted_frames": 8,
+   "max_err": 38.52,
+   "max_valid": 377.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 4,
+    "err": 38.52,
+    "at": 375.0,
+    "valid": 377.0,
+    "sides": 2,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 4,
+    "X": 200.0,
+    "err": 1.33,
+    "sigma": 0.15,
+    "valid": 377.0
+   }
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 160.0,
+   "R": 1000.0,
+   "accepted_frames": 8,
+   "max_err": 23.11,
+   "max_valid": 377.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 4,
+    "err": 23.11,
+    "at": 375.0,
+    "valid": 377.0,
+    "sides": 2,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 4,
+    "X": 210.0,
+    "err": 1.25,
+    "sigma": 0.15,
+    "valid": 377.0
+   }
+  },
+  {
+   "case": "W_wide_straight_sides_track_curves",
+   "xc": 160.0,
+   "R": 3000.0,
+   "accepted_frames": 8,
+   "max_err": 7.71,
+   "max_valid": 377.0,
+   "fail_safe": false,
+   "first_failure": {
+    "frame": 4,
+    "err": 7.71,
+    "at": 375.0,
+    "valid": 377.0,
+    "sides": 2,
+    "sigma": 0.4
+   },
+   "object_lost": {
+    "frame": 4,
+    "X": 245.0,
+    "err": 1.2,
+    "sigma": 0.15,
+    "valid": 377.0
+   }
+  },
+  {
+   "case": "O_other_track_row",
+   "xc": 120.0,
+   "R": 600.0,
+   "accepted_frames": 8,
+   "max_err": 0.18,
+   "max_valid": 136.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "O_other_track_row",
+   "xc": 120.0,
+   "R": 3000.0,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "O_other_track_row",
+   "xc": 160.0,
+   "R": 600.0,
+   "accepted_frames": 8,
+   "max_err": 0.08,
+   "max_valid": 172.0,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  },
+  {
+   "case": "O_other_track_row",
+   "xc": 160.0,
+   "R": 3000.0,
+   "accepted_frames": 0,
+   "max_err": 0.0,
+   "max_valid": null,
+   "fail_safe": true,
+   "first_failure": null,
+   "object_lost": null
+  }
+ ]
+}
