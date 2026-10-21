@@ -116,7 +116,18 @@ def main():
             np.savez_compressed(f"{a.out}_dump/f{n:05d}.npz", xyz=det._frame_xyz.astype(np.float32),
                                 dy=np.asarray(dy_all, np.float32), h=np.asarray(h_all, np.float32), grid=grid,
                                 rail_z=np.asarray(det.track.rail_z(grid), np.float64),
-                                plane=np.float64(-st.height if st.height is not None else np.nan))
+                                plane=np.float64(-st.height if st.height is not None else np.nan),
+                                corridor_idx=np.asarray(res.corridor_idx, np.int64),
+                                cl_meta=np.asarray(json.dumps([
+                                    {"k": k, "d": round(float(c.distance), 2), "lat": round(float(c.lateral), 2), "n": int(c.n),
+                                     "n_gauge": int(c.n_gauge), "zone": c.zone, "reason": c.reason, "kind": c.kind,
+                                     "hmin": round(float(c.height_min), 2), "hmax": round(float(c.height_max), 2),
+                                     "track": next(({"id": t.id, "hits": int(t.hits), "misses": int(t.misses),
+                                                     "reported": bool(t.reported), "zone": t.zone}
+                                                    for t in det.tracker.tracks if t.last is c), None)}
+                                    for k, c in enumerate(res.candidates)])),
+                                **{f"cl_{k}": np.asarray(c.points_idx, np.int64) for k, c in enumerate(res.candidates)
+                                   if c.points_idx is not None and c.points_idx.size})
         n += 1
         if a.limit and n >= a.limit:
             break
