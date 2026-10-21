@@ -150,3 +150,17 @@ def test_union_curve_range_is_held_over_a_hidden_boundary_and_decays():
     assert hidden.curve is not None and hidden.curve.axis_valid == before - 20.0
     again = estimate_track(xyz, cfg, prev=hidden)
     assert again.curve is not None and again.curve.axis_valid >= before - 20.0
+
+
+def test_union_missing_bed_fit_adds_nothing_and_keeps_the_base_hold():
+    """Review R5 (20.10): a frame without a bed fit (only returns high on the walls) must not release anything. With
+    the union the output is exactly the estimator without the joint fit (which holds its prior) and no curve is
+    carried, so the second gauge adds nothing on that frame; the next full frame brings the curve back."""
+    xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
+    off, un = _run_track(xyz, OFF), _run_track(xyz, UNION)
+    high = xyz[xyz[:, 2] > 1.0]
+    a = estimate_track(high, TrackConfig(**OFF), prev=off[-1])
+    b = estimate_track(high, TrackConfig(**UNION), prev=un[-1])
+    assert _same(a, b) and _same(a, off[-1]) and b.curve is None       # the hold is the base estimator's own
+    c = estimate_track(xyz, TrackConfig(**UNION), prev=b)
+    assert c.curve is not None
