@@ -257,7 +257,7 @@ def _stable_cfg(**kw):
     return FarRangeConfig(enabled=True, axis_stable=True, **kw)
 
 
-def _columns(fy, s, x0, x1, rng, spacing=30.0, lat=1.9, family=0.25, every=1, phase=0):
+def _columns(fy, s, x0, x1, rng, spacing=30.0, lat=1.9, family=0.2, every=1, phase=0):
     """A column row: a 0.6 m deep column every ``spacing`` m, alternating +-``family`` m laterally."""
     pts = []
     for n, c in enumerate(np.arange(x0, x1, spacing)):

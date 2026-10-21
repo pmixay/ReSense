@@ -726,6 +726,15 @@ class FarRangeConfig:
     far_min_height: float = 0.3        # cluster.far_min_height under the profile: beyond the height reference a far
                                        # obstacle's visible part is short (the rays to its foot return from the track first)
     far_max_length: float = 4.0        # cluster.far_max_length under the profile (a 2 m deep box measures 3.1-3.2 m)
+    # 21.10 (farrange.axis_stable, docs/evidence/falcon_far_range_2026-10-21): off = the far axis of 19.10 (89e0f3b)
+    axis_stable: bool = False          # C7-C9: a sparse second side as a parallel tube, an aged two-sided support history, two sides only
+    axis_second_tube: float = 0.5      # m, T: keep tolerance of the second side about its own robust line; its support ends at the first
+                                       # observed bin outside; the sides diverge by T at join + T / |slope difference| (the divergence cap)
+    axis_second_max_rms: float = 0.25  # m, residual of the second side (a column row with two lateral families: 0.17-0.25 m on the Falcon)
+    axis_history_frames: int = 10      # frames of two-sided supports kept (aged); the used support is the second-highest aged value
+    axis_history_min: int = 2          # two-sided frames needed in that window (two frames must agree)
+    axis_history_speed: float = 25.0   # m/s: supports and contradictions age by this times the elapsed time (metro maximum speed)
+    axis_frame_dt: float = 0.1         # s, elapsed time per frame when the caller gives none
     confirm_enabled: bool = False      # far confirmation (resense/farline.py FarConfirm); measured 19.10: no false alarm removed, held fraction lower, so off
     confirm_from: float = 150.0        # m: a strict-gauge track beyond this needs range-consistent evidence to STOP
     confirm_window: int = 10           # frames looked back

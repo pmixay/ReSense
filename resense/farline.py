@@ -119,8 +119,9 @@ def _side_line(xs: np.ndarray, ys: np.ndarray, cfg: FarRangeConfig, min_bins: in
     return float(p[0]), float(p[1]), float(max(se, 1e-5)), float(x.max())
 
 
-def measure(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_range: float):
-    """This frame's far line: (slope, slope_se, support X, sides) or None."""
+def _side_bins(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_range: float):
+    """Per side (+1 left, -1 right) the inner-boundary bins (xs, ys), and the near tangent at the join;
+    None when the frame has too few points."""
     X, Y, Z = xyz[:, 0].astype(np.float64), xyz[:, 1].astype(np.float64), xyz[:, 2].astype(np.float64)
     j = cfg.axis_join
     lo, hi = cfg.axis_fit_range[0], min(cfg.axis_fit_range[1], max_range)
@@ -135,7 +136,7 @@ def measure(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_range: 
     band = ((h > cfg.axis_band[0]) & (h < cfg.axis_band[1]) & (np.abs(dy0) > cfg.axis_lateral[0])
             & (np.abs(dy0) < cfg.axis_lateral[1]))
     edges = np.arange(lo, hi + cfg.axis_bin, cfg.axis_bin)
-    primary, second = [], []
+    sides = []
     for s in (1.0, -1.0):
         m = band & (np.sign(dy0) == s)
         if m.sum() < cfg.axis_min_points * min(cfg.axis_min_bins, cfg.axis_second_min_bins):
@@ -150,7 +151,18 @@ def measure(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_range: 
             k = q[np.argsort(a[q])[int(0.1 * q.size)]]          # the inner boundary: 10th percentile of |lateral|
             xs.append(0.5 * (edges[b] + edges[b + 1]))
             ys.append(yy[k])
-        xs, ys = np.asarray(xs), np.asarray(ys)
+        sides.append((s, np.asarray(xs), np.asarray(ys)))
+    return sides, tj
+
+
+def measure(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_range: float):
+    """This frame's far line: (slope, slope_se, support X, sides) or None."""
+    bins = _side_bins(xyz, model, cfg, max_range)
+    if bins is None:
+        return None
+    sides, tj = bins
+    primary, second = [], []
+    for s, xs, ys in sides:
         f = _side_line(xs, ys, cfg, cfg.axis_min_bins)
         if f is not None:
             primary.append(f)
@@ -174,6 +186,104 @@ def measure(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_range: 
     return slope, se, support, len(fits)
 
 
+def _rejected_run_start(xs: np.ndarray, ys: np.ndarray, cfg: FarRangeConfig) -> float:
+    """X of the first bin of the rejected run that ended a primary side's support (``_side_line``'s robust line and
+    loop), or inf when the support ended at a gap or at the last bin: an observed contradiction vs missing data."""
+    if xs.size < 2:
+        return np.inf
+    o = np.argsort(xs)
+    xs, ys = xs[o], ys[o]
+    keep = np.ones(xs.size, dtype=bool)
+    for _ in range(3):
+        if keep.sum() < 2:
+            return np.inf
+        p = np.polyfit(xs[keep], ys[keep], 1)
+        keep = np.abs(ys - np.polyval(p, xs)) < 2.0 * cfg.axis_max_rms
+    last, run = None, 0
+    for i in range(xs.size):
+        if keep[i]:
+            if last is not None and xs[i] - xs[last] > cfg.axis_max_gap:
+                return np.inf
+            last, run = i, 0
+        else:
+            run += 1
+            if last is not None and run >= cfg.axis_max_rejected_run:
+                return float(xs[i - run + 1])
+    return np.inf
+
+
+def _second_tube(xs: np.ndarray, ys: np.ndarray, cfg: FarRangeConfig):
+    """21.10 (C7): a sparse second side (a column row) taken from the near end outwards while its bins stay
+    within T of one straight line (rms <= ``axis_second_max_rms``). Returns (slope, support X or None,
+    contradiction X): the first observed bin that breaks that line is a contradiction at its X; the support is
+    contiguous (a gap longer than ``axis_max_gap`` ends it: missing data, not a contradiction); a side that
+    bends away over its last bins is a contradiction there too."""
+    T = cfg.axis_second_tube
+    if xs.size < 2:
+        return None, None, np.inf
+    o = np.argsort(xs)
+    xs, ys = xs[o], ys[o]
+
+    def fits(n):
+        p = np.polyfit(xs[:n], ys[:n], 1)
+        r = ys[:n] - np.polyval(p, xs[:n])
+        return float(np.max(np.abs(r))) < T and float(np.sqrt(np.mean(r ** 2))) <= cfg.axis_second_max_rms
+
+    n = 2
+    while n < xs.size and fits(n + 1):
+        n += 1
+    contra = float(xs[n]) if n < xs.size else np.inf
+    end = 0
+    while end + 1 < n and xs[end + 1] - xs[end] <= cfg.axis_max_gap:
+        end += 1
+    x, y = xs[:end + 1], ys[:end + 1]
+    if x.size < cfg.axis_second_min_bins or x[-1] - x[0] < cfg.axis_min_span:
+        return None, None, contra
+    p = np.polyfit(x, y, 1)
+    res = y - np.polyval(p, x)
+    if abs(float(np.mean(res[-3:]))) > cfg.axis_second_max_rms:     # bending away over the last bins
+        return None, None, min(contra, float(x[-3]))
+    return float(p[0]), float(x[-1]), contra
+
+
+def measure_stable(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_range: float):
+    """21.10 (``axis_stable``): this frame's far line as a dict (slope, se, primary support, two-sided support or
+    None, sides, contradiction X), or None when no primary side passes or the line kinks at the join."""
+    bins = _side_bins(xyz, model, cfg, max_range)
+    if bins is None:
+        return None
+    sides, tj = bins
+    prim, rest = [], []
+    for s, xs, ys in sides:
+        f = _side_line(xs, ys, cfg, cfg.axis_min_bins)
+        (prim if f is not None else rest).append((f, xs, ys))
+    if not prim:
+        return None
+    contra = min(_rejected_run_start(xs, ys, cfg) for _, xs, ys in prim)
+    T = cfg.axis_second_tube
+    if len(prim) == 2:
+        (f1, _, _), (f2, _, _) = prim
+        w = np.array([1.0 / f1[2] ** 2, 1.0 / f2[2] ** 2])
+        slope = float((w[0] * f1[0] + w[1] * f2[0]) / w.sum())
+        se = float(1.0 / np.sqrt(w.sum()))
+        two, ds, n = min(f1[3], f2[3]), abs(f1[0] - f2[0]), 2
+        support = max(f1[3], f2[3])
+    else:
+        f1 = prim[0][0]
+        slope, se, support, two, ds, n = f1[0], f1[2], f1[3], None, 0.0, 1
+        if rest:
+            _, xs, ys = rest[0]
+            s2, sup2, c2 = _second_tube(xs, ys, cfg)
+            contra = min(contra, c2)
+            if s2 is not None:
+                two, ds, n = min(f1[3], sup2), abs(f1[0] - s2), 2
+    if n == 2 and ds > 0:
+        contra = min(contra, cfg.axis_join + T / ds)              # the sides have diverged by T there
+    if abs(slope - tj) > (cfg.axis_max_kink if n == 2 else cfg.axis_max_kink_one_side):
+        return None
+    return {"slope": slope, "se": se, "support": support, "two": two, "sides": n, "contra": contra}
+
+
 class FarAxisTracker:
     """Temporal state of the far line (EMA of the slope, pessimistic support, confirmation, hold)."""
 
@@ -188,9 +298,15 @@ class FarAxisTracker:
         self.sides = 0
         self.good = 0
         self.bad = 0
+        self.t = 0.0                    # s, elapsed (axis_stable)
+        self.hist: list = []            # (t, two-sided support or None, contradiction X) of the last frames (axis_stable)
+        self.last_used: Optional[float] = None
 
-    def update(self, xyz: np.ndarray, model: Optional[TrackModel], max_range: float) -> Optional[FarAxis]:
+    def update(self, xyz: np.ndarray, model: Optional[TrackModel], max_range: float,
+               dt: Optional[float] = None) -> Optional[FarAxis]:
         cfg = self.cfg
+        if cfg.axis_stable:
+            return self._update_stable(xyz, model, max_range, dt)
         if model is None:
             self.reset()
             return None
@@ -236,6 +352,64 @@ class FarAxisTracker:
         far.valid = float(end)
         ok = far.sigma(grid) <= cfg.axis_max_sigma
         bad = np.flatnonzero(~ok)
+        if bad.size:
+            far.valid = float(grid[bad[0] - 1]) if bad[0] > 0 else j
+        return far
+
+
+    def _update_stable(self, xyz, model, max_range, dt) -> Optional[FarAxis]:
+        """21.10 (C7-C9): the support is the second-highest of the last frames' two-sided supports, each aged by
+        ``axis_history_speed`` x the elapsed time, capped by the aged contradictions; no two-sided support, no far
+        axis (unless a straight section is declared). A frame failing the line tests keeps the existing hold."""
+        cfg = self.cfg
+        if model is None:
+            self.reset()
+            return None
+        self.t += float(dt) if dt is not None and dt > 0 else cfg.axis_frame_dt
+        m = measure_stable(xyz, model, cfg, max_range)
+        if m is None:
+            self.bad += 1
+            if self.bad > cfg.axis_hold_frames:
+                self.slope, self.good, self.hist = None, 0, []
+        else:
+            a = cfg.axis_smoothing if self.slope is not None else 0.0
+            self.slope = m["slope"] if self.slope is None else a * self.slope + (1 - a) * m["slope"]
+            self.se = m["se"] if a == 0.0 else a * self.se + (1 - a) * m["se"]
+            self.support = m["support"]
+            self.good += 1
+            self.bad = 0
+            self.hist.append((self.t, m["two"], m["contra"]))
+        self.hist = [h for h in self.hist if h[0] > self.t - cfg.axis_history_frames * cfg.axis_frame_dt - 1e-9][-cfg.axis_history_frames:]
+        if self.slope is None or self.good < cfg.axis_confirm_frames:
+            return None
+        v, j = cfg.axis_history_speed, cfg.axis_join
+        aged = sorted(two - v * (self.t - t) for t, two, _ in self.hist if two is not None)
+        caps = [c - v * (self.t - t) for t, _, c in self.hist if np.isfinite(c)]
+        used, sides = None, 2
+        if len(aged) >= max(cfg.axis_history_min, 1):
+            used = aged[-max(cfg.axis_history_min, 1)]
+            if caps:
+                used = min(used, min(caps))
+            used -= 10.0 * self.bad                              # a held line decays as before (10 m per failed frame)
+        if used is None or used <= j:
+            if cfg.declared_straight_to <= 0:
+                self.last_used = None
+                return None
+            used, sides = self.support - 10.0 * self.bad, 1     # a declared section: the 19.10 one-sided path
+        self.last_used = used
+        self.sides = sides
+        k = float(cfg.axis_unseen_curvature)
+        tol = max(2.0 * cfg.axis_max_rms, cfg.axis_second_tube if sides == 2 else 0.0)
+        lead = float(np.sqrt(2.0 * tol / k)) if k > 0 else 0.0
+        straight = max(used - lead, float(cfg.declared_straight_to), j)
+        far = FarAxis(join=j, y_join=float(model.center_y(np.array([j]))[0]), slope=float(self.slope),
+                      slope_se=float(self.se), support=float(used), valid=0.0, sides=sides,
+                      sigma0=cfg.axis_sigma0, unseen_k=k,
+                      one_side_slope=cfg.axis_one_side_slope_sigma if sides < 2 else 0.0, straight_to=straight)
+        end = min(max(used + cfg.axis_margin, float(cfg.declared_straight_to)), max_range)
+        grid = np.arange(j, end + 1e-6, 1.0)
+        far.valid = float(end)
+        bad = np.flatnonzero(far.sigma(grid) > cfg.axis_max_sigma)
         if bad.size:
             far.valid = float(grid[bad[0] - 1]) if bad[0] > 0 else j
         return far

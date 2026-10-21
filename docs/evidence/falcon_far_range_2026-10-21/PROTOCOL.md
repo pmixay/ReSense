@@ -141,3 +141,20 @@ unconditional result); unit tests.
 
 If any of 1–14 fails, `farrange.axis_stable` and `farrange.with_falcon_profile` stay off and the failing
 rows are reported. Not used: the held-out G3 set. Parameters are not tuned on seeds 20–22.
+
+## Amendments
+
+### A1 (21.10, after implementing, before any measuring run of the change)
+
+1. **C7 as implemented.** The second side is taken from its near end outwards while its bins stay within
+   T = 0.5 m of one straight line with rms ≤ 0.25 m; the first observed bin that breaks that line is the
+   contradiction X; observed bins off that line *before* its first kept bin are contradictions too (found by
+   the acceptance test `test_stable_contradiction_caps_the_history_at_once`: a robust fit over all bins could
+   pick the far, bent half of a row and ignore the near half). Parameters unchanged.
+2. **Test fix.** The committed acceptance tests built the synthetic column row with lateral families ±0.25 m:
+   an alternating ±0.25 m pattern has an rms of exactly 0.25 m, the registered limit, so the row was accepted
+   or not by noise. The helper now uses ±0.2 m (rms 0.2 m). The registered parameters are not changed.
+3. **Design check on recorded bins (not a measuring run of the detector):** the implemented `_second_tube`
+   applied to the right-side bins recorded by `run_far.py --detail` on the v1.2.0 candidate run (4,312 frames
+   with right bins): support 172 m in 70 %, 142 m in 22 %, 202–262 m in 5 %, none in 3 %; a contradiction in
+   1.5 % of frames.
