@@ -205,6 +205,7 @@ class Detector:
         fr = self.cfg.farrange
         self.far = FarAxisTracker(fr) if fr.enabled and fr.axis_enabled else None
         self._far_axis = None
+        self._union_shift = None        # 21.10 (farrange.axis_union_beyond): this frame's lateral shift of the points the union took
         self.far_confirm = FarConfirm(fr) if fr.enabled and fr.confirm_enabled else None
         self.dust_guard = DustGuard(self.cfg.dust) if self.cfg.dust.enabled else None  # 19.10 N3, off by default
 
@@ -554,6 +555,24 @@ class Detector:
             # 19.10 (farrange): beyond the join the lateral is measured from the far straight axis
             dy_all = dy_all - far.offset(xyz[:, 0], self.track)
         self._dy_rail = dy_all
+        self._union_shift = None
+        if far is not None and cfg.farrange.axis_stable and cfg.farrange.axis_union_beyond:
+            # 21.10 (farrange.axis_union_beyond, review F1): between the far line's trusted end and the near model's
+            # own trusted range the corridor is the union of both hypotheses, the near model's lateral (v1.2.0's
+            # corridor) and the far line continued straight, whichever is nearer the centre: a point is never
+            # removed from v1.2.0's corridor, and a clear range there means both are empty
+            X = xyz[:, 0]
+            hi = max(min(self.track.axis_valid, cfg.gauge.range_max), far.valid)
+            beyond = (X > far.valid) & (X <= hi)
+            if beyond.any():
+                alt = dy_all[beyond] - far.line_offset(X[beyond], self.track)
+                take = np.abs(alt) < np.abs(dy_all[beyond])
+                if take.any():
+                    shift = np.zeros(X.size, dtype=dy_all.dtype)
+                    sub = np.flatnonzero(beyond)[take]
+                    shift[sub] = alt[take] - dy_all[sub]
+                    dy_all = dy_all + shift
+                    self._union_shift = shift
         if cfg.gauge.axis_union == 2:
             # 26.09 (candidate B, off by default): the corridor coordinate re-measured so that the strict
             # envelope is the union of the rail and the sensor-axis envelopes (near field, straight
@@ -747,7 +766,14 @@ class Detector:
                                             in_rail=self.buffer.merged_rail(acc.min_range), dy_rail=dro))
             n_acc = 1 + len(self.buffer)
         far = (cand.xyz[:, 0] >= acc.min_range) & ~cand.low
-        self.buffer.push(cand.xyz[far, 0], cand.dy[far], cand.h[far], cand.intensity[far], cand.in_gauge[far],
+        dy_push = cand.dy
+        if self._union_shift is not None:
+            # 21.10 (axis_union_beyond): the buffer is rebuilt with the near model and the far line's trusted part
+            # only, so a point taken by the union is stored with its near lateral (its strict flag is kept)
+            ok = cand.idx >= 0
+            dy_push = cand.dy.copy()
+            dy_push[ok] = dy_push[ok] - self._union_shift[cand.idx[ok]]
+        self.buffer.push(cand.xyz[far, 0], dy_push[far], cand.h[far], cand.intensity[far], cand.in_gauge[far],
                          in_rail=None if cand.in_rail is None else cand.in_rail[far])
         return merged, n_acc
 

@@ -57,6 +57,12 @@ class FarAxis:
             out[far] = self.y_join + self.slope * (X[far] - self.join) - model.center_y(X[far])
         return out
 
+    def line_offset(self, X: np.ndarray, model: TrackModel) -> np.ndarray:
+        """y_far - y_near at X for the far line continued straight, beyond its trusted range too (21.10,
+        ``axis_union_beyond``); 0 before the join."""
+        X = np.asarray(X, dtype=np.float64)
+        return np.where(X > self.join, self.y_join + self.slope * (X - self.join) - model.center_y(X), 0.0)
+
     def sigma(self, X: np.ndarray) -> np.ndarray:
         X = np.asarray(X, dtype=np.float64)
         d = np.maximum(X - self.join, 0.0)
@@ -143,7 +149,7 @@ def _side_bins(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_rang
             continue
         idx = np.digitize(X[m], edges) - 1
         a, yy = np.abs(dy0[m]), Y[m]
-        xs, ys = [], []
+        xs, ys, ds = [], [], []
         for b in np.unique(idx):
             q = np.flatnonzero(idx == b)
             if q.size < cfg.axis_min_points or b < 0 or b >= edges.size - 1:
@@ -151,7 +157,8 @@ def _side_bins(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_rang
             k = q[np.argsort(a[q])[int(0.1 * q.size)]]          # the inner boundary: 10th percentile of |lateral|
             xs.append(0.5 * (edges[b] + edges[b + 1]))
             ys.append(yy[k])
-        sides.append((s, np.asarray(xs), np.asarray(ys)))
+            ds.append(a[k])
+        sides.append((s, np.asarray(xs), np.asarray(ys), np.asarray(ds)))
     return sides, tj
 
 
@@ -162,7 +169,7 @@ def measure(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_range: 
         return None
     sides, tj = bins
     primary, second = [], []
-    for s, xs, ys in sides:
+    for s, xs, ys, _ in sides:
         f = _side_line(xs, ys, cfg, cfg.axis_min_bins)
         if f is not None:
             primary.append(f)
@@ -248,6 +255,33 @@ def _second_tube(xs: np.ndarray, ys: np.ndarray, line, cfg: FarRangeConfig):
     return float(x[-1]), contra
 
 
+def _confirming_end(xs, ys, dd, line, support, tol, cfg: FarRangeConfig) -> float:
+    """21.10 (A6, C3): how far a side confirms the far line for a turnout / crossover. A side whose boundary stands
+    more than ``axis_max_boundary_lateral`` from the axis (median over its support) confirms nothing: between wide
+    boundaries a track can curve away with no boundary evidence. Within the support, a gap long enough for a
+    diverging track (radius ``axis_turnout_radius``) to leave through, sqrt(2 R (d + ``axis_vehicle_half``)) at the
+    side's lateral d, ends the confirmation at the gap's start. ``line`` (the side's own fit) selects the kept
+    bins of a primary side; None = every bin up to the support (a tube side)."""
+    if cfg.axis_max_boundary_lateral <= 0 and cfg.axis_turnout_radius <= 0:
+        return float(support)
+    o = np.argsort(xs)
+    xs, ys, dd = xs[o], ys[o], dd[o]
+    keep = xs <= support + 1e-6
+    if line is not None:
+        keep &= np.abs(ys - (line[1] + line[0] * xs)) < tol
+    x, d = xs[keep], dd[keep]
+    if x.size == 0:
+        return float(cfg.axis_join)
+    if cfg.axis_max_boundary_lateral > 0 and float(np.median(d)) > cfg.axis_max_boundary_lateral:
+        return float(cfg.axis_join)
+    if cfg.axis_turnout_radius > 0:
+        for i in range(x.size - 1):
+            lat = float(min(d[i], d[i + 1]))
+            if x[i + 1] - x[i] >= np.sqrt(2.0 * cfg.axis_turnout_radius * (lat + cfg.axis_vehicle_half)):
+                return float(x[i])
+    return float(min(support, x[-1]))
+
+
 def measure_stable(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_range: float):
     """21.10 (``axis_stable``): this frame's far line as a dict (slope, se, primary support, two-sided support or
     None, sides, contradiction X), or None when no primary side passes or the line kinks at the join."""
@@ -256,29 +290,33 @@ def measure_stable(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_
         return None
     sides, tj = bins
     prim, rest = [], []
-    for s, xs, ys in sides:
+    for s, xs, ys, dd in sides:
         f = _side_line(xs, ys, cfg, cfg.axis_min_bins)
-        (prim if f is not None else rest).append((f, xs, ys))
+        (prim if f is not None else rest).append((f, xs, ys, dd))
     if not prim:
         return None
-    contra = min(_rejected_run_start(xs, ys, cfg) for _, xs, ys in prim)
+    contra = min(_rejected_run_start(xs, ys, cfg) for _, xs, ys, _ in prim)
     T = cfg.axis_second_tube
     if len(prim) == 2:
-        (f1, _, _), (f2, _, _) = prim
+        (f1, x1, y1, d1), (f2, x2, y2, d2) = prim
         w = np.array([1.0 / f1[2] ** 2, 1.0 / f2[2] ** 2])
         slope = float((w[0] * f1[0] + w[1] * f2[0]) / w.sum())
         se = float(1.0 / np.sqrt(w.sum()))
-        two, n, ds = min(f1[3], f2[3]), 2, abs(f1[0] - f2[0])
+        two, n, ds = min(_confirming_end(x1, y1, d1, f1, f1[3], 2.0 * cfg.axis_max_rms, cfg),
+                         _confirming_end(x2, y2, d2, f2, f2[3], 2.0 * cfg.axis_max_rms, cfg)), 2, abs(f1[0] - f2[0])
         support = max(f1[3], f2[3])
     else:
-        f1 = prim[0][0]
+        f1, x1, y1, d1 = prim[0]
         slope, se, support, two, ds, n = f1[0], f1[2], f1[3], None, 0.0, 1
         if rest:
-            _, xs, ys = rest[0]
+            _, xs, ys, dd = rest[0]
             sup2, c2 = _second_tube(xs, ys, (f1[0], f1[1]), cfg)
             contra = min(contra, c2)
             if sup2 is not None:
-                two, n = min(f1[3], sup2), 2                     # the tube bounds the divergence: no slope test
+                two, n = min(_confirming_end(x1, y1, d1, f1, f1[3], 2.0 * cfg.axis_max_rms, cfg),
+                             _confirming_end(xs, ys, dd, None, sup2, T, cfg)), 2   # the tube bounds the divergence
+    if two is not None and two <= cfg.axis_join:
+        two = None
     # two fitted walls: they have diverged by T at join + T / |slope difference|; a property of this frame's
     # fit, not an observed location, so it caps this frame only (the contradictions are aged in the history)
     diverge = cfg.axis_join + T / ds if len(prim) == 2 and ds > 0 else np.inf

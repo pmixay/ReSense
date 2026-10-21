@@ -1567,50 +1567,7 @@
   "cases": 94,
   "required": 92,
   "required_fail_safe": 92,
-  "failures": [
-   {
-    "case": "K_turnout_through_gap",
-    "R": 300.0,
-    "gap": [
-     150,
-     185
-    ],
-    "required": false,
-    "accepted_frames": 8,
-    "max_err": 96.0,
-    "max_valid": 392.0,
-    "fail_safe": false,
-    "first_failure": {
-     "frame": 4,
-     "err": 96.0,
-     "at": 390.0,
-     "valid": 392.0,
-     "sides": 2,
-     "sigma": 0.4
-    }
-   },
-   {
-    "case": "K_turnout_through_gap",
-    "R": 600.0,
-    "gap": [
-     150,
-     185
-    ],
-    "required": false,
-    "accepted_frames": 8,
-    "max_err": 48.0,
-    "max_valid": 392.0,
-    "fail_safe": false,
-    "first_failure": {
-     "frame": 4,
-     "err": 48.0,
-     "at": 390.0,
-     "valid": 392.0,
-     "sides": 2,
-     "sigma": 0.4
-    }
-   }
-  ],
+  "failures": [],
   "rows": [
    {
     "case": "A_curve",
@@ -2688,17 +2645,10 @@
     ],
     "required": false,
     "accepted_frames": 8,
-    "max_err": 96.0,
-    "max_valid": 392.0,
-    "fail_safe": false,
-    "first_failure": {
-     "frame": 4,
-     "err": 96.0,
-     "at": 390.0,
-     "valid": 392.0,
-     "sides": 2,
-     "sigma": 0.4
-    }
+    "max_err": 0.0,
+    "max_valid": 142.0,
+    "fail_safe": true,
+    "first_failure": null
    },
    {
     "case": "K_turnout_through_gap",
@@ -2709,17 +2659,10 @@
     ],
     "required": false,
     "accepted_frames": 8,
-    "max_err": 48.0,
-    "max_valid": 392.0,
-    "fail_safe": false,
-    "first_failure": {
-     "frame": 4,
-     "err": 48.0,
-     "at": 390.0,
-     "valid": 392.0,
-     "sides": 2,
-     "sigma": 0.4
-    }
+    "max_err": 0.0,
+    "max_valid": 142.0,
+    "fail_safe": true,
+    "first_failure": null
    }
   ]
  }

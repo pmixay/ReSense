@@ -376,9 +376,57 @@ def test_stable_contradiction_caps_the_history_at_once():
     assert far is None or far.valid <= 160.0, far.to_dict()
 
 
-def test_stable_switch_is_off_by_default_and_enabled_with_the_profile_switch_only():
-    cfg = DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml"))
-    assert cfg.farrange.axis_stable is False or cfg.farrange.with_falcon_profile is True
-    for name in ("manual", "pandar128"):
-        resolved, _ = apply_sensor_profile(cfg, name)
-        assert resolved.farrange.enabled is False
+def test_stable_axis_is_on_under_the_falcon_profiles_only():
+    """21.10 (review F6): the shipped defaults (class and both YAML copies) switch the far axis on under the Falcon
+    profiles and never under manual / pandar128."""
+    for path in (ROOT / "configs/default.yaml", ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"):
+        cfg = DetectorConfig.from_yaml(str(path))
+        assert cfg.farrange.with_falcon_profile is True and cfg.farrange.axis_stable is True
+        assert cfg.farrange.axis_union_beyond is True and cfg.farrange.enabled is False
+        for name in ("manual", "pandar128"):
+            resolved, _ = apply_sensor_profile(cfg, name)
+            assert resolved.farrange.enabled is False and Detector(resolved).far is None
+        for name in ("falcon_ros", "falcon_native"):
+            resolved, _ = apply_sensor_profile(cfg, name)
+            assert resolved.farrange.enabled is True and Detector(resolved).far is not None
+    d = FarRangeConfig()
+    assert d.with_falcon_profile is True and d.axis_stable is True and d.axis_union_beyond is True
+
+
+# 21.10 (A6, review C3): a turnout or crossover. Both boundaries straight, the track curves away between them.
+
+def _turnout_scene(k, lat, gap=None, xc=150.0, radius=300.0):
+    r = np.random.default_rng(k)
+    straight = lambda X: 0 * X  # noqa: E731
+    left = _side(straight, 1.0, 52, 400, r, lat=lat)
+    if gap is not None:
+        left = left[~((left[:, 0] >= gap[0]) & (left[:, 0] < gap[1]))]
+    pts = [left, _side(straight, -1.0, 52, 400, r, lat=lat)]
+    return np.concatenate(pts).astype(np.float32), (lambda X: _centre(X, xc, radius))
+
+
+def test_stable_turnout_between_wide_boundaries_is_not_trusted():
+    """Review probe W: wide straight walls (3.5 m), the track curves between them: no trust on a wrong line."""
+    model = _model()
+    for radius in (300.0, 600.0):
+        tr = FarAxisTracker(_stable_cfg())
+        for k in range(12):
+            xyz, truth = _turnout_scene(k, 3.5, radius=radius)
+            far = tr.update(xyz, model, 400.0, dt=0.1)
+            if far is not None:
+                ok, e = _err_ok(far, model, truth)
+                assert ok, (radius, k, far.to_dict(), e)
+
+
+def test_stable_turnout_through_an_exit_gap_is_not_trusted_beyond_it():
+    """Author's case K: walls at 1.9 m, a 35 m opening (bins 40 m apart) the diverging track leaves through."""
+    model = _model()
+    for radius in (300.0, 600.0):
+        tr = FarAxisTracker(_stable_cfg())
+        for k in range(12):
+            xyz, truth = _turnout_scene(k, 1.9, gap=(150.0, 185.0), radius=radius)
+            far = tr.update(xyz, model, 400.0, dt=0.1)
+            if far is not None:
+                ok, e = _err_ok(far, model, truth)
+                assert ok, (radius, k, far.to_dict(), e)
+                assert far.valid < 185.0
