@@ -202,3 +202,17 @@ same features as control's track. Prediction stated before measuring: G-1 still 
 1317–1318 unless the gate's episode count absorbs them; M-1 platform id 23 may lose frames again if a curve match
 moves its onset to a frame where the opinion is below its threshold. Every §3 row is measured on `b88d759` + the four
 YAML values, the gate first.
+
+## 10. Results of revision 3 `b88d759` and the decision (21.10)
+
+Measured on `b88d759` + the four YAML values (raw outputs `runs/r3/`; control = the fresh v1.2.0 runs of `runs/r1/`):
+ID PASS (gate 15,269 rows, Falcon 4,443, marked bags 1,667: 0 different); G-1 PASS (exit 0); **G-1b FAIL** (0 control
+STOP frames lost anywhere; new STOP frames only on the ride, piece 2 frames 1066–1069, 1071–1072, 1317–1318: ride
+alarm events / STOP episodes / alarm frames 23 / 26 / 111 → 25 / 29 / 119); G-1c PASS; G-1d PASS; G-2 PASS (0 of 260;
+0 changed rows per frame); F-1 PASS (0 lost; first person STOP 2958 at 126.36 m); M-1 PASS (identical STOP frames);
+K1-150 PASS (90 → 90); K1-100 PASS (255 own, 82 at control's placement); **R-1 FAIL** (D_cube05 loses frame 330 of
+121, first STOP equal; the other 36 jobs identical); K2-G PASS; T PASS. The B6 rows are revision 1's: the published
+model of revision 3 equals revision 1's on `roundT_doubleT` and `squareT_platform` frame for frame.
+
+**Decision by §5: the switch stays off** (`track.axis_joint_union: false` in `resense/config.py` and both YAMLs). No
+further revision is registered by this lane; the failing rows and their traced mechanisms are in the README §2b.

@@ -195,6 +195,11 @@ def main():
                         ring = np.concatenate([ring[keep], np.repeat(R_[vis], 2).astype(ring.dtype)])
                         info["n_obj"] = int(vis.sum())
         res = run_frame(rep, xyz_s, inten, ring, m, k)
+        if os.environ.get("TRKDBG") and int(os.environ["TRKDBG"].split(",")[0]) <= k <= int(os.environ["TRKDBG"].split(",")[1]):
+            print(k, node_decision(res), "added", getattr(rep.detector, "_curve_added", None),
+                  [(t.id, round(t.last.distance, 1), round(t.last.lateral, 2), t.zone, t.rule_zone, t.withheld, getattr(t, "curve_seen", None),
+                    t.last.zone, t.last.reason, getattr(t.last, "curve", False), t.misses, t.zone_hist[-6:]) for t in rep.detector.tracker.tracks
+                   if t.last is not None and 75 < t.last.distance < 95], file=sys.stderr)
         dec = node_decision(res)
         hit = warn = False
         if info["X"] is not None and info["X"] > 3.0 and info.get("Y") is not None:

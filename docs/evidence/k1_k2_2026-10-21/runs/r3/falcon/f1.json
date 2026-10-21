@@ -1,0 +1,83 @@
+{
+ "id_off_vs_control_differing_rows": [],
+ "controls": {
+  "self_lost": 0,
+  "self_new": 0,
+  "planted_frame": 3696,
+  "planted_found": true,
+  "identity_self": 0,
+  "identity_planted_found": true
+ },
+ "F1": {
+  "person_ref": 1360,
+  "lost": [],
+  "n_lost": 0,
+  "new_stop": [
+   2958,
+   2971,
+   2977,
+   2979,
+   2980,
+   2981,
+   2982,
+   2983,
+   2984,
+   2985,
+   2986,
+   2988,
+   2993,
+   3003,
+   3007,
+   3008,
+   3041,
+   3042,
+   3044,
+   3045,
+   3046,
+   3047,
+   3048,
+   3049,
+   3050,
+   3051,
+   3052,
+   3053,
+   3054,
+   3055,
+   3056,
+   3057,
+   3058
+  ],
+  "n_new": 33,
+  "new_unexplained": [],
+  "first_control": [
+   2972,
+   124.84
+  ],
+  "first_cand": [
+   2958,
+   126.36
+  ],
+  "stop_control": 1364,
+  "stop_cand": 1397,
+  "false_set_stop_control": [
+   159,
+   2312,
+   2313,
+   2314
+  ],
+  "false_set_stop_cand": [
+   159,
+   2312,
+   2313,
+   2314
+  ],
+  "caution_control": 3070,
+  "caution_cand": 3037
+ },
+ "verdict": {
+  "ID": true,
+  "F1a_no_loss": true,
+  "F1b_first_not_later": true,
+  "F1c_new_explained": true
+ }
+}
