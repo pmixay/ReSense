@@ -85,3 +85,41 @@ X3 (`scripts/robustness_battery.py`, protocol `docs/evidence/p4_start_2026-10-15
 
 Open and not claimed by this lane: the `monitored_range`; the unconfirmed object that is not STOP (item 6 of the task is a
 finding for the detector owner only); that the person-like object is a person (no surveyed ground truth).
+
+---
+
+# Amendment 1 (registered after the measurement of `clear_lost_model`, before any run of `clear_lost_bed`)
+
+**What was measured before this amendment (commit `a6a8a1a`... see README for the exact commit; switches `clear_lost_model` and
+`clear_round_down` on by `--set`):** Falcon F1-F5 passed (see README). Pandar: gate exit 0 without `--allow` and the gate's
+non-latency rows equal to the control; the paired per-row diff of 15,269 rows has 0 differences outside `clear`, 1,731 lowered
+`clear` values, 0 raised, every one with its rule; **G3 failed for `clear_lost_model`**: `doubleT_platform` has 23 lost-model rows
+= 6.67 % of its frames (limit 3 %; the five obstacle-free recordings' and the ride's medians are unchanged, the ride has 1.53 %).
+By the registration `clear_lost_model` therefore stays off (its default is not turned on), and its rows are reported.
+A diagnostic of the same Pandar data (read-only `bed_excess` in `run_cache_trace.py`, all 15,269 rows) then showed that in every
+frame of all recordings, including all 196 lost-model rows, the model's rail head is within the H' tolerance of the calibrated
+mount plane; on the Falcon it is not in frames 4361-4410. This amendment is informed by those results (disclosed here), but
+uses H''s own tolerance unchanged and no threshold fitted to them.
+
+**Switch `health.clear_lost_bed`** (`HealthConfig`, default False until the final commit; class = both YAML copies): the bed is
+lost when the track model's rail head differs from the calibrated mount plane (`z = -mount height`, a final `ok`/`identity`
+calibration required) by more than `cluster.mount_cross_tol + cluster.mount_cross_grade * X` at some X = 5, 10, ...,
+`cluster.mount_cross_range` m (H' off, `mount_cross_tol` 0: the rule does not apply). `clear_distance` is then 0, whatever the
+rail lock and a confirmed obstacle (the convention of a health error). The detector evaluates `health.bed_off_mount_plane`
+only with the switch on and passes the result to `HealthMonitor.update(bed_conflict=...)`; nothing else moves. Rule names in the
+trace: `lost_model`, `lost_bed`, `round_down_obstacle`, `round_down_candidate`.
+Tests before the implementation: `tests/test_clear_lost_bed.py` (new), `tests/test_clear_lost_model.py` (key list), see
+`tests_before_amendment1.txt`.
+
+Criteria (default-on only if all of them pass; the same control runs as before, fresh candidate runs at the measured commit):
+
+* F1, F2 (rules `lost_bed`, `round_down_*`; in `lost_bed` rows new = 0 and the row's trace `bed_excess` > 0), F4, F5 as above.
+* F3b. The Falcon rows 4373-4414 with a non-STOP decision and a control clear > 0, **in which the bed is lost by the rule**
+  (read from the frame's own trace), report clear 0 in the detector and in both node policies; rows of 4373-4414 in which the
+  bed is within the tolerance (expected: 4411-4414, the object nearer than `gauge.range_min` 3.0 m with the bed model recovered)
+  are not covered by this switch and are listed as the residual (the control's overstatement there stays).
+* G1 gate (default config at the final commit, no `--allow`, exit 0, equal non-latency rows to the control); G2 paired per-row diff
+  (identical outside `clear`, every lowered row carries the rule, 0 raised); sample check of changed rows against raw points.
+* G3b. `lost_bed` rows on the six recordings, set O and the ride: at most 0.5 % of the frames of each (diagnostic: 0 rows).
+* X3 paired against the control run: 0 differences in STOP frames, episodes and first-STOP figures.
+* The final configuration (the switches that pass, on by default) is what the final gate, Falcon run and X3 measure.

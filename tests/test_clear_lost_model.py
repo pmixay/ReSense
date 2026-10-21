@@ -24,13 +24,14 @@ from resense.health import HealthMonitor
 from resense.track import TrackModel
 
 ROOT = Path(__file__).resolve().parents[1]
-KEYS = ("clear_lost_model", "clear_round_down")
+KEYS = ("clear_lost_model", "clear_lost_bed", "clear_round_down")
 
 
-def _cfg(lost=False, down=False) -> HealthConfig:
+def _cfg(lost=False, down=False, bed=False) -> HealthConfig:
     cfg = HealthConfig()
     cfg.clear_lost_model = lost
     cfg.clear_round_down = down
+    cfg.clear_lost_bed = bed
     return cfg
 
 
