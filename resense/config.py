@@ -474,6 +474,7 @@ class TrackingConfig:
     doubt_sticky: bool = True     # the opinion at the onset decides (a withheld track is released by the extra frames or doubt_near only)
     doubt_body_height: float = 1.0  # m (0 = off): a track whose cluster stands at least this tall ...
     doubt_body_range: float = 40.0  # m, ... and is this near is never delayed either: a standing body reaching into the envelope, not a flat floor / bed return (every ride track the opinion withheld within 40 m was at most 0.5 m tall; set O #6, 1.9 m tall, was withheld at 28.7 m)
+    doubt_falcon: bool = True       # 21.10 (G2): false = the Falcon sensor profiles turn the opinion off (ros2_ws/.../sensor_profiles.py); true = applied whatever the sensor (v1.2.0)
     # 27.09 (P5 range, on; 0 = off): far scan lines as track evidence, gated by a consistent
     # approach. Far away an object inside the envelope is often one scan line there (the plank across
     # the rails, the lower edge of the box at the envelope top): flatter than cluster.min_height, it
