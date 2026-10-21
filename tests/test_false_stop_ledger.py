@@ -42,12 +42,6 @@ def box_points(x0, x1, y0, y1, z0, z1, n=200, seed=0):
     return np.column_stack([r.uniform(x0, x1, n), r.uniform(y0, y1, n), r.uniform(z0, z1, n)]).astype(np.float32)
 
 
-def bed_points(x0=0.0, x1=60.0, n=2000, seed=1):
-    """The bed 1.5 m below the sensor, 3 m wide; rail head at z = -1.15."""
-    r = np.random.default_rng(seed)
-    return np.column_stack([r.uniform(x0, x1, n), r.uniform(-1.5, 1.5, n), np.full(n, -1.5)]).astype(np.float32)
-
-
 def tunnel_points(x0=0.0, x1=100.0, seed=1):
     """A straight tunnel: bed 1.5 m below the sensor, rails at -1.15, walls at |y| = 2.3, a vault 3 m above."""
     r = np.random.default_rng(seed)
@@ -58,10 +52,6 @@ def tunnel_points(x0=0.0, x1=100.0, seed=1):
     wall = np.column_stack([x(), r.choice([-2.3, 2.3], n), r.uniform(-1.5, 2.9, n)])
     vault = np.column_stack([x(), r.uniform(-2.3, 2.3, n), np.full(n, 3.0)])
     return np.vstack([bed, rails, wall, vault]).astype(np.float32)
-
-
-def bed_points():
-    return tunnel_points()
 
 
 CENTER = (20.0, 0.0, -0.6)
@@ -120,11 +110,15 @@ def test_the_wall_or_vault_at_the_position_is_flagged_tunnel_fabric_not_a_locali
     assert mid["class"] == "bed_rail" and not mid.get("on_fabric")
 
 
-def test_a_structure_that_starts_in_the_window_is_not_fabric():
-    # a wall niche cover that exists only for x >= 19: nothing behind the window, so it is localized
-    pts = np.vstack([tunnel_points(), box_points(19.0, 60.0, 1.8, 2.1, -1.0, 1.0, n=3000)])
-    r = L.classify_window(pts, straight_track(), (20.0, 1.95, 0.0), SIZE, traveled=100.0)
-    assert r["class"] == "side"
+def test_a_surface_seen_on_one_side_only_is_fabric():
+    # the vault close to the sensor is not in its view: only the slices ahead of the window hold it
+    pts = np.vstack([tunnel_points(0.0, 100.0)[tunnel_points(0.0, 100.0)[:, 2] < 2.9],
+                     tunnel_points(14.0, 100.0, seed=5)[tunnel_points(14.0, 100.0, seed=5)[:, 2] >= 2.9]])
+    r = L.classify_window(pts, straight_track(), (20.0, 0.0, 2.6), SIZE, traveled=100.0)
+    assert r["class"] == "overhead" and r["on_fabric"] and r["n_over"] == 0
+    # a plate that exists only inside the window is localized
+    plate = np.vstack([pts, box_points(19.0, 21.0, -0.3, 0.3, 2.3, 2.5)])
+    assert L.classify_window(plate, straight_track(), (20.0, 0.0, 2.4), SIZE, traveled=100.0)["n_over"] > 100
 
 
 def test_the_card_limits():
@@ -290,6 +284,15 @@ def test_ride_frames_are_numbered_through_the_whole_ride():
     assert L.build_rows([piece], [rows])[0]["frame"] == 4002
 
 
+def test_extended_rows_follow_the_pieces_of_the_same_recording():
+    pieces = [{"bag": "new_data", "files": ["a", "b"]}, {"bag": "new_data", "files": ["c"]},
+              {"bag": "other", "files": ["d"]}]
+    rows = [[1, 2], [3], [4]]
+    assert L.extended(pieces, rows, 0) == ([1, 2, 3], ["a", "b", "c"])
+    assert L.extended(pieces, rows, 1) == ([3], ["c"])
+    assert L.extended(pieces, rows, 2) == ([4], ["d"])
+
+
 def test_reproduction_tolerances():
     row = {"frame": 5100, "piece_frame": 100, "distance": 120.0}     # the ride's frame numbers run through the whole ride
     assert L.reproduces(row, {"stop_first": {"frame": 102, "distance": 121.9}})[0]
@@ -320,14 +323,20 @@ def test_piece_table_splits_the_ride_like_the_gate(tmp_path):
         L.check_piece(pieces[0], rows)
 
 
-def test_f2_summary_counts_far_onsets_per_class():
-    eps = [{"id": "a", "far_onset": True, "passby": {"class": "side", "ambiguous": False}},
-           {"id": "b", "far_onset": True, "passby": {"class": "side", "ambiguous": True}},
+def test_f2_summary_counts_far_onsets_per_class_and_mechanism():
+    eps = [{"id": "a", "far_onset": True, "passby": {"class": "side", "ambiguous": False, "axis_error_m": 1.6,
+                                                     "on_tunnel_surface": True}},
+           {"id": "b", "far_onset": True, "passby": {"class": "side", "ambiguous": True, "axis_error_m": 0.3}},
            {"id": "c", "far_onset": False, "passby": {"class": "phantom", "ambiguous": False}},
-           {"id": "d", "far_onset": True, "passby": {"class": "overhead", "ambiguous": False}}]
+           {"id": "d", "far_onset": True, "passby": {"class": "overhead", "ambiguous": False, "axis_error_m": -1.0}}]
     s = L.f2_summary(eps)
     assert s["far_episodes"] == 3 and s["by_class"]["side"] == {"n": 2, "ambiguous": 1, "ids": ["a", "b"]}
     assert "phantom" not in s["by_class"] and s["by_class_all"]["phantom"]["n"] == 1
+    assert s["by_mechanism_far"]["side_structure_axis_misfit_tunnel_surface"]["ids"] == ["a"]
+    assert s["by_mechanism_far"]["side_structure_within_axis_error"]["ids"] == ["b"]
+    assert s["by_mechanism_far"]["overhead_height_reference"]["ids"] == ["d"]
+    assert s["by_mechanism_all"]["bed_or_phantom_height_reference"]["ids"] == ["c"]
+    assert s["far_axis_error_m"]["n"] == 3 and s["far_axis_error_m"]["share_at_least_0.9"] == 0.67
 
 
 def test_track_dict_round_trip_reproduces_the_coordinates():

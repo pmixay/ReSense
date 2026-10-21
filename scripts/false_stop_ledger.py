@@ -94,6 +94,11 @@ class ClassifierParams:
     fabric_near: float = 6.0        # m: the tunnel fabric is read from the slices this far (or farther) from the window ...
     fabric_far: float = 40.0        # ... up to this far, on each side
     fabric_x_min: float = 3.0       # m: the first station of the sensor's view
+    outline_lat: float = 9.0        # m: lateral reach of the returns the tunnel surface is read from
+    outline_cell: float = 0.5       # m: height slab of the wall / lateral column of the vault
+    outline_min: int = 15           # returns a slab or column needs to count as a surface
+    outline_pct: float = 85.0       # the surface is this percentile of |dy| (wall) or h (vault)
+    outline_margin: float = 0.5     # m: a return this far in front of / below the surface is structure
     fabric_cell: float = 0.3        # m: cell of the (dy, h) cross-section
     fabric_slice: float = 2.0       # m: length of a slice along the track
     fabric_occ: float = 0.5         # a cell occupied in at least this share of the slices on both sides is tunnel fabric
@@ -321,7 +326,7 @@ def speed_series(rows, split_speeds=None, max_gap=30):
     return out, src
 
 
-def transport(rows, i0, center, speeds=None, max_frames=1500, max_range=BAND[1] + 150.0, pitch=False):
+def transport(rows, i0, center, speeds=None, max_frames=4000, max_range=BAND[1] + 150.0, pitch=False):
     """Walk the ego forward from frame ``i0`` of ``rows`` and carry ``center`` (vehicle frame of frame i0) along.
     Returns a list per frame i >= i0: {i, p (position in that frame's vehicle frame), range (horizontal),
     traveled, src}; stops at the end of the piece, after ``max_frames`` or once the point is behind the
@@ -379,7 +384,8 @@ def fabric_occupancy(xyz, track, cx, params: ClassifierParams):
     """The tunnel fabric around station ``cx``: for every (dy, h) cell of the cross-section the share of the 1 m
     slices (``fabric_slice`` m long), behind and ahead of the window (``fabric_near`` .. ``fabric_far`` m away), that hold a return in it.
     Walls, ceiling, bed, rails and continuous trays fill the same cells along the whole tunnel; an object does
-    not. Returns {(i, j): the smaller of the shares behind and ahead (a side with under three slices is ignored)}."""
+    not. Returns {(i, j): the larger of the shares behind and ahead (the sensor does not see the vault close to it, so a
+    surface seen on one side only still counts; a side with under three slices is ignored)}."""
     from resense.gauge import corridor_coordinates
     x = xyz[:, 0]
     occ = []
@@ -403,19 +409,64 @@ def fabric_occupancy(xyz, track, cx, params: ClassifierParams):
         occ.append({k: v / n_slices for k, v in cnt.items()})
     if not occ:
         return {}
-    keys = set(occ[0]).intersection(*occ[1:])
-    return {k: min(o[k] for o in occ) for k in keys}
+    keys = set().union(*occ)
+    return {k: max(o.get(k, 0.0) for o in occ) for k in keys}
 
 
-def classify_window(xyz, track, center, size, traveled, params: ClassifierParams = ClassifierParams()):
+def outline_structure(dy, h, dy_ref, h_ref, params: ClassifierParams):
+    """Which of the candidate returns (``dy``, ``h``) stand out of the tunnel surface, measured from the reference
+    returns around the position: a return outside the envelope is *structure* when it stands in front of the wall
+    (``|dy|`` at least ``outline_margin`` less than the wall of its side and 0.5 m height slab) or below the vault
+    (``h`` at least ``outline_margin`` less than the vault of its 0.5 m lateral column); a slab or column with few
+    reference returns has no surface to stand out of, its returns count as structure. Returns (side, over) masks."""
+    side = np.zeros(len(dy), dtype=bool)
+    over = np.zeros(len(dy), dtype=bool)
+    cs = params.outline_cell
+    # walls: per side and height slab
+    ref = (h_ref > BED_H) & (h_ref <= OVERHEAD_H) & (np.abs(dy_ref) > SIDE_DY)
+    wall = {}
+    key_r = np.floor(h_ref[ref] / cs).astype(np.int64) * 2 + (dy_ref[ref] > 0)
+    adr = np.abs(dy_ref[ref])
+    for k in np.unique(key_r):
+        m = key_r == k
+        if int(m.sum()) >= params.outline_min:
+            wall[int(k)] = float(np.percentile(adr[m], params.outline_pct))
+    cand = (h > BED_H) & (h <= OVERHEAD_H) & (np.abs(dy) > SIDE_DY)
+    for i in np.flatnonzero(cand):
+        k = int(np.floor(h[i] / cs)) * 2 + int(dy[i] > 0)
+        side[i] = (k not in wall) or abs(dy[i]) <= wall[k] - params.outline_margin
+    # vault: per lateral column
+    ref = h_ref > OVERHEAD_H
+    vault = {}
+    key_r = np.floor(dy_ref[ref] / cs).astype(np.int64)
+    hr = h_ref[ref]
+    for k in np.unique(key_r):
+        m = key_r == k
+        if int(m.sum()) >= params.outline_min:
+            vault[int(k)] = float(np.percentile(hr[m], params.outline_pct))
+    top = {sg: max((w for kk, w in wall.items() if kk % 2 == sg), default=None) for sg in (0, 1)}
+    for i in np.flatnonzero(h > OVERHEAD_H):
+        k = int(np.floor(dy[i] / cs))
+        wl = top[int(dy[i] > 0)]
+        if wl is not None and abs(dy[i]) > wl - 0.3:
+            continue                                              # the wall running up into the vault, not a body below it
+        over[i] = (k not in vault) or h[i] <= vault[k] - params.outline_margin
+    return side, over
+
+
+def classify_window(xyz, track, center, size, traveled, params: ClassifierParams = ClassifierParams()):  # noqa: B008
     """Classify what stands around ``center`` (the onset's position carried into the vehicle frame of this frame)
     in the cloud ``xyz`` with the re-fitted ``track``:
 
-    * ``in_envelope``: returns inside the strict envelope (|dy| <= SIDE_DY, BED_H < h <= OVERHEAD_H) in the window;
-      an empty tunnel has none, so no fabric baseline is needed;
-    * else the window's returns outside the envelope that are *not tunnel fabric* (their (dy, h) cell is rarely
-      occupied in the slices around): ``side`` (|dy| > SIDE_DY) or ``overhead`` (h > OVERHEAD_H), the larger share;
-    * else ``bed_rail`` when the window holds bed or rail returns (h <= BED_H, |dy| <= SIDE_DY), else ``phantom`` (nothing there).
+    * ``in_envelope``: returns inside the strict envelope (|dy| <= SIDE_DY, BED_H < h <= OVERHEAD_H) that are not
+      continuous tunnel fabric (a platform edge fills the same (dy, h) cells along the track, an object does not);
+    * else ``side`` (|dy| > SIDE_DY) or ``overhead`` (h > OVERHEAD_H) *structure*: returns that stand out of the tunnel
+      surface (``outline_structure``), the larger share wins;
+    * else, with only the tunnel surface (wall, platform edge, vault) right at the position, the class of that surface
+      by its (dy, h), flagged ``on_tunnel_fabric``;
+    * else ``side`` when the carried position itself lies beyond the gauge (``by_position``: nothing is seen there,
+      behind the wall), ``bed_rail`` when the window holds bed or rail returns (h <= BED_H, |dy| <= SIDE_DY), else
+      ``phantom`` (nothing there).
     The window is a box around ``center`` that grows with the distance travelled (odometry drift)."""
     from resense.gauge import corridor_coordinates
     cx, cy, cz = (float(v) for v in center)
@@ -424,19 +475,26 @@ def classify_window(xyz, track, center, size, traveled, params: ClassifierParams
     zhalf = max(params.z_half_min, 0.5 * float(size[2])) + params.z_pad + params.z_per_m * traveled
     xyz = np.asarray(xyz)
     zn = max(params.z_half_min, 0.5 * float(size[2])) + params.z_pad + params.z_narrow_per_m * traveled
-    box = (np.abs(xyz[:, 0] - cx) <= lon) & (np.abs(xyz[:, 1] - cy) <= lat)
+    along = np.abs(xyz[:, 0] - cx) <= lon
+    box = along & (np.abs(xyz[:, 1] - cy) <= lat)
     sel = box & (np.abs(xyz[:, 2] - cz) <= zhalf)
     narrow = (np.abs(xyz[sel][:, 2] - cz) <= zn)
-    n_all = int(narrow.sum())
     dy_pos = cy - float(track.center_y(np.array([cx]))[0])        # the position's lateral from the re-fitted axis
-    out = {"dy_position": round(dy_pos, 2), "lon": round(lon, 2), "lat": round(lat, 2), "z_half": round(zhalf, 2), "n_all": int(sel.sum()), "n_narrow": n_all, "n_up": 0, "n_bed": 0,
-           "n_env": 0, "n_side": 0, "n_over": 0, "n_fabric": 0, "dy_med": None, "h_med": None, "h_range": None,
-           "dy_range": None, "ambiguous": [], "class": None}
-    if int(sel.sum()) < params.min_any:
+    out = {"dy_position": round(dy_pos, 2), "lon": round(lon, 2), "lat": round(lat, 2), "z_half": round(zhalf, 2),
+           "n_all": int(sel.sum()), "n_narrow": int(narrow.sum()), "n_up": 0, "n_bed": 0, "n_env": 0, "n_side": 0,
+           "n_over": 0, "n_fabric": 0, "dy_med": None, "h_med": None, "h_range": None, "dy_range": None,
+           "ambiguous": [], "class": None}
+    amb = out["ambiguous"]
+
+    def beyond_gauge():
         if abs(dy_pos) > SIDE_DY + params.position_margin:
-            out.update({"class": "side", "by_position": True,
-                        "ambiguous": [f"side_by_position(dy {dy_pos:+.1f} m, nothing observed)"]})
-        else:
+            out.update({"class": "side", "by_position": True})
+            amb.append(f"side_by_position(dy {dy_pos:+.1f} m, nothing observed)")
+            return True
+        return False
+
+    if int(sel.sum()) < params.min_any:
+        if not beyond_gauge():
             out["class"] = "phantom"
         return out
     dy, h = corridor_coordinates(xyz[sel].astype(np.float32), track)
@@ -446,20 +504,24 @@ def classify_window(xyz, track, center, size, traveled, params: ClassifierParams
     out["n_up"] = int(up.sum())
     env_all = up & (h <= OVERHEAD_H) & (np.abs(dy) <= SIDE_DY)
     out["n_env_all"] = int(env_all.sum())
-    loc = np.zeros(len(h), dtype=bool)
-    fab_mask = np.zeros(len(h), dtype=bool)
+    # the surface of the tunnel around the position, from every return of the along-track stretch
+    ref = along & (np.abs(xyz[:, 1] - cy) <= params.outline_lat)
+    dy_r, h_r = corridor_coordinates(xyz[ref].astype(np.float32), track)
+    side_s, over_s = outline_structure(dy, h, dy_r, h_r, params)
+    fab = np.zeros(len(h), dtype=bool)                  # continuous along the track: the same (dy, h) cells in the slices around
     if up.any():
         occ = fabric_occupancy(xyz, track, cx, params)
         ci = np.floor(dy[up] / params.fabric_cell).astype(np.int64)
         cj = np.floor(h[up] / params.fabric_cell).astype(np.int64)
-        fab = np.array([max(occ.get((i + di, j + dj), 0.0) for di in (-1, 0, 1) for dj in (-1, 0, 1))
-                        >= params.fabric_occ for i, j in zip(ci.tolist(), cj.tolist())], dtype=bool)
-        loc[np.flatnonzero(up)[~fab]] = True
-        fab_mask[np.flatnonzero(up)[fab]] = True
-        out["n_fabric"] = int(fab.sum())
-    env = env_all & loc
-    out["n_env"] = int(env.sum())
-    amb = out["ambiguous"]
+        fab[np.flatnonzero(up)] = np.array(
+            [max(occ.get((i + di, j + dj), 0.0) for di in (-1, 0, 1) for dj in (-1, 0, 1)) >= params.fabric_occ
+             for i, j in zip(ci.tolist(), cj.tolist())], dtype=bool)
+    fab_env = fab & env_all
+    side_s, over_s = side_s & ~fab, over_s & ~fab       # structure = stands out of the surface and is not continuous
+    env = env_all & ~fab_env
+    out["n_env"], out["n_side"], out["n_over"] = int(env.sum()), int(side_s.sum()), int(over_s.sum())
+    surface = up & ~env & ~side_s & ~over_s                       # what is left above the bed: the tunnel's surface
+    out["n_fabric"] = int(surface.sum())
 
     def describe(m):
         out.update({"dy_med": round(float(np.median(dy[m])), 2), "h_med": round(float(np.median(h[m])), 2),
@@ -467,32 +529,28 @@ def classify_window(xyz, track, center, size, traveled, params: ClassifierParams
                     "dy_range": [round(float(dy[m].min()), 2), round(float(dy[m].max()), 2)],
                     "h_bottom": round(float(h[m].min()), 2)})
 
-    over = loc & (h > OVERHEAD_H)
-    side = loc & ~over & (np.abs(dy) > SIDE_DY)
-    out["n_side"], out["n_over"] = int(side.sum()), int(over.sum())
     if out["n_env"] >= params.min_struct and out["n_over"] >= params.min_struct and \
             float(np.median(h[env])) >= OVERHEAD_H - 0.4:
         out["class"] = "overhead"                         # a body hanging from above the limit, its underside inside
-        describe(over | env)
+        describe(over_s | env)
         amb.append("straddles_limit")
     elif out["n_env"] >= params.min_struct:
         out["class"] = "in_envelope"
         describe(env)
-        n = out["n_env"]
         other = out["n_side"] + out["n_over"]
-        if other >= params.min_struct and other > 0.3 * n:
-            amb.append(f"mixed(env {n}, other {other})")
+        if other >= params.min_struct and other > 0.3 * out["n_env"]:
+            amb.append(f"mixed(env {out['n_env']}, other {other})")
     elif max(out["n_side"], out["n_over"]) >= params.min_struct:
         cls = "side" if out["n_side"] >= out["n_over"] else "overhead"
         out["class"] = cls
-        m = side if cls == "side" else over
+        m = side_s if cls == "side" else over_s
         describe(m)
-        n, other = int(m.sum()), int((over if cls == "side" else side).sum())
+        n, other = int(m.sum()), int((over_s if cls == "side" else side_s).sum())
         if other >= params.min_struct and other > (1.0 - params.share_min) * (n + other):
             amb.append(f"mixed({cls} {n}, other {other})")
     else:
-        # no localized structure: tunnel fabric (wall, platform edge, vault, tray) right at the position?
-        tight = fab_mask & narrow & (np.abs(dy - (cy - float(track.center_y(np.array([cx]))[0]))) <= params.fabric_lat)
+        # no structure: the tunnel surface (wall, platform edge, vault) right at the position?
+        tight = (surface | (env_all & fab_env)) & narrow & (np.abs(dy - dy_pos) <= params.fabric_lat)
         if int(tight.sum()) >= params.min_struct:
             describe(tight)
             out["on_fabric"] = True
@@ -501,19 +559,14 @@ def classify_window(xyz, track, center, size, traveled, params: ClassifierParams
             amb.append("on_tunnel_fabric")
             out["n_fabric_tight"] = int(tight.sum())
             return out
-        if abs(dy_pos) > SIDE_DY + params.position_margin:
-            # nothing to see there (behind the wall, say), but the carried position itself is outside the gauge
-            out["class"] = "side"
-            out["by_position"] = True
-            amb.append(f"side_by_position(dy {dy_pos:+.1f} m, nothing observed)")
-            return out
-        out["class"] = "bed_rail" if out["n_bed"] >= params.min_any else "phantom"
+        if not beyond_gauge():
+            out["class"] = "bed_rail" if out["n_bed"] >= params.min_any else "phantom"
+            if abs(dy_pos) > SIDE_DY:
+                amb.append(f"position_beyond_limit(dy {dy_pos:+.1f} m)")
         return out
     if int(out["n_" + {"in_envelope": "env", "side": "side", "overhead": "over"}[out["class"]]]) < params.few_up:
         amb.append("few_points")
-    if out["class"] == "side" and abs(abs(out["dy_med"]) - SIDE_DY) < params.margin_dy:
-        amb.append("dy_near_limit")
-    if out["class"] == "in_envelope" and abs(abs(out["dy_med"]) - SIDE_DY) < params.margin_dy:
+    if out["class"] in ("side", "in_envelope") and abs(abs(out["dy_med"]) - SIDE_DY) < params.margin_dy:
         amb.append("dy_near_limit")
     if abs(out["h_med"] - OVERHEAD_H) < params.margin_h:
         amb.append("h_near_limit")
@@ -627,7 +680,7 @@ def replay_job(job):
         res = det.process(fr)
         res_out["frames"] += 1
         res_out["proc_ms"] += float(res.timing_ms.get("total", 0.0))
-        if ref is not None and res_out["identical"] and not same_as_run(res, ref[i - lo]):
+        if ref is not None and res_out["identical"] and i - lo < len(ref) and not same_as_run(res, ref[i - lo]):
             res_out["identical"], res_out["first_diff"] = False, i
         stop = bool(res.obstacle)
         if stop:
@@ -793,21 +846,58 @@ def render_episode(path, row, saved, passby):
 # the F2 summary
 # ---------------------------------------------------------------------------------------------
 
+AXIS_MISFIT_M = 0.9              # the strict edge at 100 m: 1.05 - 0.15 (BACKLOG K1)
+
+
+def mechanism(e):
+    """The F2 mechanism of an episode from its pass-by block: what the far cluster turned out to be, and by how much the far
+    axis had to be off for it to lie in the gauge (``axis_error_m``: where the structure stands relative to the re-fitted
+    axis minus the lateral the onset reported)."""
+    pb = e.get("passby") or {}
+    cls = pb.get("class")
+    err = pb.get("axis_error_m")
+    if cls == "side" and err is not None and abs(err) >= AXIS_MISFIT_M:
+        return "side_structure_axis_misfit" + ("_tunnel_surface" if pb.get("on_tunnel_surface") else "_object")
+    if cls == "side":
+        return "side_structure_within_axis_error"
+    if cls == "overhead":
+        return "overhead_height_reference"
+    if cls == "in_envelope":
+        return "in_envelope_structure"
+    if cls in ("bed_rail", "phantom"):
+        return "bed_or_phantom_height_reference"
+    return "unclassified"
+
+
 def f2_summary(episodes):
-    """How many far-onset (>= FAR_ONSET m) episodes fall in each pass-by class, and per class the median
-    onset lateral error of the axis (onset lateral minus the structure's measured dy), height, size."""
+    """How many far-onset (>= FAR_ONSET m) episodes fall in each pass-by class and mechanism, and the far axis error."""
     out = {"far_threshold_m": FAR_ONSET, "episodes": len(episodes), "far_episodes": 0, "by_class": {},
-           "by_class_all": {}}
+           "by_class_all": {}, "by_mechanism_far": {}, "by_mechanism_all": {}}
     for scope, key in ((True, "by_class"), (False, "by_class_all")):
         for e in episodes:
             if scope and not e["far_onset"]:
                 continue
-            c = (e.get("passby") or {}).get("class") or "unclassified"
-            b = out[key].setdefault(c, {"n": 0, "ambiguous": 0, "ids": []})
+            pb = e.get("passby") or {}
+            b = out[key].setdefault(pb.get("class") or "unclassified", {"n": 0, "ambiguous": 0, "ids": []})
             b["n"] += 1
-            b["ambiguous"] += int(bool((e.get("passby") or {}).get("ambiguous")))
+            b["ambiguous"] += int(bool(pb.get("ambiguous")))
+            b["ids"].append(e["id"])
+    for scope, key in ((True, "by_mechanism_far"), (False, "by_mechanism_all")):
+        for e in episodes:
+            if scope and not e["far_onset"]:
+                continue
+            b = out[key].setdefault(mechanism(e), {"n": 0, "ids": []})
+            b["n"] += 1
             b["ids"].append(e["id"])
     out["far_episodes"] = sum(1 for e in episodes if e["far_onset"])
+    far = [e for e in episodes if e["far_onset"] and (e.get("passby") or {}).get("axis_error_m") is not None]
+    if far:
+        err = np.array([e["passby"]["axis_error_m"] for e in far])
+        out["far_axis_error_m"] = {"n": len(far), "median_abs": round(float(np.median(np.abs(err))), 2),
+                                   "p25_abs": round(float(np.percentile(np.abs(err), 25)), 2),
+                                   "p75_abs": round(float(np.percentile(np.abs(err), 75)), 2),
+                                   "share_at_least_0.9": round(float(np.mean(np.abs(err) >= AXIS_MISFIT_M)), 2),
+                                   "share_at_least_1.4": round(float(np.mean(np.abs(err) >= SIDE_DY)), 2)}
     return out
 
 
@@ -1057,15 +1147,31 @@ def run_pool(fn, jobs, n_jobs):
         return list(ex.map(fn, jobs, chunksize=1))
 
 
+def extended(pieces, all_rows, n):
+    """The rows and cache files of piece ``n`` followed by the later pieces of the same recording (the ride's pieces are
+    consecutive: the train goes on after a piece ends, only the detector restarts)."""
+    rows, files = list(all_rows[n]), list(pieces[n]["files"])
+    for m in range(n + 1, len(pieces)):
+        if pieces[m]["bag"] != pieces[n]["bag"]:
+            break
+        rows += all_rows[m]
+        files += pieces[m]["files"]
+    return rows, files
+
+
 def episode_paths(pieces, all_rows, episodes):
-    """The ego transport of every episode: {id: (path, band frames, closest range, mode)}."""
+    """The ego transport of every episode: {id: (path, band frames, closest range, mode)}. The path continues into the
+    later pieces of the ride, so an onset near the end of a piece is still carried to the train's arrival."""
     split_speeds = intake_speeds()
-    speeds = {n: speed_series(r, split_speeds) for n, r in enumerate(all_rows)}
     pidx = piece_index(pieces)
-    out = {}
+    cache, out = {}, {}
     for e in episodes:
         n = pidx[(e["recording"], e["piece"])]
-        path = transport(all_rows[n], e["piece_frame"], e["center"], speeds[n])
+        if n not in cache:
+            rows, _ = extended(pieces, all_rows, n)
+            cache[n] = (rows, speed_series(rows, split_speeds))
+        rows, speeds = cache[n]
+        path = transport(rows, e["piece_frame"], e["center"], speeds)
         fr, closest, mode = band_frames(path)
         out[e["id"]] = (path, fr, closest, mode)
     return out
@@ -1081,6 +1187,17 @@ def classify_episode(e, path, fr, closest, mode, results):
     else:
         cls, agree, why = "unreached", 0.0, [f"closest_range_{pb['closest_range_m']}"]
     srcs = [q["src"] for q in path[1:]]
+    use = [f for f in (results or []) if f["class"] == cls]
+    dys = [f["dy_position"] for f in (results or [])]
+    hb = [f["h_bottom"] for f in use if f.get("h_bottom") is not None]
+    pb["position_dy_m"] = None if not dys else round(float(np.median(dys)), 2)
+    pb["axis_error_m"] = None if not dys else round(float(np.median(dys)) - float(e["lateral"]), 2)
+    pb["structure_h_bottom_m"] = None if not hb else round(float(np.median(hb)), 2)
+    pb["height_error_m"] = (None if not hb or e.get("height_min") is None
+                            else round(float(e["height_min"]) - float(np.median(hb)), 2))
+    pb["on_tunnel_surface"] = bool(use) and sum(bool(f.get("on_fabric")) for f in use) > 0.5 * len(use)
+    pb["by_position"] = bool(use) and sum(bool(f.get("by_position")) for f in use) > 0.5 * len(use)
+    pb["n_localized"] = None if not use else int(np.median([f["n_env"] + f["n_side"] + f["n_over"] for f in use]))
     pb.update({"class": cls, "agreement": round(agree, 2), "ambiguous": bool(why), "ambiguous_why": why,
                "traveled_m": round(path[-1]["traveled"], 1), "speed_sources": sorted(set(srcs)),
                "odometry_not_measured_share": round(float(np.mean([x in ("interp", "hold", "none", "intake")
@@ -1124,7 +1241,8 @@ def cmd_ledger(a):
         return jobs
 
     t0 = time.time()
-    fresh = run_pool(replay_job, fresh_jobs(a.pre_roll, False), a.jobs)
+    fresh = run_pool(replay_job, fresh_jobs(a.pre_roll, False), a.jobs) if not a.no_fresh else \
+        [({"stop_first": None, "frames": 0, "proc_ms": 0.0, "onset_track": None}, {}) for _ in episodes]
     timing["fresh"] = {"pre_roll": a.pre_roll, "wall_s": round(time.time() - t0, 1),
                        "frames": sum(r[0]["frames"] for r in fresh),
                        "proc_s": round(sum(r[0]["proc_ms"] for r in fresh) / 1e3, 1)}
@@ -1155,23 +1273,32 @@ def cmd_ledger(a):
                           "frames": sorted(set(frames)), "dir": ckpt_dir, "ref": [ref_row(d) for d in all_rows[n]]})
         cjobs.sort(key=lambda j: -max(j["frames"]))
         t0 = time.time()
-        cps = run_pool(checkpoint_job, cjobs, a.jobs)
+        have = a.reuse_checkpoints and all(os.path.exists(os.path.join(ckpt_dir, f"{j['key']}_{c}.pkl"))
+                                           for j in cjobs for c in j["frames"])
+        if have:                                           # development: the snapshots of an earlier run of the same detector
+            cps = [{"key": j["key"], "paths": {c: os.path.join(ckpt_dir, f"{j['key']}_{c}.pkl")
+                                                for c in j["frames"]}, "frames": 0, "mismatch_frames": []} for j in cjobs]
+        else:
+            cps = run_pool(checkpoint_job, cjobs, a.jobs)
         timing["checkpoint_pass"] = {"wall_s": round(time.time() - t0, 1), "frames": sum(c["frames"] for c in cps),
                                      "pieces": len(cps), "mismatch_frames": sum(len(c["mismatch_frames"]) for c in cps)}
         cp_paths = {c["key"]: c["paths"] for c in cps}
         wjobs = []
         for e in episodes:
             b, rows = base(e)
+            n = pidx[(e["recording"], e["piece"])]
+            rows_ext, files_ext = extended(pieces, all_rows, n)
             c = max(0, e["piece_frame"] - a.ckpt_pre)
             last = e["piece_frame"] + 3
             ev = []
             if e["id"] in paths and paths[e["id"]][1]:
                 ev = paths[e["id"]][1]
                 last = max(last, max(q["i"] for q in ev))
-            last = min(last, len(rows) - 1)
+            last = min(last, len(rows_ext) - 1)
+            b = {**b, "files": files_ext}
             wjobs.append({**b, "cfg": cfg_run, "ckpt": cp_paths[f"{e['recording']}_{e['piece']}"][c], "lo": c, "hi": last,
                           "prev_stop": bool(rows[c - 1]["obstacle"]) if c > 0 else False, "eval": ev,
-                          "ref": [ref_row(d) for d in rows[c:last + 1]], "save": save is not None,
+                          "ref": [ref_row(d) for d in rows[c:min(last, len(rows) - 1) + 1]], "save": save is not None,
                           "stop_after_onset": False})
         t0 = time.time()
         cw = run_pool(replay_job, wjobs, a.jobs)
@@ -1189,6 +1316,7 @@ def cmd_ledger(a):
         for e in episodes:
             if e["id"] in paths and paths[e["id"]][1]:
                 b, rows = base(e)
+                b = {**b, "files": extended(pieces, all_rows, pidx[(e["recording"], e["piece"])])[1]}
                 ev = paths[e["id"]][1]
                 first, last = min(q["i"] for q in ev), max(q["i"] for q in ev)
                 pj.append({**b, "cfg": cfg_fresh, "onset": first, "lo": max(0, first - a.passby_pre), "hi": last,
@@ -1209,16 +1337,28 @@ def cmd_ledger(a):
         import shutil
         shutil.rmtree(ckpt_dir, ignore_errors=True)
 
+    odo = {}
+    split_speeds = intake_speeds()
+    for piece, rows in zip(pieces, all_rows):
+        v, src = speed_series(rows, split_speeds)
+        dts = np.array([frame_dt(rows[i].get("stamp"), rows[i + 1].get("stamp")) for i in range(len(rows) - 1)] + [0.1])
+        o = odo.setdefault(piece["bag"], {"frames": 0, "path_m": 0.0, "by_source": {}})
+        o["frames"] += len(rows)
+        o["path_m"] += float((v * dts).sum())
+        for k in set(src.tolist()):
+            o["by_source"][k] = o["by_source"].get(k, 0) + int((src == k).sum())
+    for o in odo.values():
+        o["path_m"] = round(o["path_m"], 0)
     full_frames = sum(len(r) for r in all_rows)
     full_proc = sum(float((d.get("timing_ms") or {}).get("total", 0.0)) for rows in all_rows for d in rows) / 1e3
     summary = {"episodes": len(episodes), "far_episodes": sum(int(e["far_onset"]) for e in episodes),
-               "reproduced_fresh_window": sum(int(e["window"]["reproduced"]) for e in episodes),
+               "reproduced_fresh_window": (sum(int(e["window"]["reproduced"]) for e in episodes) if not a.no_fresh else None),
                "reproduced_checkpoint_window": (sum(int(e["checkpoint_window"]["reproduced"]) for e in episodes)
                                                 if not a.no_checkpoint else None),
                "checkpoint_windows_identical_to_run": (sum(int(bool(e["checkpoint_window"]["identical_to_run"]))
                                                            for e in episodes) if not a.no_checkpoint else None),
                "full_replay": {"frames": full_frames, "proc_s_in_run": round(full_proc, 1)},
-               "timing": timing, "fresh_pre_roll_sweep": sweep, "wall_total_s": round(time.time() - t_start, 1)}
+               "odometry": odo, "timing": timing, "fresh_pre_roll_sweep": sweep, "wall_total_s": round(time.time() - t_start, 1)}
     if not a.no_passby:
         summary["f2"] = f2_summary(episodes)
     meta = {"schema": SCHEMA, "created": time.strftime("%Y-%m-%dT%H:%M:%S+00:00", time.gmtime()),
@@ -1249,6 +1389,8 @@ def main(argv=None):
     ap.add_argument("--ckpt-pre", type=int, default=30, help="frames between the snapshot and the onset")
     ap.add_argument("--ckpt-dir", default=None, help="keep the snapshots here (default: a temporary directory under --out)")
     ap.add_argument("--keep-checkpoints", action="store_true")
+    ap.add_argument("--reuse-checkpoints", action="store_true", help="development: reuse the snapshots in --ckpt-dir")
+    ap.add_argument("--no-fresh", action="store_true", help="development: skip the fresh windows")
     ap.add_argument("--no-checkpoint", action="store_true", help="skip the exact (snapshot) windows")
     ap.add_argument("--no-png", action="store_true")
     ap.add_argument("--no-passby", action="store_true")
