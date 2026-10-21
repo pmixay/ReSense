@@ -797,13 +797,13 @@ def _scatter_panels(ax_bev, ax_side, xyz, track_dict, center, size, title, xmax,
         lon, lat, zh = window
         ax_bev.add_patch(Rectangle((cyy - lat, cx - lon), 2 * lat, 2 * lon, fill=False, ec="magenta", lw=0.9))
         ax_side.add_patch(Rectangle((cx - lon, cz - zh), 2 * lon, 2 * zh, fill=False, ec="magenta", lw=0.9))
-    ax_bev.set_xlim(-9, 9)
+    ax_bev.set_xlim(9, -9)                                 # left of the train on the left of the picture
     ax_bev.set_ylim(0, xmax)
     ax_side.set_xlim(0, xmax)
-    ax_bev.set_title(title, fontsize=7)
+    ax_side.set_title(title, fontsize=7, loc="left")
     for a in (ax_bev, ax_side):
         a.tick_params(labelsize=6)
-    ax_bev.set_xlabel("y (m)", fontsize=6)
+    ax_bev.set_xlabel("y (m), left +", fontsize=6)
     ax_bev.set_ylabel("x (m)", fontsize=6)
     ax_side.set_xlabel("x (m)", fontsize=6)
     ax_side.set_ylabel("z (m)", fontsize=6)
@@ -827,8 +827,8 @@ def render_episode(path, row, saved, passby):
         f = best["frame"]
         q = next(x for x in passby["path"] if x["i"] == f)
         _scatter_panels(axs[1][0], axs[1][1], saved["passby_xyz"][f], saved["passby_track"][f], q["p"], row["size"],
-                        f"pass-by frame {f}: {best['range']:.0f} m from the onset position -> {passby['class']} "
-                        f"(n_up={best['n_up']}, dy={best['dy_med']}, h={best['h_med']})", 45.0,
+                        f"pass-by frame {f}, {best['range']:.0f} m from the onset position: {passby['class']} "
+                        f"(structure dy {best['dy_med']}, h {best['h_med']}; position dy {best['dy_position']})", 45.0,
                         window=(best["lon"], best["lat"], best["z_half"]))
     else:
         for a in axs[1]:
@@ -846,6 +846,7 @@ def render_episode(path, row, saved, passby):
 # the F2 summary
 # ---------------------------------------------------------------------------------------------
 
+CARD_FRACTION = 34.0 / 36.0     # the card's reproduction share, restated for the episode count of the seal
 AXIS_MISFIT_M = 0.9              # the strict edge at 100 m: 1.05 - 0.15 (BACKLOG K1)
 
 
@@ -1205,6 +1206,19 @@ def classify_episode(e, path, fr, closest, mode, results):
     return pb
 
 
+def code_state():
+    """The commit this ran on and whether the sealed detector files are intact (scripts/detector_freeze.py verify)."""
+    import subprocess
+
+    def run(*cmd):
+        try:
+            return subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=120).stdout.strip()
+        except (OSError, subprocess.SubprocessError):
+            return None
+    return {"commit": run("git", "rev-parse", "HEAD"), "branch": run("git", "rev-parse", "--abbrev-ref", "HEAD"),
+            "detector_freeze": (run(sys.executable, os.path.join(ROOT, "scripts", "detector_freeze.py"), "verify") or "").splitlines()[:1]}
+
+
 def cmd_ledger(a):
     from scripts.cache_io import load_cache_stamps
     t_start = time.time()
@@ -1368,6 +1382,17 @@ def cmd_ledger(a):
             "thresholds": {"side_dy": SIDE_DY, "overhead_h": OVERHEAD_H, "bed_h": BED_H, "band_m": list(BAND),
                            "far_onset_m": FAR_ONSET},
             "classifier": asdict(ClassifierParams()), "jobs": a.jobs}
+    need = int(math.ceil(CARD_FRACTION * len(episodes) - 1e-9))
+    summary["done_when"] = {"card": "34 of 36 episodes (>= 94.4 %), onset within 2 frames, distance within 2 m, "
+                                    "at least 2x faster than full replays",
+                            "restated_for_episodes": len(episodes), "required": need,
+                            "fresh_window_reproduced": summary["reproduced_fresh_window"],
+                            "fresh_window_met": (None if a.no_fresh else summary["reproduced_fresh_window"] >= need),
+                            "snapshot_window_reproduced": summary["reproduced_checkpoint_window"]}
+    if not a.no_fresh and timing["fresh"]["proc_s"]:
+        summary["done_when"]["fresh_window_speedup_proc_time"] = round(full_proc / timing["fresh"]["proc_s"], 2)
+        summary["done_when"]["fresh_window_speedup_frames"] = round(full_frames / timing["fresh"]["frames"], 2)
+    meta["code"] = code_state()
     doc = {"meta": meta, "summary": summary, "episodes": episodes}
     with open(os.path.join(a.out, "ledger.json"), "w", encoding="utf-8") as fh:
         json.dump(doc, fh, indent=1)
