@@ -1,0 +1,3 @@
+real  : {"other_field": 0, "raised": 0, "above_obstacle": 0, "n": 28000, "round_down_diff_gt_0.1": 0}
+poscon level : {"other_field": 28000, "raised": 0, "above_obstacle": 0, "n": 28000, "round_down_diff_gt_0.1": 0}
+poscon raise : {"other_field": 0, "raised": 19763, "above_obstacle": 3709, "n": 28000, "round_down_diff_gt_0.1": 0}

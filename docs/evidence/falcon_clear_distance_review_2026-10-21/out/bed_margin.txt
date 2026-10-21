@@ -1,0 +1,18 @@
+cloud_with_fake_obj                    frames= 1510 evaluated(mount final)= 1320 max_excess= -0.518  fires=0
+doubleT_obstacle                       frames=  201 evaluated(mount final)=   11 max_excess= -0.739  fires=0
+doubleT_platform                       frames=  345 evaluated(mount final)=  141 max_excess= -0.680  fires=0
+new_data_0                             frames= 1409 evaluated(mount final)= 1219 max_excess= -0.662  fires=0
+new_data_1                             frames= 1409 evaluated(mount final)= 1219 max_excess= -0.586  fires=0
+new_data_2                             frames= 1409 evaluated(mount final)= 1217 max_excess= -0.647  fires=0
+new_data_3                             frames= 1409 evaluated(mount final)= 1219 max_excess= -0.649  fires=0
+new_data_4                             frames= 1409 evaluated(mount final)= 1093 max_excess= -0.686  fires=0
+new_data_5                             frames= 1409 evaluated(mount final)= 1219 max_excess= -0.590  fires=0
+new_data_6                             frames= 1409 evaluated(mount final)= 1219 max_excess= -0.683  fires=0
+new_data_7                             frames= 1408 evaluated(mount final)= 1218 max_excess= -0.627  fires=0
+roundT_doubleT                         frames=  252 evaluated(mount final)=   62 max_excess= -0.706  fires=0
+roundT_pressureGate_roundT             frames=  268 evaluated(mount final)=   78 max_excess= -0.718  fires=0
+roundT_squareT_pressureGate_squareT    frames=  545 evaluated(mount final)=  355 max_excess= -0.669  fires=0
+squareT_platform_squareT_switch        frames=  877 evaluated(mount final)=  687 max_excess= -0.676  fires=0
+Pandar total frames 15269 evaluated 12277
+Falcon evaluated 4251 first evaluated frame 192 fires 52 rows 4359 - 4410
+Falcon outside the run, max excess -0.138 ; rows within 0.3 m of firing: 22
