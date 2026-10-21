@@ -41,6 +41,10 @@ def apply_sensor_profile(cfg, profile: str):
     resolved.sensor.roll_deg = resolved.sensor.pitch_deg = resolved.sensor.yaw_deg = 0.0
     resolved.calibration.enabled = True
     resolved.calibration.keep_up_axis = True
+    if range_model == "falcon_prime" and not getattr(resolved.tracking, "doubt_falcon", True):
+        # 21.10 (G2, track opinion 1.3): the learned opinion is trained on Pandar tracks only
+        resolved.tracking.doubt_model = ""
+        resolved.tracking.doubt_extra_hits = 0
     far = getattr(resolved, "farrange", None)
     if range_model == "falcon_prime" and far is not None and far.with_falcon_profile:
         # 19.10 (Falcon long range): the far straight axis and the range crop beyond 250 m

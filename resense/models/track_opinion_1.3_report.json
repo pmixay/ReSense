@@ -1,0 +1,662 @@
+{
+ "features": [
+  "distance",
+  "is_low",
+  "frac_low",
+  "hits",
+  "lat_jump",
+  "len_mean",
+  "gauge_frac",
+  "frac_demoted",
+  "frac_column",
+  "frac_beyond",
+  "dist_step",
+  "hit_fraction",
+  "frac_core",
+  "frac_cut",
+  "frac_weak",
+  "frac_thin",
+  "frac_spared",
+  "dist_span"
+ ],
+ "near": 25.0,
+ "excluded": [],
+ "train_rows": {
+  "negative": 665,
+  "positive": 19483,
+  "positive_sequences": 475
+ },
+ "groups": [
+  "doubleT_platform",
+  "new_data:0",
+  "new_data:1",
+  "new_data:2",
+  "new_data:3",
+  "new_data:4",
+  "new_data:5",
+  "new_data:6",
+  "new_data:7",
+  "roundT_pressureGate_roundT",
+  "squareT_platform_squareT_switch"
+ ],
+ "heldout_auc": 0.9678,
+ "export_max_abs_diff": 0.0,
+ "simulation": [
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": "max_delayed",
+   "threshold": 0.0202,
+   "ride_events": [
+    35,
+    34
+   ],
+   "ride_stop_rows": [
+    139,
+    133
+   ],
+   "empty_events": [
+    10,
+    10
+   ],
+   "synthetic_delayed_rows": 0,
+   "synthetic_delayed_sequences": 0,
+   "test_delayed": []
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": 0.005,
+   "threshold": 0.0591,
+   "ride_events": [
+    35,
+    29
+   ],
+   "ride_stop_rows": [
+    139,
+    106
+   ],
+   "empty_events": [
+    10,
+    9
+   ],
+   "synthetic_delayed_rows": 178,
+   "synthetic_delayed_sequences": 23,
+   "test_delayed": [
+    [
+     "falcon",
+     2956,
+     126.6,
+     0.043
+    ],
+    [
+     "falcon",
+     2957,
+     126.5,
+     0.034
+    ],
+    [
+     "falcon",
+     2988,
+     122.9,
+     0.036
+    ],
+    [
+     "falcon",
+     2989,
+     122.9,
+     0.031
+    ],
+    [
+     "falcon",
+     2990,
+     122.8,
+     0.031
+    ],
+    [
+     "falcon",
+     2991,
+     122.6,
+     0.031
+    ],
+    [
+     "falcon",
+     2992,
+     122.5,
+     0.058
+    ],
+    [
+     "falcon",
+     2993,
+     122.4,
+     0.066
+    ],
+    [
+     "falcon",
+     2994,
+     122.3,
+     0.08
+    ],
+    [
+     "falcon",
+     2995,
+     122.1,
+     0.167
+    ],
+    [
+     "falcon",
+     2996,
+     122.1,
+     0.133
+    ],
+    [
+     "falcon",
+     2997,
+     121.9,
+     0.151
+    ]
+   ]
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": 0.01,
+   "threshold": 0.099,
+   "ride_events": [
+    35,
+    24
+   ],
+   "ride_stop_rows": [
+    139,
+    96
+   ],
+   "empty_events": [
+    10,
+    9
+   ],
+   "synthetic_delayed_rows": 243,
+   "synthetic_delayed_sequences": 32,
+   "test_delayed": [
+    [
+     "falcon",
+     2950,
+     127.2,
+     0.085
+    ],
+    [
+     "falcon",
+     2951,
+     127.0,
+     0.079
+    ],
+    [
+     "falcon",
+     2952,
+     126.9,
+     0.077
+    ],
+    [
+     "falcon",
+     2953,
+     127.0,
+     0.034
+    ],
+    [
+     "falcon",
+     2956,
+     126.6,
+     0.043
+    ],
+    [
+     "falcon",
+     2957,
+     126.5,
+     0.034
+    ],
+    [
+     "falcon",
+     2988,
+     122.9,
+     0.036
+    ],
+    [
+     "falcon",
+     2989,
+     122.9,
+     0.031
+    ],
+    [
+     "falcon",
+     2990,
+     122.8,
+     0.031
+    ],
+    [
+     "falcon",
+     2991,
+     122.6,
+     0.031
+    ],
+    [
+     "falcon",
+     2992,
+     122.5,
+     0.058
+    ],
+    [
+     "falcon",
+     2993,
+     122.4,
+     0.066
+    ],
+    [
+     "falcon",
+     2994,
+     122.3,
+     0.08
+    ],
+    [
+     "falcon",
+     2995,
+     122.1,
+     0.167
+    ],
+    [
+     "falcon",
+     2996,
+     122.1,
+     0.133
+    ],
+    [
+     "falcon",
+     2997,
+     121.9,
+     0.151
+    ]
+   ]
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": 0.02,
+   "threshold": 0.1984,
+   "ride_events": [
+    35,
+    20
+   ],
+   "ride_stop_rows": [
+    139,
+    84
+   ],
+   "empty_events": [
+    10,
+    8
+   ],
+   "synthetic_delayed_rows": 411,
+   "synthetic_delayed_sequences": 53,
+   "test_delayed": [
+    [
+     "cloud_with_fake_obj",
+     693,
+     87.3,
+     0.155
+    ],
+    [
+     "cloud_with_fake_obj",
+     694,
+     85.6,
+     0.176
+    ],
+    [
+     "cloud_with_fake_obj",
+     695,
+     83.9,
+     0.207
+    ],
+    [
+     "cloud_with_fake_obj",
+     696,
+     82.2,
+     0.407
+    ],
+    [
+     "cloud_with_fake_obj",
+     697,
+     80.5,
+     0.572
+    ],
+    [
+     "cloud_with_fake_obj",
+     698,
+     78.8,
+     0.712
+    ],
+    [
+     "cloud_with_fake_obj",
+     699,
+     77.2,
+     0.763
+    ],
+    [
+     "cloud_with_fake_obj",
+     700,
+     75.5,
+     0.791
+    ],
+    [
+     "cloud_with_fake_obj",
+     701,
+     73.7,
+     0.791
+    ],
+    [
+     "cloud_with_fake_obj",
+     702,
+     72.0,
+     0.879
+    ],
+    [
+     "falcon",
+     2950,
+     127.2,
+     0.085
+    ],
+    [
+     "falcon",
+     2951,
+     127.0,
+     0.079
+    ],
+    [
+     "falcon",
+     2952,
+     126.9,
+     0.077
+    ],
+    [
+     "falcon",
+     2953,
+     127.0,
+     0.034
+    ],
+    [
+     "falcon",
+     2956,
+     126.6,
+     0.043
+    ],
+    [
+     "falcon",
+     2957,
+     126.5,
+     0.034
+    ],
+    [
+     "falcon",
+     2988,
+     122.9,
+     0.036
+    ],
+    [
+     "falcon",
+     2989,
+     122.9,
+     0.031
+    ],
+    [
+     "falcon",
+     2990,
+     122.8,
+     0.031
+    ],
+    [
+     "falcon",
+     2991,
+     122.6,
+     0.031
+    ],
+    [
+     "falcon",
+     2992,
+     122.5,
+     0.058
+    ],
+    [
+     "falcon",
+     2993,
+     122.4,
+     0.066
+    ],
+    [
+     "falcon",
+     2994,
+     122.3,
+     0.08
+    ],
+    [
+     "falcon",
+     2995,
+     122.1,
+     0.167
+    ],
+    [
+     "falcon",
+     2996,
+     122.1,
+     0.133
+    ],
+    [
+     "falcon",
+     2997,
+     121.9,
+     0.151
+    ],
+    [
+     "falcon",
+     3007,
+     120.7,
+     0.197
+    ],
+    [
+     "falcon",
+     3008,
+     120.6,
+     0.197
+    ],
+    [
+     "falcon",
+     3009,
+     120.5,
+     0.197
+    ],
+    [
+     "falcon",
+     3010,
+     120.4,
+     0.219
+    ],
+    [
+     "falcon",
+     3011,
+     120.2,
+     0.234
+    ],
+    [
+     "falcon",
+     3012,
+     120.1,
+     0.522
+    ],
+    [
+     "falcon",
+     3013,
+     120.0,
+     0.845
+    ],
+    [
+     "falcon",
+     3014,
+     119.8,
+     0.888
+    ],
+    [
+     "falcon",
+     3015,
+     119.7,
+     0.901
+    ],
+    [
+     "falcon",
+     3016,
+     119.6,
+     0.901
+    ],
+    [
+     "falcon",
+     3058,
+     114.5,
+     0.142
+    ],
+    [
+     "falcon",
+     3059,
+     114.3,
+     0.18
+    ],
+    [
+     "falcon",
+     3060,
+     114.2,
+     0.178
+    ],
+    [
+     "falcon",
+     3061,
+     114.1,
+     0.121
+    ],
+    [
+     "falcon",
+     3062,
+     114.0,
+     0.123
+    ],
+    [
+     "falcon",
+     3063,
+     113.8,
+     0.275
+    ],
+    [
+     "falcon",
+     3064,
+     113.6,
+     0.275
+    ],
+    [
+     "falcon",
+     3065,
+     113.6,
+     0.275
+    ],
+    [
+     "falcon",
+     3066,
+     113.5,
+     0.3
+    ],
+    [
+     "falcon",
+     3067,
+     113.4,
+     0.296
+    ]
+   ]
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": "max_delayed_x0.5",
+   "threshold": 0.0101,
+   "ride_events": [
+    35,
+    35
+   ],
+   "ride_stop_rows": [
+    139,
+    139
+   ],
+   "empty_events": [
+    10,
+    10
+   ],
+   "synthetic_delayed_rows": 0,
+   "synthetic_delayed_sequences": 0,
+   "test_delayed": []
+  },
+  {
+   "extra": 10,
+   "sticky": true,
+   "positive_quantile": "max_delayed_x0.33",
+   "threshold": 0.0066,
+   "ride_events": [
+    35,
+    35
+   ],
+   "ride_stop_rows": [
+    139,
+    139
+   ],
+   "empty_events": [
+    10,
+    10
+   ],
+   "synthetic_delayed_rows": 0,
+   "synthetic_delayed_sequences": 0,
+   "test_delayed": []
+  }
+ ],
+ "heldout": {
+  "max_delayed_threshold": 0.0202,
+  "pick": 0.5,
+  "threshold": 0.0101,
+  "extra": 10,
+  "ride_events": [
+   35,
+   35
+  ],
+  "ride_stop_rows": [
+   139,
+   139
+  ],
+  "empty_events": [
+   10,
+   10
+  ],
+  "delayed_rows_at_threshold": 0,
+  "delayed_sequences_at_threshold": 0,
+  "min_positive_onset_score": 0.01568,
+  "test_delayed_rows": 0,
+  "test_delayed": []
+ },
+ "importance": {
+  "len_mean": 0.331,
+  "gauge_frac": 0.263,
+  "lat_jump": 0.177,
+  "distance": 0.115,
+  "hits": 0.05,
+  "frac_demoted": 0.019,
+  "dist_step": 0.016,
+  "dist_span": 0.007,
+  "hit_fraction": 0.006,
+  "frac_low": 0.006,
+  "is_low": 0.004,
+  "frac_beyond": 0.003,
+  "frac_column": 0.002,
+  "frac_core": 0.0,
+  "frac_cut": 0.0,
+  "frac_weak": 0.0,
+  "frac_thin": 0.0,
+  "frac_spared": 0.0
+ }
+}
