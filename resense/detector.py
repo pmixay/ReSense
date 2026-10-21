@@ -24,6 +24,7 @@ from resense.gauge import (has_edge_margin, axis_union_coordinates, axis_union_o
 from resense.health import HealthMonitor
 from resense.lowobj import (BedTemplate, low_candidates, low_free_mask, mark_rail_line, no_rail_advisory,
                             rail_reference_check)
+from resense.opinion import observation
 from resense.track import TrackModel, estimate_track, rotate_track_model
 from resense.tracking import Tracker
 
@@ -32,6 +33,13 @@ def _overlap(a: Cluster, b: Cluster, margin: float = 0.3) -> bool:
     """Two clusters of the same object: their along-track extents and lateral widths overlap."""
     return (b.bbox_min[0] - margin < a.bbox_max[0] and b.bbox_max[0] + margin > a.bbox_min[0]
             and abs(b.lateral - a.lateral) < 0.5 * float(a.size[1] + b.size[1]) + margin)
+
+
+def _overlap_xy(a: Cluster, b: Cluster, margin: float = 0.3) -> bool:
+    """21.10 (K2 union): :func:`_overlap` in the vehicle frame (the boxes' X and Y extents), for clusters whose
+    laterals are measured from different axes."""
+    return (b.bbox_min[0] - margin < a.bbox_max[0] and b.bbox_max[0] + margin > a.bbox_min[0]
+            and b.bbox_min[1] - margin < a.bbox_max[1] and b.bbox_max[1] + margin > a.bbox_min[1])
 
 
 @dataclass
@@ -367,6 +375,10 @@ class Detector:
         t1 = time.perf_counter()
         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)
         self._frame_hd = (dy_all, h_all)
+        if cfg.track.axis_joint_union and self.track.curve is not None:
+            # K2 union (revision 2): the returns the base gauge holds inside its strict envelope, read by _curve_clusters
+            self._base_in = np.zeros(len(xyz), dtype=bool)
+            self._base_in[cand.idx[cand.in_gauge & (cand.idx >= 0)]] = True
         trust = min(valid, floor_valid)  # the trusted range before the clustering (health.clear_cap_thin)
         dy_rail = self._dy_rail          # = dy_all unless gauge.axis_union 2 re-measured the corridor coordinate
         # Paired rails support lateral axis placement, not a farther bed-anomaly
@@ -392,6 +404,8 @@ class Detector:
         merged, n_acc = self._accumulate(cand, speed, dt)
         t4 = time.perf_counter()
         clusters = self._cluster(merged, n_acc, valid, floor_valid, straddle, near)
+        if cfg.track.axis_joint_union and self.track.curve is not None:
+            clusters = self._curve_clusters(xyz, frame.intensity, clusters, valid)
         if cfg.track.axis_joint_reach_dual > 0:
             self._dual_zone(clusters)
         if cfg.cluster.far_axis_both_sides == 2:
@@ -431,7 +445,7 @@ class Detector:
         result = FrameResult(
             stamp=frame.stamp, obstacle=len(gauge) > 0, warning=len(warn) > 0,
             nearest_distance=gauge[0].distance if gauge else None,
-            detections=gauge, warnings=warn, candidates=clusters, track=self.track,
+            detections=gauge, warnings=warn, candidates=clusters, track=self._published_track(),
             corridor_idx=cand.idx, n_points=frame.n,
             timing_ms={"track": (t1 - t0) * 1e3, "corridor": (t2 - t1) * 1e3,
                        "egomotion": (t3 - t2) * 1e3, "accumulate": (t4 - t3) * 1e3,
@@ -856,6 +870,70 @@ class Detector:
             inside = gauge_core_mask(dy, hh, xx, g) if has_edge_margin(g) else point_in_polygon(dy, hh, g.profile)
             if not bool(inside[0]):
                 c.zone, c.reason = "warning", "beyond_axis"
+
+    def _published_track(self) -> TrackModel:
+        """The model in the result (display, records): the track model, or with ``track.axis_joint_union`` on a curve
+        frame its copy with the curve's shape and trusted range (``joint_used`` true), so the drawn gauge follows the
+        curve as far as the walls confirm it. The detector itself keeps reading the track model."""
+        tr = self.track
+        cv = tr.curve if self.cfg.track.axis_joint_union else None
+        if cv is None:
+            return tr
+        return replace(tr, center=cv.center, yaw=cv.yaw, curvature=cv.curvature, curv_step=cv.curv_step,
+                       curv_knot=cv.curv_knot, axis_valid=cv.axis_valid, joint_used=True)
+
+    def _curve_clusters(self, xyz: np.ndarray, intensity: np.ndarray, clusters: List[Cluster],
+                        base_valid: float = 0.0) -> List[Cluster]:
+        """21.10 (K2 union, ``track.axis_joint_union``): on a curve frame the joint shape (``track.curve``, trusted as far
+        as a tunnel boundary follows it) is a second gauge. The corridor and the clustering of the above-rail candidates
+        run again in its coordinates, on this frame's points alone (no accumulation, no low stage); each of its
+        obstacles (zone ``gauge``, no reason) that overlaps no obstacle of the base gauge is added, in place of the base
+        gauge's advisory clusters it overlaps. Nothing the base gauge reports as an obstacle is changed, and the bed,
+        low-object, ego-speed, mount and clear-distance stages keep the base model. Revision 2: only beyond the
+        farthest X to which a boundary still follows the base axis (``curve.curve_from``), and only objects the base
+        gauge did not judge: none of their returns inside its strict envelope within its trusted range ``base_valid``."""
+        saved = (self.track, self._far_axis, getattr(self, "_dy_rail", None), self._frame_hd, self._thin,
+                 getattr(self, "_low_height", []), getattr(self, "_near_low", []))
+        try:
+            self.track, self._far_axis = self.track.curve, None
+            cand, dy_k, h_k, _, (valid, _, floor_valid) = self._corridor(xyz, intensity)
+            self._frame_hd = (dy_k, h_k)
+            extra = self._cluster(cand, 1, valid, floor_valid, None, None) if len(cand) else []
+        finally:
+            (self.track, self._far_axis, self._dy_rail, self._frame_hd, self._thin, self._low_height,
+             self._near_low) = saved
+        obstacles = [c for c in clusters if c.zone == "gauge" and not c.reason]
+        start = float(saved[0].curve.curve_from)
+        base_in = getattr(self, "_base_in", None)
+
+        def judged(k: Cluster) -> bool:
+            # revision 2: an object with returns inside the base strict envelope within the base's trusted range was
+            # judged by the base gauge (its advisory reasons stand); the curve adds only what the base cannot see
+            own = k.points_idx[k.points_idx >= 0]
+            return (base_in is not None and float(k.distance) <= base_valid and own.size > 0
+                    and bool(base_in[own[own < base_in.size]].any()))
+        add = [k for k in extra if k.zone == "gauge" and not k.reason and float(k.distance) > start
+               and not judged(k) and not any(_overlap_xy(k, c) for c in obstacles)]
+        self._curve_added, self._curve_seen = len(add), extra      # read by evidence traces only
+        if not add:
+            return clusters
+        dy_base = saved[2]
+        for k in add:
+            # the tracker's record (track opinion) and the reported lateral stay in the base coordinates, as the
+            # base advisory cluster it replaces would have given them (a curve lateral mixed into a track's history
+            # reads as a lateral jump to the opinion: marked platform object 23 was withheld 7 frames, revision 1)
+            over = [c for c in clusters if _overlap_xy(c, k)]
+            if over:
+                b = min(over, key=lambda c: float(np.linalg.norm(c.centroid - k.centroid)))
+                k.lateral, k.obs_as = b.lateral, observation(b)
+            else:
+                own = k.points_idx[k.points_idx >= 0]
+                if dy_base is not None and own.size:
+                    k.lateral = float(np.mean(dy_base[own]))
+                k.obs_as = observation(k)
+            k.curve = True
+        keep = [c for c in clusters if not any(_overlap_xy(c, k) for k in add)]
+        return sorted(keep + add, key=lambda c: c.distance)
 
     def _far_both_sides(self, clusters: List[Cluster], valid: float, floor_valid: float) -> float:
         """``cluster.far_axis_both_sides`` 2 (25.09, far_switch, opt-in): on a bent axis (no

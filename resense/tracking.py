@@ -92,6 +92,7 @@ class Track:
     obs: List[tuple] = field(default_factory=list)  # 27.09 (tracking.doubt_*): the last matched clusters (opinion.observation)
     doubt: int = 0                  # 27.09: frames a doubtful STOP was withheld over the track's life (tracking.doubt_extra_hits)
     withheld: bool = False          # 27.09: a STOP withheld as advisory by the track opinion (zone 'warning')
+    curve_seen: bool = False        # 21.10 (K2 union): matched a cluster of the curve gauge (record only; revision 3: no rule reads it)
     stop_prev: bool = False         # 27.09: reported in zone gauge after the previous update
     thin_hist: List[bool] = field(default_factory=list)  # 27.09 (thin_far_min_distance): last zone_window hits: a far scan line?
     approach: List[tuple] = field(default_factory=list)  # 27.09: (sensor time s, distance m) of the last hits (approach_*)
@@ -340,7 +341,8 @@ class Tracker:
                 if cl.kind == "low" and cl.zone == "gauge":
                     t.low_since_clean = 0.0
                 if self.record:
-                    t.obs = (t.obs + [observation(cl)])[-OBS_KEEP:]
+                    t.obs = (t.obs + [getattr(cl, "obs_as", None) or observation(cl)])[-OBS_KEEP:]
+                t.curve_seen = t.curve_seen or getattr(cl, "curve", False)
                 g = cl.zone == "gauge" or keep
                 t.kept = keep
                 t.gauge_hits += int(g)
@@ -397,7 +399,8 @@ class Tracker:
                     spare_hist=[cl.spared],
                     near_hist=[self._near(cl)] if nk else [], near_hits=nk,
                     since_clean=0.0 if cl.zone == "gauge" else float("inf"),
-                    obs=[observation(cl)] if self.record else [],
+                    obs=[getattr(cl, "obs_as", None) or observation(cl)] if self.record else [],
+                    curve_seen=getattr(cl, "curve", False),
                     low_clean=cl if cl.kind == "low" else None,
                     settle_hist=[cl.zone == "gauge"] if c.settle_min_hits > 0 else [],
                     settle_cen=[np.asarray(cl.centroid, dtype=np.float64)] if c.settle_min_hits > 0 else [],
