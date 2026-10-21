@@ -1,0 +1,9771 @@
+{
+ "schema": "resense-false-stop-ledger-v1-controls",
+ "set_O": [
+  {
+   "object": "big_center",
+   "onset_frame": 0,
+   "onset_center": [
+    98.69,
+    0.26,
+    -0.22
+   ],
+   "frames": [
+    {
+     "dy_position": 0.93,
+     "lon": 5.7,
+     "lat": 2.09,
+     "z_half": 3.69,
+     "n_all": 5429,
+     "n_narrow": 4841,
+     "n_up": 3599,
+     "n_bed": 1533,
+     "n_env": 549,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 3050,
+     "dy_med": 0.05,
+     "h_med": 1.16,
+     "h_range": [
+      0.32,
+      1.82
+     ],
+     "dy_range": [
+      -0.81,
+      1.15
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 714,
+     "h_bottom": 0.32,
+     "frame": 198,
+     "tag": "transport",
+     "range": 24.7,
+     "traveled": 74.0,
+     "center": [
+      24.65,
+      0.76,
+      -0.22
+     ],
+     "track": {
+      "center": -0.028,
+      "yaw": -0.004228658478824387,
+      "curvature": -0.00011596819306630598,
+      "rail_offset": 0.264
+     },
+     "expected": "in_envelope",
+     "object": "big_center",
+     "transport_error": [
+      -5.22,
+      0.8,
+      0.3
+     ]
+    },
+    {
+     "dy_position": 0.93,
+     "lon": 5.82,
+     "lat": 2.12,
+     "z_half": 3.76,
+     "n_all": 7467,
+     "n_narrow": 6599,
+     "n_up": 4753,
+     "n_bed": 2228,
+     "n_env": 620,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 4133,
+     "dy_med": 0.05,
+     "h_med": 1.11,
+     "h_range": [
+      0.33,
+      1.77
+     ],
+     "dy_range": [
+      -0.82,
+      1.12
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 792,
+     "h_bottom": 0.33,
+     "frame": 201,
+     "tag": "transport",
+     "range": 22.3,
+     "traveled": 76.4,
+     "center": [
+      22.26,
+      0.78,
+      -0.22
+     ],
+     "track": {
+      "center": -0.038,
+      "yaw": -0.0027096003142374064,
+      "curvature": -0.00020705998790932883,
+      "rail_offset": 0.271
+     },
+     "expected": "in_envelope",
+     "object": "big_center",
+     "transport_error": [
+      -5.18,
+      0.82,
+      0.3
+     ]
+    },
+    {
+     "dy_position": 0.92,
+     "lon": 5.94,
+     "lat": 2.15,
+     "z_half": 3.83,
+     "n_all": 10828,
+     "n_narrow": 9475,
+     "n_up": 6284,
+     "n_bed": 3490,
+     "n_env": 669,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 5615,
+     "dy_med": 0.09,
+     "h_med": 1.0,
+     "h_range": [
+      0.35,
+      1.55
+     ],
+     "dy_range": [
+      -0.82,
+      1.14
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 838,
+     "h_bottom": 0.35,
+     "frame": 204,
+     "tag": "transport",
+     "range": 19.8,
+     "traveled": 78.9,
+     "center": [
+      19.79,
+      0.79,
+      -0.22
+     ],
+     "track": {
+      "center": -0.036,
+      "yaw": -0.002085963073456345,
+      "curvature": -0.00024017693564517452,
+      "rail_offset": 0.33
+     },
+     "expected": "in_envelope",
+     "object": "big_center",
+     "transport_error": [
+      -5.15,
+      0.79,
+      0.3
+     ]
+    },
+    {
+     "dy_position": 0.16,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.46,
+     "n_all": 1461,
+     "n_narrow": 1461,
+     "n_up": 806,
+     "n_bed": 655,
+     "n_env": 669,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 137,
+     "dy_med": 0.09,
+     "h_med": 1.0,
+     "h_range": [
+      0.35,
+      1.55
+     ],
+     "dy_range": [
+      -0.82,
+      1.14
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 806,
+     "h_bottom": 0.35,
+     "frame": 204,
+     "tag": "truth",
+     "range": 24.9,
+     "traveled": 0.0,
+     "center": [
+      24.95,
+      0.0,
+      -0.52
+     ],
+     "track": {
+      "center": -0.036,
+      "yaw": -0.002085963073456345,
+      "curvature": -0.00024017693564517452,
+      "rail_offset": 0.33
+     },
+     "expected": "in_envelope",
+     "object": "big_center"
+    },
+    {
+     "dy_position": 0.15,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.46,
+     "n_all": 1473,
+     "n_narrow": 1473,
+     "n_up": 900,
+     "n_bed": 573,
+     "n_env": 762,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 138,
+     "dy_med": 0.09,
+     "h_med": 1.02,
+     "h_range": [
+      0.34,
+      1.65
+     ],
+     "dy_range": [
+      -0.8,
+      1.1
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 900,
+     "h_bottom": 0.34,
+     "frame": 205,
+     "tag": "truth",
+     "range": 24.1,
+     "traveled": 0.0,
+     "center": [
+      24.09,
+      0.0,
+      -0.5
+     ],
+     "track": {
+      "center": -0.036,
+      "yaw": -0.0021344543319233456,
+      "curvature": -0.00022965163178104915,
+      "rail_offset": 0.316
+     },
+     "expected": "in_envelope",
+     "object": "big_center"
+    },
+    {
+     "dy_position": 0.15,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.46,
+     "n_all": 1649,
+     "n_narrow": 1649,
+     "n_up": 990,
+     "n_bed": 659,
+     "n_env": 876,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 114,
+     "dy_med": 0.09,
+     "h_med": 1.01,
+     "h_range": [
+      0.3,
+      1.67
+     ],
+     "dy_range": [
+      -0.82,
+      1.12
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 990,
+     "h_bottom": 0.3,
+     "frame": 206,
+     "tag": "truth",
+     "range": 23.2,
+     "traveled": 0.0,
+     "center": [
+      23.24,
+      0.0,
+      -0.51
+     ],
+     "track": {
+      "center": -0.033,
+      "yaw": -0.0024700970943952395,
+      "curvature": -0.0002107993586416676,
+      "rail_offset": 0.302
+     },
+     "expected": "in_envelope",
+     "object": "big_center"
+    },
+    {
+     "dy_position": 0.15,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.46,
+     "n_all": 1800,
+     "n_narrow": 1800,
+     "n_up": 1105,
+     "n_bed": 695,
+     "n_env": 943,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 162,
+     "dy_med": 0.09,
+     "h_med": 1.08,
+     "h_range": [
+      0.35,
+      1.72
+     ],
+     "dy_range": [
+      -0.85,
+      1.15
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 1105,
+     "h_bottom": 0.35,
+     "frame": 207,
+     "tag": "truth",
+     "range": 22.4,
+     "traveled": 0.0,
+     "center": [
+      22.38,
+      0.0,
+      -0.49
+     ],
+     "track": {
+      "center": -0.031,
+      "yaw": -0.0026164079379912184,
+      "curvature": -0.00024002234825369582,
+      "rail_offset": 0.289
+     },
+     "expected": "in_envelope",
+     "object": "big_center"
+    },
+    {
+     "dy_position": 0.92,
+     "lon": 6.14,
+     "lat": 2.19,
+     "z_half": 3.95,
+     "n_all": 17992,
+     "n_narrow": 15784,
+     "n_up": 12809,
+     "n_bed": 4152,
+     "n_env": 1002,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 11807,
+     "dy_med": 0.08,
+     "h_med": 1.04,
+     "h_range": [
+      0.34,
+      1.7
+     ],
+     "dy_range": [
+      -0.82,
+      1.1
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 1304,
+     "h_bottom": 0.34,
+     "frame": 208,
+     "tag": "transport",
+     "range": 16.0,
+     "traveled": 82.7,
+     "center": [
+      15.94,
+      0.82,
+      -0.22
+     ],
+     "track": {
+      "center": -0.034,
+      "yaw": -0.002166721622882329,
+      "curvature": -0.0002593607575804435,
+      "rail_offset": 0.278
+     },
+     "expected": null,
+     "object": "big_center"
+    },
+    {
+     "dy_position": 0.93,
+     "lon": 6.27,
+     "lat": 2.22,
+     "z_half": 4.02,
+     "n_all": 26794,
+     "n_narrow": 24702,
+     "n_up": 20845,
+     "n_bed": 4734,
+     "n_env": 1672,
+     "n_side": 1043,
+     "n_over": 0,
+     "n_fabric": 18130,
+     "dy_med": 0.21,
+     "h_med": 0.88,
+     "h_range": [
+      0.18,
+      1.71
+     ],
+     "dy_range": [
+      -0.86,
+      1.4
+     ],
+     "ambiguous": [
+      "mixed(env 1672, other 1043)"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 1672,
+     "h_bottom": 0.18,
+     "frame": 211,
+     "tag": "transport",
+     "range": 13.4,
+     "traveled": 85.3,
+     "center": [
+      13.37,
+      0.83,
+      -0.22
+     ],
+     "track": {
+      "center": -0.035,
+      "yaw": -0.0023867320648062428,
+      "curvature": -0.00029428152484745334,
+      "rail_offset": 0.264
+     },
+     "expected": null,
+     "object": "big_center"
+    },
+    {
+     "dy_position": 0.92,
+     "lon": 6.41,
+     "lat": 2.26,
+     "z_half": 4.11,
+     "n_all": 50082,
+     "n_narrow": 48386,
+     "n_up": 39752,
+     "n_bed": 8475,
+     "n_env": 2279,
+     "n_side": 1346,
+     "n_over": 0,
+     "n_fabric": 36127,
+     "dy_med": 0.18,
+     "h_med": 0.83,
+     "h_range": [
+      0.15,
+      1.68
+     ],
+     "dy_range": [
+      -0.88,
+      1.4
+     ],
+     "ambiguous": [
+      "mixed(env 2279, other 1346)"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 2279,
+     "h_bottom": 0.15,
+     "frame": 214,
+     "tag": "transport",
+     "range": 10.5,
+     "traveled": 88.2,
+     "center": [
+      10.5,
+      0.85,
+      -0.22
+     ],
+     "track": {
+      "center": -0.034,
+      "yaw": -0.0027733472364651116,
+      "curvature": -0.0001951974369609991,
+      "rail_offset": 0.256
+     },
+     "expected": null,
+     "object": "big_center"
+    }
+   ]
+  },
+  {
+   "object": "small_center",
+   "onset_frame": 335,
+   "onset_center": [
+    59.22,
+    -2.33,
+    0.2
+   ],
+   "frames": [
+    {
+     "dy_position": 0.59,
+     "lon": 3.73,
+     "lat": 1.62,
+     "z_half": 2.04,
+     "n_all": 1488,
+     "n_narrow": 418,
+     "n_up": 386,
+     "n_bed": 38,
+     "n_env": 35,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 351,
+     "dy_med": 0.39,
+     "h_med": 1.21,
+     "h_range": [
+      1.04,
+      1.32
+     ],
+     "dy_range": [
+      0.26,
+      0.6
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 92,
+     "h_bottom": 1.04,
+     "frame": 355,
+     "tag": "transport",
+     "range": 24.6,
+     "traveled": 34.7,
+     "center": [
+      24.61,
+      -0.22,
+      0.2
+     ],
+     "track": {
+      "center": -0.003,
+      "yaw": -0.025370251139451277,
+      "curvature": -0.0006302089964834114,
+      "rail_offset": 0.251
+     },
+     "expected": "in_envelope",
+     "object": "small_center",
+     "transport_error": [
+      -1.06,
+      0.21,
+      0.16
+     ]
+    },
+    {
+     "dy_position": 0.4,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 87,
+     "n_narrow": 87,
+     "n_up": 87,
+     "n_bed": 0,
+     "n_env": 30,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 57,
+     "dy_med": 0.41,
+     "h_med": 1.19,
+     "h_range": [
+      1.06,
+      1.32
+     ],
+     "dy_range": [
+      0.28,
+      0.53
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 57,
+     "h_bottom": 1.06,
+     "frame": 356,
+     "tag": "truth",
+     "range": 23.8,
+     "traveled": 0.0,
+     "center": [
+      23.87,
+      -0.38,
+      0.03
+     ],
+     "track": {
+      "center": -0.005,
+      "yaw": -0.025408787618690764,
+      "curvature": -0.0005907278282651037,
+      "rail_offset": 0.25
+     },
+     "expected": "in_envelope",
+     "object": "small_center"
+    },
+    {
+     "dy_position": 0.58,
+     "lon": 3.9,
+     "lat": 1.66,
+     "z_half": 2.14,
+     "n_all": 2497,
+     "n_narrow": 745,
+     "n_up": 670,
+     "n_bed": 74,
+     "n_env": 41,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 629,
+     "dy_med": 0.37,
+     "h_med": 1.21,
+     "h_range": [
+      1.06,
+      1.36
+     ],
+     "dy_range": [
+      0.25,
+      0.54
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 101,
+     "h_bottom": 1.06,
+     "frame": 357,
+     "tag": "transport",
+     "range": 21.3,
+     "traveled": 38.0,
+     "center": [
+      21.26,
+      -0.09,
+      0.2
+     ],
+     "track": {
+      "center": -0.002,
+      "yaw": -0.025895903729684394,
+      "curvature": -0.000555778264408161,
+      "rail_offset": 0.25
+     },
+     "expected": "in_envelope",
+     "object": "small_center",
+     "transport_error": [
+      -0.98,
+      0.23,
+      0.15
+     ]
+    },
+    {
+     "dy_position": 0.59,
+     "lon": 4.0,
+     "lat": 1.68,
+     "z_half": 2.2,
+     "n_all": 3574,
+     "n_narrow": 1199,
+     "n_up": 1030,
+     "n_bed": 144,
+     "n_env": 42,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 988,
+     "dy_med": 0.36,
+     "h_med": 1.19,
+     "h_range": [
+      1.06,
+      1.33
+     ],
+     "dy_range": [
+      0.22,
+      0.49
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 94,
+     "h_bottom": 1.06,
+     "frame": 358,
+     "tag": "transport",
+     "range": 19.4,
+     "traveled": 39.9,
+     "center": [
+      19.36,
+      -0.02,
+      0.2
+     ],
+     "track": {
+      "center": 0.005,
+      "yaw": -0.026896794139991707,
+      "curvature": -0.0005167263777858424,
+      "rail_offset": 0.251
+     },
+     "expected": "in_envelope",
+     "object": "small_center",
+     "transport_error": [
+      -1.1,
+      0.27,
+      0.15
+     ]
+    },
+    {
+     "dy_position": 0.36,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 117,
+     "n_narrow": 117,
+     "n_up": 117,
+     "n_bed": 0,
+     "n_env": 42,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 75,
+     "dy_med": 0.36,
+     "h_med": 1.19,
+     "h_range": [
+      1.06,
+      1.33
+     ],
+     "dy_range": [
+      0.22,
+      0.49
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 66,
+     "h_bottom": 1.06,
+     "frame": 358,
+     "tag": "truth",
+     "range": 20.4,
+     "traveled": 0.0,
+     "center": [
+      20.46,
+      -0.29,
+      0.04
+     ],
+     "track": {
+      "center": 0.005,
+      "yaw": -0.026896794139991707,
+      "curvature": -0.0005167263777858424,
+      "rail_offset": 0.251
+     },
+     "expected": "in_envelope",
+     "object": "small_center"
+    },
+    {
+     "dy_position": 0.35,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 116,
+     "n_narrow": 116,
+     "n_up": 116,
+     "n_bed": 0,
+     "n_env": 55,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 61,
+     "dy_med": 0.34,
+     "h_med": 1.19,
+     "h_range": [
+      1.07,
+      1.36
+     ],
+     "dy_range": [
+      0.2,
+      0.5
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 63,
+     "h_bottom": 1.07,
+     "frame": 359,
+     "tag": "truth",
+     "range": 18.7,
+     "traveled": 0.0,
+     "center": [
+      18.87,
+      -0.24,
+      0.07
+     ],
+     "track": {
+      "center": 0.012,
+      "yaw": -0.027792391792549317,
+      "curvature": -0.0004700397881930718,
+      "rail_offset": 0.25
+     },
+     "expected": "in_envelope",
+     "object": "small_center"
+    },
+    {
+     "dy_position": 0.59,
+     "lon": 4.16,
+     "lat": 1.72,
+     "z_half": 2.3,
+     "n_all": 6444,
+     "n_narrow": 2384,
+     "n_up": 2065,
+     "n_bed": 282,
+     "n_env": 71,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 1994,
+     "dy_med": 0.31,
+     "h_med": 1.19,
+     "h_range": [
+      1.04,
+      1.34
+     ],
+     "dy_range": [
+      0.17,
+      0.48
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 80,
+     "h_bottom": 1.04,
+     "frame": 360,
+     "tag": "transport",
+     "range": 16.0,
+     "traveled": 43.2,
+     "center": [
+      16.05,
+      0.09,
+      0.2
+     ],
+     "track": {
+      "center": 0.014,
+      "yaw": -0.027940420830816645,
+      "curvature": -0.00044086925846359643,
+      "rail_offset": 0.248
+     },
+     "expected": "in_envelope",
+     "object": "small_center",
+     "transport_error": [
+      -1.07,
+      0.3,
+      0.16
+     ]
+    },
+    {
+     "dy_position": 0.58,
+     "lon": 4.26,
+     "lat": 1.74,
+     "z_half": 2.36,
+     "n_all": 9151,
+     "n_narrow": 5038,
+     "n_up": 4499,
+     "n_bed": 514,
+     "n_env": 88,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 4411,
+     "dy_med": 0.3,
+     "h_med": 1.19,
+     "h_range": [
+      1.04,
+      1.34
+     ],
+     "dy_range": [
+      0.14,
+      0.47
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 114,
+     "h_bottom": 1.04,
+     "frame": 361,
+     "tag": "transport",
+     "range": 14.0,
+     "traveled": 45.3,
+     "center": [
+      14.01,
+      0.16,
+      0.2
+     ],
+     "track": {
+      "center": 0.02,
+      "yaw": -0.028267415278127626,
+      "curvature": -0.00041534005082188293,
+      "rail_offset": 0.25
+     },
+     "expected": "in_envelope",
+     "object": "small_center",
+     "transport_error": [
+      -1.45,
+      0.32,
+      0.15
+     ]
+    },
+    {
+     "dy_position": 0.31,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 211,
+     "n_narrow": 211,
+     "n_up": 211,
+     "n_bed": 0,
+     "n_env": 88,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 123,
+     "dy_med": 0.3,
+     "h_med": 1.19,
+     "h_range": [
+      1.04,
+      1.34
+     ],
+     "dy_range": [
+      0.14,
+      0.47
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 94,
+     "h_bottom": 1.04,
+     "frame": 361,
+     "tag": "truth",
+     "range": 15.3,
+     "traveled": 0.0,
+     "center": [
+      15.46,
+      -0.16,
+      0.05
+     ],
+     "track": {
+      "center": 0.02,
+      "yaw": -0.028267415278127626,
+      "curvature": -0.00041534005082188293,
+      "rail_offset": 0.25
+     },
+     "expected": "in_envelope",
+     "object": "small_center"
+    },
+    {
+     "dy_position": 0.28,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 237,
+     "n_narrow": 237,
+     "n_up": 237,
+     "n_bed": 0,
+     "n_env": 100,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 137,
+     "dy_med": 0.28,
+     "h_med": 1.18,
+     "h_range": [
+      1.04,
+      1.31
+     ],
+     "dy_range": [
+      0.11,
+      0.45
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 109,
+     "h_bottom": 1.04,
+     "frame": 362,
+     "tag": "truth",
+     "range": 13.6,
+     "traveled": 0.0,
+     "center": [
+      13.72,
+      -0.12,
+      0.04
+     ],
+     "track": {
+      "center": 0.024,
+      "yaw": -0.028503361849771338,
+      "curvature": -0.000409299641579354,
+      "rail_offset": 0.249
+     },
+     "expected": "in_envelope",
+     "object": "small_center"
+    },
+    {
+     "dy_position": 0.58,
+     "lon": 4.4,
+     "lat": 1.78,
+     "z_half": 2.44,
+     "n_all": 11504,
+     "n_narrow": 7212,
+     "n_up": 6429,
+     "n_bed": 878,
+     "n_env": 100,
+     "n_side": 30,
+     "n_over": 0,
+     "n_fabric": 6299,
+     "dy_med": 0.28,
+     "h_med": 1.18,
+     "h_range": [
+      1.04,
+      1.31
+     ],
+     "dy_range": [
+      0.11,
+      0.45
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 181,
+     "h_bottom": 1.04,
+     "frame": 363,
+     "tag": "transport",
+     "range": 11.2,
+     "traveled": 48.1,
+     "center": [
+      11.2,
+      0.26,
+      0.2
+     ],
+     "track": {
+      "center": 0.016,
+      "yaw": -0.02781720186413241,
+      "curvature": -0.00041504336528747125,
+      "rail_offset": 0.248
+     },
+     "expected": "in_envelope",
+     "object": "small_center",
+     "transport_error": [
+      -2.52,
+      0.38,
+      0.15
+     ]
+    },
+    {
+     "dy_position": 0.22,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 309,
+     "n_narrow": 309,
+     "n_up": 309,
+     "n_bed": 0,
+     "n_env": 181,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 128,
+     "dy_med": 0.21,
+     "h_med": 1.16,
+     "h_range": [
+      1.01,
+      1.3
+     ],
+     "dy_range": [
+      0.05,
+      0.38
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 193,
+     "h_bottom": 1.01,
+     "frame": 364,
+     "tag": "truth",
+     "range": 10.2,
+     "traveled": 0.0,
+     "center": [
+      10.29,
+      -0.08,
+      0.03
+     ],
+     "track": {
+      "center": 0.01,
+      "yaw": -0.027539194510201218,
+      "curvature": -0.0004169837972647488,
+      "rail_offset": 0.249
+     },
+     "expected": "in_envelope",
+     "object": "small_center"
+    }
+   ]
+  },
+  {
+   "object": "small_on_rail",
+   "onset_frame": 381,
+   "onset_center": [
+    81.37,
+    -0.32,
+    2.75
+   ],
+   "frames": [
+    {
+     "dy_position": 0.37,
+     "lon": 4.89,
+     "lat": 1.89,
+     "z_half": 2.73,
+     "n_all": 817,
+     "n_narrow": 767,
+     "n_up": 817,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 817,
+     "dy_med": 0.38,
+     "h_med": 4.05,
+     "h_range": [
+      3.68,
+      4.2
+     ],
+     "dy_range": [
+      -0.6,
+      1.35
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.68,
+     "on_fabric": true,
+     "n_fabric_tight": 357,
+     "frame": 411,
+     "tag": "transport",
+     "range": 23.5,
+     "traveled": 57.8,
+     "center": [
+      23.54,
+      0.25,
+      2.75
+     ],
+     "track": {
+      "center": -0.022,
+      "yaw": -0.00436702511482019,
+      "curvature": 4.661826628910221e-06,
+      "rail_offset": 0.246
+     },
+     "expected": "in_envelope",
+     "object": "small_on_rail",
+     "transport_error": [
+      -4.95,
+      -0.5,
+      3.62
+     ]
+    },
+    {
+     "dy_position": 0.38,
+     "lon": 4.99,
+     "lat": 1.92,
+     "z_half": 2.79,
+     "n_all": 1104,
+     "n_narrow": 1035,
+     "n_up": 1104,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 1104,
+     "dy_med": 0.41,
+     "h_med": 4.05,
+     "h_range": [
+      3.69,
+      4.25
+     ],
+     "dy_range": [
+      -0.61,
+      1.36
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.69,
+     "on_fabric": true,
+     "n_fabric_tight": 474,
+     "frame": 412,
+     "tag": "transport",
+     "range": 21.6,
+     "traveled": 59.8,
+     "center": [
+      21.58,
+      0.26,
+      2.75
+     ],
+     "track": {
+      "center": -0.019,
+      "yaw": -0.00486719093751206,
+      "curvature": 1.381522030786486e-05,
+      "rail_offset": 0.247
+     },
+     "expected": "in_envelope",
+     "object": "small_on_rail",
+     "transport_error": [
+      -5.17,
+      -0.52,
+      3.63
+     ]
+    },
+    {
+     "dy_position": 0.87,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 466,
+     "n_narrow": 466,
+     "n_up": 101,
+     "n_bed": 284,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 101,
+     "dy_med": 1.34,
+     "h_med": 0.32,
+     "h_range": [
+      0.19,
+      0.47
+     ],
+     "dy_range": [
+      0.74,
+      1.58
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 46,
+     "h_bottom": 0.19,
+     "on_fabric": true,
+     "n_fabric_tight": 61,
+     "frame": 413,
+     "tag": "truth",
+     "range": 24.8,
+     "traveled": 0.0,
+     "center": [
+      24.87,
+      0.72,
+      -0.9
+     ],
+     "track": {
+      "center": -0.015,
+      "yaw": -0.005715762204662008,
+      "curvature": 2.4346164373956666e-05,
+      "rail_offset": 0.247
+     },
+     "expected": "in_envelope",
+     "object": "small_on_rail"
+    },
+    {
+     "dy_position": 0.4,
+     "lon": 5.17,
+     "lat": 1.96,
+     "z_half": 2.9,
+     "n_all": 2444,
+     "n_narrow": 2190,
+     "n_up": 2444,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 2444,
+     "dy_med": 0.45,
+     "h_med": 4.09,
+     "h_range": [
+      3.63,
+      4.25
+     ],
+     "dy_range": [
+      -0.6,
+      1.4
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.63,
+     "on_fabric": true,
+     "n_fabric_tight": 994,
+     "frame": 414,
+     "tag": "transport",
+     "range": 17.9,
+     "traveled": 63.5,
+     "center": [
+      17.91,
+      0.28,
+      2.75
+     ],
+     "track": {
+      "center": -0.013,
+      "yaw": -0.0065185681647551025,
+      "curvature": 3.047936427473616e-05,
+      "rail_offset": 0.249
+     },
+     "expected": "in_envelope",
+     "object": "small_on_rail",
+     "transport_error": [
+      -5.19,
+      -0.42,
+      3.68
+     ]
+    },
+    {
+     "dy_position": 0.4,
+     "lon": 5.25,
+     "lat": 1.98,
+     "z_half": 2.95,
+     "n_all": 3069,
+     "n_narrow": 2690,
+     "n_up": 3069,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 3069,
+     "dy_med": 0.49,
+     "h_med": 4.06,
+     "h_range": [
+      3.63,
+      4.26
+     ],
+     "dy_range": [
+      -0.59,
+      1.4
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.63,
+     "on_fabric": true,
+     "n_fabric_tight": 1130,
+     "frame": 415,
+     "tag": "transport",
+     "range": 16.5,
+     "traveled": 64.9,
+     "center": [
+      16.45,
+      0.28,
+      2.75
+     ],
+     "track": {
+      "center": -0.012,
+      "yaw": -0.006790566318767302,
+      "curvature": 2.7971260872314887e-05,
+      "rail_offset": 0.249
+     },
+     "expected": "in_envelope",
+     "object": "small_on_rail",
+     "transport_error": [
+      -4.85,
+      -0.42,
+      3.7
+     ]
+    },
+    {
+     "dy_position": 0.85,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 743,
+     "n_narrow": 743,
+     "n_up": 135,
+     "n_bed": 469,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 135,
+     "dy_med": 1.39,
+     "h_med": 0.29,
+     "h_range": [
+      0.17,
+      0.37
+     ],
+     "dy_range": [
+      0.71,
+      1.56
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 55,
+     "h_bottom": 0.17,
+     "on_fabric": true,
+     "n_fabric_tight": 87,
+     "frame": 415,
+     "tag": "truth",
+     "range": 21.3,
+     "traveled": 0.0,
+     "center": [
+      21.3,
+      0.7,
+      -0.96
+     ],
+     "track": {
+      "center": -0.012,
+      "yaw": -0.006790566318767302,
+      "curvature": 2.7971260872314887e-05,
+      "rail_offset": 0.249
+     },
+     "expected": "in_envelope",
+     "object": "small_on_rail"
+    },
+    {
+     "dy_position": 0.85,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 958,
+     "n_narrow": 958,
+     "n_up": 182,
+     "n_bed": 596,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 182,
+     "dy_med": 1.4,
+     "h_med": 0.28,
+     "h_range": [
+      0.17,
+      0.39
+     ],
+     "dy_range": [
+      0.69,
+      1.59
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 62,
+     "h_bottom": 0.17,
+     "on_fabric": true,
+     "n_fabric_tight": 112,
+     "frame": 416,
+     "tag": "truth",
+     "range": 19.5,
+     "traveled": 0.0,
+     "center": [
+      19.58,
+      0.72,
+      -0.99
+     ],
+     "track": {
+      "center": -0.008,
+      "yaw": -0.006665855484858721,
+      "curvature": 2.1835075105323335e-05,
+      "rail_offset": 0.249
+     },
+     "expected": "in_envelope",
+     "object": "small_on_rail"
+    },
+    {
+     "dy_position": 0.4,
+     "lon": 5.42,
+     "lat": 2.02,
+     "z_half": 3.05,
+     "n_all": 4318,
+     "n_narrow": 3466,
+     "n_up": 4318,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 4318,
+     "dy_med": 0.53,
+     "h_med": 4.04,
+     "h_range": [
+      3.65,
+      4.23
+     ],
+     "dy_range": [
+      -0.59,
+      1.4
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.65,
+     "on_fabric": true,
+     "n_fabric_tight": 1004,
+     "frame": 417,
+     "tag": "transport",
+     "range": 13.0,
+     "traveled": 68.4,
+     "center": [
+      12.97,
+      0.31,
+      2.75
+     ],
+     "track": {
+      "center": -0.016,
+      "yaw": -0.006206768398850239,
+      "curvature": 1.5821145348522192e-05,
+      "rail_offset": 0.249
+     },
+     "expected": "in_envelope",
+     "object": "small_on_rail",
+     "transport_error": [
+      -4.82,
+      -0.42,
+      3.74
+     ]
+    },
+    {
+     "dy_position": 0.4,
+     "lon": 5.51,
+     "lat": 2.04,
+     "z_half": 3.1,
+     "n_all": 5223,
+     "n_narrow": 3649,
+     "n_up": 5223,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 5223,
+     "dy_med": 0.55,
+     "h_med": 4.09,
+     "h_range": [
+      3.66,
+      4.24
+     ],
+     "dy_range": [
+      -0.6,
+      1.4
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.66,
+     "on_fabric": true,
+     "n_fabric_tight": 872,
+     "frame": 418,
+     "tag": "transport",
+     "range": 11.2,
+     "traveled": 70.2,
+     "center": [
+      11.21,
+      0.32,
+      2.75
+     ],
+     "track": {
+      "center": -0.022,
+      "yaw": -0.005108375985059029,
+      "curvature": 8.530273821764423e-06,
+      "rail_offset": 0.248
+     },
+     "expected": "in_envelope",
+     "object": "small_on_rail",
+     "transport_error": [
+      -4.74,
+      -0.41,
+      3.72
+     ]
+    },
+    {
+     "dy_position": 0.83,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 1760,
+     "n_narrow": 1760,
+     "n_up": 245,
+     "n_bed": 1160,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 245,
+     "dy_med": 1.42,
+     "h_med": 0.28,
+     "h_range": [
+      0.16,
+      0.4
+     ],
+     "dy_range": [
+      0.68,
+      1.64
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "side",
+     "n_env_all": 61,
+     "h_bottom": 0.16,
+     "on_fabric": true,
+     "n_fabric_tight": 187,
+     "frame": 418,
+     "tag": "truth",
+     "range": 15.9,
+     "traveled": 0.0,
+     "center": [
+      15.95,
+      0.73,
+      -0.98
+     ],
+     "track": {
+      "center": -0.022,
+      "yaw": -0.005108375985059029,
+      "curvature": 8.530273821764423e-06,
+      "rail_offset": 0.248
+     },
+     "expected": "in_envelope",
+     "object": "small_on_rail"
+    },
+    {
+     "dy_position": 0.83,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 2056,
+     "n_narrow": 2056,
+     "n_up": 299,
+     "n_bed": 1308,
+     "n_env": 14,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 285,
+     "dy_med": 0.79,
+     "h_med": 0.32,
+     "h_range": [
+      0.3,
+      0.34
+     ],
+     "dy_range": [
+      0.68,
+      0.9
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 74,
+     "h_bottom": 0.3,
+     "frame": 419,
+     "tag": "truth",
+     "range": 14.1,
+     "traveled": 0.0,
+     "center": [
+      14.16,
+      0.74,
+      -0.98
+     ],
+     "track": {
+      "center": -0.024,
+      "yaw": -0.004456106997217264,
+      "curvature": 8.864156744849727e-06,
+      "rail_offset": 0.248
+     },
+     "expected": "in_envelope",
+     "object": "small_on_rail"
+    },
+    {
+     "dy_position": 0.79,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 1469,
+     "n_narrow": 1469,
+     "n_up": 576,
+     "n_bed": 624,
+     "n_env": 10,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 566,
+     "dy_med": 0.76,
+     "h_med": 0.32,
+     "h_range": [
+      0.32,
+      0.32
+     ],
+     "dy_range": [
+      0.63,
+      0.88
+     ],
+     "ambiguous": [
+      "few_points"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 113,
+     "h_bottom": 0.32,
+     "frame": 421,
+     "tag": "truth",
+     "range": 10.5,
+     "traveled": 0.0,
+     "center": [
+      10.54,
+      0.73,
+      -0.98
+     ],
+     "track": {
+      "center": -0.006,
+      "yaw": -0.004446561254443218,
+      "curvature": 1.7127493667639384e-05,
+      "rail_offset": 0.258
+     },
+     "expected": "in_envelope",
+     "object": "small_on_rail"
+    }
+   ]
+  },
+  {
+   "object": "small_edge_inside",
+   "onset_frame": 446,
+   "onset_center": [
+    64.57,
+    1.01,
+    -0.07
+   ],
+   "frames": [
+    {
+     "dy_position": 1.34,
+     "lon": 4.03,
+     "lat": 1.69,
+     "z_half": 2.22,
+     "n_all": 2692,
+     "n_narrow": 2465,
+     "n_up": 1769,
+     "n_bed": 593,
+     "n_env": 30,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 1739,
+     "dy_med": 1.14,
+     "h_med": 1.24,
+     "h_range": [
+      1.11,
+      1.37
+     ],
+     "dy_range": [
+      1.02,
+      1.27
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 94,
+     "h_bottom": 1.11,
+     "frame": 468,
+     "tag": "transport",
+     "range": 24.0,
+     "traveled": 40.6,
+     "center": [
+      23.95,
+      1.2,
+      -0.07
+     ],
+     "track": {
+      "center": -0.022,
+      "yaw": -0.004791863853052733,
+      "curvature": -1.0105326574397989e-05,
+      "rail_offset": 0.249
+     },
+     "expected": "in_envelope",
+     "object": "small_edge_inside",
+     "transport_error": [
+      0.09,
+      0.2,
+      -0.1
+     ]
+    },
+    {
+     "dy_position": 1.14,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 320,
+     "n_narrow": 320,
+     "n_up": 320,
+     "n_bed": 0,
+     "n_env": 30,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 290,
+     "dy_med": 1.14,
+     "h_med": 1.24,
+     "h_range": [
+      1.11,
+      1.37
+     ],
+     "dy_range": [
+      1.02,
+      1.27
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 45,
+     "h_bottom": 1.11,
+     "frame": 468,
+     "tag": "truth",
+     "range": 23.8,
+     "traveled": 0.0,
+     "center": [
+      23.87,
+      1.0,
+      0.03
+     ],
+     "track": {
+      "center": -0.022,
+      "yaw": -0.004791863853052733,
+      "curvature": -1.0105326574397989e-05,
+      "rail_offset": 0.249
+     },
+     "expected": "in_envelope",
+     "object": "small_edge_inside"
+    },
+    {
+     "dy_position": 1.34,
+     "lon": 4.13,
+     "lat": 1.71,
+     "z_half": 2.28,
+     "n_all": 3576,
+     "n_narrow": 3431,
+     "n_up": 2322,
+     "n_bed": 981,
+     "n_env": 38,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 2284,
+     "dy_med": 1.11,
+     "h_med": 1.2,
+     "h_range": [
+      1.05,
+      1.35
+     ],
+     "dy_range": [
+      1.0,
+      1.29
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 133,
+     "h_bottom": 1.05,
+     "frame": 469,
+     "tag": "transport",
+     "range": 22.0,
+     "traveled": 42.6,
+     "center": [
+      21.97,
+      1.21,
+      -0.07
+     ],
+     "track": {
+      "center": -0.024,
+      "yaw": -0.004775732037416539,
+      "curvature": -1.678121269428337e-05,
+      "rail_offset": 0.249
+     },
+     "expected": null,
+     "object": "small_edge_inside",
+     "transport_error": [
+      -0.13,
+      0.2,
+      -0.07
+     ]
+    },
+    {
+     "dy_position": 1.15,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 455,
+     "n_narrow": 455,
+     "n_up": 455,
+     "n_bed": 0,
+     "n_env": 38,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 417,
+     "dy_med": 1.11,
+     "h_med": 1.2,
+     "h_range": [
+      1.05,
+      1.35
+     ],
+     "dy_range": [
+      1.0,
+      1.29
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 74,
+     "h_bottom": 1.05,
+     "frame": 469,
+     "tag": "truth",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.1,
+      1.01,
+      0.0
+     ],
+     "track": {
+      "center": -0.024,
+      "yaw": -0.004775732037416539,
+      "curvature": -1.678121269428337e-05,
+      "rail_offset": 0.249
+     },
+     "expected": null,
+     "object": "small_edge_inside"
+    },
+    {
+     "dy_position": 1.35,
+     "lon": 4.31,
+     "lat": 1.75,
+     "z_half": 2.39,
+     "n_all": 6407,
+     "n_narrow": 6108,
+     "n_up": 4055,
+     "n_bed": 1832,
+     "n_env": 56,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 3999,
+     "dy_med": 1.13,
+     "h_med": 1.17,
+     "h_range": [
+      1.03,
+      1.31
+     ],
+     "dy_range": [
+      0.98,
+      1.28
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 143,
+     "h_bottom": 1.03,
+     "frame": 471,
+     "tag": "transport",
+     "range": 18.4,
+     "traveled": 46.2,
+     "center": [
+      18.39,
+      1.23,
+      -0.07
+     ],
+     "track": {
+      "center": -0.024,
+      "yaw": -0.005121001041312514,
+      "curvature": -1.0360352483704787e-05,
+      "rail_offset": 0.248
+     },
+     "expected": "in_envelope",
+     "object": "small_edge_inside",
+     "transport_error": [
+      0.05,
+      0.22,
+      -0.05
+     ]
+    },
+    {
+     "dy_position": 1.13,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 690,
+     "n_narrow": 690,
+     "n_up": 690,
+     "n_bed": 0,
+     "n_env": 56,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 634,
+     "dy_med": 1.13,
+     "h_med": 1.17,
+     "h_range": [
+      1.03,
+      1.31
+     ],
+     "dy_range": [
+      0.98,
+      1.28
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 86,
+     "h_bottom": 1.03,
+     "frame": 471,
+     "tag": "truth",
+     "range": 18.2,
+     "traveled": 0.0,
+     "center": [
+      18.34,
+      1.01,
+      -0.02
+     ],
+     "track": {
+      "center": -0.024,
+      "yaw": -0.005121001041312514,
+      "curvature": -1.0360352483704787e-05,
+      "rail_offset": 0.248
+     },
+     "expected": "in_envelope",
+     "object": "small_edge_inside"
+    },
+    {
+     "dy_position": 1.35,
+     "lon": 4.41,
+     "lat": 1.78,
+     "z_half": 2.44,
+     "n_all": 8947,
+     "n_narrow": 8483,
+     "n_up": 5755,
+     "n_bed": 2389,
+     "n_env": 66,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 5689,
+     "dy_med": 1.14,
+     "h_med": 1.18,
+     "h_range": [
+      1.03,
+      1.32
+     ],
+     "dy_range": [
+      0.97,
+      1.29
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 133,
+     "h_bottom": 1.03,
+     "frame": 472,
+     "tag": "transport",
+     "range": 16.5,
+     "traveled": 48.1,
+     "center": [
+      16.44,
+      1.24,
+      -0.07
+     ],
+     "track": {
+      "center": -0.023,
+      "yaw": -0.005186853282244582,
+      "curvature": -4.650288166840392e-06,
+      "rail_offset": 0.25
+     },
+     "expected": "in_envelope",
+     "object": "small_edge_inside",
+     "transport_error": [
+      -0.05,
+      0.22,
+      -0.07
+     ]
+    },
+    {
+     "dy_position": 1.13,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 894,
+     "n_narrow": 894,
+     "n_up": 894,
+     "n_bed": 0,
+     "n_env": 66,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 828,
+     "dy_med": 1.14,
+     "h_med": 1.18,
+     "h_range": [
+      1.03,
+      1.32
+     ],
+     "dy_range": [
+      0.97,
+      1.29
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 91,
+     "h_bottom": 1.03,
+     "frame": 472,
+     "tag": "truth",
+     "range": 16.4,
+     "traveled": 0.0,
+     "center": [
+      16.49,
+      1.02,
+      -0.0
+     ],
+     "track": {
+      "center": -0.023,
+      "yaw": -0.005186853282244582,
+      "curvature": -4.650288166840392e-06,
+      "rail_offset": 0.25
+     },
+     "expected": "in_envelope",
+     "object": "small_edge_inside"
+    },
+    {
+     "dy_position": 1.34,
+     "lon": 4.58,
+     "lat": 1.82,
+     "z_half": 2.55,
+     "n_all": 15983,
+     "n_narrow": 14803,
+     "n_up": 12623,
+     "n_bed": 2442,
+     "n_env": 110,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 12513,
+     "dy_med": 1.1,
+     "h_med": 1.2,
+     "h_range": [
+      1.06,
+      1.34
+     ],
+     "dy_range": [
+      0.96,
+      1.27
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 201,
+     "h_bottom": 1.06,
+     "frame": 474,
+     "tag": "transport",
+     "range": 13.0,
+     "traveled": 51.7,
+     "center": [
+      12.89,
+      1.26,
+      -0.07
+     ],
+     "track": {
+      "center": -0.025,
+      "yaw": -0.004715331017231591,
+      "curvature": -6.455290361251487e-06,
+      "rail_offset": 0.246
+     },
+     "expected": "in_envelope",
+     "object": "small_edge_inside",
+     "transport_error": [
+      0.13,
+      0.23,
+      -0.1
+     ]
+    },
+    {
+     "dy_position": 1.11,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 1604,
+     "n_narrow": 1604,
+     "n_up": 1604,
+     "n_bed": 0,
+     "n_env": 110,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 1494,
+     "dy_med": 1.1,
+     "h_med": 1.2,
+     "h_range": [
+      1.06,
+      1.34
+     ],
+     "dy_range": [
+      0.96,
+      1.27
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 138,
+     "h_bottom": 1.06,
+     "frame": 474,
+     "tag": "truth",
+     "range": 12.7,
+     "traveled": 0.0,
+     "center": [
+      12.76,
+      1.02,
+      0.03
+     ],
+     "track": {
+      "center": -0.025,
+      "yaw": -0.004715331017231591,
+      "curvature": -6.455290361251487e-06,
+      "rail_offset": 0.246
+     },
+     "expected": "in_envelope",
+     "object": "small_edge_inside"
+    },
+    {
+     "dy_position": 1.34,
+     "lon": 4.68,
+     "lat": 1.84,
+     "z_half": 2.61,
+     "n_all": 23225,
+     "n_narrow": 21685,
+     "n_up": 19443,
+     "n_bed": 2778,
+     "n_env": 156,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 19287,
+     "dy_med": 1.08,
+     "h_med": 1.18,
+     "h_range": [
+      1.04,
+      1.33
+     ],
+     "dy_range": [
+      0.93,
+      1.27
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 365,
+     "h_bottom": 1.04,
+     "frame": 475,
+     "tag": "transport",
+     "range": 11.1,
+     "traveled": 53.5,
+     "center": [
+      11.05,
+      1.26,
+      -0.07
+     ],
+     "track": {
+      "center": -0.022,
+      "yaw": -0.005055667515982938,
+      "curvature": -1.1637062269560718e-06,
+      "rail_offset": 0.246
+     },
+     "expected": "in_envelope",
+     "object": "small_edge_inside",
+     "transport_error": [
+      0.13,
+      0.24,
+      -0.1
+     ]
+    },
+    {
+     "dy_position": 1.1,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 2510,
+     "n_narrow": 2510,
+     "n_up": 2510,
+     "n_bed": 0,
+     "n_env": 156,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 2354,
+     "dy_med": 1.08,
+     "h_med": 1.18,
+     "h_range": [
+      1.04,
+      1.33
+     ],
+     "dy_range": [
+      0.93,
+      1.27
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 247,
+     "h_bottom": 1.04,
+     "frame": 475,
+     "tag": "truth",
+     "range": 10.8,
+     "traveled": 0.0,
+     "center": [
+      10.92,
+      1.02,
+      0.03
+     ],
+     "track": {
+      "center": -0.022,
+      "yaw": -0.005055667515982938,
+      "curvature": -1.1637062269560718e-06,
+      "rail_offset": 0.246
+     },
+     "expected": "in_envelope",
+     "object": "small_edge_inside"
+    }
+   ]
+  },
+  {
+   "object": "big_edge_inside",
+   "onset_frame": 527,
+   "onset_center": [
+    111.58,
+    2.06,
+    0.12
+   ],
+   "frames": [
+    {
+     "dy_position": 2.27,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.46,
+     "n_all": 1642,
+     "n_narrow": 1642,
+     "n_up": 1486,
+     "n_bed": 64,
+     "n_env": 132,
+     "n_side": 132,
+     "n_over": 0,
+     "n_fabric": 1222,
+     "dy_med": 1.22,
+     "h_med": 1.48,
+     "h_range": [
+      0.92,
+      2.12
+     ],
+     "dy_range": [
+      1.07,
+      1.39
+     ],
+     "ambiguous": [
+      "mixed(env 132, other 132)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 221,
+     "h_bottom": 0.92,
+     "frame": 571,
+     "tag": "truth",
+     "range": 24.2,
+     "traveled": 0.0,
+     "center": [
+      25.21,
+      2.11,
+      0.07
+     ],
+     "track": {
+      "center": -0.019,
+      "yaw": -0.005906673261921643,
+      "curvature": 1.5049064907778602e-05,
+      "rail_offset": 0.261
+     },
+     "expected": null,
+     "object": "big_edge_inside"
+    },
+    {
+     "dy_position": 2.29,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.46,
+     "n_all": 1913,
+     "n_narrow": 1913,
+     "n_up": 1698,
+     "n_bed": 74,
+     "n_env": 110,
+     "n_side": 154,
+     "n_over": 0,
+     "n_fabric": 1434,
+     "dy_med": 1.23,
+     "h_med": 1.46,
+     "h_range": [
+      0.93,
+      2.03
+     ],
+     "dy_range": [
+      1.11,
+      1.35
+     ],
+     "ambiguous": [
+      "mixed(env 110, other 154)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 212,
+     "h_bottom": 0.93,
+     "frame": 572,
+     "tag": "truth",
+     "range": 22.2,
+     "traveled": 0.0,
+     "center": [
+      23.21,
+      2.13,
+      0.03
+     ],
+     "track": {
+      "center": -0.013,
+      "yaw": -0.006626291996692225,
+      "curvature": 2.850389469556945e-05,
+      "rail_offset": 0.26
+     },
+     "expected": null,
+     "object": "big_edge_inside"
+    },
+    {
+     "dy_position": 2.63,
+     "lon": 6.38,
+     "lat": 2.25,
+     "z_half": 4.09,
+     "n_all": 4302,
+     "n_narrow": 3970,
+     "n_up": 3175,
+     "n_bed": 705,
+     "n_env": 161,
+     "n_side": 164,
+     "n_over": 0,
+     "n_fabric": 2850,
+     "dy_med": 1.22,
+     "h_med": 1.42,
+     "h_range": [
+      0.92,
+      1.97
+     ],
+     "dy_range": [
+      1.06,
+      1.38
+     ],
+     "ambiguous": [
+      "mixed(env 161, other 164)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 286,
+     "h_bottom": 0.92,
+     "frame": 573,
+     "tag": "transport",
+     "range": 24.1,
+     "traveled": 87.6,
+     "center": [
+      24.01,
+      2.48,
+      0.12
+     ],
+     "track": {
+      "center": -0.015,
+      "yaw": -0.006319986400236149,
+      "curvature": 3.587253915621158e-05,
+      "rail_offset": 0.257
+     },
+     "expected": null,
+     "object": "big_edge_inside",
+     "transport_error": [
+      2.79,
+      0.35,
+      0.07
+     ]
+    },
+    {
+     "dy_position": 2.63,
+     "lon": 6.48,
+     "lat": 2.28,
+     "z_half": 4.15,
+     "n_all": 5714,
+     "n_narrow": 5249,
+     "n_up": 4082,
+     "n_bed": 1041,
+     "n_env": 200,
+     "n_side": 248,
+     "n_over": 0,
+     "n_fabric": 3634,
+     "dy_med": 1.23,
+     "h_med": 1.4,
+     "h_range": [
+      0.91,
+      2.06
+     ],
+     "dy_range": [
+      1.05,
+      1.39
+     ],
+     "ambiguous": [
+      "mixed(env 200, other 248)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 342,
+     "h_bottom": 0.91,
+     "frame": 574,
+     "tag": "transport",
+     "range": 22.1,
+     "traveled": 89.6,
+     "center": [
+      21.95,
+      2.49,
+      0.12
+     ],
+     "track": {
+      "center": -0.015,
+      "yaw": -0.006056620595322134,
+      "curvature": 3.828082245037378e-05,
+      "rail_offset": 0.255
+     },
+     "expected": null,
+     "object": "big_edge_inside",
+     "transport_error": [
+      2.83,
+      0.39,
+      0.07
+     ]
+    },
+    {
+     "dy_position": 2.22,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.46,
+     "n_all": 2872,
+     "n_narrow": 2872,
+     "n_up": 2475,
+     "n_bed": 151,
+     "n_env": 200,
+     "n_side": 248,
+     "n_over": 0,
+     "n_fabric": 2027,
+     "dy_med": 1.23,
+     "h_med": 1.4,
+     "h_range": [
+      0.91,
+      2.06
+     ],
+     "dy_range": [
+      1.05,
+      1.39
+     ],
+     "ambiguous": [
+      "mixed(env 200, other 248)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 330,
+     "h_bottom": 0.91,
+     "frame": 574,
+     "tag": "truth",
+     "range": 18.3,
+     "traveled": 0.0,
+     "center": [
+      19.12,
+      2.1,
+      0.05
+     ],
+     "track": {
+      "center": -0.015,
+      "yaw": -0.006056620595322134,
+      "curvature": 3.828082245037378e-05,
+      "rail_offset": 0.255
+     },
+     "expected": null,
+     "object": "big_edge_inside"
+    },
+    {
+     "dy_position": 2.63,
+     "lon": 6.59,
+     "lat": 2.3,
+     "z_half": 4.22,
+     "n_all": 8116,
+     "n_narrow": 7381,
+     "n_up": 5790,
+     "n_bed": 1463,
+     "n_env": 211,
+     "n_side": 286,
+     "n_over": 0,
+     "n_fabric": 5293,
+     "dy_med": 1.2,
+     "h_med": 1.4,
+     "h_range": [
+      0.93,
+      2.11
+     ],
+     "dy_range": [
+      1.03,
+      1.38
+     ],
+     "ambiguous": [
+      "mixed(env 211, other 286)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 399,
+     "h_bottom": 0.93,
+     "frame": 575,
+     "tag": "transport",
+     "range": 19.9,
+     "traveled": 91.8,
+     "center": [
+      19.75,
+      2.5,
+      0.12
+     ],
+     "track": {
+      "center": -0.019,
+      "yaw": -0.005532620740321768,
+      "curvature": 2.0083883346699485e-05,
+      "rail_offset": 0.254
+     },
+     "expected": null,
+     "object": "big_edge_inside",
+     "transport_error": [
+      2.54,
+      0.39,
+      0.09
+     ]
+    },
+    {
+     "dy_position": 2.23,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.46,
+     "n_all": 3571,
+     "n_narrow": 3571,
+     "n_up": 3042,
+     "n_bed": 202,
+     "n_env": 211,
+     "n_side": 286,
+     "n_over": 0,
+     "n_fabric": 2545,
+     "dy_med": 1.2,
+     "h_med": 1.4,
+     "h_range": [
+      0.93,
+      2.11
+     ],
+     "dy_range": [
+      1.03,
+      1.38
+     ],
+     "ambiguous": [
+      "mixed(env 211, other 286)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 382,
+     "h_bottom": 0.93,
+     "frame": 575,
+     "tag": "truth",
+     "range": 16.3,
+     "traveled": 0.0,
+     "center": [
+      17.2,
+      2.12,
+      0.03
+     ],
+     "track": {
+      "center": -0.019,
+      "yaw": -0.005532620740321768,
+      "curvature": 2.0083883346699485e-05,
+      "rail_offset": 0.254
+     },
+     "expected": null,
+     "object": "big_edge_inside"
+    },
+    {
+     "dy_position": 2.63,
+     "lon": 6.79,
+     "lat": 2.35,
+     "z_half": 4.33,
+     "n_all": 14836,
+     "n_narrow": 13896,
+     "n_up": 11628,
+     "n_bed": 2026,
+     "n_env": 360,
+     "n_side": 420,
+     "n_over": 0,
+     "n_fabric": 10848,
+     "dy_med": 1.2,
+     "h_med": 1.33,
+     "h_range": [
+      0.92,
+      2.1
+     ],
+     "dy_range": [
+      1.03,
+      1.39
+     ],
+     "ambiguous": [
+      "mixed(env 360, other 420)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 781,
+     "h_bottom": 0.92,
+     "frame": 577,
+     "tag": "transport",
+     "range": 16.0,
+     "traveled": 95.8,
+     "center": [
+      15.8,
+      2.52,
+      0.12
+     ],
+     "track": {
+      "center": -0.022,
+      "yaw": -0.0053107956850255615,
+      "curvature": 8.240451548534253e-06,
+      "rail_offset": 0.251
+     },
+     "expected": null,
+     "object": "big_edge_inside",
+     "transport_error": [
+      2.56,
+      0.39,
+      0.1
+     ]
+    },
+    {
+     "dy_position": 2.23,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.46,
+     "n_all": 6063,
+     "n_narrow": 6063,
+     "n_up": 5063,
+     "n_bed": 330,
+     "n_env": 360,
+     "n_side": 549,
+     "n_over": 0,
+     "n_fabric": 4154,
+     "dy_med": 1.2,
+     "h_med": 1.33,
+     "h_range": [
+      0.92,
+      2.1
+     ],
+     "dy_range": [
+      1.03,
+      1.39
+     ],
+     "ambiguous": [
+      "mixed(env 360, other 549)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 694,
+     "h_bottom": 0.92,
+     "frame": 577,
+     "tag": "truth",
+     "range": 12.3,
+     "traveled": 0.0,
+     "center": [
+      13.24,
+      2.13,
+      0.02
+     ],
+     "track": {
+      "center": -0.022,
+      "yaw": -0.0053107956850255615,
+      "curvature": 8.240451548534253e-06,
+      "rail_offset": 0.251
+     },
+     "expected": null,
+     "object": "big_edge_inside"
+    },
+    {
+     "dy_position": 2.63,
+     "lon": 6.91,
+     "lat": 2.38,
+     "z_half": 4.4,
+     "n_all": 22402,
+     "n_narrow": 21546,
+     "n_up": 18868,
+     "n_bed": 2345,
+     "n_env": 476,
+     "n_side": 510,
+     "n_over": 0,
+     "n_fabric": 17882,
+     "dy_med": 1.19,
+     "h_med": 1.29,
+     "h_range": [
+      0.91,
+      2.14
+     ],
+     "dy_range": [
+      1.01,
+      1.37
+     ],
+     "ambiguous": [
+      "mixed(env 476, other 510)"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 1056,
+     "h_bottom": 0.91,
+     "frame": 578,
+     "tag": "transport",
+     "range": 13.7,
+     "traveled": 98.2,
+     "center": [
+      13.42,
+      2.53,
+      0.12
+     ],
+     "track": {
+      "center": -0.031,
+      "yaw": -0.004870385396505292,
+      "curvature": -1.1785829198717007e-07,
+      "rail_offset": 0.251
+     },
+     "expected": null,
+     "object": "big_edge_inside",
+     "transport_error": [
+      2.91,
+      0.63,
+      0.08
+     ]
+    },
+    {
+     "dy_position": 1.98,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.46,
+     "n_all": 9623,
+     "n_narrow": 9623,
+     "n_up": 8964,
+     "n_bed": 219,
+     "n_env": 476,
+     "n_side": 510,
+     "n_over": 0,
+     "n_fabric": 7978,
+     "dy_med": 1.19,
+     "h_med": 1.29,
+     "h_range": [
+      0.91,
+      2.14
+     ],
+     "dy_range": [
+      1.01,
+      1.37
+     ],
+     "ambiguous": [
+      "mixed(env 476, other 510)"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 926,
+     "h_bottom": 0.91,
+     "frame": 578,
+     "tag": "truth",
+     "range": 10.3,
+     "traveled": 0.0,
+     "center": [
+      10.51,
+      1.9,
+      0.04
+     ],
+     "track": {
+      "center": -0.031,
+      "yaw": -0.004870385396505292,
+      "curvature": -1.1785829198717007e-07,
+      "rail_offset": 0.251
+     },
+     "expected": null,
+     "object": "big_edge_inside"
+    },
+    {
+     "dy_position": 2.62,
+     "lon": 6.99,
+     "lat": 2.4,
+     "z_half": 4.46,
+     "n_all": 32301,
+     "n_narrow": 31519,
+     "n_up": 27616,
+     "n_bed": 3276,
+     "n_env": 702,
+     "n_side": 684,
+     "n_over": 0,
+     "n_fabric": 26230,
+     "dy_med": 1.19,
+     "h_med": 1.26,
+     "h_range": [
+      0.9,
+      2.1
+     ],
+     "dy_range": [
+      0.99,
+      1.38
+     ],
+     "ambiguous": [
+      "mixed(env 702, other 684)"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 1749,
+     "h_bottom": 0.9,
+     "frame": 579,
+     "tag": "transport",
+     "range": 12.0,
+     "traveled": 99.9,
+     "center": [
+      11.7,
+      2.54,
+      0.12
+     ],
+     "track": {
+      "center": -0.031,
+      "yaw": -0.003810147355374957,
+      "curvature": -2.094541220823833e-05,
+      "rail_offset": 0.251
+     },
+     "expected": null,
+     "object": "big_edge_inside",
+     "transport_error": [
+      3.19,
+      0.64,
+      0.06
+     ]
+    }
+   ]
+  },
+  {
+   "object": "small_outside_near",
+   "onset_frame": 500,
+   "onset_center": [
+    63.72,
+    -1.34,
+    -0.07
+   ],
+   "frames": [
+    {
+     "dy_position": -1.19,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 151,
+     "n_narrow": 151,
+     "n_up": 151,
+     "n_bed": 0,
+     "n_env": 36,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 115,
+     "dy_med": -1.19,
+     "h_med": 1.19,
+     "h_range": [
+      1.06,
+      1.31
+     ],
+     "dy_range": [
+      -1.34,
+      -1.04
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 36,
+     "h_bottom": 1.06,
+     "frame": 521,
+     "tag": "truth",
+     "range": 23.4,
+     "traveled": 0.0,
+     "center": [
+      23.43,
+      -1.32,
+      -0.02
+     ],
+     "track": {
+      "center": -0.021,
+      "yaw": -0.004675854348154678,
+      "curvature": 1.704422407021798e-05,
+      "rail_offset": 0.253
+     },
+     "expected": null,
+     "object": "small_outside_near"
+    },
+    {
+     "dy_position": -1.05,
+     "lon": 3.95,
+     "lat": 1.67,
+     "z_half": 2.17,
+     "n_all": 2303,
+     "n_narrow": 2025,
+     "n_up": 1196,
+     "n_bed": 545,
+     "n_env": 49,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 1147,
+     "dy_med": -1.18,
+     "h_med": 1.2,
+     "h_range": [
+      1.06,
+      1.34
+     ],
+     "dy_range": [
+      -1.36,
+      -1.03
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 49,
+     "h_bottom": 1.06,
+     "frame": 522,
+     "tag": "transport",
+     "range": 24.7,
+     "traveled": 39.0,
+     "center": [
+      24.68,
+      -1.17,
+      -0.07
+     ],
+     "track": {
+      "center": -0.025,
+      "yaw": -0.00413576481316734,
+      "curvature": 1.0726024558352255e-05,
+      "rail_offset": 0.254
+     },
+     "expected": null,
+     "object": "small_outside_near",
+     "transport_error": [
+      3.11,
+      0.13,
+      -0.07
+     ]
+    },
+    {
+     "dy_position": -1.19,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 196,
+     "n_narrow": 196,
+     "n_up": 196,
+     "n_bed": 0,
+     "n_env": 49,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 147,
+     "dy_med": -1.18,
+     "h_med": 1.2,
+     "h_range": [
+      1.06,
+      1.34
+     ],
+     "dy_range": [
+      -1.36,
+      -1.03
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 49,
+     "h_bottom": 1.06,
+     "frame": 522,
+     "tag": "truth",
+     "range": 21.4,
+     "traveled": 0.0,
+     "center": [
+      21.57,
+      -1.3,
+      0.0
+     ],
+     "track": {
+      "center": -0.025,
+      "yaw": -0.00413576481316734,
+      "curvature": 1.0726024558352255e-05,
+      "rail_offset": 0.254
+     },
+     "expected": null,
+     "object": "small_outside_near"
+    },
+    {
+     "dy_position": -1.21,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 286,
+     "n_narrow": 286,
+     "n_up": 286,
+     "n_bed": 0,
+     "n_env": 56,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 230,
+     "dy_med": -1.2,
+     "h_med": 1.19,
+     "h_range": [
+      1.06,
+      1.32
+     ],
+     "dy_range": [
+      -1.38,
+      -1.03
+     ],
+     "ambiguous": [
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 56,
+     "h_bottom": 1.06,
+     "frame": 523,
+     "tag": "truth",
+     "range": 19.5,
+     "traveled": 0.0,
+     "center": [
+      19.65,
+      -1.31,
+      0.0
+     ],
+     "track": {
+      "center": -0.026,
+      "yaw": -0.00415595387647179,
+      "curvature": 6.118871133735583e-06,
+      "rail_offset": 0.254
+     },
+     "expected": null,
+     "object": "small_outside_near"
+    },
+    {
+     "dy_position": -1.04,
+     "lon": 4.13,
+     "lat": 1.71,
+     "z_half": 2.28,
+     "n_all": 4080,
+     "n_narrow": 3914,
+     "n_up": 2082,
+     "n_bed": 1282,
+     "n_env": 64,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 2018,
+     "dy_med": -1.21,
+     "h_med": 1.16,
+     "h_range": [
+      1.02,
+      1.3
+     ],
+     "dy_range": [
+      -1.38,
+      -1.06
+     ],
+     "ambiguous": [
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 64,
+     "h_bottom": 1.02,
+     "frame": 524,
+     "tag": "transport",
+     "range": 21.2,
+     "traveled": 42.6,
+     "center": [
+      21.13,
+      -1.16,
+      -0.07
+     ],
+     "track": {
+      "center": -0.022,
+      "yaw": -0.004799304075764366,
+      "curvature": 1.552059440673371e-05,
+      "rail_offset": 0.254
+     },
+     "expected": null,
+     "object": "small_outside_near",
+     "transport_error": [
+      3.46,
+      0.16,
+      -0.05
+     ]
+    },
+    {
+     "dy_position": -1.04,
+     "lon": 4.21,
+     "lat": 1.73,
+     "z_half": 2.33,
+     "n_all": 5403,
+     "n_narrow": 5193,
+     "n_up": 2766,
+     "n_bed": 1724,
+     "n_env": 72,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 2694,
+     "dy_med": -1.22,
+     "h_med": 1.15,
+     "h_range": [
+      1.03,
+      1.27
+     ],
+     "dy_range": [
+      -1.38,
+      -1.06
+     ],
+     "ambiguous": [
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 72,
+     "h_bottom": 1.03,
+     "frame": 525,
+     "tag": "transport",
+     "range": 19.5,
+     "traveled": 44.3,
+     "center": [
+      19.42,
+      -1.15,
+      -0.07
+     ],
+     "track": {
+      "center": -0.024,
+      "yaw": -0.0047544025615057295,
+      "curvature": 1.1892778645854618e-05,
+      "rail_offset": 0.253
+     },
+     "expected": null,
+     "object": "small_outside_near",
+     "transport_error": [
+      3.68,
+      0.17,
+      -0.05
+     ]
+    },
+    {
+     "dy_position": -1.22,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 815,
+     "n_narrow": 815,
+     "n_up": 813,
+     "n_bed": 0,
+     "n_env": 72,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 741,
+     "dy_med": -1.22,
+     "h_med": 1.15,
+     "h_range": [
+      1.03,
+      1.27
+     ],
+     "dy_range": [
+      -1.38,
+      -1.06
+     ],
+     "ambiguous": [
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 72,
+     "h_bottom": 1.03,
+     "frame": 525,
+     "tag": "truth",
+     "range": 15.6,
+     "traveled": 0.0,
+     "center": [
+      15.74,
+      -1.32,
+      -0.02
+     ],
+     "track": {
+      "center": -0.024,
+      "yaw": -0.0047544025615057295,
+      "curvature": 1.1892778645854618e-05,
+      "rail_offset": 0.253
+     },
+     "expected": null,
+     "object": "small_outside_near"
+    },
+    {
+     "dy_position": -1.22,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 1354,
+     "n_narrow": 1354,
+     "n_up": 1353,
+     "n_bed": 0,
+     "n_env": 108,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 1245,
+     "dy_med": -1.21,
+     "h_med": 1.14,
+     "h_range": [
+      1.02,
+      1.29
+     ],
+     "dy_range": [
+      -1.39,
+      -1.05
+     ],
+     "ambiguous": [
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 108,
+     "h_bottom": 1.02,
+     "frame": 526,
+     "tag": "truth",
+     "range": 13.7,
+     "traveled": 0.0,
+     "center": [
+      13.86,
+      -1.31,
+      -0.01
+     ],
+     "track": {
+      "center": -0.026,
+      "yaw": -0.004654935649722162,
+      "curvature": 1.0271766409154318e-05,
+      "rail_offset": 0.25
+     },
+     "expected": null,
+     "object": "small_outside_near"
+    },
+    {
+     "dy_position": -1.04,
+     "lon": 4.4,
+     "lat": 1.78,
+     "z_half": 2.44,
+     "n_all": 10095,
+     "n_narrow": 9615,
+     "n_up": 5710,
+     "n_bed": 2713,
+     "n_env": 72,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 5638,
+     "dy_med": -1.11,
+     "h_med": 1.14,
+     "h_range": [
+      1.0,
+      1.29
+     ],
+     "dy_range": [
+      -1.19,
+      -1.06
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 144,
+     "h_bottom": 1.0,
+     "frame": 527,
+     "tag": "transport",
+     "range": 15.8,
+     "traveled": 47.9,
+     "center": [
+      15.78,
+      -1.14,
+      -0.07
+     ],
+     "track": {
+      "center": -0.025,
+      "yaw": -0.004692965362431537,
+      "curvature": 6.7699227026275e-06,
+      "rail_offset": 0.25
+     },
+     "expected": null,
+     "object": "small_outside_near",
+     "transport_error": [
+      3.87,
+      0.18,
+      -0.06
+     ]
+    },
+    {
+     "dy_position": -1.24,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 2684,
+     "n_narrow": 2684,
+     "n_up": 2648,
+     "n_bed": 0,
+     "n_env": 144,
+     "n_side": 12,
+     "n_over": 0,
+     "n_fabric": 2492,
+     "dy_med": -1.21,
+     "h_med": 1.14,
+     "h_range": [
+      1.0,
+      1.29
+     ],
+     "dy_range": [
+      -1.38,
+      -1.06
+     ],
+     "ambiguous": [
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 144,
+     "h_bottom": 1.0,
+     "frame": 527,
+     "tag": "truth",
+     "range": 11.8,
+     "traveled": 0.0,
+     "center": [
+      11.91,
+      -1.32,
+      -0.01
+     ],
+     "track": {
+      "center": -0.025,
+      "yaw": -0.004692965362431537,
+      "curvature": 6.7699227026275e-06,
+      "rail_offset": 0.25
+     },
+     "expected": null,
+     "object": "small_outside_near"
+    },
+    {
+     "dy_position": -1.04,
+     "lon": 4.49,
+     "lat": 1.8,
+     "z_half": 2.49,
+     "n_all": 13212,
+     "n_narrow": 12409,
+     "n_up": 8441,
+     "n_bed": 2814,
+     "n_env": 196,
+     "n_side": 14,
+     "n_over": 0,
+     "n_fabric": 8231,
+     "dy_med": -1.21,
+     "h_med": 1.13,
+     "h_range": [
+      0.98,
+      1.27
+     ],
+     "dy_range": [
+      -1.39,
+      -1.07
+     ],
+     "ambiguous": [
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 196,
+     "h_bottom": 0.98,
+     "frame": 528,
+     "tag": "transport",
+     "range": 14.0,
+     "traveled": 49.7,
+     "center": [
+      13.97,
+      -1.13,
+      -0.07
+     ],
+     "track": {
+      "center": -0.022,
+      "yaw": -0.005099985914129463,
+      "curvature": 1.624106917341869e-05,
+      "rail_offset": 0.251
+     },
+     "expected": null,
+     "object": "small_outside_near",
+     "transport_error": [
+      4.01,
+      0.19,
+      -0.06
+     ]
+    },
+    {
+     "dy_position": -1.04,
+     "lon": 4.68,
+     "lat": 1.84,
+     "z_half": 2.61,
+     "n_all": 26427,
+     "n_narrow": 25027,
+     "n_up": 20357,
+     "n_bed": 3785,
+     "n_env": 501,
+     "n_side": 44,
+     "n_over": 0,
+     "n_fabric": 19812,
+     "dy_med": -1.22,
+     "h_med": 1.13,
+     "h_range": [
+      0.98,
+      1.28
+     ],
+     "dy_range": [
+      -1.39,
+      -1.09
+     ],
+     "ambiguous": [
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 501,
+     "h_bottom": 0.98,
+     "frame": 530,
+     "tag": "transport",
+     "range": 10.3,
+     "traveled": 53.5,
+     "center": [
+      10.21,
+      -1.11,
+      -0.07
+     ],
+     "track": {
+      "center": -0.027,
+      "yaw": -0.004469283441557696,
+      "curvature": 1.2512463455793272e-05,
+      "rail_offset": 0.248
+     },
+     "expected": null,
+     "object": "small_outside_near",
+     "transport_error": [
+      4.12,
+      0.2,
+      -0.07
+     ]
+    }
+   ]
+  },
+  {
+   "object": "big_outside",
+   "onset_frame": 579,
+   "onset_center": [
+    111.25,
+    -2.62,
+    0.0
+   ],
+   "frames": [
+    {
+     "dy_position": -2.34,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.58,
+     "n_all": 2095,
+     "n_narrow": 2095,
+     "n_up": 1878,
+     "n_bed": 42,
+     "n_env": 170,
+     "n_side": 162,
+     "n_over": 0,
+     "n_fabric": 1546,
+     "dy_med": -1.27,
+     "h_med": 1.23,
+     "h_range": [
+      0.32,
+      2.1
+     ],
+     "dy_range": [
+      -1.38,
+      -1.16
+     ],
+     "ambiguous": [
+      "mixed(env 170, other 162)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 185,
+     "h_bottom": 0.32,
+     "frame": 622,
+     "tag": "truth",
+     "range": 23.6,
+     "traveled": 0.0,
+     "center": [
+      24.6,
+      -2.45,
+      -0.09
+     ],
+     "track": {
+      "center": -0.027,
+      "yaw": -0.002860773595168357,
+      "curvature": -3.9871986339605e-05,
+      "rail_offset": 0.253
+     },
+     "expected": null,
+     "object": "big_outside"
+    },
+    {
+     "dy_position": -2.35,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.58,
+     "n_all": 2463,
+     "n_narrow": 2463,
+     "n_up": 2188,
+     "n_bed": 52,
+     "n_env": 178,
+     "n_side": 151,
+     "n_over": 0,
+     "n_fabric": 1859,
+     "dy_med": -1.29,
+     "h_med": 1.2,
+     "h_range": [
+      0.3,
+      2.03
+     ],
+     "dy_range": [
+      -1.39,
+      -1.18
+     ],
+     "ambiguous": [
+      "mixed(env 178, other 151)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 193,
+     "h_bottom": 0.3,
+     "frame": 623,
+     "tag": "truth",
+     "range": 21.6,
+     "traveled": 0.0,
+     "center": [
+      22.59,
+      -2.46,
+      -0.07
+     ],
+     "track": {
+      "center": -0.02,
+      "yaw": -0.00327160391884951,
+      "curvature": -2.9120093751320992e-05,
+      "rail_offset": 0.252
+     },
+     "expected": null,
+     "object": "big_outside"
+    },
+    {
+     "dy_position": -2.1,
+     "lon": 6.36,
+     "lat": 2.25,
+     "z_half": 4.2,
+     "n_all": 5662,
+     "n_narrow": 5293,
+     "n_up": 4138,
+     "n_bed": 1023,
+     "n_env": 151,
+     "n_side": 148,
+     "n_over": 0,
+     "n_fabric": 3839,
+     "dy_med": -1.24,
+     "h_med": 1.34,
+     "h_range": [
+      0.31,
+      2.1
+     ],
+     "dy_range": [
+      -1.37,
+      -1.14
+     ],
+     "ambiguous": [
+      "mixed(env 151, other 148)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 222,
+     "h_bottom": 0.31,
+     "frame": 624,
+     "tag": "transport",
+     "range": 24.1,
+     "traveled": 87.3,
+     "center": [
+      23.97,
+      -2.21,
+      0.0
+     ],
+     "track": {
+      "center": -0.016,
+      "yaw": -0.0036257037700043802,
+      "curvature": -2.2019851568144444e-05,
+      "rail_offset": 0.252
+     },
+     "expected": null,
+     "object": "big_outside",
+     "transport_error": [
+      3.39,
+      0.24,
+      0.09
+     ]
+    },
+    {
+     "dy_position": -2.36,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.58,
+     "n_all": 2947,
+     "n_narrow": 2947,
+     "n_up": 2597,
+     "n_bed": 64,
+     "n_env": 190,
+     "n_side": 193,
+     "n_over": 0,
+     "n_fabric": 2214,
+     "dy_med": -1.28,
+     "h_med": 1.17,
+     "h_range": [
+      0.31,
+      2.1
+     ],
+     "dy_range": [
+      -1.37,
+      -1.19
+     ],
+     "ambiguous": [
+      "mixed(env 190, other 193)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 206,
+     "h_bottom": 0.31,
+     "frame": 624,
+     "tag": "truth",
+     "range": 19.6,
+     "traveled": 0.0,
+     "center": [
+      20.57,
+      -2.46,
+      -0.09
+     ],
+     "track": {
+      "center": -0.016,
+      "yaw": -0.0036257037700043802,
+      "curvature": -2.2019851568144444e-05,
+      "rail_offset": 0.252
+     },
+     "expected": null,
+     "object": "big_outside"
+    },
+    {
+     "dy_position": -2.1,
+     "lon": 6.48,
+     "lat": 2.27,
+     "z_half": 4.27,
+     "n_all": 7987,
+     "n_narrow": 7436,
+     "n_up": 5523,
+     "n_bed": 1510,
+     "n_env": 244,
+     "n_side": 236,
+     "n_over": 0,
+     "n_fabric": 5043,
+     "dy_med": -1.3,
+     "h_med": 1.15,
+     "h_range": [
+      0.31,
+      2.17
+     ],
+     "dy_range": [
+      -1.38,
+      -1.18
+     ],
+     "ambiguous": [
+      "mixed(env 244, other 236)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 262,
+     "h_bottom": 0.31,
+     "frame": 625,
+     "tag": "transport",
+     "range": 21.8,
+     "traveled": 89.5,
+     "center": [
+      21.72,
+      -2.2,
+      0.0
+     ],
+     "track": {
+      "center": -0.017,
+      "yaw": -0.0037744165451532863,
+      "curvature": -1.806817592331274e-05,
+      "rail_offset": 0.25
+     },
+     "expected": null,
+     "object": "big_outside",
+     "transport_error": [
+      3.2,
+      0.25,
+      0.04
+     ]
+    },
+    {
+     "dy_position": -2.37,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.58,
+     "n_all": 4680,
+     "n_narrow": 4680,
+     "n_up": 4013,
+     "n_bed": 118,
+     "n_env": 304,
+     "n_side": 300,
+     "n_over": 0,
+     "n_fabric": 3409,
+     "dy_med": -1.29,
+     "h_med": 1.11,
+     "h_range": [
+      0.31,
+      2.08
+     ],
+     "dy_range": [
+      -1.4,
+      -1.18
+     ],
+     "ambiguous": [
+      "mixed(env 304, other 300)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 326,
+     "h_bottom": 0.31,
+     "frame": 626,
+     "tag": "truth",
+     "range": 15.6,
+     "traveled": 0.0,
+     "center": [
+      16.53,
+      -2.46,
+      -0.03
+     ],
+     "track": {
+      "center": -0.013,
+      "yaw": -0.004294429921167873,
+      "curvature": -8.86096638572806e-06,
+      "rail_offset": 0.246
+     },
+     "expected": null,
+     "object": "big_outside"
+    },
+    {
+     "dy_position": -2.08,
+     "lon": 6.67,
+     "lat": 2.32,
+     "z_half": 4.38,
+     "n_all": 14003,
+     "n_narrow": 12891,
+     "n_up": 9907,
+     "n_bed": 2419,
+     "n_env": 342,
+     "n_side": 247,
+     "n_over": 0,
+     "n_fabric": 9318,
+     "dy_med": -1.29,
+     "h_med": 1.05,
+     "h_range": [
+      0.31,
+      2.1
+     ],
+     "dy_range": [
+      -1.39,
+      -1.17
+     ],
+     "ambiguous": [
+      "mixed(env 342, other 247)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 384,
+     "h_bottom": 0.31,
+     "frame": 627,
+     "tag": "transport",
+     "range": 18.1,
+     "traveled": 93.3,
+     "center": [
+      17.94,
+      -2.18,
+      0.0
+     ],
+     "track": {
+      "center": -0.013,
+      "yaw": -0.004763554762139722,
+      "curvature": -1.4575128850267158e-05,
+      "rail_offset": 0.246
+     },
+     "expected": null,
+     "object": "big_outside",
+     "transport_error": [
+      3.43,
+      0.29,
+      0.03
+     ]
+    },
+    {
+     "dy_position": -2.39,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.58,
+     "n_all": 6019,
+     "n_narrow": 6019,
+     "n_up": 5116,
+     "n_bed": 142,
+     "n_env": 331,
+     "n_side": 1190,
+     "n_over": 0,
+     "n_fabric": 3595,
+     "dy_med": -1.29,
+     "h_med": 1.08,
+     "h_range": [
+      0.31,
+      2.1
+     ],
+     "dy_range": [
+      -1.39,
+      -1.2
+     ],
+     "ambiguous": [
+      "mixed(env 331, other 1190)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 361,
+     "h_bottom": 0.31,
+     "frame": 627,
+     "tag": "truth",
+     "range": 13.5,
+     "traveled": 0.0,
+     "center": [
+      14.51,
+      -2.47,
+      -0.03
+     ],
+     "track": {
+      "center": -0.013,
+      "yaw": -0.004763554762139722,
+      "curvature": -1.4575128850267158e-05,
+      "rail_offset": 0.246
+     },
+     "expected": null,
+     "object": "big_outside"
+    },
+    {
+     "dy_position": -2.08,
+     "lon": 6.74,
+     "lat": 2.34,
+     "z_half": 4.43,
+     "n_all": 16516,
+     "n_narrow": 15384,
+     "n_up": 12548,
+     "n_bed": 2516,
+     "n_env": 461,
+     "n_side": 269,
+     "n_over": 0,
+     "n_fabric": 11818,
+     "dy_med": -1.3,
+     "h_med": 0.98,
+     "h_range": [
+      0.3,
+      2.1
+     ],
+     "dy_range": [
+      -1.4,
+      -1.19
+     ],
+     "ambiguous": [
+      "mixed(env 461, other 269)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 513,
+     "h_bottom": 0.3,
+     "frame": 628,
+     "tag": "transport",
+     "range": 16.5,
+     "traveled": 94.9,
+     "center": [
+      16.38,
+      -2.18,
+      0.0
+     ],
+     "track": {
+      "center": -0.018,
+      "yaw": -0.004850225050271742,
+      "curvature": -1.802834349432913e-05,
+      "rail_offset": 0.243
+     },
+     "expected": null,
+     "object": "big_outside",
+     "transport_error": [
+      3.89,
+      0.3,
+      0.06
+     ]
+    },
+    {
+     "dy_position": -2.4,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.58,
+     "n_all": 7815,
+     "n_narrow": 7815,
+     "n_up": 6942,
+     "n_bed": 80,
+     "n_env": 432,
+     "n_side": 1487,
+     "n_over": 0,
+     "n_fabric": 5023,
+     "dy_med": -1.31,
+     "h_med": 1.02,
+     "h_range": [
+      0.3,
+      2.1
+     ],
+     "dy_range": [
+      -1.4,
+      -1.21
+     ],
+     "ambiguous": [
+      "mixed(env 432, other 1487)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 479,
+     "h_bottom": 0.3,
+     "frame": 628,
+     "tag": "truth",
+     "range": 11.5,
+     "traveled": 0.0,
+     "center": [
+      12.48,
+      -2.48,
+      -0.06
+     ],
+     "track": {
+      "center": -0.018,
+      "yaw": -0.004850225050271742,
+      "curvature": -1.802834349432913e-05,
+      "rail_offset": 0.243
+     },
+     "expected": null,
+     "object": "big_outside"
+    },
+    {
+     "dy_position": -2.06,
+     "lon": 6.94,
+     "lat": 2.39,
+     "z_half": 4.55,
+     "n_all": 31825,
+     "n_narrow": 30834,
+     "n_up": 26263,
+     "n_bed": 3723,
+     "n_env": 291,
+     "n_side": 680,
+     "n_over": 0,
+     "n_fabric": 25292,
+     "dy_med": -1.31,
+     "h_med": 1.42,
+     "h_range": [
+      1.21,
+      2.1
+     ],
+     "dy_range": [
+      -1.4,
+      -1.21
+     ],
+     "ambiguous": [
+      "mixed(env 291, other 680)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 1010,
+     "h_bottom": 1.21,
+     "frame": 630,
+     "tag": "transport",
+     "range": 12.6,
+     "traveled": 98.8,
+     "center": [
+      12.4,
+      -2.15,
+      0.0
+     ],
+     "track": {
+      "center": -0.018,
+      "yaw": -0.006015677695640169,
+      "curvature": -1.7682612865372785e-05,
+      "rail_offset": 0.245
+     },
+     "expected": null,
+     "object": "big_outside",
+     "transport_error": [
+      3.95,
+      0.32,
+      0.06
+     ]
+    },
+    {
+     "dy_position": -2.06,
+     "lon": 7.0,
+     "lat": 2.41,
+     "z_half": 4.61,
+     "n_all": 58967,
+     "n_narrow": 58114,
+     "n_up": 46612,
+     "n_bed": 7670,
+     "n_env": 407,
+     "n_side": 1065,
+     "n_over": 0,
+     "n_fabric": 45140,
+     "dy_med": -1.32,
+     "h_med": 1.37,
+     "h_range": [
+      1.2,
+      2.1
+     ],
+     "dy_range": [
+      -1.4,
+      -1.23
+     ],
+     "ambiguous": [
+      "mixed(env 407, other 1065)",
+      "dy_near_limit"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 1416,
+     "h_bottom": 1.2,
+     "frame": 631,
+     "tag": "transport",
+     "range": 10.4,
+     "traveled": 101.1,
+     "center": [
+      10.18,
+      -2.14,
+      0.0
+     ],
+     "track": {
+      "center": -0.017,
+      "yaw": -0.006456022656566685,
+      "curvature": -8.6338441123074e-06,
+      "rail_offset": 0.247
+     },
+     "expected": null,
+     "object": "big_outside",
+     "transport_error": [
+      3.76,
+      0.34,
+      0.05
+     ]
+    }
+   ]
+  },
+  {
+   "object": "big_above",
+   "onset_frame": 628,
+   "onset_center": [
+    110.51,
+    -0.14,
+    2.69
+   ],
+   "frames": [
+    {
+     "dy_position": 0.06,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.59,
+     "n_all": 389,
+     "n_narrow": 389,
+     "n_up": 389,
+     "n_bed": 0,
+     "n_env": 53,
+     "n_side": 0,
+     "n_over": 134,
+     "n_fabric": 202,
+     "dy_med": 0.06,
+     "h_med": 3.3,
+     "h_range": [
+      2.78,
+      3.99
+     ],
+     "dy_range": [
+      -1.08,
+      1.2
+     ],
+     "ambiguous": [
+      "straddles_limit",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 54,
+     "h_bottom": 2.78,
+     "frame": 672,
+     "tag": "truth",
+     "range": 23.9,
+     "traveled": 0.0,
+     "center": [
+      24.95,
+      -0.07,
+      2.77
+     ],
+     "track": {
+      "center": -0.023,
+      "yaw": -0.003827600617947643,
+      "curvature": -3.1232387683752155e-05,
+      "rail_offset": 0.261
+     },
+     "expected": "overhead",
+     "object": "big_above"
+    },
+    {
+     "dy_position": 0.04,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.59,
+     "n_all": 509,
+     "n_narrow": 509,
+     "n_up": 509,
+     "n_bed": 0,
+     "n_env": 74,
+     "n_side": 0,
+     "n_over": 188,
+     "n_fabric": 247,
+     "dy_med": -0.03,
+     "h_med": 3.34,
+     "h_range": [
+      2.79,
+      4.01
+     ],
+     "dy_range": [
+      -1.12,
+      1.17
+     ],
+     "ambiguous": [
+      "straddles_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 74,
+     "h_bottom": 2.79,
+     "frame": 673,
+     "tag": "truth",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.99,
+      -0.09,
+      2.77
+     ],
+     "track": {
+      "center": -0.02,
+      "yaw": -0.004226933054301033,
+      "curvature": -1.899546908737462e-05,
+      "rail_offset": 0.261
+     },
+     "expected": "overhead",
+     "object": "big_above"
+    },
+    {
+     "dy_position": 0.53,
+     "lon": 6.31,
+     "lat": 2.24,
+     "z_half": 4.18,
+     "n_all": 6920,
+     "n_narrow": 2289,
+     "n_up": 4323,
+     "n_bed": 0,
+     "n_env": 70,
+     "n_side": 0,
+     "n_over": 187,
+     "n_fabric": 4066,
+     "dy_med": 0.0,
+     "h_med": 3.32,
+     "h_range": [
+      2.82,
+      3.91
+     ],
+     "dy_range": [
+      -1.14,
+      1.14
+     ],
+     "ambiguous": [
+      "straddles_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 146,
+     "h_bottom": 2.82,
+     "frame": 674,
+     "tag": "transport",
+     "range": 24.2,
+     "traveled": 86.3,
+     "center": [
+      24.24,
+      0.4,
+      2.69
+     ],
+     "track": {
+      "center": -0.017,
+      "yaw": -0.004641949401384519,
+      "curvature": -5.723237459332916e-06,
+      "rail_offset": 0.26
+     },
+     "expected": "overhead",
+     "object": "big_above",
+     "transport_error": [
+      3.06,
+      0.5,
+      -0.08
+     ]
+    },
+    {
+     "dy_position": 0.53,
+     "lon": 6.4,
+     "lat": 2.26,
+     "z_half": 4.23,
+     "n_all": 8725,
+     "n_narrow": 2836,
+     "n_up": 5381,
+     "n_bed": 0,
+     "n_env": 96,
+     "n_side": 0,
+     "n_over": 211,
+     "n_fabric": 5074,
+     "dy_med": -0.05,
+     "h_med": 3.29,
+     "h_range": [
+      2.8,
+      3.97
+     ],
+     "dy_range": [
+      -1.13,
+      1.16
+     ],
+     "ambiguous": [
+      "straddles_limit",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 213,
+     "h_bottom": 2.8,
+     "frame": 675,
+     "tag": "transport",
+     "range": 22.5,
+     "traveled": 88.0,
+     "center": [
+      22.46,
+      0.41,
+      2.69
+     ],
+     "track": {
+      "center": -0.019,
+      "yaw": -0.0045524096908296395,
+      "curvature": -6.198191291999743e-06,
+      "rail_offset": 0.26
+     },
+     "expected": "overhead",
+     "object": "big_above",
+     "transport_error": [
+      2.91,
+      0.49,
+      -0.09
+     ]
+    },
+    {
+     "dy_position": 0.02,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.59,
+     "n_all": 690,
+     "n_narrow": 690,
+     "n_up": 690,
+     "n_bed": 0,
+     "n_env": 96,
+     "n_side": 0,
+     "n_over": 260,
+     "n_fabric": 334,
+     "dy_med": -0.05,
+     "h_med": 3.32,
+     "h_range": [
+      2.8,
+      4.11
+     ],
+     "dy_range": [
+      -1.13,
+      1.22
+     ],
+     "ambiguous": [
+      "straddles_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 97,
+     "h_bottom": 2.8,
+     "frame": 675,
+     "tag": "truth",
+     "range": 18.4,
+     "traveled": 0.0,
+     "center": [
+      19.55,
+      -0.08,
+      2.78
+     ],
+     "track": {
+      "center": -0.019,
+      "yaw": -0.0045524096908296395,
+      "curvature": -6.198191291999743e-06,
+      "rail_offset": 0.26
+     },
+     "expected": "overhead",
+     "object": "big_above"
+    },
+    {
+     "dy_position": 0.01,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.59,
+     "n_all": 920,
+     "n_narrow": 920,
+     "n_up": 920,
+     "n_bed": 0,
+     "n_env": 116,
+     "n_side": 0,
+     "n_over": 301,
+     "n_fabric": 503,
+     "dy_med": -0.04,
+     "h_med": 3.26,
+     "h_range": [
+      2.79,
+      3.96
+     ],
+     "dy_range": [
+      -1.15,
+      1.21
+     ],
+     "ambiguous": [
+      "straddles_limit",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 117,
+     "h_bottom": 2.79,
+     "frame": 676,
+     "tag": "truth",
+     "range": 16.6,
+     "traveled": 0.0,
+     "center": [
+      17.71,
+      -0.09,
+      2.78
+     ],
+     "track": {
+      "center": -0.02,
+      "yaw": -0.004486274048880057,
+      "curvature": -8.524676003191696e-06,
+      "rail_offset": 0.259
+     },
+     "expected": "overhead",
+     "object": "big_above"
+    },
+    {
+     "dy_position": 0.53,
+     "lon": 6.6,
+     "lat": 2.3,
+     "z_half": 4.35,
+     "n_all": 16609,
+     "n_narrow": 4949,
+     "n_up": 9800,
+     "n_bed": 0,
+     "n_env": 135,
+     "n_side": 0,
+     "n_over": 333,
+     "n_fabric": 9332,
+     "dy_med": -0.03,
+     "h_med": 3.19,
+     "h_range": [
+      2.81,
+      3.81
+     ],
+     "dy_range": [
+      -1.19,
+      1.24
+     ],
+     "ambiguous": [
+      "straddles_limit",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 256,
+     "h_bottom": 2.81,
+     "frame": 677,
+     "tag": "transport",
+     "range": 18.6,
+     "traveled": 91.9,
+     "center": [
+      18.57,
+      0.43,
+      2.69
+     ],
+     "track": {
+      "center": -0.02,
+      "yaw": -0.0044483388257976954,
+      "curvature": -6.6605406843331175e-06,
+      "rail_offset": 0.256
+     },
+     "expected": "overhead",
+     "object": "big_above",
+     "transport_error": [
+      2.63,
+      0.52,
+      -0.09
+     ]
+    },
+    {
+     "dy_position": 0.53,
+     "lon": 6.67,
+     "lat": 2.32,
+     "z_half": 4.39,
+     "n_all": 19601,
+     "n_narrow": 5649,
+     "n_up": 12115,
+     "n_bed": 0,
+     "n_env": 193,
+     "n_side": 0,
+     "n_over": 386,
+     "n_fabric": 11536,
+     "dy_med": 0.01,
+     "h_med": 3.15,
+     "h_range": [
+      2.8,
+      3.72
+     ],
+     "dy_range": [
+      -1.19,
+      1.23
+     ],
+     "ambiguous": [
+      "straddles_limit",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 298,
+     "h_bottom": 2.8,
+     "frame": 678,
+     "tag": "transport",
+     "range": 17.1,
+     "traveled": 93.5,
+     "center": [
+      17.06,
+      0.43,
+      2.69
+     ],
+     "track": {
+      "center": -0.019,
+      "yaw": -0.00455904569077362,
+      "curvature": -5.220601180041569e-06,
+      "rail_offset": 0.256
+     },
+     "expected": "overhead",
+     "object": "big_above",
+     "transport_error": [
+      3.08,
+      0.52,
+      -0.08
+     ]
+    },
+    {
+     "dy_position": -0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.59,
+     "n_all": 1228,
+     "n_narrow": 1228,
+     "n_up": 1228,
+     "n_bed": 0,
+     "n_env": 193,
+     "n_side": 0,
+     "n_over": 384,
+     "n_fabric": 651,
+     "dy_med": 0.01,
+     "h_med": 3.15,
+     "h_range": [
+      2.8,
+      3.72
+     ],
+     "dy_range": [
+      -1.19,
+      1.19
+     ],
+     "ambiguous": [
+      "straddles_limit",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 193,
+     "h_bottom": 2.8,
+     "frame": 678,
+     "tag": "truth",
+     "range": 13.0,
+     "traveled": 0.0,
+     "center": [
+      13.98,
+      -0.09,
+      2.77
+     ],
+     "track": {
+      "center": -0.019,
+      "yaw": -0.00455904569077362,
+      "curvature": -5.220601180041569e-06,
+      "rail_offset": 0.256
+     },
+     "expected": "overhead",
+     "object": "big_above"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.59,
+     "n_all": 1015,
+     "n_narrow": 1015,
+     "n_up": 1015,
+     "n_bed": 0,
+     "n_env": 274,
+     "n_side": 0,
+     "n_over": 280,
+     "n_fabric": 461,
+     "dy_med": -0.05,
+     "h_med": 3.0,
+     "h_range": [
+      2.82,
+      3.54
+     ],
+     "dy_range": [
+      -1.19,
+      1.17
+     ],
+     "ambiguous": [
+      "straddles_limit",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 274,
+     "h_bottom": 2.82,
+     "frame": 679,
+     "tag": "truth",
+     "range": 11.2,
+     "traveled": 0.0,
+     "center": [
+      12.38,
+      -0.08,
+      2.54
+     ],
+     "track": {
+      "center": -0.019,
+      "yaw": -0.0045256795285774695,
+      "curvature": -9.589122975957748e-06,
+      "rail_offset": 0.254
+     },
+     "expected": "overhead",
+     "object": "big_above"
+    },
+    {
+     "dy_position": 0.53,
+     "lon": 6.85,
+     "lat": 2.36,
+     "z_half": 4.5,
+     "n_all": 32961,
+     "n_narrow": 8432,
+     "n_up": 23980,
+     "n_bed": 0,
+     "n_env": 380,
+     "n_side": 0,
+     "n_over": 188,
+     "n_fabric": 23412,
+     "dy_med": 0.01,
+     "h_med": 2.9,
+     "h_range": [
+      2.83,
+      3.46
+     ],
+     "dy_range": [
+      -1.22,
+      1.2
+     ],
+     "ambiguous": [
+      "straddles_limit",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 452,
+     "h_bottom": 2.83,
+     "frame": 680,
+     "tag": "transport",
+     "range": 13.6,
+     "traveled": 97.0,
+     "center": [
+      13.55,
+      0.45,
+      2.69
+     ],
+     "track": {
+      "center": -0.021,
+      "yaw": -0.00437187798392748,
+      "curvature": -4.515779812904836e-06,
+      "rail_offset": 0.251
+     },
+     "expected": "overhead",
+     "object": "big_above",
+     "transport_error": [
+      3.08,
+      0.53,
+      0.36
+     ]
+    },
+    {
+     "dy_position": 0.53,
+     "lon": 6.95,
+     "lat": 2.39,
+     "z_half": 4.56,
+     "n_all": 49731,
+     "n_narrow": 11770,
+     "n_up": 37657,
+     "n_bed": 0,
+     "n_env": 592,
+     "n_side": 0,
+     "n_over": 157,
+     "n_fabric": 36908,
+     "dy_med": -0.07,
+     "h_med": 2.91,
+     "h_range": [
+      2.85,
+      3.52
+     ],
+     "dy_range": [
+      -1.2,
+      1.19
+     ],
+     "ambiguous": [
+      "straddles_limit",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 715,
+     "h_bottom": 2.85,
+     "frame": 681,
+     "tag": "transport",
+     "range": 11.6,
+     "traveled": 98.9,
+     "center": [
+      11.56,
+      0.46,
+      2.69
+     ],
+     "track": {
+      "center": -0.017,
+      "yaw": -0.004704223597932532,
+      "curvature": 3.5728262735899756e-06,
+      "rail_offset": 0.249
+     },
+     "expected": "overhead",
+     "object": "big_above",
+     "transport_error": [
+      2.84,
+      0.52,
+      0.59
+     ]
+    }
+   ]
+  },
+  {
+   "object": "long_low_on_rails",
+   "onset_frame": 680,
+   "onset_center": [
+    110.26,
+    -0.01,
+    -1.2
+   ],
+   "frames": [
+    {
+     "dy_position": 0.13,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 568,
+     "n_narrow": 568,
+     "n_up": 68,
+     "n_bed": 500,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 68,
+     "dy_med": 0.11,
+     "h_med": 0.23,
+     "h_range": [
+      0.18,
+      0.3
+     ],
+     "dy_range": [
+      -0.85,
+      1.06
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 68,
+     "h_bottom": 0.18,
+     "on_fabric": true,
+     "n_fabric_tight": 63,
+     "frame": 731,
+     "tag": "truth",
+     "range": 23.9,
+     "traveled": 0.0,
+     "center": [
+      24.19,
+      0.03,
+      -1.17
+     ],
+     "track": {
+      "center": -0.058,
+      "yaw": -0.00152909051071233,
+      "curvature": -4.41393053586338e-05,
+      "rail_offset": 0.268
+     },
+     "expected": "in_envelope",
+     "object": "long_low_on_rails"
+    },
+    {
+     "dy_position": 0.47,
+     "lon": 6.33,
+     "lat": 2.24,
+     "z_half": 3.6,
+     "n_all": 5545,
+     "n_narrow": 5195,
+     "n_up": 2798,
+     "n_bed": 1884,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 2798,
+     "dy_med": 1.36,
+     "h_med": 0.26,
+     "h_range": [
+      0.15,
+      0.42
+     ],
+     "dy_range": [
+      -0.49,
+      1.47
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 216,
+     "h_bottom": 0.15,
+     "on_fabric": true,
+     "n_fabric_tight": 258,
+     "frame": 732,
+     "tag": "transport",
+     "range": 23.7,
+     "traveled": 86.6,
+     "center": [
+      23.68,
+      0.37,
+      -1.21
+     ],
+     "track": {
+      "center": -0.061,
+      "yaw": -0.0013081877928040869,
+      "curvature": -4.5678083215671555e-05,
+      "rail_offset": 0.273
+     },
+     "expected": "in_envelope",
+     "object": "long_low_on_rails",
+     "transport_error": [
+      1.13,
+      0.34,
+      -0.02
+     ]
+    },
+    {
+     "dy_position": 0.12,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 855,
+     "n_narrow": 855,
+     "n_up": 85,
+     "n_bed": 770,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 85,
+     "dy_med": 0.32,
+     "h_med": 0.21,
+     "h_range": [
+      0.15,
+      0.27
+     ],
+     "dy_range": [
+      -0.84,
+      1.08
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 85,
+     "h_bottom": 0.15,
+     "on_fabric": true,
+     "n_fabric_tight": 85,
+     "frame": 733,
+     "tag": "truth",
+     "range": 20.7,
+     "traveled": 0.0,
+     "center": [
+      20.91,
+      0.02,
+      -1.17
+     ],
+     "track": {
+      "center": -0.057,
+      "yaw": -0.0019047789745419955,
+      "curvature": -3.2681733051686065e-05,
+      "rail_offset": 0.28
+     },
+     "expected": "in_envelope",
+     "object": "long_low_on_rails"
+    },
+    {
+     "dy_position": 0.47,
+     "lon": 6.49,
+     "lat": 2.28,
+     "z_half": 3.69,
+     "n_all": 8934,
+     "n_narrow": 8438,
+     "n_up": 4438,
+     "n_bed": 2981,
+     "n_env": 0,
+     "n_side": 2,
+     "n_over": 0,
+     "n_fabric": 4436,
+     "dy_med": 1.4,
+     "h_med": 0.26,
+     "h_range": [
+      0.16,
+      0.41
+     ],
+     "dy_range": [
+      -0.52,
+      1.47
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 194,
+     "h_bottom": 0.16,
+     "on_fabric": true,
+     "n_fabric_tight": 339,
+     "frame": 734,
+     "tag": "transport",
+     "range": 20.5,
+     "traveled": 89.8,
+     "center": [
+      20.45,
+      0.38,
+      -1.21
+     ],
+     "track": {
+      "center": -0.045,
+      "yaw": -0.00214672127230992,
+      "curvature": -2.29602987244898e-05,
+      "rail_offset": 0.285
+     },
+     "expected": "in_envelope",
+     "object": "long_low_on_rails",
+     "transport_error": [
+      1.14,
+      0.34,
+      -0.04
+     ]
+    },
+    {
+     "dy_position": 0.13,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 1122,
+     "n_narrow": 1122,
+     "n_up": 68,
+     "n_bed": 1054,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 68,
+     "dy_med": 0.29,
+     "h_med": 0.19,
+     "h_range": [
+      0.16,
+      0.24
+     ],
+     "dy_range": [
+      -0.83,
+      1.09
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 68,
+     "h_bottom": 0.16,
+     "on_fabric": true,
+     "n_fabric_tight": 68,
+     "frame": 734,
+     "tag": "truth",
+     "range": 19.1,
+     "traveled": 0.0,
+     "center": [
+      19.31,
+      0.04,
+      -1.16
+     ],
+     "track": {
+      "center": -0.045,
+      "yaw": -0.00214672127230992,
+      "curvature": -2.29602987244898e-05,
+      "rail_offset": 0.285
+     },
+     "expected": "in_envelope",
+     "object": "long_low_on_rails"
+    },
+    {
+     "dy_position": 0.47,
+     "lon": 6.57,
+     "lat": 2.3,
+     "z_half": 3.74,
+     "n_all": 11130,
+     "n_narrow": 10489,
+     "n_up": 5835,
+     "n_bed": 3386,
+     "n_env": 0,
+     "n_side": 4,
+     "n_over": 0,
+     "n_fabric": 5831,
+     "dy_med": 1.4,
+     "h_med": 0.26,
+     "h_range": [
+      0.15,
+      0.41
+     ],
+     "dy_range": [
+      -0.52,
+      1.47
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 190,
+     "h_bottom": 0.15,
+     "on_fabric": true,
+     "n_fabric_tight": 442,
+     "frame": 735,
+     "tag": "transport",
+     "range": 18.9,
+     "traveled": 91.3,
+     "center": [
+      18.93,
+      0.38,
+      -1.21
+     ],
+     "track": {
+      "center": -0.036,
+      "yaw": -0.0027960420649182725,
+      "curvature": -8.431574353673692e-06,
+      "rail_offset": 0.287
+     },
+     "expected": "in_envelope",
+     "object": "long_low_on_rails",
+     "transport_error": [
+      1.25,
+      0.35,
+      -0.06
+     ]
+    },
+    {
+     "dy_position": 0.11,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 1783,
+     "n_narrow": 1783,
+     "n_up": 97,
+     "n_bed": 1686,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 97,
+     "dy_med": 0.16,
+     "h_med": 0.19,
+     "h_range": [
+      0.15,
+      0.24
+     ],
+     "dy_range": [
+      -0.86,
+      1.08
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 97,
+     "h_bottom": 0.15,
+     "on_fabric": true,
+     "n_fabric_tight": 97,
+     "frame": 736,
+     "tag": "truth",
+     "range": 15.8,
+     "traveled": 0.0,
+     "center": [
+      16.07,
+      0.03,
+      -1.13
+     ],
+     "track": {
+      "center": -0.032,
+      "yaw": -0.003271886205409715,
+      "curvature": 3.7859622838109556e-06,
+      "rail_offset": 0.292
+     },
+     "expected": "in_envelope",
+     "object": "long_low_on_rails"
+    },
+    {
+     "dy_position": 0.47,
+     "lon": 6.72,
+     "lat": 2.33,
+     "z_half": 3.83,
+     "n_all": 16983,
+     "n_narrow": 15751,
+     "n_up": 11184,
+     "n_bed": 3543,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 11184,
+     "dy_med": 1.4,
+     "h_med": 0.27,
+     "h_range": [
+      0.15,
+      0.42
+     ],
+     "dy_range": [
+      -0.23,
+      1.47
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 296,
+     "h_bottom": 0.15,
+     "on_fabric": true,
+     "n_fabric_tight": 772,
+     "frame": 737,
+     "tag": "transport",
+     "range": 15.8,
+     "traveled": 94.5,
+     "center": [
+      15.77,
+      0.39,
+      -1.21
+     ],
+     "track": {
+      "center": -0.027,
+      "yaw": -0.003611387902839723,
+      "curvature": 7.555724016708372e-06,
+      "rail_offset": 0.296
+     },
+     "expected": "in_envelope",
+     "object": "long_low_on_rails",
+     "transport_error": [
+      1.34,
+      0.36,
+      -0.07
+     ]
+    },
+    {
+     "dy_position": 0.1,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 1859,
+     "n_narrow": 1859,
+     "n_up": 69,
+     "n_bed": 1790,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 69,
+     "dy_med": 0.45,
+     "h_med": 0.16,
+     "h_range": [
+      0.15,
+      0.2
+     ],
+     "dy_range": [
+      -0.23,
+      1.09
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 69,
+     "h_bottom": 0.15,
+     "on_fabric": true,
+     "n_fabric_tight": 69,
+     "frame": 737,
+     "tag": "truth",
+     "range": 14.2,
+     "traveled": 0.0,
+     "center": [
+      14.43,
+      0.03,
+      -1.14
+     ],
+     "track": {
+      "center": -0.027,
+      "yaw": -0.003611387902839723,
+      "curvature": 7.555724016708372e-06,
+      "rail_offset": 0.296
+     },
+     "expected": "in_envelope",
+     "object": "long_low_on_rails"
+    },
+    {
+     "dy_position": 0.47,
+     "lon": 6.81,
+     "lat": 2.36,
+     "z_half": 3.89,
+     "n_all": 22911,
+     "n_narrow": 21082,
+     "n_up": 16541,
+     "n_bed": 3810,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 16541,
+     "dy_med": 1.39,
+     "h_med": 0.26,
+     "h_range": [
+      0.15,
+      0.38
+     ],
+     "dy_range": [
+      0.73,
+      1.47
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 558,
+     "h_bottom": 0.15,
+     "on_fabric": true,
+     "n_fabric_tight": 877,
+     "frame": 738,
+     "tag": "transport",
+     "range": 14.0,
+     "traveled": 96.3,
+     "center": [
+      14.0,
+      0.4,
+      -1.21
+     ],
+     "track": {
+      "center": -0.0,
+      "yaw": -0.0052541172171856835,
+      "curvature": 3.106704055223801e-05,
+      "rail_offset": 0.288
+     },
+     "expected": "in_envelope",
+     "object": "long_low_on_rails",
+     "transport_error": [
+      1.2,
+      0.38,
+      -0.05
+     ]
+    },
+    {
+     "dy_position": 0.09,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 1080,
+     "n_narrow": 1080,
+     "n_up": 0,
+     "n_bed": 1080,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.54,
+      0.13
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 739,
+     "tag": "truth",
+     "range": 10.9,
+     "traveled": 0.0,
+     "center": [
+      11.24,
+      0.03,
+      -1.12
+     ],
+     "track": {
+      "center": -0.003,
+      "yaw": -0.005398398920171256,
+      "curvature": 3.273838192255993e-05,
+      "rail_offset": 0.284
+     },
+     "expected": "in_envelope",
+     "object": "long_low_on_rails"
+    },
+    {
+     "dy_position": 0.46,
+     "lon": 6.97,
+     "lat": 2.39,
+     "z_half": 3.98,
+     "n_all": 53185,
+     "n_narrow": 49235,
+     "n_up": 39735,
+     "n_bed": 8891,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 39735,
+     "dy_med": 1.4,
+     "h_med": 0.27,
+     "h_range": [
+      0.15,
+      0.4
+     ],
+     "dy_range": [
+      1.35,
+      1.46
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 671,
+     "h_bottom": 0.15,
+     "on_fabric": true,
+     "n_fabric_tight": 1179,
+     "frame": 740,
+     "tag": "transport",
+     "range": 10.9,
+     "traveled": 99.4,
+     "center": [
+      10.85,
+      0.41,
+      -1.21
+     ],
+     "track": {
+      "center": 0.003,
+      "yaw": -0.0054420371333394535,
+      "curvature": 3.0510927881973527e-05,
+      "rail_offset": 0.28
+     },
+     "expected": "in_envelope",
+     "object": "long_low_on_rails",
+     "transport_error": [
+      1.29,
+      0.39,
+      -0.04
+     ]
+    }
+   ]
+  },
+  {
+   "object": "thin_hanging",
+   "onset_frame": 723,
+   "onset_center": [
+    137.39,
+    -0.36,
+    2.25
+   ],
+   "frames": [
+    {
+     "dy_position": 0.22,
+     "lon": 7.0,
+     "lat": 2.5,
+     "z_half": 4.73,
+     "n_all": 7900,
+     "n_narrow": 3338,
+     "n_up": 4797,
+     "n_bed": 0,
+     "n_env": 2,
+     "n_side": 0,
+     "n_over": 2,
+     "n_fabric": 4793,
+     "dy_med": 0.23,
+     "h_med": 3.94,
+     "h_range": [
+      3.58,
+      4.41
+     ],
+     "dy_range": [
+      -0.77,
+      1.21
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "overhead",
+     "n_env_all": 52,
+     "h_bottom": 3.58,
+     "on_fabric": true,
+     "n_fabric_tight": 447,
+     "frame": 793,
+     "tag": "transport",
+     "range": 24.9,
+     "traveled": 112.5,
+     "center": [
+      24.89,
+      0.08,
+      2.25
+     ],
+     "track": {
+      "center": -0.012,
+      "yaw": -0.005780798715778086,
+      "curvature": 3.87369431931558e-05,
+      "rail_offset": 0.348
+     },
+     "expected": "overhead",
+     "object": "thin_hanging",
+     "transport_error": [
+      1.41,
+      0.14,
+      -0.18
+     ]
+    },
+    {
+     "dy_position": 0.08,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.35,
+     "n_all": 187,
+     "n_narrow": 187,
+     "n_up": 187,
+     "n_bed": 0,
+     "n_env": 2,
+     "n_side": 0,
+     "n_over": 2,
+     "n_fabric": 183,
+     "dy_med": 0.08,
+     "h_med": 3.95,
+     "h_range": [
+      3.58,
+      4.41
+     ],
+     "dy_range": [
+      -0.91,
+      1.06
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "overhead",
+     "n_env_all": 2,
+     "h_bottom": 3.58,
+     "on_fabric": true,
+     "n_fabric_tight": 153,
+     "frame": 793,
+     "tag": "truth",
+     "range": 23.5,
+     "traveled": 0.0,
+     "center": [
+      23.48,
+      -0.06,
+      2.43
+     ],
+     "track": {
+      "center": -0.012,
+      "yaw": -0.005780798715778086,
+      "curvature": 3.87369431931558e-05,
+      "rail_offset": 0.348
+     },
+     "expected": "overhead",
+     "object": "thin_hanging"
+    },
+    {
+     "dy_position": 0.21,
+     "lon": 7.0,
+     "lat": 2.5,
+     "z_half": 4.82,
+     "n_all": 12695,
+     "n_narrow": 5261,
+     "n_up": 7549,
+     "n_bed": 0,
+     "n_env": 2,
+     "n_side": 0,
+     "n_over": 5,
+     "n_fabric": 7542,
+     "dy_med": 0.06,
+     "h_med": 3.22,
+     "h_range": [
+      3.04,
+      3.4
+     ],
+     "dy_range": [
+      0.06,
+      0.11
+     ],
+     "ambiguous": [
+      "few_points",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 49,
+     "h_bottom": 3.04,
+     "frame": 795,
+     "tag": "transport",
+     "range": 21.6,
+     "traveled": 115.8,
+     "center": [
+      21.61,
+      0.1,
+      2.25
+     ],
+     "track": {
+      "center": -0.017,
+      "yaw": -0.00486784159841277,
+      "curvature": 2.701168465329026e-05,
+      "rail_offset": 0.349
+     },
+     "expected": "overhead",
+     "object": "thin_hanging",
+     "transport_error": [
+      1.46,
+      0.12,
+      -0.19
+     ]
+    },
+    {
+     "dy_position": 0.08,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.35,
+     "n_all": 284,
+     "n_narrow": 284,
+     "n_up": 284,
+     "n_bed": 0,
+     "n_env": 2,
+     "n_side": 0,
+     "n_over": 5,
+     "n_fabric": 277,
+     "dy_med": 0.06,
+     "h_med": 3.22,
+     "h_range": [
+      3.04,
+      3.4
+     ],
+     "dy_range": [
+      0.06,
+      0.11
+     ],
+     "ambiguous": [
+      "few_points",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 2,
+     "h_bottom": 3.04,
+     "frame": 795,
+     "tag": "truth",
+     "range": 20.1,
+     "traveled": 0.0,
+     "center": [
+      20.15,
+      -0.03,
+      2.44
+     ],
+     "track": {
+      "center": -0.017,
+      "yaw": -0.00486784159841277,
+      "curvature": 2.701168465329026e-05,
+      "rail_offset": 0.349
+     },
+     "expected": "overhead",
+     "object": "thin_hanging"
+    },
+    {
+     "dy_position": 0.21,
+     "lon": 7.0,
+     "lat": 2.5,
+     "z_half": 4.87,
+     "n_all": 16607,
+     "n_narrow": 6997,
+     "n_up": 9938,
+     "n_bed": 0,
+     "n_env": 2,
+     "n_side": 0,
+     "n_over": 8,
+     "n_fabric": 9928,
+     "dy_med": 0.08,
+     "h_med": 3.29,
+     "h_range": [
+      3.05,
+      3.54
+     ],
+     "dy_range": [
+      0.05,
+      0.1
+     ],
+     "ambiguous": [
+      "few_points",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 52,
+     "h_bottom": 3.05,
+     "frame": 796,
+     "tag": "transport",
+     "range": 20.0,
+     "traveled": 117.4,
+     "center": [
+      19.97,
+      0.1,
+      2.25
+     ],
+     "track": {
+      "center": -0.012,
+      "yaw": -0.005002542914622795,
+      "curvature": 2.0722811782882e-05,
+      "rail_offset": 0.351
+     },
+     "expected": "overhead",
+     "object": "thin_hanging",
+     "transport_error": [
+      1.48,
+      0.13,
+      -0.24
+     ]
+    },
+    {
+     "dy_position": 0.08,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.35,
+     "n_all": 393,
+     "n_narrow": 393,
+     "n_up": 393,
+     "n_bed": 0,
+     "n_env": 2,
+     "n_side": 0,
+     "n_over": 6,
+     "n_fabric": 385,
+     "dy_med": 0.08,
+     "h_med": 3.21,
+     "h_range": [
+      3.05,
+      3.38
+     ],
+     "dy_range": [
+      0.05,
+      0.1
+     ],
+     "ambiguous": [
+      "few_points",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 2,
+     "h_bottom": 3.05,
+     "frame": 796,
+     "tag": "truth",
+     "range": 18.5,
+     "traveled": 0.0,
+     "center": [
+      18.48,
+      -0.03,
+      2.49
+     ],
+     "track": {
+      "center": -0.012,
+      "yaw": -0.005002542914622795,
+      "curvature": 2.0722811782882e-05,
+      "rail_offset": 0.351
+     },
+     "expected": "overhead",
+     "object": "thin_hanging"
+    },
+    {
+     "dy_position": 0.21,
+     "lon": 7.0,
+     "lat": 2.5,
+     "z_half": 4.98,
+     "n_all": 25897,
+     "n_narrow": 11854,
+     "n_up": 17703,
+     "n_bed": 0,
+     "n_env": 6,
+     "n_side": 0,
+     "n_over": 10,
+     "n_fabric": 17687,
+     "dy_med": 0.08,
+     "h_med": 3.16,
+     "h_range": [
+      2.69,
+      3.5
+     ],
+     "dy_range": [
+      0.04,
+      1.63
+     ],
+     "ambiguous": [
+      "straddles_limit",
+      "few_points",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 124,
+     "h_bottom": 2.69,
+     "frame": 798,
+     "tag": "transport",
+     "range": 16.5,
+     "traveled": 120.9,
+     "center": [
+      16.49,
+      0.12,
+      2.25
+     ],
+     "track": {
+      "center": -0.009,
+      "yaw": -0.005262739667661102,
+      "curvature": 3.857089913405869e-05,
+      "rail_offset": 0.347
+     },
+     "expected": "overhead",
+     "object": "thin_hanging",
+     "transport_error": [
+      1.36,
+      0.14,
+      -0.26
+     ]
+    },
+    {
+     "dy_position": 0.06,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.35,
+     "n_all": 684,
+     "n_narrow": 684,
+     "n_up": 684,
+     "n_bed": 0,
+     "n_env": 6,
+     "n_side": 0,
+     "n_over": 8,
+     "n_fabric": 670,
+     "dy_med": 0.06,
+     "h_med": 3.09,
+     "h_range": [
+      2.69,
+      3.5
+     ],
+     "dy_range": [
+      0.04,
+      0.08
+     ],
+     "ambiguous": [
+      "straddles_limit",
+      "few_points",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 6,
+     "h_bottom": 2.69,
+     "frame": 798,
+     "tag": "truth",
+     "range": 15.1,
+     "traveled": 0.0,
+     "center": [
+      15.13,
+      -0.02,
+      2.51
+     ],
+     "track": {
+      "center": -0.009,
+      "yaw": -0.005262739667661102,
+      "curvature": 3.857089913405869e-05,
+      "rail_offset": 0.347
+     },
+     "expected": "overhead",
+     "object": "thin_hanging"
+    },
+    {
+     "dy_position": 0.21,
+     "lon": 7.0,
+     "lat": 2.5,
+     "z_half": 5.03,
+     "n_all": 34178,
+     "n_narrow": 16277,
+     "n_up": 25097,
+     "n_bed": 0,
+     "n_env": 8,
+     "n_side": 303,
+     "n_over": 6,
+     "n_fabric": 24780,
+     "dy_med": 0.04,
+     "h_med": 2.99,
+     "h_range": [
+      2.63,
+      3.59
+     ],
+     "dy_range": [
+      0.04,
+      0.08
+     ],
+     "ambiguous": [
+      "straddles_limit",
+      "few_points",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 227,
+     "h_bottom": 2.63,
+     "frame": 799,
+     "tag": "transport",
+     "range": 14.6,
+     "traveled": 122.8,
+     "center": [
+      14.57,
+      0.13,
+      2.25
+     ],
+     "track": {
+      "center": -0.009,
+      "yaw": -0.005507605915878806,
+      "curvature": 5.1375805421131606e-05,
+      "rail_offset": 0.34
+     },
+     "expected": "overhead",
+     "object": "thin_hanging",
+     "transport_error": [
+      1.11,
+      0.16,
+      -0.23
+     ]
+    },
+    {
+     "dy_position": 0.04,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.35,
+     "n_all": 859,
+     "n_narrow": 859,
+     "n_up": 859,
+     "n_bed": 0,
+     "n_env": 8,
+     "n_side": 0,
+     "n_over": 6,
+     "n_fabric": 845,
+     "dy_med": 0.04,
+     "h_med": 2.99,
+     "h_range": [
+      2.63,
+      3.59
+     ],
+     "dy_range": [
+      0.04,
+      0.08
+     ],
+     "ambiguous": [
+      "straddles_limit",
+      "few_points",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 8,
+     "h_bottom": 2.63,
+     "frame": 799,
+     "tag": "truth",
+     "range": 13.4,
+     "traveled": 0.0,
+     "center": [
+      13.46,
+      -0.04,
+      2.48
+     ],
+     "track": {
+      "center": -0.009,
+      "yaw": -0.005507605915878806,
+      "curvature": 5.1375805421131606e-05,
+      "rail_offset": 0.34
+     },
+     "expected": "overhead",
+     "object": "thin_hanging"
+    },
+    {
+     "dy_position": 0.22,
+     "lon": 7.0,
+     "lat": 2.5,
+     "z_half": 5.13,
+     "n_all": 65018,
+     "n_narrow": 34932,
+     "n_up": 51705,
+     "n_bed": 0,
+     "n_env": 10,
+     "n_side": 711,
+     "n_over": 34,
+     "n_fabric": 50950,
+     "dy_med": 0.04,
+     "h_med": 3.32,
+     "h_range": [
+      2.61,
+      3.59
+     ],
+     "dy_range": [
+      -1.97,
+      1.62
+     ],
+     "ambiguous": [
+      "straddles_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 462,
+     "h_bottom": 2.61,
+     "frame": 801,
+     "tag": "transport",
+     "range": 11.5,
+     "traveled": 125.9,
+     "center": [
+      11.49,
+      0.14,
+      2.25
+     ],
+     "track": {
+      "center": -0.016,
+      "yaw": -0.00576152571944754,
+      "curvature": 4.999105609750296e-05,
+      "rail_offset": 0.336
+     },
+     "expected": "overhead",
+     "object": "thin_hanging",
+     "transport_error": [
+      1.39,
+      0.2,
+      0.21
+     ]
+    },
+    {
+     "dy_position": 0.02,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.35,
+     "n_all": 259,
+     "n_narrow": 259,
+     "n_up": 259,
+     "n_bed": 0,
+     "n_env": 10,
+     "n_side": 0,
+     "n_over": 12,
+     "n_fabric": 237,
+     "dy_med": 0.03,
+     "h_med": 3.06,
+     "h_range": [
+      2.61,
+      3.52
+     ],
+     "dy_range": [
+      0.02,
+      0.04
+     ],
+     "ambiguous": [
+      "straddles_limit",
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 10,
+     "h_bottom": 2.61,
+     "frame": 801,
+     "tag": "truth",
+     "range": 10.1,
+     "traveled": 0.0,
+     "center": [
+      10.1,
+      -0.06,
+      2.04
+     ],
+     "track": {
+      "center": -0.016,
+      "yaw": -0.00576152571944754,
+      "curvature": 4.999105609750296e-05,
+      "rail_offset": 0.336
+     },
+     "expected": "overhead",
+     "object": "thin_hanging"
+    }
+   ]
+  }
+ ],
+ "transport": [
+  {
+   "object": "big_center",
+   "frame": 198,
+   "traveled": 74.0,
+   "error": [
+    -5.22,
+    0.8,
+    0.3
+   ],
+   "label_distance": 29.86
+  },
+  {
+   "object": "big_center",
+   "frame": 201,
+   "traveled": 76.4,
+   "error": [
+    -5.18,
+    0.82,
+    0.3
+   ],
+   "label_distance": 27.44
+  },
+  {
+   "object": "big_center",
+   "frame": 204,
+   "traveled": 78.9,
+   "error": [
+    -5.15,
+    0.79,
+    0.3
+   ],
+   "label_distance": 24.94
+  },
+  {
+   "object": "small_center",
+   "frame": 355,
+   "traveled": 34.7,
+   "error": [
+    -1.06,
+    0.21,
+    0.16
+   ],
+   "label_distance": 25.53
+  },
+  {
+   "object": "small_center",
+   "frame": 357,
+   "traveled": 38.0,
+   "error": [
+    -0.98,
+    0.23,
+    0.15
+   ],
+   "label_distance": 22.13
+  },
+  {
+   "object": "small_center",
+   "frame": 358,
+   "traveled": 39.9,
+   "error": [
+    -1.1,
+    0.27,
+    0.15
+   ],
+   "label_distance": 20.43
+  },
+  {
+   "object": "small_center",
+   "frame": 360,
+   "traveled": 43.2,
+   "error": [
+    -1.07,
+    0.3,
+    0.16
+   ],
+   "label_distance": 17.01
+  },
+  {
+   "object": "small_center",
+   "frame": 361,
+   "traveled": 45.3,
+   "error": [
+    -1.45,
+    0.32,
+    0.15
+   ],
+   "label_distance": 15.31
+  },
+  {
+   "object": "small_center",
+   "frame": 363,
+   "traveled": 48.1,
+   "error": [
+    -2.52,
+    0.38,
+    0.15
+   ],
+   "label_distance": 13.6
+  },
+  {
+   "object": "small_on_rail",
+   "frame": 411,
+   "traveled": 57.8,
+   "error": [
+    -4.95,
+    -0.5,
+    3.62
+   ],
+   "label_distance": 28.42
+  },
+  {
+   "object": "small_on_rail",
+   "frame": 412,
+   "traveled": 59.8,
+   "error": [
+    -5.17,
+    -0.52,
+    3.63
+   ],
+   "label_distance": 26.63
+  },
+  {
+   "object": "small_on_rail",
+   "frame": 414,
+   "traveled": 63.5,
+   "error": [
+    -5.19,
+    -0.42,
+    3.68
+   ],
+   "label_distance": 23.06
+  },
+  {
+   "object": "small_on_rail",
+   "frame": 415,
+   "traveled": 64.9,
+   "error": [
+    -4.85,
+    -0.42,
+    3.7
+   ],
+   "label_distance": 21.27
+  },
+  {
+   "object": "small_on_rail",
+   "frame": 417,
+   "traveled": 68.4,
+   "error": [
+    -4.82,
+    -0.42,
+    3.74
+   ],
+   "label_distance": 17.66
+  },
+  {
+   "object": "small_on_rail",
+   "frame": 418,
+   "traveled": 70.2,
+   "error": [
+    -4.74,
+    -0.41,
+    3.72
+   ],
+   "label_distance": 15.87
+  },
+  {
+   "object": "small_edge_inside",
+   "frame": 468,
+   "traveled": 40.6,
+   "error": [
+    0.09,
+    0.2,
+    -0.1
+   ],
+   "label_distance": 23.84
+  },
+  {
+   "object": "small_edge_inside",
+   "frame": 469,
+   "traveled": 42.6,
+   "error": [
+    -0.13,
+    0.2,
+    -0.07
+   ],
+   "label_distance": 21.97
+  },
+  {
+   "object": "small_edge_inside",
+   "frame": 471,
+   "traveled": 46.2,
+   "error": [
+    0.05,
+    0.22,
+    -0.05
+   ],
+   "label_distance": 18.25
+  },
+  {
+   "object": "small_edge_inside",
+   "frame": 472,
+   "traveled": 48.1,
+   "error": [
+    -0.05,
+    0.22,
+    -0.07
+   ],
+   "label_distance": 16.38
+  },
+  {
+   "object": "small_edge_inside",
+   "frame": 474,
+   "traveled": 51.7,
+   "error": [
+    0.13,
+    0.23,
+    -0.1
+   ],
+   "label_distance": 12.65
+  },
+  {
+   "object": "small_edge_inside",
+   "frame": 475,
+   "traveled": 53.5,
+   "error": [
+    0.13,
+    0.24,
+    -0.1
+   ],
+   "label_distance": 10.79
+  },
+  {
+   "object": "big_edge_inside",
+   "frame": 573,
+   "traveled": 87.6,
+   "error": [
+    2.79,
+    0.35,
+    0.07
+   ],
+   "label_distance": 20.25
+  },
+  {
+   "object": "big_edge_inside",
+   "frame": 574,
+   "traveled": 89.6,
+   "error": [
+    2.83,
+    0.39,
+    0.07
+   ],
+   "label_distance": 18.26
+  },
+  {
+   "object": "big_edge_inside",
+   "frame": 575,
+   "traveled": 91.8,
+   "error": [
+    2.54,
+    0.39,
+    0.09
+   ],
+   "label_distance": 16.26
+  },
+  {
+   "object": "big_edge_inside",
+   "frame": 577,
+   "traveled": 95.8,
+   "error": [
+    2.56,
+    0.39,
+    0.1
+   ],
+   "label_distance": 12.27
+  },
+  {
+   "object": "big_edge_inside",
+   "frame": 578,
+   "traveled": 98.2,
+   "error": [
+    2.91,
+    0.63,
+    0.08
+   ],
+   "label_distance": 10.27
+  },
+  {
+   "object": "big_edge_inside",
+   "frame": 579,
+   "traveled": 99.9,
+   "error": [
+    3.19,
+    0.64,
+    0.06
+   ],
+   "label_distance": 8.27
+  },
+  {
+   "object": "small_outside_near",
+   "frame": 522,
+   "traveled": 39.0,
+   "error": [
+    3.11,
+    0.13,
+    -0.07
+   ],
+   "label_distance": 21.45
+  },
+  {
+   "object": "small_outside_near",
+   "frame": 524,
+   "traveled": 42.6,
+   "error": [
+    3.46,
+    0.16,
+    -0.05
+   ],
+   "label_distance": 17.58
+  },
+  {
+   "object": "small_outside_near",
+   "frame": 525,
+   "traveled": 44.3,
+   "error": [
+    3.68,
+    0.17,
+    -0.05
+   ],
+   "label_distance": 15.64
+  },
+  {
+   "object": "small_outside_near",
+   "frame": 527,
+   "traveled": 47.9,
+   "error": [
+    3.87,
+    0.18,
+    -0.06
+   ],
+   "label_distance": 11.77
+  },
+  {
+   "object": "small_outside_near",
+   "frame": 528,
+   "traveled": 49.7,
+   "error": [
+    4.01,
+    0.19,
+    -0.06
+   ],
+   "label_distance": 9.84
+  },
+  {
+   "object": "small_outside_near",
+   "frame": 530,
+   "traveled": 53.5,
+   "error": [
+    4.12,
+    0.2,
+    -0.07
+   ],
+   "label_distance": 5.95
+  },
+  {
+   "object": "big_outside",
+   "frame": 624,
+   "traveled": 87.3,
+   "error": [
+    3.39,
+    0.24,
+    0.09
+   ],
+   "label_distance": 19.61
+  },
+  {
+   "object": "big_outside",
+   "frame": 625,
+   "traveled": 89.5,
+   "error": [
+    3.2,
+    0.25,
+    0.04
+   ],
+   "label_distance": 17.57
+  },
+  {
+   "object": "big_outside",
+   "frame": 627,
+   "traveled": 93.3,
+   "error": [
+    3.43,
+    0.29,
+    0.03
+   ],
+   "label_distance": 13.54
+  },
+  {
+   "object": "big_outside",
+   "frame": 628,
+   "traveled": 94.9,
+   "error": [
+    3.89,
+    0.3,
+    0.06
+   ],
+   "label_distance": 11.51
+  },
+  {
+   "object": "big_outside",
+   "frame": 630,
+   "traveled": 98.8,
+   "error": [
+    3.95,
+    0.32,
+    0.06
+   ],
+   "label_distance": 7.47
+  },
+  {
+   "object": "big_outside",
+   "frame": 631,
+   "traveled": 101.1,
+   "error": [
+    3.76,
+    0.34,
+    0.05
+   ],
+   "label_distance": 5.45
+  },
+  {
+   "object": "big_above",
+   "frame": 674,
+   "traveled": 86.3,
+   "error": [
+    3.06,
+    0.5,
+    -0.08
+   ],
+   "label_distance": 20.22
+  },
+  {
+   "object": "big_above",
+   "frame": 675,
+   "traveled": 88.0,
+   "error": [
+    2.91,
+    0.49,
+    -0.09
+   ],
+   "label_distance": 18.41
+  },
+  {
+   "object": "big_above",
+   "frame": 677,
+   "traveled": 91.9,
+   "error": [
+    2.63,
+    0.52,
+    -0.09
+   ],
+   "label_distance": 14.8
+  },
+  {
+   "object": "big_above",
+   "frame": 678,
+   "traveled": 93.5,
+   "error": [
+    3.08,
+    0.52,
+    -0.08
+   ],
+   "label_distance": 13.01
+  },
+  {
+   "object": "big_above",
+   "frame": 680,
+   "traveled": 97.0,
+   "error": [
+    3.08,
+    0.53,
+    0.36
+   ],
+   "label_distance": 9.43
+  },
+  {
+   "object": "big_above",
+   "frame": 681,
+   "traveled": 98.9,
+   "error": [
+    2.84,
+    0.52,
+    0.59
+   ],
+   "label_distance": 7.64
+  },
+  {
+   "object": "long_low_on_rails",
+   "frame": 732,
+   "traveled": 86.6,
+   "error": [
+    1.13,
+    0.34,
+    -0.02
+   ],
+   "label_distance": 22.31
+  },
+  {
+   "object": "long_low_on_rails",
+   "frame": 734,
+   "traveled": 89.8,
+   "error": [
+    1.14,
+    0.34,
+    -0.04
+   ],
+   "label_distance": 19.05
+  },
+  {
+   "object": "long_low_on_rails",
+   "frame": 735,
+   "traveled": 91.3,
+   "error": [
+    1.25,
+    0.35,
+    -0.06
+   ],
+   "label_distance": 17.42
+  },
+  {
+   "object": "long_low_on_rails",
+   "frame": 737,
+   "traveled": 94.5,
+   "error": [
+    1.34,
+    0.36,
+    -0.07
+   ],
+   "label_distance": 14.17
+  },
+  {
+   "object": "long_low_on_rails",
+   "frame": 738,
+   "traveled": 96.3,
+   "error": [
+    1.2,
+    0.38,
+    -0.05
+   ],
+   "label_distance": 12.56
+  },
+  {
+   "object": "long_low_on_rails",
+   "frame": 740,
+   "traveled": 99.4,
+   "error": [
+    1.29,
+    0.39,
+    -0.04
+   ],
+   "label_distance": 9.33
+  },
+  {
+   "object": "thin_hanging",
+   "frame": 793,
+   "traveled": 112.5,
+   "error": [
+    1.41,
+    0.14,
+    -0.18
+   ],
+   "label_distance": 23.47
+  },
+  {
+   "object": "thin_hanging",
+   "frame": 795,
+   "traveled": 115.8,
+   "error": [
+    1.46,
+    0.12,
+    -0.19
+   ],
+   "label_distance": 20.13
+  },
+  {
+   "object": "thin_hanging",
+   "frame": 796,
+   "traveled": 117.4,
+   "error": [
+    1.48,
+    0.13,
+    -0.24
+   ],
+   "label_distance": 18.46
+  },
+  {
+   "object": "thin_hanging",
+   "frame": 798,
+   "traveled": 120.9,
+   "error": [
+    1.36,
+    0.14,
+    -0.26
+   ],
+   "label_distance": 15.11
+  },
+  {
+   "object": "thin_hanging",
+   "frame": 799,
+   "traveled": 122.8,
+   "error": [
+    1.11,
+    0.16,
+    -0.23
+   ],
+   "label_distance": 13.44
+  },
+  {
+   "object": "thin_hanging",
+   "frame": 801,
+   "traveled": 125.9,
+   "error": [
+    1.39,
+    0.2,
+    0.21
+   ],
+   "label_distance": 10.08
+  }
+ ],
+ "doubleT_obstacle": [
+  {
+   "object": "person_crossing_inside",
+   "frames": [
+    {
+     "dy_position": 0.96,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.34,
+     "n_all": 196,
+     "n_narrow": 196,
+     "n_up": 98,
+     "n_bed": 73,
+     "n_env": 84,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 14,
+     "dy_med": 1.03,
+     "h_med": 0.76,
+     "h_range": [
+      0.39,
+      1.38
+     ],
+     "dy_range": [
+      0.6,
+      1.34
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 98,
+     "h_bottom": 0.39,
+     "frame": 10,
+     "tag": "truth",
+     "range": 55.5,
+     "traveled": 0.0,
+     "center": [
+      55.7,
+      -0.54,
+      -1.78
+     ],
+     "track": {
+      "center": -0.052,
+      "yaw": -0.021307820171143334,
+      "curvature": -0.0001685358131673343,
+      "rail_offset": 0.327
+     },
+     "object": "person_crossing_inside",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": 0.25,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.34,
+     "n_all": 191,
+     "n_narrow": 191,
+     "n_up": 104,
+     "n_bed": 87,
+     "n_env": 96,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 8,
+     "dy_med": 0.24,
+     "h_med": 0.69,
+     "h_range": [
+      0.32,
+      1.31
+     ],
+     "dy_range": [
+      -0.1,
+      0.6
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 104,
+     "h_bottom": 0.32,
+     "frame": 20,
+     "tag": "truth",
+     "range": 55.7,
+     "traveled": 0.0,
+     "center": [
+      55.84,
+      -1.2,
+      -1.79
+     ],
+     "track": {
+      "center": -0.051,
+      "yaw": -0.021500686420704712,
+      "curvature": -0.00012436978891501777,
+      "rail_offset": 0.322
+     },
+     "object": "person_crossing_inside",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": -0.35,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.34,
+     "n_all": 199,
+     "n_narrow": 199,
+     "n_up": 88,
+     "n_bed": 109,
+     "n_env": 66,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 22,
+     "dy_med": -0.27,
+     "h_med": 0.55,
+     "h_range": [
+      0.3,
+      0.78
+     ],
+     "dy_range": [
+      -0.67,
+      0.12
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 87,
+     "h_bottom": 0.3,
+     "frame": 30,
+     "tag": "truth",
+     "range": 55.7,
+     "traveled": 0.0,
+     "center": [
+      55.96,
+      -1.81,
+      -2.11
+     ],
+     "track": {
+      "center": -0.051,
+      "yaw": -0.0214894887037689,
+      "curvature": -0.00013741175688679292,
+      "rail_offset": 0.331
+     },
+     "object": "person_crossing_inside",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": -0.48,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.34,
+     "n_all": 211,
+     "n_narrow": 211,
+     "n_up": 106,
+     "n_bed": 98,
+     "n_env": 58,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 48,
+     "dy_med": -0.18,
+     "h_med": 0.69,
+     "h_range": [
+      0.33,
+      0.82
+     ],
+     "dy_range": [
+      -0.67,
+      0.13
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 103,
+     "h_bottom": 0.33,
+     "frame": 40,
+     "tag": "truth",
+     "range": 55.7,
+     "traveled": 0.0,
+     "center": [
+      56.05,
+      -1.96,
+      -2.12
+     ],
+     "track": {
+      "center": -0.046,
+      "yaw": -0.02184051284113538,
+      "curvature": -0.0001284991124324308,
+      "rail_offset": 0.319
+     },
+     "object": "person_crossing_inside",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": -0.08,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.34,
+     "n_all": 209,
+     "n_narrow": 209,
+     "n_up": 108,
+     "n_bed": 101,
+     "n_env": 90,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 18,
+     "dy_med": 0.02,
+     "h_med": 0.71,
+     "h_range": [
+      0.34,
+      1.2
+     ],
+     "dy_range": [
+      -0.28,
+      0.33
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 108,
+     "h_bottom": 0.34,
+     "frame": 50,
+     "tag": "truth",
+     "range": 55.9,
+     "traveled": 0.0,
+     "center": [
+      56.12,
+      -1.55,
+      -1.94
+     ],
+     "track": {
+      "center": -0.041,
+      "yaw": -0.022422008191472213,
+      "curvature": -0.00011019153262830457,
+      "rail_offset": 0.317
+     },
+     "object": "person_crossing_inside",
+     "expected": "in_envelope"
+    }
+   ]
+  },
+  {
+   "object": "person_outside",
+   "frames": [
+    {
+     "dy_position": 2.48,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.29,
+     "n_all": 185,
+     "n_narrow": 185,
+     "n_up": 104,
+     "n_bed": 2,
+     "n_env": 0,
+     "n_side": 104,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": 2.44,
+     "h_med": 0.74,
+     "h_range": [
+      0.18,
+      1.29
+     ],
+     "dy_range": [
+      2.14,
+      2.83
+     ],
+     "ambiguous": [],
+     "class": "side",
+     "n_env_all": 0,
+     "h_bottom": 0.18,
+     "frame": 100,
+     "tag": "truth",
+     "range": 56.4,
+     "traveled": 0.0,
+     "center": [
+      56.58,
+      0.96,
+      -1.88
+     ],
+     "track": {
+      "center": -0.049,
+      "yaw": -0.02133639358577681,
+      "curvature": -0.00016984952926377833,
+      "rail_offset": 0.32
+     },
+     "object": "person_outside",
+     "expected": "side"
+    },
+    {
+     "dy_position": 2.23,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.29,
+     "n_all": 192,
+     "n_narrow": 192,
+     "n_up": 114,
+     "n_bed": 6,
+     "n_env": 0,
+     "n_side": 70,
+     "n_over": 0,
+     "n_fabric": 44,
+     "dy_med": 2.15,
+     "h_med": 0.75,
+     "h_range": [
+      0.2,
+      1.42
+     ],
+     "dy_range": [
+      1.89,
+      2.52
+     ],
+     "ambiguous": [],
+     "class": "side",
+     "n_env_all": 0,
+     "h_bottom": 0.2,
+     "frame": 131,
+     "tag": "truth",
+     "range": 54.8,
+     "traveled": 0.0,
+     "center": [
+      54.95,
+      0.74,
+      -1.76
+     ],
+     "track": {
+      "center": -0.052,
+      "yaw": -0.020849319178589495,
+      "curvature": -0.0001961955328780131,
+      "rail_offset": 0.318
+     },
+     "object": "person_outside",
+     "expected": "side"
+    },
+    {
+     "dy_position": 2.3,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.29,
+     "n_all": 205,
+     "n_narrow": 205,
+     "n_up": 119,
+     "n_bed": 8,
+     "n_env": 0,
+     "n_side": 43,
+     "n_over": 0,
+     "n_fabric": 76,
+     "dy_med": 2.2,
+     "h_med": 1.06,
+     "h_range": [
+      0.54,
+      1.41
+     ],
+     "dy_range": [
+      1.96,
+      2.54
+     ],
+     "ambiguous": [],
+     "class": "side",
+     "n_env_all": 0,
+     "h_bottom": 0.54,
+     "frame": 154,
+     "tag": "truth",
+     "range": 54.7,
+     "traveled": 0.0,
+     "center": [
+      54.78,
+      0.82,
+      -1.82
+     ],
+     "track": {
+      "center": -0.048,
+      "yaw": -0.021178412608650197,
+      "curvature": -0.00017645617435785155,
+      "rail_offset": 0.319
+     },
+     "object": "person_outside",
+     "expected": "side"
+    },
+    {
+     "dy_position": 2.1,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.29,
+     "n_all": 5531,
+     "n_narrow": 5531,
+     "n_up": 1874,
+     "n_bed": 730,
+     "n_env": 0,
+     "n_side": 1816,
+     "n_over": 0,
+     "n_fabric": 58,
+     "dy_med": 2.14,
+     "h_med": 0.99,
+     "h_range": [
+      0.31,
+      1.33
+     ],
+     "dy_range": [
+      1.7,
+      2.5
+     ],
+     "ambiguous": [],
+     "class": "side",
+     "n_env_all": 0,
+     "h_bottom": 0.31,
+     "frame": 169,
+     "tag": "truth",
+     "range": 6.3,
+     "traveled": 0.0,
+     "center": [
+      6.54,
+      1.91,
+      -1.05
+     ],
+     "track": {
+      "center": -0.042,
+      "yaw": -0.02177928259237078,
+      "curvature": -0.0001587422513240389,
+      "rail_offset": 0.316
+     },
+     "object": "person_outside",
+     "expected": "side"
+    },
+    {
+     "dy_position": 2.31,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.29,
+     "n_all": 201,
+     "n_narrow": 201,
+     "n_up": 118,
+     "n_bed": 6,
+     "n_env": 0,
+     "n_side": 43,
+     "n_over": 0,
+     "n_fabric": 75,
+     "dy_med": 2.15,
+     "h_med": 1.08,
+     "h_range": [
+      0.56,
+      1.43
+     ],
+     "dy_range": [
+      1.97,
+      2.54
+     ],
+     "ambiguous": [],
+     "class": "side",
+     "n_env_all": 0,
+     "h_bottom": 0.56,
+     "frame": 185,
+     "tag": "truth",
+     "range": 54.6,
+     "traveled": 0.0,
+     "center": [
+      54.77,
+      0.82,
+      -1.82
+     ],
+     "track": {
+      "center": -0.057,
+      "yaw": -0.02034187175947346,
+      "curvature": -0.0002069174632223171,
+      "rail_offset": 0.324
+     },
+     "object": "person_outside",
+     "expected": "side"
+    }
+   ]
+  },
+  {
+   "object": "object_on_rail",
+   "frames": [
+    {
+     "dy_position": -0.92,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 62,
+     "n_narrow": 62,
+     "n_up": 7,
+     "n_bed": 49,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 7,
+     "dy_med": -0.97,
+     "h_med": 0.18,
+     "h_range": [
+      0.18,
+      0.43
+     ],
+     "dy_range": [
+      -1.68,
+      -0.87
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 5,
+     "h_bottom": 0.18,
+     "on_fabric": true,
+     "n_fabric_tight": 7,
+     "frame": 75,
+     "tag": "truth",
+     "range": 56.1,
+     "traveled": 0.0,
+     "center": [
+      56.42,
+      -2.43,
+      -2.43
+     ],
+     "track": {
+      "center": -0.054,
+      "yaw": -0.020815727903774082,
+      "curvature": -0.0001739512810315654,
+      "rail_offset": 0.324
+     },
+     "object": "object_on_rail",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": -0.91,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 60,
+     "n_narrow": 60,
+     "n_up": 9,
+     "n_bed": 43,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 9,
+     "dy_med": -1.05,
+     "h_med": 0.18,
+     "h_range": [
+      0.18,
+      0.43
+     ],
+     "dy_range": [
+      -1.66,
+      -0.86
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 5,
+     "h_bottom": 0.18,
+     "on_fabric": true,
+     "n_fabric_tight": 9,
+     "frame": 100,
+     "tag": "truth",
+     "range": 56.1,
+     "traveled": 0.0,
+     "center": [
+      56.32,
+      -2.43,
+      -2.43
+     ],
+     "track": {
+      "center": -0.049,
+      "yaw": -0.02133874576899168,
+      "curvature": -0.000169808648724052,
+      "rail_offset": 0.32
+     },
+     "object": "object_on_rail",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": -0.91,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 58,
+     "n_narrow": 58,
+     "n_up": 6,
+     "n_bed": 47,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 6,
+     "dy_med": -0.96,
+     "h_med": 0.19,
+     "h_range": [
+      0.19,
+      0.44
+     ],
+     "dy_range": [
+      -1.46,
+      -0.86
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 5,
+     "h_bottom": 0.19,
+     "on_fabric": true,
+     "n_fabric_tight": 6,
+     "frame": 125,
+     "tag": "truth",
+     "range": 56.1,
+     "traveled": 0.0,
+     "center": [
+      56.32,
+      -2.43,
+      -2.43
+     ],
+     "track": {
+      "center": -0.052,
+      "yaw": -0.02105579176106736,
+      "curvature": -0.00017810003359678924,
+      "rail_offset": 0.322
+     },
+     "object": "object_on_rail",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": -0.94,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 56,
+     "n_narrow": 56,
+     "n_up": 9,
+     "n_bed": 40,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 9,
+     "dy_med": -1.07,
+     "h_med": 0.2,
+     "h_range": [
+      0.2,
+      0.45
+     ],
+     "dy_range": [
+      -1.68,
+      -0.88
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "in_envelope",
+     "n_env_all": 5,
+     "h_bottom": 0.2,
+     "on_fabric": true,
+     "n_fabric_tight": 9,
+     "frame": 150,
+     "tag": "truth",
+     "range": 56.1,
+     "traveled": 0.0,
+     "center": [
+      56.31,
+      -2.43,
+      -2.43
+     ],
+     "track": {
+      "center": -0.052,
+      "yaw": -0.02084103469018961,
+      "curvature": -0.0001688851775074295,
+      "rail_offset": 0.321
+     },
+     "object": "object_on_rail",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": -0.86,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.0,
+     "n_all": 45,
+     "n_narrow": 45,
+     "n_up": 3,
+     "n_bed": 37,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 3,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.6,
+      0.46
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 1,
+     "frame": 175,
+     "tag": "truth",
+     "range": 56.1,
+     "traveled": 0.0,
+     "center": [
+      56.31,
+      -2.37,
+      -2.43
+     ],
+     "track": {
+      "center": -0.052,
+      "yaw": -0.020887495599052147,
+      "curvature": -0.00017424236865721285,
+      "rail_offset": 0.323
+     },
+     "object": "object_on_rail",
+     "expected": "in_envelope"
+    }
+   ]
+  }
+ ],
+ "synthetic": [
+  {
+   "bag": "roundT_doubleT",
+   "frame": 150,
+   "frames": [
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 710,
+     "n_narrow": 710,
+     "n_up": 145,
+     "n_bed": 565,
+     "n_env": 113,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 32,
+     "dy_med": 0.03,
+     "h_med": 0.7,
+     "h_range": [
+      0.3,
+      1.0
+     ],
+     "dy_range": [
+      -0.24,
+      0.25
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 145,
+     "h_bottom": 0.3,
+     "frame": 150,
+     "tag": "box_in_envelope|in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -1.43,
+      -0.5
+     ],
+     "track": {
+      "center": 0.013,
+      "yaw": -0.05719305578364126,
+      "curvature": -0.0007566679839058734,
+      "rail_offset": 0.382
+     },
+     "case": "box_in_envelope",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": 1.75,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 483,
+     "n_narrow": 483,
+     "n_up": 150,
+     "n_bed": 191,
+     "n_env": 0,
+     "n_side": 136,
+     "n_over": 0,
+     "n_fabric": 14,
+     "dy_med": 1.76,
+     "h_med": 0.76,
+     "h_range": [
+      0.31,
+      1.2
+     ],
+     "dy_range": [
+      1.65,
+      1.85
+     ],
+     "ambiguous": [],
+     "class": "side",
+     "n_env_all": 0,
+     "h_bottom": 0.31,
+     "frame": 150,
+     "tag": "box_beside_wall|side",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      0.32,
+      -0.35
+     ],
+     "track": {
+      "center": 0.013,
+      "yaw": -0.05719305578364126,
+      "curvature": -0.0007566679839058734,
+      "rail_offset": 0.382
+     },
+     "case": "box_beside_wall",
+     "expected": "side"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 322,
+     "n_narrow": 322,
+     "n_up": 322,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 150,
+     "n_fabric": 172,
+     "dy_med": 0.03,
+     "h_med": 3.36,
+     "h_range": [
+      3.25,
+      3.45
+     ],
+     "dy_range": [
+      -0.29,
+      0.3
+     ],
+     "ambiguous": [],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.25,
+     "frame": 150,
+     "tag": "plate_overhead|overhead",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -1.43,
+      2.3
+     ],
+     "track": {
+      "center": 0.013,
+      "yaw": -0.05719305578364126,
+      "curvature": -0.0007566679839058734,
+      "rail_offset": 0.382
+     },
+     "case": "plate_overhead",
+     "expected": "overhead"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 673,
+     "n_narrow": 673,
+     "n_up": 1,
+     "n_bed": 672,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 1,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.61,
+      0.22
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 1,
+     "frame": 150,
+     "tag": "bed_only|bed_rail",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -1.43,
+      -1.32
+     ],
+     "track": {
+      "center": 0.013,
+      "yaw": -0.05719305578364126,
+      "curvature": -0.0007566679839058734,
+      "rail_offset": 0.382
+     },
+     "case": "bed_only",
+     "expected": "bed_rail"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 0,
+     "n_narrow": 0,
+     "n_up": 0,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": null,
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "phantom",
+     "frame": 150,
+     "tag": "empty_above_the_crown|phantom",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -1.43,
+      8.2
+     ],
+     "track": {
+      "center": 0.013,
+      "yaw": -0.05719305578364126,
+      "curvature": -0.0007566679839058734,
+      "rail_offset": 0.382
+     },
+     "case": "empty_above_the_crown",
+     "expected": "phantom"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 445,
+     "n_narrow": 445,
+     "n_up": 1,
+     "n_bed": 444,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 1,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.3,
+      0.22
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 1,
+     "frame": 150,
+     "tag": "air_in_envelope|not_in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -1.43,
+      -0.3
+     ],
+     "track": {
+      "center": 0.013,
+      "yaw": -0.05719305578364126,
+      "curvature": -0.0007566679839058734,
+      "rail_offset": 0.382
+     },
+     "case": "air_in_envelope",
+     "expected": "not_in_envelope"
+    }
+   ]
+  },
+  {
+   "bag": "roundT_pressureGate_roundT",
+   "frame": 150,
+   "frames": [
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 670,
+     "n_narrow": 670,
+     "n_up": 144,
+     "n_bed": 526,
+     "n_env": 113,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 31,
+     "dy_med": 0.03,
+     "h_med": 0.7,
+     "h_range": [
+      0.3,
+      1.0
+     ],
+     "dy_range": [
+      -0.24,
+      0.25
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 144,
+     "h_bottom": 0.3,
+     "frame": 150,
+     "tag": "box_in_envelope|in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -1.06,
+      -0.59
+     ],
+     "track": {
+      "center": -0.026,
+      "yaw": -0.03732316314039562,
+      "curvature": -0.0008952407473113064,
+      "rail_offset": 0.376
+     },
+     "case": "box_in_envelope",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": 1.75,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 1544,
+     "n_narrow": 1544,
+     "n_up": 1104,
+     "n_bed": 227,
+     "n_env": 0,
+     "n_side": 37,
+     "n_over": 0,
+     "n_fabric": 1067,
+     "dy_med": 1.73,
+     "h_med": 1.03,
+     "h_range": [
+      0.9,
+      1.2
+     ],
+     "dy_range": [
+      1.65,
+      1.79
+     ],
+     "ambiguous": [],
+     "class": "side",
+     "n_env_all": 13,
+     "h_bottom": 0.9,
+     "frame": 150,
+     "tag": "box_beside_wall|side",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      0.69,
+      -0.44
+     ],
+     "track": {
+      "center": -0.026,
+      "yaw": -0.03732316314039562,
+      "curvature": -0.0008952407473113064,
+      "rail_offset": 0.376
+     },
+     "case": "box_beside_wall",
+     "expected": "side"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 360,
+     "n_narrow": 360,
+     "n_up": 360,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 150,
+     "n_fabric": 210,
+     "dy_med": 0.03,
+     "h_med": 3.36,
+     "h_range": [
+      3.25,
+      3.45
+     ],
+     "dy_range": [
+      -0.29,
+      0.3
+     ],
+     "ambiguous": [],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.25,
+     "frame": 150,
+     "tag": "plate_overhead|overhead",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -1.06,
+      2.21
+     ],
+     "track": {
+      "center": -0.026,
+      "yaw": -0.03732316314039562,
+      "curvature": -0.0008952407473113064,
+      "rail_offset": 0.376
+     },
+     "case": "plate_overhead",
+     "expected": "overhead"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 643,
+     "n_narrow": 643,
+     "n_up": 0,
+     "n_bed": 643,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.65,
+      -0.06
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 150,
+     "tag": "bed_only|bed_rail",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -1.06,
+      -1.41
+     ],
+     "track": {
+      "center": -0.026,
+      "yaw": -0.03732316314039562,
+      "curvature": -0.0008952407473113064,
+      "rail_offset": 0.376
+     },
+     "case": "bed_only",
+     "expected": "bed_rail"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 0,
+     "n_narrow": 0,
+     "n_up": 0,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": null,
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "phantom",
+     "frame": 150,
+     "tag": "empty_above_the_crown|phantom",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -1.06,
+      8.11
+     ],
+     "track": {
+      "center": -0.026,
+      "yaw": -0.03732316314039562,
+      "curvature": -0.0008952407473113064,
+      "rail_offset": 0.376
+     },
+     "case": "empty_above_the_crown",
+     "expected": "phantom"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 283,
+     "n_narrow": 283,
+     "n_up": 0,
+     "n_bed": 283,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.3,
+      -0.06
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 150,
+     "tag": "air_in_envelope|not_in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -1.06,
+      -0.39
+     ],
+     "track": {
+      "center": -0.026,
+      "yaw": -0.03732316314039562,
+      "curvature": -0.0008952407473113064,
+      "rail_offset": 0.376
+     },
+     "case": "air_in_envelope",
+     "expected": "not_in_envelope"
+    }
+   ]
+  },
+  {
+   "bag": "roundT_squareT_pressureGate_squareT",
+   "frame": 200,
+   "frames": [
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 723,
+     "n_narrow": 723,
+     "n_up": 144,
+     "n_bed": 579,
+     "n_env": 113,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 31,
+     "dy_med": 0.03,
+     "h_med": 0.7,
+     "h_range": [
+      0.3,
+      1.0
+     ],
+     "dy_range": [
+      -0.24,
+      0.25
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 144,
+     "h_bottom": 0.3,
+     "frame": 200,
+     "tag": "box_in_envelope|in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.14,
+      -0.73
+     ],
+     "track": {
+      "center": -0.002,
+      "yaw": -0.006429045971321821,
+      "curvature": 3.3826749767140156e-05,
+      "rail_offset": 0.249
+     },
+     "case": "box_in_envelope",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": 1.75,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 1209,
+     "n_narrow": 1209,
+     "n_up": 926,
+     "n_bed": 165,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 926,
+     "dy_med": 1.82,
+     "h_med": 0.92,
+     "h_range": [
+      0.16,
+      1.75
+     ],
+     "dy_range": [
+      1.35,
+      1.98
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "side",
+     "n_env_all": 18,
+     "h_bottom": 0.16,
+     "on_fabric": true,
+     "n_fabric_tight": 926,
+     "frame": 200,
+     "tag": "box_beside_wall|side",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      1.61,
+      -0.58
+     ],
+     "track": {
+      "center": -0.002,
+      "yaw": -0.006429045971321821,
+      "curvature": 3.3826749767140156e-05,
+      "rail_offset": 0.249
+     },
+     "case": "box_beside_wall",
+     "expected": "side"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 410,
+     "n_narrow": 410,
+     "n_up": 410,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 118,
+     "n_fabric": 292,
+     "dy_med": 0.02,
+     "h_med": 3.34,
+     "h_range": [
+      3.25,
+      3.4
+     ],
+     "dy_range": [
+      -0.29,
+      0.3
+     ],
+     "ambiguous": [],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.25,
+     "frame": 200,
+     "tag": "plate_overhead|overhead",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.14,
+      2.07
+     ],
+     "track": {
+      "center": -0.002,
+      "yaw": -0.006429045971321821,
+      "curvature": 3.3826749767140156e-05,
+      "rail_offset": 0.249
+     },
+     "case": "plate_overhead",
+     "expected": "overhead"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 577,
+     "n_narrow": 577,
+     "n_up": 0,
+     "n_bed": 577,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.51,
+      0.02
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 200,
+     "tag": "bed_only|bed_rail",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.14,
+      -1.56
+     ],
+     "track": {
+      "center": -0.002,
+      "yaw": -0.006429045971321821,
+      "curvature": 3.3826749767140156e-05,
+      "rail_offset": 0.249
+     },
+     "case": "bed_only",
+     "expected": "bed_rail"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 0,
+     "n_narrow": 0,
+     "n_up": 0,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": null,
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "phantom",
+     "frame": 200,
+     "tag": "empty_above_the_crown|phantom",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.14,
+      7.97
+     ],
+     "track": {
+      "center": -0.002,
+      "yaw": -0.006429045971321821,
+      "curvature": 3.3826749767140156e-05,
+      "rail_offset": 0.249
+     },
+     "case": "empty_above_the_crown",
+     "expected": "phantom"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 492,
+     "n_narrow": 492,
+     "n_up": 0,
+     "n_bed": 492,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.3,
+      0.02
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 200,
+     "tag": "air_in_envelope|not_in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.14,
+      -0.53
+     ],
+     "track": {
+      "center": -0.002,
+      "yaw": -0.006429045971321821,
+      "curvature": 3.3826749767140156e-05,
+      "rail_offset": 0.249
+     },
+     "case": "air_in_envelope",
+     "expected": "not_in_envelope"
+    }
+   ]
+  },
+  {
+   "bag": "squareT_platform_squareT_switch",
+   "frame": 250,
+   "frames": [
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 734,
+     "n_narrow": 734,
+     "n_up": 144,
+     "n_bed": 590,
+     "n_env": 113,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 31,
+     "dy_med": 0.03,
+     "h_med": 0.7,
+     "h_range": [
+      0.3,
+      1.0
+     ],
+     "dy_range": [
+      -0.24,
+      0.25
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 144,
+     "h_bottom": 0.3,
+     "frame": 250,
+     "tag": "box_in_envelope|in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.15,
+      -0.62
+     ],
+     "track": {
+      "center": -0.055,
+      "yaw": -0.004456780525367258,
+      "curvature": -5.351652432055751e-06,
+      "rail_offset": 0.432
+     },
+     "case": "box_in_envelope",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": 1.75,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 1135,
+     "n_narrow": 1135,
+     "n_up": 712,
+     "n_bed": 194,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 712,
+     "dy_med": 1.66,
+     "h_med": 0.77,
+     "h_range": [
+      0.15,
+      1.74
+     ],
+     "dy_range": [
+      1.35,
+      2.38
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "side",
+     "n_env_all": 19,
+     "h_bottom": 0.15,
+     "on_fabric": true,
+     "n_fabric_tight": 712,
+     "frame": 250,
+     "tag": "box_beside_wall|side",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      1.6,
+      -0.47
+     ],
+     "track": {
+      "center": -0.055,
+      "yaw": -0.004456780525367258,
+      "curvature": -5.351652432055751e-06,
+      "rail_offset": 0.432
+     },
+     "case": "box_beside_wall",
+     "expected": "side"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 341,
+     "n_narrow": 341,
+     "n_up": 341,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 91,
+     "n_fabric": 250,
+     "dy_med": -0.14,
+     "h_med": 3.32,
+     "h_range": [
+      3.25,
+      3.45
+     ],
+     "dy_range": [
+      -0.29,
+      0.26
+     ],
+     "ambiguous": [],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.25,
+     "frame": 250,
+     "tag": "plate_overhead|overhead",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.15,
+      2.18
+     ],
+     "track": {
+      "center": -0.055,
+      "yaw": -0.004456780525367258,
+      "curvature": -5.351652432055751e-06,
+      "rail_offset": 0.432
+     },
+     "case": "plate_overhead",
+     "expected": "overhead"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 632,
+     "n_narrow": 632,
+     "n_up": 0,
+     "n_bed": 632,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.53,
+      -0.02
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 250,
+     "tag": "bed_only|bed_rail",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.15,
+      -1.45
+     ],
+     "track": {
+      "center": -0.055,
+      "yaw": -0.004456780525367258,
+      "curvature": -5.351652432055751e-06,
+      "rail_offset": 0.432
+     },
+     "case": "bed_only",
+     "expected": "bed_rail"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 0,
+     "n_narrow": 0,
+     "n_up": 0,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": null,
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "phantom",
+     "frame": 250,
+     "tag": "empty_above_the_crown|phantom",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.15,
+      8.08
+     ],
+     "track": {
+      "center": -0.055,
+      "yaw": -0.004456780525367258,
+      "curvature": -5.351652432055751e-06,
+      "rail_offset": 0.432
+     },
+     "case": "empty_above_the_crown",
+     "expected": "phantom"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 333,
+     "n_narrow": 333,
+     "n_up": 0,
+     "n_bed": 333,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.3,
+      -0.02
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 250,
+     "tag": "air_in_envelope|not_in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.15,
+      -0.42
+     ],
+     "track": {
+      "center": -0.055,
+      "yaw": -0.004456780525367258,
+      "curvature": -5.351652432055751e-06,
+      "rail_offset": 0.432
+     },
+     "case": "air_in_envelope",
+     "expected": "not_in_envelope"
+    }
+   ]
+  },
+  {
+   "bag": "doubleT_platform",
+   "frame": 60,
+   "frames": [
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 565,
+     "n_narrow": 565,
+     "n_up": 144,
+     "n_bed": 421,
+     "n_env": 113,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 31,
+     "dy_med": 0.03,
+     "h_med": 0.7,
+     "h_range": [
+      0.3,
+      1.0
+     ],
+     "dy_range": [
+      -0.24,
+      0.25
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 144,
+     "h_bottom": 0.3,
+     "frame": 60,
+     "tag": "box_in_envelope|in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.18,
+      -0.66
+     ],
+     "track": {
+      "center": 0.002,
+      "yaw": -0.010524307359493269,
+      "curvature": 0.00020955680254497683,
+      "rail_offset": 0.489
+     },
+     "case": "box_in_envelope",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": 1.75,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 1109,
+     "n_narrow": 1109,
+     "n_up": 805,
+     "n_bed": 197,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 805,
+     "dy_med": 1.89,
+     "h_med": 0.92,
+     "h_range": [
+      0.19,
+      1.75
+     ],
+     "dy_range": [
+      1.42,
+      2.3
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "side",
+     "n_env_all": 0,
+     "h_bottom": 0.19,
+     "on_fabric": true,
+     "n_fabric_tight": 805,
+     "frame": 60,
+     "tag": "box_beside_wall|side",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      1.57,
+      -0.51
+     ],
+     "track": {
+      "center": 0.002,
+      "yaw": -0.010524307359493269,
+      "curvature": 0.00020955680254497683,
+      "rail_offset": 0.489
+     },
+     "case": "box_beside_wall",
+     "expected": "side"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 150,
+     "n_narrow": 150,
+     "n_up": 150,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 150,
+     "n_fabric": 0,
+     "dy_med": 0.03,
+     "h_med": 3.36,
+     "h_range": [
+      3.25,
+      3.45
+     ],
+     "dy_range": [
+      -0.29,
+      0.3
+     ],
+     "ambiguous": [],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.25,
+     "frame": 60,
+     "tag": "plate_overhead|overhead",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.18,
+      2.14
+     ],
+     "track": {
+      "center": 0.002,
+      "yaw": -0.010524307359493269,
+      "curvature": 0.00020955680254497683,
+      "rail_offset": 0.489
+     },
+     "case": "plate_overhead",
+     "expected": "overhead"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 691,
+     "n_narrow": 691,
+     "n_up": 0,
+     "n_bed": 691,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.56,
+      0.03
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 60,
+     "tag": "bed_only|bed_rail",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.18,
+      -1.49
+     ],
+     "track": {
+      "center": 0.002,
+      "yaw": -0.010524307359493269,
+      "curvature": 0.00020955680254497683,
+      "rail_offset": 0.489
+     },
+     "case": "bed_only",
+     "expected": "bed_rail"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 0,
+     "n_narrow": 0,
+     "n_up": 0,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": null,
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "phantom",
+     "frame": 60,
+     "tag": "empty_above_the_crown|phantom",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.18,
+      8.04
+     ],
+     "track": {
+      "center": 0.002,
+      "yaw": -0.010524307359493269,
+      "curvature": 0.00020955680254497683,
+      "rail_offset": 0.489
+     },
+     "case": "empty_above_the_crown",
+     "expected": "phantom"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 375,
+     "n_narrow": 375,
+     "n_up": 0,
+     "n_bed": 375,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.3,
+      0.03
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 60,
+     "tag": "air_in_envelope|not_in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.18,
+      -0.46
+     ],
+     "track": {
+      "center": 0.002,
+      "yaw": -0.010524307359493269,
+      "curvature": 0.00020955680254497683,
+      "rail_offset": 0.489
+     },
+     "case": "air_in_envelope",
+     "expected": "not_in_envelope"
+    }
+   ]
+  },
+  {
+   "bag": "new_data",
+   "frame": 3000,
+   "frames": [
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 743,
+     "n_narrow": 743,
+     "n_up": 144,
+     "n_bed": 599,
+     "n_env": 113,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 31,
+     "dy_med": 0.03,
+     "h_med": 0.7,
+     "h_range": [
+      0.3,
+      1.0
+     ],
+     "dy_range": [
+      -0.24,
+      0.25
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 144,
+     "h_bottom": 0.3,
+     "frame": 3000,
+     "tag": "box_in_envelope|in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.12,
+      -0.67
+     ],
+     "track": {
+      "center": -0.05,
+      "yaw": -0.002362181582593577,
+      "curvature": -6.277424627683094e-05,
+      "rail_offset": 0.254
+     },
+     "case": "box_in_envelope",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": 1.75,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 1177,
+     "n_narrow": 1177,
+     "n_up": 819,
+     "n_bed": 212,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 819,
+     "dy_med": 1.94,
+     "h_med": 0.82,
+     "h_range": [
+      0.17,
+      1.74
+     ],
+     "dy_range": [
+      1.35,
+      1.96
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "side",
+     "n_env_all": 28,
+     "h_bottom": 0.17,
+     "on_fabric": true,
+     "n_fabric_tight": 819,
+     "frame": 3000,
+     "tag": "box_beside_wall|side",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      1.63,
+      -0.52
+     ],
+     "track": {
+      "center": -0.05,
+      "yaw": -0.002362181582593577,
+      "curvature": -6.277424627683094e-05,
+      "rail_offset": 0.254
+     },
+     "case": "box_beside_wall",
+     "expected": "side"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 152,
+     "n_narrow": 152,
+     "n_up": 152,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 150,
+     "n_fabric": 2,
+     "dy_med": 0.03,
+     "h_med": 3.36,
+     "h_range": [
+      3.25,
+      3.45
+     ],
+     "dy_range": [
+      -0.29,
+      0.3
+     ],
+     "ambiguous": [],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.25,
+     "frame": 3000,
+     "tag": "plate_overhead|overhead",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.12,
+      2.13
+     ],
+     "track": {
+      "center": -0.05,
+      "yaw": -0.002362181582593577,
+      "curvature": -6.277424627683094e-05,
+      "rail_offset": 0.254
+     },
+     "case": "plate_overhead",
+     "expected": "overhead"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 593,
+     "n_narrow": 593,
+     "n_up": 0,
+     "n_bed": 593,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.28,
+      0.01
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 3000,
+     "tag": "bed_only|bed_rail",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.12,
+      -1.49
+     ],
+     "track": {
+      "center": -0.05,
+      "yaw": -0.002362181582593577,
+      "curvature": -6.277424627683094e-05,
+      "rail_offset": 0.254
+     },
+     "case": "bed_only",
+     "expected": "bed_rail"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 0,
+     "n_narrow": 0,
+     "n_up": 0,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": null,
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "phantom",
+     "frame": 3000,
+     "tag": "empty_above_the_crown|phantom",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.12,
+      8.03
+     ],
+     "track": {
+      "center": -0.05,
+      "yaw": -0.002362181582593577,
+      "curvature": -6.277424627683094e-05,
+      "rail_offset": 0.254
+     },
+     "case": "empty_above_the_crown",
+     "expected": "phantom"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 593,
+     "n_narrow": 593,
+     "n_up": 0,
+     "n_bed": 593,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.28,
+      0.01
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 3000,
+     "tag": "air_in_envelope|not_in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.12,
+      -0.47
+     ],
+     "track": {
+      "center": -0.05,
+      "yaw": -0.002362181582593577,
+      "curvature": -6.277424627683094e-05,
+      "rail_offset": 0.254
+     },
+     "case": "air_in_envelope",
+     "expected": "not_in_envelope"
+    }
+   ]
+  },
+  {
+   "bag": "new_data",
+   "frame": 6000,
+   "frames": [
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 664,
+     "n_narrow": 664,
+     "n_up": 144,
+     "n_bed": 520,
+     "n_env": 113,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 31,
+     "dy_med": 0.03,
+     "h_med": 0.7,
+     "h_range": [
+      0.3,
+      1.0
+     ],
+     "dy_range": [
+      -0.24,
+      0.25
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 144,
+     "h_bottom": 0.3,
+     "frame": 6000,
+     "tag": "box_in_envelope|in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.11,
+      -0.68
+     ],
+     "track": {
+      "center": 0.203,
+      "yaw": -0.035020202839428596,
+      "curvature": 0.001891002337406306,
+      "rail_offset": 0.273
+     },
+     "case": "box_in_envelope",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": 1.75,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 514,
+     "n_narrow": 514,
+     "n_up": 206,
+     "n_bed": 181,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 206,
+     "dy_med": 1.71,
+     "h_med": 0.51,
+     "h_range": [
+      0.16,
+      1.2
+     ],
+     "dy_range": [
+      1.35,
+      1.85
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "side",
+     "n_env_all": 13,
+     "h_bottom": 0.16,
+     "on_fabric": true,
+     "n_fabric_tight": 206,
+     "frame": 6000,
+     "tag": "box_beside_wall|side",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      1.64,
+      -0.53
+     ],
+     "track": {
+      "center": 0.203,
+      "yaw": -0.035020202839428596,
+      "curvature": 0.001891002337406306,
+      "rail_offset": 0.273
+     },
+     "case": "box_beside_wall",
+     "expected": "side"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 337,
+     "n_narrow": 337,
+     "n_up": 337,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 150,
+     "n_fabric": 187,
+     "dy_med": 0.03,
+     "h_med": 3.36,
+     "h_range": [
+      3.25,
+      3.45
+     ],
+     "dy_range": [
+      -0.29,
+      0.3
+     ],
+     "ambiguous": [],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.25,
+     "frame": 6000,
+     "tag": "plate_overhead|overhead",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.11,
+      2.12
+     ],
+     "track": {
+      "center": 0.203,
+      "yaw": -0.035020202839428596,
+      "curvature": 0.001891002337406306,
+      "rail_offset": 0.273
+     },
+     "case": "plate_overhead",
+     "expected": "overhead"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 647,
+     "n_narrow": 647,
+     "n_up": 0,
+     "n_bed": 647,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.57,
+      0.03
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 6000,
+     "tag": "bed_only|bed_rail",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.11,
+      -1.5
+     ],
+     "track": {
+      "center": 0.203,
+      "yaw": -0.035020202839428596,
+      "curvature": 0.001891002337406306,
+      "rail_offset": 0.273
+     },
+     "case": "bed_only",
+     "expected": "bed_rail"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 0,
+     "n_narrow": 0,
+     "n_up": 0,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": null,
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "phantom",
+     "frame": 6000,
+     "tag": "empty_above_the_crown|phantom",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.11,
+      8.02
+     ],
+     "track": {
+      "center": 0.203,
+      "yaw": -0.035020202839428596,
+      "curvature": 0.001891002337406306,
+      "rail_offset": 0.273
+     },
+     "case": "empty_above_the_crown",
+     "expected": "phantom"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 514,
+     "n_narrow": 514,
+     "n_up": 0,
+     "n_bed": 514,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.3,
+      0.03
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 6000,
+     "tag": "air_in_envelope|not_in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.11,
+      -0.48
+     ],
+     "track": {
+      "center": 0.203,
+      "yaw": -0.035020202839428596,
+      "curvature": 0.001891002337406306,
+      "rail_offset": 0.273
+     },
+     "case": "air_in_envelope",
+     "expected": "not_in_envelope"
+    }
+   ]
+  },
+  {
+   "bag": "new_data",
+   "frame": 9000,
+   "frames": [
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 689,
+     "n_narrow": 689,
+     "n_up": 144,
+     "n_bed": 545,
+     "n_env": 113,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 31,
+     "dy_med": 0.03,
+     "h_med": 0.7,
+     "h_range": [
+      0.3,
+      1.0
+     ],
+     "dy_range": [
+      -0.24,
+      0.25
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 144,
+     "h_bottom": 0.3,
+     "frame": 9000,
+     "tag": "box_in_envelope|in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      1.15,
+      -0.48
+     ],
+     "track": {
+      "center": 0.076,
+      "yaw": 0.02257478490907989,
+      "curvature": 0.0024029358820533636,
+      "rail_offset": 0.364
+     },
+     "case": "box_in_envelope",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": 1.75,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 1199,
+     "n_narrow": 1199,
+     "n_up": 833,
+     "n_bed": 192,
+     "n_env": 0,
+     "n_side": 37,
+     "n_over": 0,
+     "n_fabric": 796,
+     "dy_med": 1.73,
+     "h_med": 1.03,
+     "h_range": [
+      0.9,
+      1.2
+     ],
+     "dy_range": [
+      1.65,
+      1.79
+     ],
+     "ambiguous": [],
+     "class": "side",
+     "n_env_all": 7,
+     "h_bottom": 0.9,
+     "frame": 9000,
+     "tag": "box_beside_wall|side",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      2.9,
+      -0.33
+     ],
+     "track": {
+      "center": 0.076,
+      "yaw": 0.02257478490907989,
+      "curvature": 0.0024029358820533636,
+      "rail_offset": 0.364
+     },
+     "case": "box_beside_wall",
+     "expected": "side"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 359,
+     "n_narrow": 359,
+     "n_up": 359,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 150,
+     "n_fabric": 209,
+     "dy_med": 0.03,
+     "h_med": 3.36,
+     "h_range": [
+      3.25,
+      3.45
+     ],
+     "dy_range": [
+      -0.29,
+      0.3
+     ],
+     "ambiguous": [],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.25,
+     "frame": 9000,
+     "tag": "plate_overhead|overhead",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      1.15,
+      2.32
+     ],
+     "track": {
+      "center": 0.076,
+      "yaw": 0.02257478490907989,
+      "curvature": 0.0024029358820533636,
+      "rail_offset": 0.364
+     },
+     "case": "plate_overhead",
+     "expected": "overhead"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 654,
+     "n_narrow": 654,
+     "n_up": 0,
+     "n_bed": 654,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.64,
+      -0.07
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 9000,
+     "tag": "bed_only|bed_rail",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      1.15,
+      -1.31
+     ],
+     "track": {
+      "center": 0.076,
+      "yaw": 0.02257478490907989,
+      "curvature": 0.0024029358820533636,
+      "rail_offset": 0.364
+     },
+     "case": "bed_only",
+     "expected": "bed_rail"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 0,
+     "n_narrow": 0,
+     "n_up": 0,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": null,
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "phantom",
+     "frame": 9000,
+     "tag": "empty_above_the_crown|phantom",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      1.15,
+      8.22
+     ],
+     "track": {
+      "center": 0.076,
+      "yaw": 0.02257478490907989,
+      "curvature": 0.0024029358820533636,
+      "rail_offset": 0.364
+     },
+     "case": "empty_above_the_crown",
+     "expected": "phantom"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 343,
+     "n_narrow": 343,
+     "n_up": 0,
+     "n_bed": 343,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.3,
+      -0.07
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 9000,
+     "tag": "air_in_envelope|not_in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      1.15,
+      -0.28
+     ],
+     "track": {
+      "center": 0.076,
+      "yaw": 0.02257478490907989,
+      "curvature": 0.0024029358820533636,
+      "rail_offset": 0.364
+     },
+     "case": "air_in_envelope",
+     "expected": "not_in_envelope"
+    }
+   ]
+  },
+  {
+   "bag": "new_data",
+   "frame": 4500,
+   "frames": [
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 751,
+     "n_narrow": 751,
+     "n_up": 144,
+     "n_bed": 607,
+     "n_env": 113,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 31,
+     "dy_med": 0.03,
+     "h_med": 0.7,
+     "h_range": [
+      0.3,
+      1.0
+     ],
+     "dy_range": [
+      -0.24,
+      0.25
+     ],
+     "ambiguous": [],
+     "class": "in_envelope",
+     "n_env_all": 144,
+     "h_bottom": 0.3,
+     "frame": 4500,
+     "tag": "box_in_envelope|in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.12,
+      -0.67
+     ],
+     "track": {
+      "center": -0.09,
+      "yaw": -0.001869501388205426,
+      "curvature": 3.784322715886135e-05,
+      "rail_offset": 0.229
+     },
+     "case": "box_in_envelope",
+     "expected": "in_envelope"
+    },
+    {
+     "dy_position": 1.75,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 1289,
+     "n_narrow": 1289,
+     "n_up": 918,
+     "n_bed": 208,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 918,
+     "dy_med": 1.84,
+     "h_med": 0.8,
+     "h_range": [
+      0.17,
+      1.74
+     ],
+     "dy_range": [
+      1.32,
+      1.99
+     ],
+     "ambiguous": [
+      "on_tunnel_fabric"
+     ],
+     "class": "side",
+     "n_env_all": 30,
+     "h_bottom": 0.17,
+     "on_fabric": true,
+     "n_fabric_tight": 918,
+     "frame": 4500,
+     "tag": "box_beside_wall|side",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      1.63,
+      -0.52
+     ],
+     "track": {
+      "center": -0.09,
+      "yaw": -0.001869501388205426,
+      "curvature": 3.784322715886135e-05,
+      "rail_offset": 0.229
+     },
+     "case": "box_beside_wall",
+     "expected": "side"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 305,
+     "n_narrow": 305,
+     "n_up": 305,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 41,
+     "n_fabric": 264,
+     "dy_med": 0.01,
+     "h_med": 3.28,
+     "h_range": [
+      3.25,
+      3.3
+     ],
+     "dy_range": [
+      -0.29,
+      0.26
+     ],
+     "ambiguous": [
+      "h_near_limit"
+     ],
+     "class": "overhead",
+     "n_env_all": 0,
+     "h_bottom": 3.25,
+     "frame": 4500,
+     "tag": "plate_overhead|overhead",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.12,
+      2.13
+     ],
+     "track": {
+      "center": -0.09,
+      "yaw": -0.001869501388205426,
+      "curvature": 3.784322715886135e-05,
+      "rail_offset": 0.229
+     },
+     "case": "plate_overhead",
+     "expected": "overhead"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 601,
+     "n_narrow": 601,
+     "n_up": 0,
+     "n_bed": 601,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.26,
+      0.01
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 4500,
+     "tag": "bed_only|bed_rail",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.12,
+      -1.49
+     ],
+     "track": {
+      "center": -0.09,
+      "yaw": -0.001869501388205426,
+      "curvature": 3.784322715886135e-05,
+      "rail_offset": 0.229
+     },
+     "case": "bed_only",
+     "expected": "bed_rail"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 0,
+     "n_narrow": 0,
+     "n_up": 0,
+     "n_bed": 0,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": null,
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "phantom",
+     "frame": 4500,
+     "tag": "empty_above_the_crown|phantom",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.12,
+      8.03
+     ],
+     "track": {
+      "center": -0.09,
+      "yaw": -0.001869501388205426,
+      "curvature": 3.784322715886135e-05,
+      "rail_offset": 0.229
+     },
+     "case": "empty_above_the_crown",
+     "expected": "phantom"
+    },
+    {
+     "dy_position": 0.0,
+     "lon": 2.0,
+     "lat": 1.2,
+     "z_half": 1.05,
+     "n_all": 601,
+     "n_narrow": 601,
+     "n_up": 0,
+     "n_bed": 601,
+     "n_env": 0,
+     "n_side": 0,
+     "n_over": 0,
+     "n_fabric": 0,
+     "dy_med": null,
+     "h_med": null,
+     "h_range": [
+      -0.26,
+      0.01
+     ],
+     "dy_range": null,
+     "ambiguous": [],
+     "class": "bed_rail",
+     "n_env_all": 0,
+     "frame": 4500,
+     "tag": "air_in_envelope|not_in_envelope",
+     "range": 22.0,
+     "traveled": 0.0,
+     "center": [
+      22.0,
+      -0.12,
+      -0.47
+     ],
+     "track": {
+      "center": -0.09,
+      "yaw": -0.001869501388205426,
+      "curvature": 3.784322715886135e-05,
+      "rail_offset": 0.229
+     },
+     "case": "air_in_envelope",
+     "expected": "not_in_envelope"
+    }
+   ]
+  }
+ ],
+ "summary": {
+  "set_O_truth": {
+   "in_envelope": {
+    "n": 27,
+    "hit": 25,
+    "got": {
+     "in_envelope": 25,
+     "side": 1,
+     "bed_rail": 1
+    }
+   },
+   "unscored": 19,
+   "overhead": {
+    "n": 12,
+    "hit": 12,
+    "got": {
+     "overhead": 12
+    }
+   }
+  },
+  "set_O_transport": {
+   "in_envelope": {
+    "n": 26,
+    "hit": 20,
+    "got": {
+     "in_envelope": 20,
+     "overhead": 6
+    }
+   },
+   "unscored": 22,
+   "overhead": {
+    "n": 12,
+    "hit": 12,
+    "got": {
+     "overhead": 12
+    }
+   }
+  },
+  "doubleT_obstacle_truth": {
+   "in_envelope": {
+    "n": 10,
+    "hit": 9,
+    "got": {
+     "in_envelope": 9,
+     "bed_rail": 1
+    }
+   },
+   "side": {
+    "n": 5,
+    "hit": 5,
+    "got": {
+     "side": 5
+    }
+   }
+  },
+  "synthetic": {
+   "in_envelope": {
+    "n": 9,
+    "hit": 9,
+    "got": {
+     "in_envelope": 9
+    }
+   },
+   "side": {
+    "n": 9,
+    "hit": 9,
+    "got": {
+     "side": 9
+    }
+   },
+   "overhead": {
+    "n": 9,
+    "hit": 9,
+    "got": {
+     "overhead": 9
+    }
+   },
+   "bed_rail": {
+    "n": 9,
+    "hit": 9,
+    "got": {
+     "bed_rail": 9
+    }
+   },
+   "phantom": {
+    "n": 9,
+    "hit": 9,
+    "got": {
+     "phantom": 9
+    }
+   },
+   "not_in_envelope": {
+    "n": 9,
+    "hit": 9,
+    "got": {
+     "bed_rail": 9
+    }
+   }
+  },
+  "transport_error_m": {
+   "x": {
+    "median_abs": 2.83,
+    "p90_abs": 4.89
+   },
+   "y": {
+    "median_abs": 0.34,
+    "p90_abs": 0.52
+   },
+   "z": {
+    "median_abs": 0.09,
+    "p90_abs": 1.8
+   },
+   "n": 57
+  }
+ }
+}
