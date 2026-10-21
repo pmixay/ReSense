@@ -1,5 +1,32 @@
 # P2 status: work toward the 23.10 defence
 
+## Current execution — 21.10
+
+User requested local P2 work. Public URL supplied by the user:
+https://resense.arbuz.lol/; no deployment performed for this asset/document work.
+The 20.10 publication statement below is a historical receipt, not a current URL check.
+
+- [x] ~~Short Falcon bag~~: original 280–330 s window, 499 CDR messages, metadata,
+  archive/raw hashes, `ros2 bag info`, actual DDS/RViz playback. Person STOP in 3.79 s
+  after command; independent raw-person trajectory check. [Receipt](../docs/evidence/p2_defence_2026-10-21/falcon_playback.json).
+- [ ] Fallback + second device: new local 1.2.0 capture prepared; P1 image selection,
+  physical second-device test and forced switch ≤30 s still required.
+  - [x] ~~Local clip~~: 105.667 s, full decode PASS; both raw DDS streams checked;
+    cloud, gauge, STOP and distance visually inspected.
+- [ ] PT1: source-labelled review PPTX/PDF prepared; final J1 and P1 approval pending.
+  - [x] ~~Visual draft~~: 16 slides, 1,020 words, max 80; chart values match their
+    dated sources, PDF inspected, title/team slide XML preserved.
+- [ ] D1: current handoff and source-labelled figures prepared; final numerical pass
+  in documents/GitBook awaits J1.
+  - [x] ~~Local preparation handoff and dated corrections~~: linked to actual
+    receipts; historical pitch text explicitly superseded; new local links checked.
+- [ ] Two team rehearsals: no completion claimed.
+
+Detailed per-subtask acceptance: [checklist](../docs/evidence/p2_defence_2026-10-21/README.md).
+Start here: [P1/P2 handoff](../docs/evidence/p2_defence_2026-10-21/HANDOFF.md).
+
+## Previous dated status
+
 **20.10 code handoff:** [execution plan](../docs/evidence/p2_2026-10-20/PLAN.md)
 and [verification receipt](../docs/evidence/p2_2026-10-20/README.md). The UI/main
 integration and scoped rendering/navigation/live-replay fixes are verified locally.

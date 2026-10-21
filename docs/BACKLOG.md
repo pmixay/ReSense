@@ -97,10 +97,10 @@ Pinned reports: [shipping review][p4-shipping], [integration review][p4-integrat
 | prio | work | state / depends on |
 |---|---|---|
 | done (20.10) | Remove the unused reference photos from the repository root | all five root images deleted at the user's request; local gallery links removed |
-| P1 | Short Falcon demo bag with the person: a window of `falcon_test` around 280–330 s (not the 100-frame prefix: it holds a false STOP at 115 m); check that `ros2 bag play` opens it; update the demo handoff | — |
-| P1 | Second demo device (RViz / web) and a fallback clip re-recorded on the 1.2.0 image (the clip is from 23.09) | needs an image |
-| P1 | Deck visuals: range-by-geometry chart (straight / curve / double track) and the Falcon slide | deck text updated 19.10 |
-| P1 | Final numbers in the documents and GitBook | after the reseal and J1 |
+| **done (21.10)** | ~~Short Falcon demo bag with the person: 280–330 s; verify actual playback and update handoff~~ | 499 exact CDR messages, archive/raw SHA-256 match, metadata + `ros2 bag info`, DDS/RViz; first person STOP in 3.79 s after command. [Receipt and checklist](evidence/p2_defence_2026-10-21/README.md), [handoff](evidence/p2_defence_2026-10-21/HANDOFF.md) |
+| P1 (part prepared 21.10) | Second demo device (RViz / web) and fallback clip on 1.2.0 | local `31154690` image and actual Pandar/Falcon recording prepared; P1 selection, physical device and forced-switch rehearsal remain; see P2 checklist |
+| P1 (review draft 21.10) | Deck visuals: range-by-geometry chart (straight / curve / double track) and Falcon slide | source-labelled PPTX/PDF prepared; historical range explicitly 1.1.0, final J1/P1 sign-off pending; see P2 checklist |
+| P1 | Final numbers in documents and GitBook | dated corrections and local demo handoff prepared 21.10; final pass still depends on J1 |
 
 ### P3 · detector
 

@@ -1,0 +1,167 @@
+{
+  "new_local_links_checked": 40,
+  "broken": [],
+  "links": [
+    {
+      "from": "docs/BACKLOG.md",
+      "link": "evidence/p2_defence_2026-10-21/README.md"
+    },
+    {
+      "from": "docs/BACKLOG.md",
+      "link": "evidence/p2_defence_2026-10-21/HANDOFF.md"
+    },
+    {
+      "from": "docs/PRESENTATION.md",
+      "link": "presentation/P2_defence_2026-10-21.pptx"
+    },
+    {
+      "from": "docs/PRESENTATION.md",
+      "link": "presentation/P2_defence_2026-10-21.pdf"
+    },
+    {
+      "from": "docs/PRESENTATION.md",
+      "link": "evidence/p2_defence_2026-10-21/README.md"
+    },
+    {
+      "from": "docs/PRESENTATION.md",
+      "link": "evidence/p2_defence_2026-10-21/HANDOFF.md"
+    },
+    {
+      "from": "docs/PRESENTATION.md",
+      "link": "video/p2_defence_2026-10-21.mp4"
+    },
+    {
+      "from": "docs/PRESENTATION.md",
+      "link": "evidence/p4_review_final_bundle_2026-10-20/MOCK_JURY.md"
+    },
+    {
+      "from": "docs/video/README.md",
+      "link": "p2_defence_2026-10-21.mp4"
+    },
+    {
+      "from": "docs/video/README.md",
+      "link": "../evidence/p2_defence_2026-10-21/HANDOFF.md"
+    },
+    {
+      "from": "web/DEMO_HANDOFF.md",
+      "link": "../docs/evidence/p2_defence_2026-10-21/HANDOFF.md"
+    },
+    {
+      "from": "web/P2_STATUS.md",
+      "link": "../docs/evidence/p2_defence_2026-10-21/falcon_playback.json"
+    },
+    {
+      "from": "web/P2_STATUS.md",
+      "link": "../docs/evidence/p2_defence_2026-10-21/README.md"
+    },
+    {
+      "from": "web/P2_STATUS.md",
+      "link": "../docs/evidence/p2_defence_2026-10-21/HANDOFF.md"
+    },
+    {
+      "from": "gitbook/reference/results.md",
+      "link": "../../docs/evidence/p2_defence_2026-10-21/README.md"
+    },
+    {
+      "from": "gitbook/reference/results.md",
+      "link": "../../docs/evidence/f1a_completion_2026-10-20/README.md"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/HANDOFF.md",
+      "link": "../../presentation/P2_defence_2026-10-21.pptx"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/HANDOFF.md",
+      "link": "../../presentation/P2_defence_2026-10-21.pdf"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/HANDOFF.md",
+      "link": "../../video/p2_defence_2026-10-21.mp4"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/HANDOFF.md",
+      "link": "image_receipt.json"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/HANDOFF.md",
+      "link": "archive_receipt.json"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/HANDOFF.md",
+      "link": "replay/falcon/capture.rviz"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/HANDOFF.md",
+      "link": "replay/pandar/capture.rviz"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/HANDOFF.md",
+      "link": "../../../web/P2_STATUS.md#rehearsals"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "HANDOFF.md"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "falcon_bag.json"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "falcon_playback.json"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "../../video/p2_defence_2026-10-21.mp4"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "video_receipt.json"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "pandar_playback.json"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "image_receipt.json"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "deck_checks.json"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "deck_receipt.json"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "previews/slides.jpg"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "document_checks.json"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "HANDOFF.md"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "falcon_bag.json"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "replay/"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "archive_receipt.json"
+    },
+    {
+      "from": "docs/evidence/p2_defence_2026-10-21/README.md",
+      "link": "SHA256SUMS"
+    }
+  ],
+  "evidence_scripts_compile": "PASS"
+}

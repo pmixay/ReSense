@@ -1,0 +1,9 @@
+
+Files:             falcon_person_0.db3
+Bag size:          2.1 GiB
+Storage id:        sqlite3
+Duration:          49.802307864s
+Start:             Oct  9 2026 01:19:07.089255760 (1791508747.089255760)
+End:               Oct  9 2026 01:19:56.891563624 (1791508796.891563624)
+Messages:          499
+Topic information: Topic: /iv_points | Type: sensor_msgs/msg/PointCloud2 | Count: 499 | Serialization Format: cdr

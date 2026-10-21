@@ -1,0 +1,15 @@
+{
+  "source": "31154690",
+  "profile": "falcon_ros",
+  "rate": 1.0,
+  "player_started_wall": 1792616512.607848,
+  "player_ended_wall": 1792616565.9389143,
+  "node_returncode_during_playback": null,
+  "ros_domain_id": "173",
+  "screen": [
+    1920,
+    1080
+  ],
+  "fps": 15,
+  "software_gl": true
+}
