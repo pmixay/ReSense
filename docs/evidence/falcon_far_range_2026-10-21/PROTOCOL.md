@@ -233,3 +233,61 @@ it**; this frame's contradiction still caps at once; divergence of two fitted wa
 Expected on the recorded bins: support ≈ 142 m in most frames (trust ≈ 139 m), not more: the 172 m level is
 contradicted more often than confirmed. Unit tests 19/19 and negative controls 92/92 required fail-safe
 after the change. The registered criteria are A4's.
+
+### A6 (21.10 evening, after the independent review `claude/falcon-far-range-review-1.3` @ `f0f3b8d`, ACCEPT WITH CONDITIONS; before any measuring run of this revision)
+
+Inputs: the review's findings F1–F7 and the captain's work order. F1 was reproduced on my own `cand` replay
+before writing this: `person_frames.py` (the reviewer's) gives 30 GO frames with the main person inside the
+reported clear and monitored range, person at 138.6–162.3 m, `far.valid` 134–139 m, near `axis_valid` 159–167 m.
+
+**Changes (all under `farrange`, Falcon profiles only):**
+
+1. **F1, root cause: the corridor between `far.valid` and the near model's trusted range.** Today the near
+   model's laterals are used there; on this recording they are ~2 m off at 150 m, so a person on the track is
+   outside the corridor while the clear distance runs past them. Change (`farrange.axis_union_beyond`, on with
+   `axis_stable`): for far.valid < X ≤ max(near `axis_valid`, far.valid), a point's corridor lateral is the
+   nearer to the centre of (a) the near model's lateral (exactly v1.2.0's corridor) and (b) the lateral
+   from the far line continued straight. So the corridor is the union of both hypotheses. The trusted range is
+   unchanged (never beyond v1.2.0's near trust). It can only add points to the corridor, never remove one, so
+   no v1.2.0 detection is lost by it. A reported clear range then means both hypotheses are empty. If
+   GO-with-person-inside-clear is still > 0 after it, the reviewer's cap is added on top: the clear and
+   monitored range is cut at far.valid where the two laterals disagree by more than the strict-gauge
+   half-width. That is reported as A7 if needed.
+2. **C3, turnout / crossover guard (two physical conditions on a confirming boundary):**
+   * **(a) Tight boundaries.** A side confirms the far line only if its boundary lies within
+     `axis_max_boundary_lateral` = 2.5 m of the line (median over its support bins). A single-track tunnel's
+     boundaries hug the track (1.35–2.2 m on this recording). Between wide boundaries (a two-track box, a
+     cavern), a track can curve away with no boundary evidence.
+   * **(b) Exit gaps.** Within a confirming side's support, a gap g between kept bins ends the support at the
+     gap's start when g ≥ √(2·R_t·(d + 1.6)), where d is the side's lateral, 1.6 m the train half-envelope and
+     R_t = `axis_turnout_radius` = 200 m (metro 1/9 turnout). A diverging track can leave through such an
+     opening. At d = 1.7 m the limit is 36.3 m (the real left wall's longest kept gap is 35.0 m: expected
+     cost 0, to be measured).
+   * Expected: the reviewer's probe W and my case K become fail-safe.
+3. **F6:** the stale config comments are corrected; the acceptance test
+   `test_stable_switch_is_off_by_default_and_enabled_with_the_profile_switch_only` is renamed and asserts the
+   current defaults (on under the Falcon profiles, off under manual / pandar128). **F7:** the README states
+   that C6 (`far_min_height` 0.3, `far_max_length` 4.0) and the 400 m crop ship with the switch.
+
+**Hard rows (all on the final commit):**
+
+* **H1.** GO frames with the person / target inside the reported clear and monitored range
+  (`person_frames.py`, the review's `summarize_scenes.py` column and `matrix_go.py`) = **0** on the real
+  recording (6 start frames 0 / 600 / 1200 / 1800 / 2100 / 2400), on the review's 82 scenes and on the
+  matrix with fresh seeds **60, 61** (never used).
+* **H2.** No v1.2.0 STOP lost or delayed: whole recording (`falcon_eval.py` lost frames = 0; first and held STOP
+  ≥ v1.2.0 at every start), scenes (target first / held STOP not later than v1.2.0 by more than max(5 m, 5 %),
+  no target that v1.2.0 STOPs left without a STOP), matrix criteria 7–10.
+* **H3.** Negative controls: the 92 required cases fail safe, and **K and the review's W probes become fail-safe**
+  (C3). Unit tests pass.
+* **H4.** False alarms within the A4 bound (Falcon + ride + empty Pandar added STOP episodes ≤ +11); every added
+  false episode listed and traced. Scenes are reported, not bounded (non-physical edits included).
+* **H5.** Walk control within ±15 m; Pandar gate exit 0 without `--allow`, rows identical to v1.2.0
+  (timing messages excepted); X3 PASS paired with v1.2.0; node check equal to the replay.
+
+**Reported (C2):** first STOP and **held STOP** (≥ 90 % of the next 3 s, the review's `evalrows.py`) for every
+start frame. A first STOP that is a short blip is called one. Goal: improve the held STOP (v1.2.0
+114.4–123.0 m, the 0eb4dda candidate 127.4–130.2 m).
+
+If H1–H5 pass, the switches stay on (`axis_union_beyond` on with them); otherwise the failing rows are reported
+and the switch state is decided by the A4 rule.
