@@ -361,3 +361,19 @@ Re-measured on the final commit: everything in A6's list.
 **H1 as written** ("0 on the review's scenes") cannot pass by this lane's change alone: the 62 inherited v1.2.0
 frames remain. It is reported per frame. The criterion this lane can meet, and reports as H1':
 no GO-with-target-inside-clear frame that v1.2.0 does not also have.
+
+### A10 (21.10, after the A9 matrix on `0132f80`; in-sample)
+
+`0132f80`:
+* Real recording and 82 scenes: **0** GO-with-target-inside-clear frames that v1.2.0 does not also have (scenes: 62
+  in total, all v1.2.0's; v1.2.0 92). 0 lost or delayed STOPs, 58 gains.
+* Matrix seeds 60 / 61: criteria 7–10 pass. But **4** GO-inside-clear frames that v1.2.0 does not have: frame 1312 of
+  the four 2 m-box static-150 m cases. The reported range jumped 134 → 152 m in one frame, past a box that
+  neither checkout detects.
+* A9 lagged only the far line's stretch (max(near trust, recent far.valid)), so a simultaneous jump of the near
+  model's own trusted range let it through.
+
+Change (same switch, `axis_report_lag_frames` = 3): the reported range (the trusted range passed to health,
+after the A7 cap) grows only as far as it reached in each of the last 3 frames. Falcon profiles only. The
+reported range can now be shorter than v1.2.0's own for up to 2 frames after it grows. Detection and trust are
+unchanged. All A6 measurements are repeated on the resulting commit.

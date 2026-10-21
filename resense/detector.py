@@ -207,7 +207,7 @@ class Detector:
         self._far_axis = None
         self._union_shift = None        # 21.10 (farrange.axis_union_beyond): this frame's lateral shift of the points the union took
         self._far_report_cap: Optional[float] = None    # 21.10 (A7): where the reported range ends beyond the far line
-        self._far_valid_hist: deque = deque(maxlen=max(int(fr.axis_report_lag_frames), 1))  # 21.10 (A9): recent far.valid
+        self._far_valid_hist: deque = deque(maxlen=max(int(fr.axis_report_lag_frames), 1))  # 21.10 (A10): recent trusted ranges
         self.far_confirm = FarConfirm(fr) if fr.enabled and fr.confirm_enabled else None
         self.dust_guard = DustGuard(self.cfg.dust) if self.cfg.dust.enabled else None  # 19.10 N3, off by default
 
@@ -425,6 +425,12 @@ class Detector:
         drift = self.track.wall_drift
         if self._far_report_cap is not None:
             drift = min(drift, self._far_report_cap)      # 21.10 (A7): see _corridor
+        if self.far is not None and cfg.farrange.axis_stable and cfg.farrange.axis_report_lag_frames > 0:
+            # 21.10 (A9 / A10): the reported range grows only as far as the trusted range reached in each of the last
+            # frames (an object entering a newly trusted stretch gets those frames to be seen before it is reported
+            # clear); the Falcon profiles only; detection and trust are unchanged
+            self._far_valid_hist.append(float(min(valid, drift)))
+            drift = min(drift, min(self._far_valid_hist))
         health = self.health.update(xyz, frame.meta, self.track, cfg.gauge, valid, cfg.track.rails_min_score,
                                     previous_latency_ms, mount, gauge[0].distance if gauge else None, cap,
                                     wall_drift=drift if drift < 1e9 else None)
@@ -562,14 +568,6 @@ class Detector:
         self._dy_rail = dy_all
         self._union_shift = None
         self._far_report_cap = None
-        if self.far is not None and cfg.farrange.axis_stable and cfg.farrange.axis_report_lag_frames > 0:
-            # 21.10 (A9): the far stretch counts for the reported range only as far as it was trusted in each of the
-            # last frames (a frame without a far line trusts nothing beyond the near model); detection is unchanged
-            self._far_valid_hist.append(far.valid if far is not None else 0.0)
-            if far is not None:
-                lag = max(min(self.track.axis_valid, cfg.gauge.range_max), min(self._far_valid_hist))
-                if lag < far.valid:
-                    self._far_report_cap = float(lag)
         if far is not None and cfg.farrange.axis_stable and cfg.farrange.axis_report_tolerance > 0:
             # 21.10 (A7, review F1): beyond the far line's trusted end the near model's corridor is not where the
             # track is once its centre leaves the continued far line by more than the tolerance: the reported
