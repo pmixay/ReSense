@@ -75,7 +75,10 @@ def _rows(det, piece, frame, prev_stop, label_fn):
 
 
 def collect_recording(job):
-    name, files, piece, cfg_path, sets, cache = job
+    name, files, piece, cfg_path, sets, cache = job[:6]
+    # 21.10: negative augmentation as the X3 variants (5 Hz: every 2nd frame; random point dropout), so the
+    # same structures give more false-STOP tracks; label rows of a labelled recording keep their frame ids
+    every, phase, drop, seed = job[6] if len(job) > 6 else (1, 0, 0.0, 0)
     from resense.frame import frame_from_compact
     from resense.io import load_cache_stamps
     from resense.metrics import gt_objects, load_gt, match
@@ -84,9 +87,15 @@ def collect_recording(job):
     gt = load_gt(os.path.join(ROOT, LABELS[name])) if name in LABELS else None
     prev, rows = {}, []
     for i, f in enumerate(files):
+        if (i - phase) % every:
+            continue
         stem = cache_file_stem(f)
         idx = int(stem.rsplit("_", 1)[1])
-        fr = frame_from_compact(load_cache_array(f), cfg.sensor, stamp=stamps.get(stem, i * 0.1), frame_id=stem)
+        arr = load_cache_array(f)
+        if drop > 0:
+            keep = np.random.default_rng(np.random.SeedSequence([seed, i])).random(arr.shape[0]) >= drop
+            arr = arr[keep]
+        fr = frame_from_compact(arr, cfg.sensor, stamp=stamps.get(stem, i * 0.1), frame_id=stem)
         det.process(fr)
         frame = idx if name in SIX else i
         if gt is None:
@@ -189,7 +198,8 @@ def cmd_collect(a):
             files = cache_files(os.path.join(a.cache, name))
             n = a.chunks if name == "new_data" else 1
             for k, part in enumerate(np.array_split(np.array(files), n)):
-                jobs.append((name, list(part), f"{name}:{k}" if n > 1 else name, a.config, a.set, a.cache))
+                jobs.append((name, list(part), (f"{name}:{k}" if n > 1 else name) + a.piece_suffix, a.config, a.set, a.cache,
+                             (a.every, a.phase, a.drop, a.seed)))
         fn_ = collect_recording
     rows = []
     with ProcessPoolExecutor(max_workers=a.jobs) as ex:
@@ -223,7 +233,7 @@ def ride_group(piece: str) -> str:
     was injected into), else the recording."""
     if piece.startswith("syn:"):
         return "new_data:" + piece.rsplit(":p", 1)[1]
-    return piece
+    return piece.split("|", 1)[0]          # 21.10: an augmented copy ("<piece>|<variant>") goes with its piece
 
 
 def export_gbm(clf, features) -> dict:
@@ -337,6 +347,10 @@ def cmd_train(a):
     Xt, Pt, Mt = load(a.test) if a.test else (np.zeros((0, len(FEATURES))), np.zeros(0, str), np.zeros((0, 8)))
     pt = np.array([op.prob(x) for x in Xt])
     ride = np.array([p.startswith("new_data") for p in Pn])
+    # 21.10: augmented negatives (piece "<piece>|<variant>") train but are not counted in the replayed rows
+    plain = np.array(["|" not in p for p in Pn])
+    if not plain.all():
+        Xn, Pn, Mn, pn, ride = Xn[plain], Pn[plain], Mn[plain], pn[plain], ride[plain]
     rep["simulation"] = []
     for extra in [int(v) for v in a.extra.split(",")]:
         # the threshold: the highest at which at most --max-delayed synthetic sequences (held out) would
@@ -410,6 +424,10 @@ def main():
     c.add_argument("--seed", type=int, default=1)
     c.add_argument("--cross", type=float, default=0.0, help="m/s: the objects cross the track laterally (a walking person)")
     c.add_argument("--move", default="0", help="m/s, or lo:hi (uniform per sequence): the object's own speed towards the train (< 0 = away)")
+    c.add_argument("--piece-suffix", default="", help="21.10: recordings: e.g. '|hz5a' marks an augmented copy")
+    c.add_argument("--every", type=int, default=1, help="21.10: recordings: every N-th frame (5 Hz = 2)")
+    c.add_argument("--phase", type=int, default=0, help="21.10: with --every, the first frame kept")
+    c.add_argument("--drop", type=float, default=0.0, help="21.10: recordings: random point dropout share (seeded by --seed)")
     c.add_argument("--size-jitter", type=float, default=0.0, help="21.10: each size factor uniform in 1 +- this, per sequence")
     c.add_argument("--on-rail", action="store_true", help="21.10: lay the objects across a rail (|lateral| 0.6-0.9 m)")
     c.add_argument("--piece-tag", default="", help="21.10: appended to the sequence name (distinguishes positive sets)")

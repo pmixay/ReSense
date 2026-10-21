@@ -151,3 +151,14 @@ twice, the injector once: 0 % of real rows inside), `ring_fill` (injected points
 and the count features `log_n_mean`, `log_gauge`, `vis_mean` (fail on the Falcon person; sensor-dependent).
 The Falcon rows of the first check were collected in the v1.2.0 tree (23 features); the appended features are
 checked on Falcon rows collected in the branch tree.
+
+### A2 (21.10, development, before any §3 run)
+
+With the A1 positives (475 synthetic sequences) and the 18 features that pass the check, no variant removes an
+out-of-fold false event at a threshold that delays no held-out synthetic sequence (ride 35 → 35); the 61
+negative onsets (180 rows) are the bottleneck. One more development step: negatives augmented as the X3
+variants (`collect --every 2 --phase 0|1`, `--drop 0.3 --seed 101|102`) of the ride pieces and the five
+recordings, grouped with their piece / recording (`ride_group` strips the `|variant` suffix), used for
+training only; every replayed count stays on the plain rows. If the candidate still earns nothing out of fold,
+no new model is proposed for the default (§5), and the shipped model's own margin on the new positives is
+reported instead.

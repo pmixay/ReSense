@@ -89,10 +89,14 @@ def positive_sets():
     ]
 
 
+# the features that pass the synthetic-versus-real check (PROTOCOL §2.2 / A1, feature_check_a1.json)
+C1_FEATURES = ("distance,is_low,frac_low,hits,lat_jump,len_mean,gauge_frac,frac_demoted,frac_column,frac_beyond,"
+               "dist_step,hit_fraction,frac_core,frac_cut,frac_weak,frac_thin,frac_spared,dist_span")
+P13 = ["r0_moving", "r0_standing", "p13_far", "p13_standing", "p13_toward", "p13_away", "p13_cross",
+       "p13j_moving", "p13j_standing", "p13_rail_moving", "p13_rail_standing"]
 CANDIDATE = {
-    # filled from the development step (PROTOCOL §2); the record of every tried variant is the report
-    "features": R0_FEATURES,
-    "pos": ["r0_moving", "r0_standing", "p13_far", "p13_standing", "p13_toward", "p13_away", "p13_cross"],
+    "features": C1_FEATURES,
+    "pos": P13,
     "args": ["--sticky", "--near", "25", "--extra", "10", "--pick", "0.5", "--seq-weight"],
 }
 FOLDS = {"A": "new_data:0,new_data:1", "B": "new_data:2,new_data:3", "C": "new_data:4,new_data:5",
