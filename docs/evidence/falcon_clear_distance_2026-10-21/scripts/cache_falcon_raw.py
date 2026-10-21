@@ -23,6 +23,9 @@ heap, seen, n, last = [], set(), 0, None
 log = {"order_violations": 0, "duplicates": 0}
 t0 = time.time()
 fo = open(a.out, "wb")
+if a.out.endswith(".zst"):          # the raw cache is 20.3 GB; zstd level 3 keeps it at 6.7 GB (run_falcon.py reads both)
+    import zstandard
+    fo = zstandard.ZstdCompressor(level=3, threads=2).stream_writer(fo, closefd=True)
 
 
 def emit(ts, data):

@@ -653,22 +653,24 @@ class HealthConfig:
     # /resense/decision - on a loaded machine it did on most frames (set O 690 of 1 510). STOP,
     # FAULT and every other warning are unchanged. true = the v0.6 behaviour
     latency_affects_decision: bool = False
-    # 21.10 (P4 review 20.10 on the Falcon, docs/evidence/falcon_clear_distance_2026-10-21; off until the
-    # lane's pre-registered criteria pass). Both only lower clear_distance; detections, warnings, level,
+    # 21.10 (P4 review 20.10 on the Falcon, docs/evidence/falcon_clear_distance_2026-10-21). The three only lower
+    # clear_distance; detections, warnings, level,
     # messages, monitored_range and the decision are untouched.
     # clear_lost_model: while the track model is on its prior (the rail pair found in fewer than min_lock_rate
     # of the last lock_window frames, at least 5 frames of history: the "track model on its prior" warning)
     # the bed under the corridor is not verified and clear_distance is 0 (ALGORITHM §4b: a lost track model
-    # makes it 0; the Falcon frames 4373-4414 reported 3-40 m beyond a person-like object 2.5-7 m ahead)
+    # makes it 0; the Falcon frames 4373-4414 reported 3-40 m beyond a person-like object 2.5-7 m ahead). OFF:
+    # its pre-registered cost limit failed (doubleT_platform: 6.7 % of the frames, limit 3 %; the bed there is right)
     clear_lost_model: bool = False
     # clear_lost_bed (amendment 1 of the lane's protocol): the bed is lost when the track model's rail head is
     # more than cluster.mount_cross_tol + mount_cross_grade * X away from the calibrated mount plane at some X =
     # 5, 10 .. mount_cross_range m (the H' criterion applied to the bed; needs cluster.mount_cross_tol > 0 and a
-    # final mount calibration): clear_distance is 0, whatever the rail lock. 0 Pandar frames in 15,269 qualify
-    clear_lost_bed: bool = False
+    # final mount calibration): clear_distance is 0, whatever the rail lock. ON: 0 of 15,269 Pandar frames qualify;
+    # on the Falcon 52 frames (4361-4410), 35 of the 39 overstating frames of 4373-4414
+    clear_lost_bed: bool = True
     # clear_round_down: a clear distance bounded by a confirmed obstacle or a candidate is rounded down to
-    # 0.1 m, not to nearest (it exceeded a STOP detection by up to 0.05 m: 48.0 against 47.97)
-    clear_round_down: bool = False
+    # 0.1 m, not to nearest (it exceeded a STOP detection by up to 0.05 m: 48.0 against 47.97). ON
+    clear_round_down: bool = True
     # 25.09 (SCORECARD §6 row 6, docs/evidence/results/p3_clear_distance_2026-09-25.json): cap the
     # monitored-range estimate at the nearest candidate of this frame that touches the envelope
     # although it is not a confirmed obstacle (unconfirmed, advisory); never changes a detection
