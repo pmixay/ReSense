@@ -48,7 +48,7 @@ edit (P1 reseals).
 | 9 | moving in-gauge STOP frames ≥ v1.2.0 − 2, outside ≤ +2 | **PASS**: 42 / 42 |
 | 10 | `outside` control: 0 STOP | **PASS** |
 | 11 | curve / diverging / one-wall negative controls fail safe | **PASS**: 92 / 92 required (the 19.10 axis fails 16 of them) |
-| 12 | full Pandar gate, exit 0 without `--allow`, rows identical to v1.2.0 | see §5 |
+| 12 | full Pandar gate, exit 0 without `--allow`, rows identical to v1.2.0 | **PASS**: exit 0 (8 gated better, the same as v1.2.0's run); 15,269 rows identical except the wall-clock latency message (§5) |
 | 13 | X3 paired with a fresh v1.2.0 reference | **PASS**: all 40 entries' metrics identical to v1.2.0 |
 | 14 | ROS node path | **PASS**: profiles enable it; 250 / 250 frames identical |
 
@@ -166,9 +166,46 @@ fresh seeds 20–22, X3, the gate and the node check.
   * **Thin walk-control margin:** 13.0–14.6 m against the ±15 m limit.
   * **R2 / bias** (19.10 review note 3, −0.16 m at 250 m): not re-measured.
 
-## 5. Pandar regression gate
+## 5. Pandar regression gate (criterion 12) and the A4 false-alarm bound
 
-(Filled in below after the run.)
+**Runs.** `scripts/regression_gate.py --cache /data/cache --jobs 2 --baseline
+docs/evidence/results/regression_baseline_2026-09-29_shell_off.json`, without `--allow`. It was run once in
+the v1.2.0 checkout `3b73bbe` and once on this branch (detector = `0eb4dda`), on the same caches:
+* the six recordings (bag SHA-256 = `scripts/cold_bags.sha256` where listed; frame counts 201 / 345 / 252 /
+  268 / 545 / 877);
+* set O (1,510 frames; bag 7,421,644,800 bytes);
+* the ride via `scripts/cache_extended_ride.py` (221 splits, 11,271 frames; archive size and SHA-256
+  `8124b627…` verified, [results/ride_intake.log](results/ride_intake.log));
+* set F straight.
+
+**Both runs: GATE PASS, exit 0** ("no gated metric worse; 8 gated better, 0 worse but allowed, 25 information
+rows changed": the same line for v1.2.0 and the candidate). Files:
+[results/gate_v120.json](results/gate_v120.json), [results/gate_cand.json](results/gate_cand.json) and the logs.
+
+**A first attempt failed for an environment reason.** It exited 2 in both checkouts because set F could not
+import open3d (`libEGL.so.1` missing): [results/gate_cand_without_open3d.log](results/gate_cand_without_open3d.log).
+The fix was `apt-get install libegl1` in the container, then a rerun. The gate itself was not changed and no
+`--allow` was used.
+
+**Per-row comparison**, [`scripts/gate_rowdiff.py`](scripts/gate_rowdiff.py) →
+[results/gate_rowdiff.json](results/gate_rowdiff.json), every field except wall-clock timing:
+* 15,269 per-frame rows over 15 files: identical except 97 rows of ride chunk 4.
+* Those 97 rows differ only in `health.messages`: the wall-clock `latency p95 … ms over the 100 ms budget`
+  message, present in one run and not the other. All 97 message differences contain it, checked
+  programmatically and by eye on a sample.
+* One of them also differs in `health.level` (ok vs warn, from that message). Its `decision_level`,
+  obstacle and warning are identical.
+* Set F straight: identical except the effective-config SHA-256 (the YAML now carries a `farrange`
+  section; 19.10 review note 1) and the wall time.
+
+So Pandar is row-identical to v1.2.0 in everything the detector decides, as designed: `farrange` is read
+only under the Falcon profiles.
+
+**A4 bound.** Added STOP episodes: Falcon −3 (8 → 5), ride 0, five empty Pandar recordings 0. The total is −3
+against a bound of +11. No false-alarm row regressed, so no `--allow` run was needed. X3 on `0eb4dda`
+against a fresh v1.2.0 reference: PASS, all 40 recording × variant metrics identical
+([results/x3_cand_0eb4dda.json](results/x3_cand_0eb4dda.json),
+[results/x3_v120_reference.json](results/x3_v120_reference.json)).
 
 ## 6. Reproduce
 
