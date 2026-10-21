@@ -192,7 +192,7 @@ The fix was `apt-get install libegl1` in the container, then a rerun. The gate i
 * 15,269 per-frame rows over 15 files: identical except 97 rows of ride chunk 4.
 * Those 97 rows differ only in `health.messages`: the wall-clock `latency p95 … ms over the 100 ms budget`
   message, present in one run and not the other. All 97 message differences contain it, checked
-  programmatically and by eye on a sample.
+  programmatically; rows 189 and 287 were printed and read.
 * One of them also differs in `health.level` (ok vs warn, from that message). Its `decision_level`,
   obstacle and warning are identical.
 * Set F straight: identical except the effective-config SHA-256 (the YAML now carries a `farrange`
