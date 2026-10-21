@@ -67,6 +67,7 @@ class TrackModel:
     # 21.10 (K2 union, axis_joint_union): on a curve frame the joint shape as a model of its own, trusted to its walls'
     # reach (axis_valid); the output above stays the estimate without the joint fit (None otherwise; not serialised)
     curve: Optional["TrackModel"] = field(default=None, repr=False, compare=False)
+    curve_from: float = 0.0          # 21.10 (K2 union, on the curve model): X to which a boundary still follows the base axis
 
     @property
     def bent(self) -> bool:
@@ -1486,6 +1487,10 @@ def _joint_output(base: TrackModel, jshape: Optional[tuple], cfg: TrackConfig,
             reach = [_followed_reach(x, y, cm, cfg) for x, y in bounds.values() if len(x)]
             reach = [r_ for r_ in reach if r_ > 0]
             if reach:
+                # revision 2: where a boundary still runs parallel to the base axis the base gauge stands alone; the
+                # curve's gauge adds obstacles only beyond the farthest such reach (ride: the two axes 2.3 m apart at
+                # 120 m, both followed by a wall, made the union of the two gauges a 2.3 m wider corridor)
+                cm.curve_from = max([_followed_reach(x, y, base, cfg) for x, y in bounds.values() if len(x)] or [0.0])
                 # a boundary hidden for a frame (an object in front of it, a noisy bin) does not end the trust at once:
                 # the previous curve frame's range, less 20 m per period (the base estimator's decay without boundaries)
                 cm.axis_valid = max(max(reach) + cfg.axis_valid_margin, held)

@@ -228,3 +228,35 @@ def test_union_overlap_is_tested_in_the_vehicle_frame():
     assert _overlap_xy(a, b) and not _overlap(a, b)                   # positive control: the lateral test misses it
     c = _cluster(60.0, 60.5, 1.0, 1.6)
     assert not _overlap_xy(a, c)
+
+
+def test_union_revision2_adds_only_what_the_base_gauge_cannot_judge():
+    """Revision 2 (ride false STOPs of eb8b7aa): a curve obstacle whose returns lie inside the base strict envelope
+    within the base trusted range is not added (the base's verdict stands); the same object beyond the base trusted
+    range, or with no return in the base envelope, is; nothing is added before ``curve.curve_from``."""
+    from tests.test_k1_k2_axis import _cluster
+
+    def run(base_in, base_valid, curve_from=0.0):
+        cfg = DetectorConfig()
+        det = Detector(replace(cfg, track=replace(cfg.track, **UNION)))
+        k = _cluster(90.0, 90.5, 1.0, 1.5)
+        k.points_idx = np.array([0, 1, 2])
+        cv = TrackModel(floor_coef=np.array([0.0, 0.0, -1.5]), floor_range=(4.0, 100.0), center=0.0, yaw=0.0,
+                        curvature=2e-4, axis_valid=150.0, curve_from=curve_from)
+        det.track = TrackModel(floor_coef=np.array([0.0, 0.0, -1.5]), floor_range=(4.0, 100.0), center=0.0, yaw=0.0,
+                               curvature=0.0, curve=cv)
+        det._base_in = np.array(base_in)
+        det._corridor = lambda xyz, inten: (np.zeros(1), None, None, None, (150.0, 150.0, 100.0))
+        det._cluster = lambda *a, **kw: [k]
+        return det._curve_clusters(np.zeros((3, 3), np.float32), np.zeros(3, np.float32), [], base_valid)
+    assert run([False, True, False], 120.0) == []                    # judged by the base gauge
+    assert len(run([False, True, False], 80.0)) == 1                 # beyond the base trusted range
+    assert len(run([False, False, False], 120.0)) == 1               # no return in the base envelope
+    assert run([False, False, False], 120.0, curve_from=95.0) == []  # a boundary still follows the base axis there
+
+
+def test_union_curve_from_is_the_base_axis_followed_reach():
+    """On the curve entry the base axis is followed by a boundary to some X short of the curve's trusted range."""
+    xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
+    m = _run_track(xyz, UNION)[-1]
+    assert m.curve is not None and 0.0 < m.curve.curve_from < m.curve.axis_valid

@@ -375,6 +375,10 @@ class Detector:
         t1 = time.perf_counter()
         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)
         self._frame_hd = (dy_all, h_all)
+        if cfg.track.axis_joint_union and self.track.curve is not None:
+            # K2 union (revision 2): the returns the base gauge holds inside its strict envelope, read by _curve_clusters
+            self._base_in = np.zeros(len(xyz), dtype=bool)
+            self._base_in[cand.idx[cand.in_gauge & (cand.idx >= 0)]] = True
         trust = min(valid, floor_valid)  # the trusted range before the clustering (health.clear_cap_thin)
         dy_rail = self._dy_rail          # = dy_all unless gauge.axis_union 2 re-measured the corridor coordinate
         # Paired rails support lateral axis placement, not a farther bed-anomaly
@@ -401,7 +405,7 @@ class Detector:
         t4 = time.perf_counter()
         clusters = self._cluster(merged, n_acc, valid, floor_valid, straddle, near)
         if cfg.track.axis_joint_union and self.track.curve is not None:
-            clusters = self._curve_clusters(xyz, frame.intensity, clusters)
+            clusters = self._curve_clusters(xyz, frame.intensity, clusters, valid)
         if cfg.track.axis_joint_reach_dual > 0:
             self._dual_zone(clusters)
         if cfg.cluster.far_axis_both_sides == 2:
@@ -878,13 +882,16 @@ class Detector:
         return replace(tr, center=cv.center, yaw=cv.yaw, curvature=cv.curvature, curv_step=cv.curv_step,
                        curv_knot=cv.curv_knot, axis_valid=cv.axis_valid, joint_used=True)
 
-    def _curve_clusters(self, xyz: np.ndarray, intensity: np.ndarray, clusters: List[Cluster]) -> List[Cluster]:
+    def _curve_clusters(self, xyz: np.ndarray, intensity: np.ndarray, clusters: List[Cluster],
+                        base_valid: float = 0.0) -> List[Cluster]:
         """21.10 (K2 union, ``track.axis_joint_union``): on a curve frame the joint shape (``track.curve``, trusted as far
         as a tunnel boundary follows it) is a second gauge. The corridor and the clustering of the above-rail candidates
         run again in its coordinates, on this frame's points alone (no accumulation, no low stage); each of its
         obstacles (zone ``gauge``, no reason) that overlaps no obstacle of the base gauge is added, in place of the base
         gauge's advisory clusters it overlaps. Nothing the base gauge reports as an obstacle is changed, and the bed,
-        low-object, ego-speed, mount and clear-distance stages keep the base model."""
+        low-object, ego-speed, mount and clear-distance stages keep the base model. Revision 2: only beyond the
+        farthest X to which a boundary still follows the base axis (``curve.curve_from``), and only objects the base
+        gauge did not judge: none of their returns inside its strict envelope within its trusted range ``base_valid``."""
         saved = (self.track, self._far_axis, getattr(self, "_dy_rail", None), self._frame_hd, self._thin,
                  getattr(self, "_low_height", []), getattr(self, "_near_low", []))
         try:
@@ -896,8 +903,17 @@ class Detector:
             (self.track, self._far_axis, self._dy_rail, self._frame_hd, self._thin, self._low_height,
              self._near_low) = saved
         obstacles = [c for c in clusters if c.zone == "gauge" and not c.reason]
-        add = [k for k in extra if k.zone == "gauge" and not k.reason
-               and not any(_overlap_xy(k, c) for c in obstacles)]
+        start = float(saved[0].curve.curve_from)
+        base_in = getattr(self, "_base_in", None)
+
+        def judged(k: Cluster) -> bool:
+            # revision 2: an object with returns inside the base strict envelope within the base's trusted range was
+            # judged by the base gauge (its advisory reasons stand); the curve adds only what the base cannot see
+            own = k.points_idx[k.points_idx >= 0]
+            return (base_in is not None and float(k.distance) <= base_valid and own.size > 0
+                    and bool(base_in[own[own < base_in.size]].any()))
+        add = [k for k in extra if k.zone == "gauge" and not k.reason and float(k.distance) > start
+               and not judged(k) and not any(_overlap_xy(k, c) for c in obstacles)]
         self._curve_added, self._curve_seen = len(add), extra      # read by evidence traces only
         if not add:
             return clusters
