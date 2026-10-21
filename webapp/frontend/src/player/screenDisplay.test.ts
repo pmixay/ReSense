@@ -180,6 +180,22 @@ describe('driver cab display', () => {
     display.dispose();
   });
 
+  it('draws repeated parts instanced, keeping the cab to a bounded number of draw calls', () => {
+    const display = new ScreenDisplay();
+    display.setSize(1440, 816, 1, { width: 1368, left: 36, height: 648, top: 8 });
+    let meshes = 0;
+    let buttons = 0;
+    display.scene.traverse(object => {
+      if (!(object instanceof THREE.Mesh)) return;
+      meshes += 1;
+      if (object instanceof THREE.InstancedMesh && object.name === 'desk-button') buttons += object.count;
+    });
+    // 30 desk, 16 overhead and 15 wing push buttons; before instancing the cab was 235 meshes
+    expect(buttons).toBe(61);
+    expect(meshes).toBeLessThan(110);
+    display.dispose();
+  });
+
   it('keeps the cab without an active picture for the picker and error states', () => {
     const empty = new ScreenDisplay(true);
     empty.setSize(1440, 752, 1);

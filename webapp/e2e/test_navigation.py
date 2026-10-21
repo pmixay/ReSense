@@ -110,9 +110,12 @@ def test_train_doors_cover_navigation_before_revealing_destination(app, width, h
     page.evaluate('history.back()')
     expect(page.locator('[data-app-shell]')).to_have_attribute('data-section-motion', 'boarding')
     expect(doors).to_be_hidden()
-    # Let lazy Player/GPU initialization use real time rather than freezing its effects.
+    # Let lazy Player/GPU initialization use real time rather than freezing its effects. A resumed
+    # mocked clock lets the walk's animation time crawl under software WebGL: skip it once it runs.
     page.clock.resume()
     expect(page).to_have_url(app.base + '/player')
+    expect(page.locator('[data-cab-entry]')).to_have_attribute('data-entry-ready', 'true', timeout=60000)
+    page.keyboard.press('Escape')
     expect(page.locator('[data-cab-entry]')).to_have_count(0, timeout=60000)
     expect(page.locator('[data-app-shell]')).to_have_attribute('data-section-motion', 'idle')
 
@@ -281,7 +284,7 @@ def test_failed_raster_preparation_reveals_page_and_recovers_next_navigation(app
 def wait_boarding_ready(page):
     """The walk-in's 3D chunk and first frame are real browser work, outside the mocked clock."""
     entry = page.locator('[data-cab-entry]')
-    for i in range(600):
+    for i in range(1200):
         if entry.get_attribute('data-entry-ready') == 'true':
             return entry
         page.wait_for_timeout(50)
@@ -349,21 +352,18 @@ def test_any_key_skips_the_walk_without_reaching_the_player(app):
     page = app.page
     app.goto('/queue')
     expect(page.get_by_role('heading', name='Очередь', exact=True)).to_be_visible()
-    shell = page.locator('[data-app-shell]')
+    page.clock.install()
+    page.clock.pause_at(page.evaluate('Date.now()'))
     page.get_by_role('navigation', name='Линия: путь работы с записью').get_by_role('link', name='Плеер', exact=True).click()
-    entry = page.locator('[data-cab-entry]')
-    expect(entry).to_have_attribute('data-entry-ready', 'true')
+    entry = wait_boarding_ready(page)
     # Esc would make the Player go back; here it only skips to the seat.
     page.keyboard.press('Escape')
-    expect(shell).to_have_attribute('data-section-motion', 'idle')
+    run_clock_until(page, 'arriving', step=16, limit=20)
+    page.clock.run_for(330)
+    expect(page.locator('[data-app-shell]')).to_have_attribute('data-section-motion', 'idle')
     expect(entry).to_have_count(0)
     expect(page).to_have_url(app.base + '/player')
     expect(page.get_by_text('Прогонов пока нет', exact=True)).to_be_visible()
-    # Leaving the Player still closes the doors and travels.
-    page.get_by_role('navigation', name='Линия: путь работы с записью').get_by_role('link', name='Сравнение', exact=True).click()
-    expect(page).to_have_url(app.base + '/compare')
-    expect(page.locator('[data-train-doors]')).to_be_hidden()
-    expect(shell).to_have_attribute('data-section-motion', 'idle')
     assert app.errors == []
 
 

@@ -115,6 +115,9 @@ export class CabCockpit {
   readonly doorLeaves: THREE.Object3D[] = [];
   private readonly full: boolean;
   private geometries: THREE.BufferGeometry[] = [];
+  /** repeated parts queued during a build, drawn as one instanced mesh per geometry and material */
+  private readonly batches = new Map<string, { geometry: THREE.BufferGeometry; material: THREE.Material; name: string; matrices: THREE.Matrix4[] }>();
+  private instanced: THREE.InstancedMesh[] = [];
   private readonly shared = new Map<string, THREE.BufferGeometry>();
   private readonly trim = new THREE.MeshStandardMaterial({ color: srgb(0xc9cfd6), roughness: 0.58, metalness: 0.04, side: THREE.DoubleSide });
   private readonly trimShade = new THREE.MeshStandardMaterial({ color: srgb(0xa9b1ba), roughness: 0.6, metalness: 0.04, side: THREE.DoubleSide });
@@ -209,15 +212,49 @@ export class CabCockpit {
     return g;
   }
 
+  /** Queue one copy of a repeated part at a position (and rotation) in `parent`. */
+  private repeat(geometry: THREE.BufferGeometry, material: THREE.Material, name: string, parent: THREE.Object3D, position: THREE.Vector3, rotation = new THREE.Euler()): void {
+    parent.updateWorldMatrix(true, false);
+    this.group.updateWorldMatrix(true, false);
+    const local = new THREE.Matrix4().compose(position, new THREE.Quaternion().setFromEuler(rotation), new THREE.Vector3(1, 1, 1));
+    const matrix = this.group.matrixWorld.clone().invert().multiply(parent.matrixWorld).multiply(local);
+    const key = `${geometry.uuid}:${material.uuid}`;
+    let batch = this.batches.get(key);
+    if (!batch) this.batches.set(key, batch = { geometry, material, name, matrices: [] });
+    batch.matrices.push(matrix);
+  }
+
+  private repeatBox(w: number, h: number, d: number, radius: number, material: THREE.Material, x: number, y: number, z: number, name: string, parent: THREE.Object3D = this.group, rotation?: THREE.Euler): void {
+    const r = Math.min(radius, w / 2, h / 2, d / 2);
+    const geometry = this.part(`box:${w}:${h}:${d}:${r}`, () => (r > 0 ? new RoundedBoxGeometry(w, h, d, 2, r) : new THREE.BoxGeometry(w, h, d)));
+    this.repeat(geometry, material, name, parent, new THREE.Vector3(x, y, z), rotation);
+  }
+
+  /** Draw every queued repeated part: one instanced mesh per geometry and material. */
+  private flushRepeats(): void {
+    for (const { geometry, material, name, matrices } of this.batches.values()) {
+      const mesh = new THREE.InstancedMesh(geometry, material, matrices.length);
+      matrices.forEach((m, i) => mesh.setMatrixAt(i, m));
+      mesh.instanceMatrix.needsUpdate = true;
+      mesh.computeBoundingSphere();
+      mesh.name = name;
+      this.group.add(mesh);
+      this.instanced.push(mesh);
+    }
+    this.batches.clear();
+  }
+
   /** A push button: dark collar and a coloured, backlit cap. */
   private button(parent: THREE.Object3D, x: number, y: number, tone: CapTone, size = 0.026): void {
-    this.box(size + 0.012, size + 0.012, 0.006, 0.003, this.black, x, y, 0.003, 'desk-button-collar', parent);
-    this.box(size, size, 0.012, 0.004, this.caps[tone], x, y, 0.008, 'desk-button', parent);
+    this.repeatBox(size + 0.012, size + 0.012, 0.006, 0.003, this.black, x, y, 0.003, 'desk-button-collar', parent);
+    this.repeatBox(size, size, 0.012, 0.004, this.caps[tone], x, y, 0.008, 'desk-button', parent);
   }
 
   build(layout: CabLayout): void {
     for (const g of this.geometries) g.dispose();
     for (const g of this.shared.values()) g.dispose();
+    for (const m of this.instanced) m.dispose();
+    this.instanced = [];
     this.geometries = [];
     this.shared.clear();
     this.group.clear();
@@ -247,9 +284,8 @@ export class CabCockpit {
     moulding.position.set(fcx, fcy, 0.004);
     // the moulding's screws along the top, as on the reference cab trim
     for (let i = 0; i < 7; i++) {
-      const screw = this.add(this.part('screw', () => new THREE.CylinderGeometry(0.006, 0.006, 0.004, 10)), this.aluminium, 'trim-screw', this.group, false);
-      screw.rotation.x = Math.PI / 2;
-      screw.position.set(F.x0 + 0.12 + (fw - 0.24) * (i / 6), F.y1 - 0.016, 0.046);
+      this.repeat(this.part('screw', () => new THREE.CylinderGeometry(0.006, 0.006, 0.004, 10)), this.aluminium, 'trim-screw', this.group,
+        v(F.x0 + 0.12 + (fw - 0.24) * (i / 6), F.y1 - 0.016, 0.046), new THREE.Euler(Math.PI / 2, 0, 0));
     }
 
     // A-pillars: light-grey panels flaring back to the cab sides, with seams, a vent grille,
@@ -341,7 +377,7 @@ export class CabCockpit {
       const w = (fw - 0.5) / 4 - 0.06;
       const x = F.x0 + 0.25 + (w + 0.06) * (i + 0.5);
       this.quad(v(x - w / 2, shieldY + 0.001, 0.05), v(x + w / 2, shieldY + 0.001, 0.05), v(x + w / 2, shieldY + 0.001, 0.09), v(x - w / 2, shieldY + 0.001, 0.09), this.black, 'defroster-vent');
-      for (let k = 0; k < 4; k++) this.box(w, 0.004, 0.003, 0, this.desk, x, shieldY + 0.003, 0.056 + k * 0.01, 'defroster-vent-slat');
+      for (let k = 0; k < 4; k++) this.repeatBox(w, 0.004, 0.003, 0, this.desk, x, shieldY + 0.003, 0.056 + k * 0.01, 'defroster-vent-slat');
     }
     this.box(3.2, 0.04, 0.04, 0.018, this.desk, 0, shieldY - 0.012, lipZ, 'desk-lip');
     const deskTop = shieldY - 0.03;
@@ -376,9 +412,8 @@ export class CabCockpit {
     ];
     rows.forEach((row, r) => row.forEach((tone, c) => this.button(deskFrame, -0.22 + c * 0.075, on(0.5 + r * 0.075), tone)));
     for (let i = 0; i < 6; i++) {
-      this.box(0.03, 0.05, 0.012, 0.004, this.black, 0.6 + i * 0.06, on(0.56), 0.006, 'desk-toggle-base', deskFrame);
-      const lever = this.box(0.008, 0.008, 0.045, 0.003, this.aluminium, 0.6 + i * 0.06, on(0.56) + 0.008, 0.03, 'desk-toggle-lever', deskFrame);
-      lever.rotation.x = -0.4;
+      this.repeatBox(0.03, 0.05, 0.012, 0.004, this.black, 0.6 + i * 0.06, on(0.56), 0.006, 'desk-toggle-base', deskFrame);
+      this.repeatBox(0.008, 0.008, 0.045, 0.003, this.aluminium, 0.6 + i * 0.06, on(0.56) + 0.008, 0.03, 'desk-toggle-lever', deskFrame, new THREE.Euler(-0.4, 0, 0));
     }
     // driver's controller (traction / brake) at the left hand, reverser lock beside it
     const km = this.holder(v(-0.72, on(0.62), 0), new THREE.Euler(), deskFrame);
@@ -412,6 +447,7 @@ export class CabCockpit {
     }
 
     if (this.full) this.buildRear();
+    this.flushRepeats();
   }
 
   /** The cab behind the seated view: walls, floor, ceiling, rear bulkhead and door, seat. */
@@ -495,6 +531,8 @@ export class CabCockpit {
   dispose(): void {
     for (const g of this.geometries) g.dispose();
     for (const g of this.shared.values()) g.dispose();
+    for (const m of this.instanced) m.dispose();
+    this.instanced = [];
     this.geometries = [];
     this.shared.clear();
     for (const m of [...this.lit, this.lamp, this.doorRed, ...this.screens]) m.dispose();

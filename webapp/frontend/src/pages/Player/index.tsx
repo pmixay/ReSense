@@ -26,7 +26,7 @@ import styles from './Player.module.css';
 import { useNavigationPreview } from '../../lib/navigationPreview';
 import { COVERED_PHASES, useSectionMotion } from '../../lib/sectionMotion';
 import { CAB_BOOT_MS, type CabBootInfo } from '../../player/cabBoot';
-import { fmtFrames } from '../../lib/format';
+import { fmtDuration, fmtFrames } from '../../lib/format';
 import { envelopeText } from './cab';
 
 // ---------------------------------------------------------------- the stage
@@ -410,11 +410,11 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
 
   const bootLines = useMemo(() => [
     `прогон · ${run.name}`,
-    `кадры · ${fmtFrames(n)}`,
+    `запись · ${fmtFrames(n)} · ${fmtDuration(run.summary.duration_s)}`,
     hasClouds ? `облака точек · ${fmtFrames(run.cloud_frames)}` : 'облака точек · нет, схематичный режим',
     `габарит · ${envelopeText()}`,
     `параметры · ${run.preset.name}`,
-  ], [run.name, run.cloud_frames, run.preset.name, n, hasClouds]);
+  ], [run.name, run.cloud_frames, run.preset.name, run.summary.duration_s, n, hasClouds]);
   const stateAttr = decision ? decision.toLowerCase() : undefined;
   const pr = Math.min(2, window.devicePixelRatio || 1);
   return (
