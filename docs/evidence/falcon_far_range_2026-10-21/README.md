@@ -1,5 +1,138 @@
 # Falcon far range 1.3 (card N7), 21.10
 
+Branch `claude/falcon-far-range-1.3`. Author evidence. Protocol: [PROTOCOL.md](PROTOCOL.md), registered at `a01acdc`
+before any measuring run; amendments A1–A10 were each written before the runs they govern.
+
+* **Revision 2** (this section) answers the independent review `claude/falcon-far-range-review-1.3`
+  (ACCEPT WITH CONDITIONS), as the captain relayed it: fix F1, improve the held STOP, C2, C3, F6, F7.
+* **Revision 1** (§1–§6 below) is the `0eb4dda` candidate the review measured, kept as history with
+  corrections.
+
+## Revision 2 (final): `c431b2e`
+
+**Detector commit measured: `c431b2e`.** Later commits change only evidence. **Switch state: ON.**
+`farrange.with_falcon_profile: true` and `farrange.axis_stable: true` (class defaults and both YAML copies),
+with the new sub-switches at their class defaults:
+* `axis_union_beyond` on;
+* `axis_report_tolerance` 1.05 m;
+* `axis_report_lag_frames` 3;
+* `axis_max_boundary_lateral` 2.5 m;
+* `axis_turnout_radius` 200 m;
+* `axis_union_separate` **off** (measured, A8).
+
+Read only under the `falcon_ros` / `falcon_native` profiles. **F7: switching on also ships 19.10's C6**
+(`cluster.far_min_height` 0.3 m, `far_max_length` 4.0 m, in-sample in 19.10, review B2) **and the 400 m
+crops** under those profiles. `detector_freeze.py verify` fails, as expected after a detector edit (P1 reseals).
+
+### What changed since the review (A6–A10)
+
+| | finding | change | effect |
+|---|---|---|---|
+| A6 | F1 root cause: beyond `far.valid` the corridor used the near model's laterals, ~2 m off at 150 m | `axis_union_beyond`: from `far.valid` to the near model's own trusted range, the corridor is the union of the near model's and the continued far line's laterals (never removes a v1.2.0 point) | GO-with-person-inside-clear 30 → 6 frames; extra person detections |
+| A6 | C3 turnout / crossover | a side confirms the far line only if its boundary is within 2.5 m of the axis; a gap a diverging track (R 200 m, half-envelope 1.6 m) could leave through ends its confirmation | the review's probe W (wide straight walls) and my case K are **fail-safe**; no real-recording cost |
+| A6 | F6 | config comments corrected; the switch test asserts the shipped defaults (on under the Falcon profiles, off under manual / pandar128, both YAMLs) | — |
+| A7 | F1 remainder (traced, frame 2660): the person merged with the left wall that the near hypothesis puts in the corridor | the review's cap: beyond `far.valid` the reported range ends where the near corridor's centre leaves the far line by more than 1.05 m (the strict-gauge half-width) | reporting only |
+| A8 | tried: cluster the near-hypothesis points separately | **off**: no held-STOP gain, +1 false episode at 4 of 6 starts | — |
+| A9 / A10 | 1 scene frame and 4 matrix frames: the reported range jumped past a target in the frame it became trusted | the reported range grows only as far as the trusted range reached in each of the last 3 frames | reporting only |
+
+Detection, trust and clustering of `c431b2e` equal A7's: every decision, detection and warning row of the
+whole-recording replay is identical (4,443 / 4,443). Only `clear` / `monitored` differ.
+
+### Results (`c431b2e` against v1.2.0 `3b73bbe`)
+
+**Real recording, 6 start frames** (the review's `evalrows.py` / `person_frames.py`, plain replays to frame
+3300; v1.2.0 rows are the review's, reproduced in my environment: whole recording identical on every
+decision field, two scenes identical on every field):
+
+| start | v1.2.0 first / **held** STOP | candidate first / **held** STOP | episodes v1.2.0 / cand | false eps v1.2.0 / cand | GO with person inside clear v1.2.0 / cand |
+|---|---|---|---|---|---|
+| 0 | 127.3 / **123.0** | 150.5 / **129.4** | 8 / 13 | 3 / 0 | 0 / **0** |
+| 600 | 127.1 / **120.5** | 150.4 / **135.4** | 9 / 8 | 2 / 0 | 0 / **0** |
+| 1200 | 127.3 / **114.4** | 150.5 / **135.0** | 11 / 7 | 3 / 0 | 0 / **0** |
+| 1800 | 127.3 / **122.4** | 150.5 / **129.4** | 9 / 15 | 1 / 1 | 0 / **0** |
+| 2100 | 124.0 / **122.3** | 150.5 / **135.5** | 8 / 8 | 2 / 0 | 0 / **0** |
+| 2400 | 123.4 / **120.5** | 150.5 / **132.2** | 7 / 9 | 2 / 0 | 1 / **0** |
+
+* **Held STOP** (≥ 90 % of the next 3 s): **129.4–135.5 m** against v1.2.0's 114.4–123.0 m, a gain of 6.4–20.6 m
+  at every start. The reviewed `0eb4dda` gave 127.4–130.2 m.
+* **C2, the first STOP is a blip.** It is 150.4–150.5 m at every start now (was 135–150 m), but it is a short
+  episode, 3 frames at the 0 start (2756–2758). It is followed by short STOP episodes at 2760–2914 (the person
+  at ~150–137 m, while the far trust and the union pick them up and lose them) and a held STOP from 129–135 m.
+  Report it as "first STOP 150.5 m (intermittent, 3–15 frames at a time, until the STOP is held from 129–135 m)".
+* **The start at 1800** has one false episode (frames 2704–2705): a STOP detection at 152–156 m, 0.95–1.5 m left
+  of the track reference. This is the left wall, which the near-model hypothesis of the union stretch puts at
+  the corridor centre (or the person merged with it), traced with `scripts/trace_person.py`. v1.2.0 has 1 false
+  episode at that start too. The whole recording from frame 0 has none.
+
+**Whole recording** (`falcon_eval.py`):
+
+| row | v1.2.0 | candidate |
+|---|---|---|
+| GO / CAUTION / STOP | 13 / 3,043 / 1,387 | 2,096 / 828 / 1,519 |
+| STOP episodes | 8 | 13 |
+| episodes without a person | 3 | 0 |
+| non-person STOP frames | 18 | 0 |
+| person-STOP frames lost | — | 0 |
+| CAUTION share | 0.685 | 0.186 |
+| 115 m structure STOP frames | 29 | 1 |
+| monitored range p10 / p50 / p90 | 102 / 115 / 159 m | 102 / 102 / 134 m |
+
+* The 5 added episodes are all on the person: short STOP onsets at 150–137 m before the held STOP. Within the
+  A4 bound (+11 over Falcon + ride + empty Pandar; Pandar: see "Pandar gate and X3, revision 2" below).
+* The monitored range is *shorter* than v1.2.0's: the A7 and A10 caps no longer claim the stretch the corridor
+  does not cover.
+* Far trusted range changing by ≥ 20 m between frames: 2.5 % of frames. The reported monitored range changes by
+  ≥ 20 m in 17.2 % of frames (v1.2.0 38.4 %).
+
+**The review's 82 scenes** (`scene_run.py` and specs of the review; v1.2.0 rows the review's, two re-run and
+identical; candidate all 82 re-run): [results_rev2/scenes.md](results_rev2/scenes.md).
+* **0 lost or delayed STOPs**; first / held STOP later by more than max(5 m, 5 %) in no scene; 58 first / held
+  STOP gains.
+* False episodes: 141 → 81. Added only in `curve_all_xc150_R300_d+1` (+1, frames 2723–2725, the 115 m structure
+  while the held far axis decays) and the non-physical `row_offset_+0.8` (+2), the review's F4. Scenes are
+  outside the A4 bound.
+* **GO with a target inside clear and monitored: 43 frames against v1.2.0's 92, and 0 frames that v1.2.0 does
+  not have** (per frame, [`scripts/scene_go_frames.py`](scripts/scene_go_frames.py), which reproduces the
+  review's totals). The 43 are v1.2.0's own near-model false clears where the far axis does not form: curves
+  from 120 m, the turnouts, `left_straight`, and the scrolled moving scenes at 25–30 m/s. They belong to the
+  Falcon clear-distance model, which is another lane's.
+
+**Injection matrix, fresh seeds 60 and 61** (never used), both checkouts, `--check-prefix` 0 / 310 mismatches:
+* Criteria 7–10 **pass**. Approach from 400 m: first STOP 133–139 m against 110–117 m.
+* GO with an in-gauge target inside clear: **0 / 0** (the reviewed candidate had 324 on seeds 40 / 41).
+  [results_rev2/matrix_compare_s60_61.json](results_rev2/matrix_compare_s60_61.json),
+  [results_rev2/matrix_go_s60_61.json](results_rev2/matrix_go_s60_61.json).
+
+**Other checks on `c431b2e`:**
+* **Walk control:** real first STOP 150.4 m, injected 162.1 m (3 seeds), within ±15 m. Band 150–125 m STOP
+  fraction 0.49 real against 0.39–0.41 injected.
+* **Node path:** on the shipped YAML defaults, frames 2650–2900, 250 / 250 detector results identical to the
+  replay; published decision equal except frame 0 (`epoch_unconfirmed`).
+* **Negative controls:** [neg_controls.json](neg_controls.json) **92 / 92** required, plus case K (reported) also
+  fail-safe. The review's tracker probes [results/review_probes_final.json](results/review_probes_final.json)
+  **40 / 40** fail-safe, including W (the 19.10 axis: 8 not fail-safe).
+* **Doubt model:** no effect (revision 1, unchanged code path).
+* **Unit tests:** `tests/test_farrange.py` 21 tests, all pass (new since revision 1: the turnout W / K tests and the F6 switch test).
+  The full suite is in "Pandar gate and X3, revision 2" below.
+
+### Hard rows of A6 (as registered) and status
+
+| row | status |
+|---|---|
+| H1 GO-with-target-inside-clear = 0 | **real recording: 0 at 6 / 6 starts. Matrix s60 / 61: 0.** Scenes: 43 frames remain, **all also v1.2.0's** (v1.2.0 92); 0 frames are the candidate's own. As written ("0 on the scenes") H1 **fails** on inherited v1.2.0 frames, which this lane's change does not create and cannot remove without changing the Falcon clear-distance model (another lane). Reported as A9 states |
+| H2 no v1.2.0 STOP lost or delayed | **pass**: recording (0 lost frames, first and held STOP later at no start), scenes (0), matrix (criteria 7–9) |
+| H3 negative controls, K and W fail-safe | **pass** |
+| H4 false alarms within the A4 bound | **pass**: Falcon +5 (all with the person, 0 without), ride and empty Pandar 0 (see "Pandar gate and X3, revision 2" below) |
+| H5 walk control, gate, X3, node | walk **pass**, node **pass**, gate and X3: see "Pandar gate and X3, revision 2" below |
+
+**C3 corrected.** Revision 1 called the turnout case "shared with the near model". That was wrong: at
+`0eb4dda` the far axis trusted a wrong straight line to ~390 m (review probe W, my case K), where v1.2.0 trusts its
+near model to 107–175 m. With the A6 guards both are fail-safe (no trust where they diverge). What remains
+unverified is a turnout between *tight* boundaries (≤ 2.5 m) through a gap shorter than the exit length,
+which is physically impossible for R ≥ 200 m under the stated envelope, and a real (non-synthetic) curve or turnout: none exists in the data.
+
+## Revision 1 (`0eb4dda`, reviewed; kept as history)
+
 Branch `claude/falcon-far-range-1.3`, base `6ee469c` (detector = v1.2.0 `3b73bbe`). Author evidence; an
 independent review is still to come. Protocol: [PROTOCOL.md](PROTOCOL.md). It was registered at `a01acdc`
 before any measuring run, and amendments A1–A5 were added before the runs they govern. A4 is the user's
@@ -12,6 +145,8 @@ rows. Detector paths are unchanged from `0eb4dda` to the final evidence commit. 
 both YAML copies. They take effect only under the `falcon_ros` / `falcon_native` profiles; the Pandar
 profiles never read them. `detector_freeze.py verify` fails on this branch, as expected after a detector
 edit (P1 reseals).
+
+**Corrections from the review:** "149.5 m (≥ 90 % STOP from there)" below was a 5-frame blip (frames 2762–2766), followed by 11 s without STOP; the STOP was held from 129.5 m (C2). The turnout residual in §4 was not shared with the near model beyond 175 m (C3, fixed in revision 2). C6 shipped with the switch (F7).
 
 ## 1. Result
 
