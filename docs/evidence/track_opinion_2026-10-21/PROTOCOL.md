@@ -128,3 +128,26 @@ new model fails, only if it is an improvement on H3 and no worse on G3; this is 
 profiles turn the opinion off under `doubt_falcon: false` and keep it under `true` (v1.2.0), Pandar untouched;
 appending features leaves the shipped model's scores unchanged; the new model file (once trained) loads, uses
 only known features, no intensity / raw count feature, and its export matches scikit-learn on its report rows.
+
+## Amendments
+
+### A1 (21.10, after the §2.2 check of the first positives, before any §3 run)
+
+The first synthetic-versus-real check (`feature_check.py`, `doubleT_obstacle` split by kind: the rail object
+(`is_low` 1) against `railobj` / `lowbox`, the crossing person against `person`; the Falcon person against
+`person` / `hivis`) found two **generator** defects, which are fixed instead of only dropping features:
+
+1. The real rail object lies across a rail (|lateral| 0.85 m, bottom 0.13 m below the rail head) while the
+   synthetic `railobj` was spread over ±0.8 m and stood on the rail head (top 0.31 m above it, where its own
+   catalogue entry says ~0.13 m). Fixed: `collect --on-rail` (|lateral| 0.6–0.9 m either side; `railobj` top
+   0.13 m above the rail head).
+2. Every synthetic body has one size (the person is a 1.7 m mesh), so real heights / widths fall outside the
+   synthetic band. Fixed: `collect --size-jitter 0.3` (each of L, W, H scaled by U(0.7, 1.3) per sequence).
+
+New positive sets `p13j_moving`, `p13j_standing`, `p13_rail_moving`, `p13_rail_standing`
+(`scripts/track_opinion_pipeline.py`). The §2.2 rule then applies unchanged to the check re-run with them.
+Already determined artefacts, dropped whatever the re-run says: `raw_per_vox` (the recordings hold each echo
+twice, the injector once: 0 % of real rows inside), `ring_fill` (injected points carry no real channel id),
+and the count features `log_n_mean`, `log_gauge`, `vis_mean` (fail on the Falcon person; sensor-dependent).
+The Falcon rows of the first check were collected in the v1.2.0 tree (23 features); the appended features are
+checked on Falcon rows collected in the branch tree.

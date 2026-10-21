@@ -27,16 +27,14 @@ def load(paths):
 
 
 def kind_of(piece):
-    k = piece.split(":")[2]
-    for tag in ("_far", "_st", "_tw", "_aw", "_cx", "_cross"):
-        k = k.replace(tag, "")
-    return k
+    """syn:<file>:<kind>[_<set tag>]:p<piece> -> kind"""
+    return piece.split(":")[2].split("_")[0]
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--syn", nargs="+", required=True)
-    ap.add_argument("--real", action="append", required=True, help="name=path:kind,kind")
+    ap.add_argument("--real", action="append", required=True, help="name=path:kind,kind[:feature=value]")
     ap.add_argument("--band", type=float, default=10.0)
     ap.add_argument("--min-share", type=float, default=0.8)
     ap.add_argument("--min-syn", type=int, default=30, help="synthetic rows needed in a band to judge a real row")
@@ -49,14 +47,19 @@ def main():
     out = {"features": feats, "real": {}, "fail": []}
     for spec in a.real:
         name, rest = spec.split("=", 1)
-        path, kinds = rest.split(":")
+        path, kinds, *flt = rest.split(":")
         Xr, _, Mr, _ = load([path])
         r = (Mr[:, 6] == 1) & (Mr[:, 2] > 0)
+        if flt:                                   # e.g. "is_low=1": one object kind of a recording
+            fk, fv = flt[0].split("=")
+            r &= Xr[:, feats.index(fk)] == float(fv)
         Xr, Mr = Xr[r], Mr[r]
         fam = np.isin(ks, kinds.split(","))
         res = {"rows": int(len(Xr)), "dist_range": [float(Mr[:, 4].min()), float(Mr[:, 4].max())] if len(Xr) else None,
                "kinds": kinds, "per_feature": {}}
         for j, f in enumerate(feats):
+            if j >= Xr.shape[1]:          # rows collected before the 1.3 features were appended
+                continue
             inside, judged = 0, 0
             for x, d in zip(Xr[:, j], Mr[:, 4]):
                 b = fam & (np.abs(Ms[:, 4] - d) <= a.band)

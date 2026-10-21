@@ -107,6 +107,10 @@ def collect_recording(job):
 def collect_injected(job):
     (files, stamps, speeds, kind, d0, lateral, refl, seed, cfg_path, sets, place, piece, cross) = job[:13]
     move = job[13] if len(job) > 13 else 0.0     # 21.10: the object's own speed towards the train (m/s; < 0 = away)
+    # 21.10: per-sequence size factors (L, W, H) and the rail placement (an object lying across a rail)
+    scale = job[14] if len(job) > 14 else (1.0, 1.0, 1.0)
+    on_rail = job[15] if len(job) > 15 else False
+    from dataclasses import replace
     from far_range_eval import legacy_placement, placement_match
     from resense.frame import frame_from_compact
     from resense.synthetic import inject_obstacles
@@ -126,6 +130,11 @@ def collect_injected(job):
             break
         fr = frame_from_compact(load_cache_array(f), cfg.sensor, stamp=t or 0.0, frame_id=stem)
         spec, tm = legacy_placement(fr.xyz, cfg.track, det.track, kind, d, lateral, refl, place)
+        if scale != (1.0, 1.0, 1.0):
+            spec = replace(spec, size=tuple(float(v * f) for v, f in zip(spec.size, scale)))
+        if on_rail and kind == "railobj" and spec.base_z is not None:
+            # the catalogue's railobj: across a rail, its top ~0.13 m above the rail head (doubleT_obstacle)
+            spec = replace(spec, base_z=float(spec.base_z) + 0.13 - spec.size[2])
         rng = np.random.default_rng(np.random.SeedSequence([seed, k, 1]))
         inj = inject_obstacles(fr, tm, [spec], rng=rng, dropout_start=60.0, dropout_full=200.0)
         det.process(inj.frame)
@@ -166,7 +175,14 @@ def cmd_collect(a):
                              a.config, a.set, place, f"syn:{fn}:{kind}{a.piece_tag}:p{piece_of[start]}",
                              float(rng.choice([-1.0, 1.0]) * a.cross) if a.cross else 0.0,
                              float(rng.uniform(*(float(v) for v in a.move.split(":")))) if ":" in a.move
-                             else float(a.move)))
+                             else float(a.move),
+                             tuple(float(v) for v in rng.uniform(1 - a.size_jitter, 1 + a.size_jitter, 3))
+                             if a.size_jitter else (1.0, 1.0, 1.0),
+                             bool(a.on_rail)))
+                if a.on_rail:                   # across a rail: |lateral| 0.6-0.9 m on either side
+                    j = list(jobs[-1])
+                    j[5] = float(rng.choice([-1.0, 1.0]) * rng.uniform(0.6, 0.9))
+                    jobs[-1] = tuple(j)
         fn_ = collect_injected
     else:
         for name in a.bag.split(","):
@@ -394,6 +410,8 @@ def main():
     c.add_argument("--seed", type=int, default=1)
     c.add_argument("--cross", type=float, default=0.0, help="m/s: the objects cross the track laterally (a walking person)")
     c.add_argument("--move", default="0", help="m/s, or lo:hi (uniform per sequence): the object's own speed towards the train (< 0 = away)")
+    c.add_argument("--size-jitter", type=float, default=0.0, help="21.10: each size factor uniform in 1 +- this, per sequence")
+    c.add_argument("--on-rail", action="store_true", help="21.10: lay the objects across a rail (|lateral| 0.6-0.9 m)")
     c.add_argument("--piece-tag", default="", help="21.10: appended to the sequence name (distinguishes positive sets)")
     c.add_argument("--config", default=os.path.join(ROOT, "configs/default.yaml"))
     c.add_argument("--set", action="append", default=[])

@@ -75,6 +75,15 @@ def positive_sets():
                         "--move=0.5:3.0", "--seed", "13", "--piece-tag", "_tw"]),
         ("p13_away", ["--inject", "person,trolley,box1.0", "--files", j(st), "--start", "35:120",
                       "--move=-2.0:-0.5", "--seed", "14", "--piece-tag", "_aw"]),
+        # 21.10 amendment 1 (PROTOCOL): positives fixed after the synthetic-versus-real check
+        ("p13j_moving", ["--inject", "person,hivis,trolley,dog,box1.0,box0.5", "--files", j(mv), "--start", "60:250",
+                         "--frames", "140", "--size-jitter", "0.3", "--seed", "16", "--piece-tag", "_jm"]),
+        ("p13j_standing", ["--inject", "person,hivis,trolley,dog,box1.0,box0.5", "--files", j(st), "--start", "30:180",
+                           "--size-jitter", "0.3", "--seed", "17", "--piece-tag", "_js"]),
+        ("p13_rail_moving", ["--inject", "railobj,lowbox", "--files", j(mv + mv2), "--start", "60:200",
+                             "--on-rail", "--size-jitter", "0.3", "--seed", "18", "--piece-tag", "_rm"]),
+        ("p13_rail_standing", ["--inject", "railobj,lowbox", "--files", j(st), "--start", "30:150",
+                               "--on-rail", "--size-jitter", "0.3", "--seed", "19", "--piece-tag", "_rs"]),
         ("p13_cross", ["--inject", "person,hivis,dog", "--files", j(mv2), "--start", "40:160", "--cross", "1.2",
                        "--seed", "15", "--piece-tag", "_cx"]),
     ]
