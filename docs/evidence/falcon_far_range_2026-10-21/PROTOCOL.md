@@ -330,3 +330,12 @@ that kept the near model's lateral are clustered on their own. Everything else i
 everything up to far.valid, and the points the union gave the far line. So an object seen in one hypothesis is
 not merged with structures seen only in the other. Hard rows and reporting as A6. If this costs a v1.2.0 STOP
 (H2) or adds false episodes beyond the bound, it is switched off and A7 is the final state.
+
+**A8 result (`fdea950`, measured, switched off):**
+* Whole recording: 13 episodes, 0 false (= A7).
+* Held STOP at the 6 starts: 129.4 / 135.4 / 135.0 / 129.4 / 135.5 / 132.2 m (= A7).
+* First STOP: 150.5–157.5 m (A7: 150.4–150.5).
+* **False episodes 0 / 1 / 1 / 1 / 0 / 1** (A7: 0 / 0 / 0 / 1 / 0 / 0).
+
+No held-STOP gain, more false episodes: `axis_union_separate` is **off** (class default False) and the final
+detector behaves as A7. The final full replay is compared row by row with the A7 replay to confirm it.
