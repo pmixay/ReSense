@@ -1,0 +1,255 @@
+{
+ "trial": "r10_legacy",
+ "bag_frames": 432,
+ "frames_with_status": 432,
+ "frames_seen_by_recorder_input_sub": 424,
+ "duplicate_frame_status": 0,
+ "missing_frames": [],
+ "decisions_live": {
+  "FAULT": 1,
+  "GO": 7,
+  "CAUTION": 271,
+  "STOP": 153
+ },
+ "decisions_offline_replay": {
+  "FAULT": 1,
+  "GO": 9,
+  "CAUTION": 275,
+  "STOP": 147
+ },
+ "frames_with_different_decision_than_offline_cold_replay": 24,
+ "frames_not_processed": 0,
+ "different_decision_frames": [
+  2723,
+  2724,
+  2909,
+  2910,
+  2913,
+  2914,
+  2916,
+  2917,
+  2918,
+  2919,
+  2953,
+  2956,
+  2957,
+  2990,
+  2991,
+  2992,
+  3003,
+  3007,
+  3008,
+  3039,
+  3058,
+  3107,
+  3126,
+  3127
+ ],
+ "first_stop_live": {
+  "frame": 2916,
+  "bag_s": 19.7,
+  "nearest_m": 130.48,
+  "since_player_cmd_s": 23.24,
+  "since_first_input_s": 19.6
+ },
+ "first_stop_offline": {
+  "frame": 2950,
+  "nearest_m": 127.18,
+  "bag_s": 23.1
+ },
+ "result_age_status_arrival_minus_input_arrival": {
+  "n": 424,
+  "median_s": 0.0055,
+  "p95_s": 0.0093,
+  "max_s": 0.0327,
+  "min_s": 0.0013
+ },
+ "node_source_age_s_publication": {
+  "n": 432,
+  "median_s": 0.0145,
+  "p95_s": 0.0187,
+  "max_s": 0.0422,
+  "min_s": 0.0127
+ },
+ "node_residence_age_s": {
+  "n": 432,
+  "median_s": 0.0104,
+  "p95_s": 0.0137,
+  "max_s": 0.0307,
+  "min_s": 0.0091
+ },
+ "freshness_valid_reasons": {
+  "epoch_unconfirmed": 1,
+  "current": 431
+ },
+ "freshness_valid_count": 431,
+ "node_last_frame_stats": {
+  "frames": 431,
+  "dropped_frames": 0,
+  "catchup_skipped": 0,
+  "rss_peak_mb": 154.2,
+  "fps": 10.0,
+  "cpu_cores": 0.16,
+  "input_period_ms": 100.0
+ },
+ "node_latency_ms_max": 21.07,
+ "decision_topic_equals_status_sequence": true,
+ "decision_topic_messages": 460,
+ "container_mem_MiB": {
+  "max": 122.1,
+  "median": 119.8,
+  "samples": 27
+ },
+ "decision_changes_live_[frame,decision,nearest_m]": [
+  [
+   2719,
+   "FAULT",
+   null
+  ],
+  [
+   2720,
+   "GO",
+   null
+  ],
+  [
+   2723,
+   "CAUTION",
+   null
+  ],
+  [
+   2909,
+   "GO",
+   null
+  ],
+  [
+   2913,
+   "CAUTION",
+   null
+  ],
+  [
+   2916,
+   "STOP",
+   130.48
+  ],
+  [
+   2920,
+   "CAUTION",
+   null
+  ],
+  [
+   2950,
+   "STOP",
+   127.18
+  ],
+  [
+   2954,
+   "CAUTION",
+   null
+  ],
+  [
+   2956,
+   "STOP",
+   126.65
+  ],
+  [
+   2958,
+   "CAUTION",
+   null
+  ],
+  [
+   2981,
+   "STOP",
+   123.82
+  ],
+  [
+   3003,
+   "CAUTION",
+   null
+  ],
+  [
+   3009,
+   "STOP",
+   120.45
+  ],
+  [
+   3040,
+   "CAUTION",
+   null
+  ],
+  [
+   3059,
+   "STOP",
+   114.32
+  ],
+  [
+   3126,
+   "CAUTION",
+   null
+  ],
+  [
+   3128,
+   "STOP",
+   105.72
+  ]
+ ],
+ "stop_runs_live": [
+  [
+   2916,
+   2919
+  ],
+  [
+   2950,
+   2953
+  ],
+  [
+   2956,
+   2957
+  ],
+  [
+   2981,
+   3002
+  ],
+  [
+   3009,
+   3039
+  ],
+  [
+   3059,
+   3125
+  ],
+  [
+   3128,
+   3150
+  ]
+ ],
+ "stop_runs_offline": [
+  [
+   2950,
+   2952
+  ],
+  [
+   2981,
+   2989
+  ],
+  [
+   2993,
+   3003
+  ],
+  [
+   3007,
+   3038
+  ],
+  [
+   3058,
+   3106
+  ],
+  [
+   3108,
+   3150
+  ]
+ ],
+ "non_stop_frames_after_frame_3060_live": [
+  3126,
+  3127
+ ]
+}
