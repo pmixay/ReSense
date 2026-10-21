@@ -27,8 +27,8 @@
    of the real crossing person in `doubleT_obstacle` lies outside the synthetic band in 21 % of its rows (real
    median 0.155 m vs synthetic 0.030 m); the Falcon person is twice as wide as the synthetic one (0.88 vs 0.40 m).
    A model leaning on lateral stability and the body shape of five meshes is what keeps the margin thin.
-4. **Falcon:** the shipped model never withholds on the Falcon recording (all 17 onsets beyond 25 m score
-   ≥ 0.022 > 0.015): opinion on and off are identical on every non-timing field of all 4,443 frames, in the
+4. **Falcon:** the shipped model never withholds on the Falcon recording (every rule STOP onset beyond 25 m
+   scores above 0.015: 17 onsets ≥ 0.088 in `falcon_ros`, 11 onsets ≥ 0.022 in the manual path): opinion on and off are identical on every non-timing field of all 4,443 frames, in the
    `falcon_ros` profile and in the manual path. The candidate scores the real person (0.036–0.20) *below* the
    false 115 m support structure (0.21–0.80): no evidence that it generalises. `tracking.doubt_falcon: false`
    (option F-a) turns the opinion off in the Falcon profiles; it is implemented, tested and measured (identical to
@@ -135,6 +135,7 @@ and empty rows are not out of fold for the shipped model's 27.09 training on the
 | cross-fit harness | the shipped model run through `opinion_crossfit.py` on the same pieces | 23 / 26 / 111, equal to the gate |
 | Falcon identity and gating | every non-timing field of 4,443 rows; F-a replica's effective config | branch defaults = v1.2.0 tree (both paths); F-a `doubt_model ''`; positive control: manual vs `falcon_ros` differ on all 4,443 rows |
 | person labels of Falcon rows | rows labelled from N2 anchors / far-walker paths; STOP rows on the person 1,369 = the control's person STOP frames | consistent |
+| test suite | `pytest tests` on the branch and on the v1.2.0 tree ([`out/pytest_*.txt`](out/)) | branch 2,483 passed, v1.2.0 2,471 passed; the same 1 failure on both (`test_rail_start.py::test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop`, pre-existing); `check_archived_lint.py` (ruff 0.15.8) PASS |
 | pipeline reproducible | `--stages model` run twice | model JSON and report byte-identical |
 | export = scikit-learn | `export_max_abs_diff` on 300 rows, every model | 0.0 |
 | cost wrapper does not change results | decisions of the timed and an untimed run, 600 ride frames, each config | equal |
