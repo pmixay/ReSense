@@ -1,0 +1,165 @@
+{
+ "id_off_vs_control_differing_rows": [],
+ "M1": {
+  "objects": {
+   "15": {
+    "frames": 264,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.023,
+     44.023
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "16": {
+    "frames": 198,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.054,
+     44.054
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "17": {
+    "frames": 329,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.008,
+     44.008
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "18": {
+    "frames": 274,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.013,
+     44.013
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "19": {
+    "frames": 303,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.042,
+     44.042
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "20": {
+    "frames": 285,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.046,
+     44.046
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "21": {
+    "frames": 276,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.028,
+     44.028
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "22": {
+    "frames": 298,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.03,
+     44.03
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "23": {
+    "frames": 175,
+    "stop": [
+     38,
+     41
+    ],
+    "first_m": [
+     86.755,
+     90.54
+    ],
+    "lost": [],
+    "gained": [
+     103,
+     104,
+     105
+    ]
+   },
+   "24": {
+    "frames": 188,
+    "stop": [
+     0,
+     0
+    ],
+    "first_m": [
+     null,
+     null
+    ],
+    "lost": [],
+    "gained": []
+   }
+  },
+  "failing_objects": [],
+  "new_stop_frames": [
+   103,
+   104,
+   105
+  ],
+  "new_unmatched": [],
+  "stop_frames": [
+   185,
+   188
+  ]
+ },
+ "controls": {
+  "self_failing": [],
+  "planted": [
+   15,
+   239
+  ],
+  "planted_found": true
+ },
+ "verdict": {
+  "ID": true,
+  "M1_no_loss": true,
+  "M1_new_matched": true
+ }
+}

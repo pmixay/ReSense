@@ -1,0 +1,452 @@
+{
+ "doubleT_platform": {
+  "B6": {
+   "control": {
+    "run": "/data/acc/b6/run_control_doubleT_platform.jsonl",
+    "frames_with_path": 286,
+    "steps_inside": 2276,
+    "steps_beyond": 926,
+    "inside_over_0.5m": 0.133,
+    "inside_over_1.05m": 0.086,
+    "beyond_over_0.5m": 0.261,
+    "beyond_over_1.05m": 0.178,
+    "inside_error_p90": 0.81
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_doubleT_platform.jsonl",
+    "frames_with_path": 286,
+    "steps_inside": 2276,
+    "steps_beyond": 926,
+    "inside_over_0.5m": 0.03,
+    "inside_over_1.05m": 0.004,
+    "beyond_over_0.5m": 0.135,
+    "beyond_over_1.05m": 0.037,
+    "inside_error_p90": 0.37
+   }
+  },
+  "valid": {
+   "control": {
+    "run": "/data/acc/b6/run_control_doubleT_platform.jsonl",
+    "frames_with_path": 267,
+    "steps_inside": 1713,
+    "steps_beyond": 760,
+    "inside_over_0.5m": 0.012,
+    "inside_over_1.05m": 0.0,
+    "beyond_over_0.5m": 0.105,
+    "beyond_over_1.05m": 0.016,
+    "inside_error_p90": 0.36
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_doubleT_platform.jsonl",
+    "frames_with_path": 267,
+    "steps_inside": 1713,
+    "steps_beyond": 760,
+    "inside_over_0.5m": 0.012,
+    "inside_over_1.05m": 0.0,
+    "beyond_over_0.5m": 0.101,
+    "beyond_over_1.05m": 0.018,
+    "inside_error_p90": 0.36
+   }
+  }
+ },
+ "roundT_doubleT": {
+  "B6": {
+   "control": {
+    "run": "/data/acc/b6/run_control_roundT_doubleT.jsonl",
+    "frames_with_path": 251,
+    "steps_inside": 5108,
+    "steps_beyond": 2463,
+    "inside_over_0.5m": 0.495,
+    "inside_over_1.05m": 0.401,
+    "beyond_over_0.5m": 0.996,
+    "beyond_over_1.05m": 0.991,
+    "inside_error_p90": 7.55
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_roundT_doubleT.jsonl",
+    "frames_with_path": 251,
+    "steps_inside": 5108,
+    "steps_beyond": 2463,
+    "inside_over_0.5m": 0.391,
+    "inside_over_1.05m": 0.286,
+    "beyond_over_0.5m": 0.782,
+    "beyond_over_1.05m": 0.642,
+    "inside_error_p90": 6.12
+   }
+  },
+  "valid": {
+   "control": {
+    "run": "/data/acc/b6/run_control_roundT_doubleT.jsonl",
+    "frames_with_path": 194,
+    "steps_inside": 3297,
+    "steps_beyond": 2051,
+    "inside_over_0.5m": 0.399,
+    "inside_over_1.05m": 0.308,
+    "beyond_over_0.5m": 0.995,
+    "beyond_over_1.05m": 0.99,
+    "inside_error_p90": 4.81
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_roundT_doubleT.jsonl",
+    "frames_with_path": 194,
+    "steps_inside": 3297,
+    "steps_beyond": 2051,
+    "inside_over_0.5m": 0.236,
+    "inside_over_1.05m": 0.128,
+    "beyond_over_0.5m": 0.738,
+    "beyond_over_1.05m": 0.57,
+    "inside_error_p90": 1.37
+   }
+  }
+ },
+ "roundT_pressureGate_roundT": {
+  "B6": {
+   "control": {
+    "run": "/data/acc/b6/run_control_roundT_pressureGate_roundT.jsonl",
+    "frames_with_path": 267,
+    "steps_inside": 4877,
+    "steps_beyond": 2848,
+    "inside_over_0.5m": 0.061,
+    "inside_over_1.05m": 0.022,
+    "beyond_over_0.5m": 0.915,
+    "beyond_over_1.05m": 0.762,
+    "inside_error_p90": 0.42
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_roundT_pressureGate_roundT.jsonl",
+    "frames_with_path": 267,
+    "steps_inside": 4877,
+    "steps_beyond": 2848,
+    "inside_over_0.5m": 0.064,
+    "inside_over_1.05m": 0.022,
+    "beyond_over_0.5m": 0.736,
+    "beyond_over_1.05m": 0.621,
+    "inside_error_p90": 0.38
+   }
+  },
+  "valid": {
+   "control": {
+    "run": "/data/acc/b6/run_control_roundT_pressureGate_roundT.jsonl",
+    "frames_with_path": 267,
+    "steps_inside": 4877,
+    "steps_beyond": 2848,
+    "inside_over_0.5m": 0.061,
+    "inside_over_1.05m": 0.022,
+    "beyond_over_0.5m": 0.915,
+    "beyond_over_1.05m": 0.762,
+    "inside_error_p90": 0.42
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_roundT_pressureGate_roundT.jsonl",
+    "frames_with_path": 267,
+    "steps_inside": 4877,
+    "steps_beyond": 2848,
+    "inside_over_0.5m": 0.064,
+    "inside_over_1.05m": 0.022,
+    "beyond_over_0.5m": 0.736,
+    "beyond_over_1.05m": 0.621,
+    "inside_error_p90": 0.38
+   }
+  }
+ },
+ "roundT_squareT_pressureGate_squareT": {
+  "B6": {
+   "control": {
+    "run": "/data/acc/b6/run_control_roundT_squareT_pressureGate_squareT.jsonl",
+    "frames_with_path": 544,
+    "steps_inside": 13211,
+    "steps_beyond": 4836,
+    "inside_over_0.5m": 0.207,
+    "inside_over_1.05m": 0.093,
+    "beyond_over_0.5m": 0.762,
+    "beyond_over_1.05m": 0.584,
+    "inside_error_p90": 1.0
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_roundT_squareT_pressureGate_squareT.jsonl",
+    "frames_with_path": 544,
+    "steps_inside": 13211,
+    "steps_beyond": 4836,
+    "inside_over_0.5m": 0.203,
+    "inside_over_1.05m": 0.088,
+    "beyond_over_0.5m": 0.569,
+    "beyond_over_1.05m": 0.349,
+    "inside_error_p90": 0.96
+   }
+  },
+  "valid": {
+   "control": {
+    "run": "/data/acc/b6/run_control_roundT_squareT_pressureGate_squareT.jsonl",
+    "frames_with_path": 544,
+    "steps_inside": 13211,
+    "steps_beyond": 4836,
+    "inside_over_0.5m": 0.207,
+    "inside_over_1.05m": 0.093,
+    "beyond_over_0.5m": 0.762,
+    "beyond_over_1.05m": 0.584,
+    "inside_error_p90": 1.0
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_roundT_squareT_pressureGate_squareT.jsonl",
+    "frames_with_path": 544,
+    "steps_inside": 13211,
+    "steps_beyond": 4836,
+    "inside_over_0.5m": 0.203,
+    "inside_over_1.05m": 0.088,
+    "beyond_over_0.5m": 0.569,
+    "beyond_over_1.05m": 0.349,
+    "inside_error_p90": 0.96
+   }
+  }
+ },
+ "squareT_platform_squareT_switch": {
+  "B6": {
+   "control": {
+    "run": "/data/acc/b6/run_control_squareT_platform_squareT_switch.jsonl",
+    "frames_with_path": 876,
+    "steps_inside": 16792,
+    "steps_beyond": 4508,
+    "inside_over_0.5m": 0.286,
+    "inside_over_1.05m": 0.117,
+    "beyond_over_0.5m": 0.374,
+    "beyond_over_1.05m": 0.229,
+    "inside_error_p90": 1.12
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_squareT_platform_squareT_switch.jsonl",
+    "frames_with_path": 876,
+    "steps_inside": 16792,
+    "steps_beyond": 4508,
+    "inside_over_0.5m": 0.11,
+    "inside_over_1.05m": 0.073,
+    "beyond_over_0.5m": 0.348,
+    "beyond_over_1.05m": 0.192,
+    "inside_error_p90": 0.62
+   }
+  },
+  "valid": {
+   "control": {
+    "run": "/data/acc/b6/run_control_squareT_platform_squareT_switch.jsonl",
+    "frames_with_path": 858,
+    "steps_inside": 15570,
+    "steps_beyond": 3897,
+    "inside_over_0.5m": 0.236,
+    "inside_over_1.05m": 0.075,
+    "beyond_over_0.5m": 0.275,
+    "beyond_over_1.05m": 0.109,
+    "inside_error_p90": 0.94
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_squareT_platform_squareT_switch.jsonl",
+    "frames_with_path": 858,
+    "steps_inside": 15570,
+    "steps_beyond": 3897,
+    "inside_over_0.5m": 0.045,
+    "inside_over_1.05m": 0.028,
+    "beyond_over_0.5m": 0.246,
+    "beyond_over_1.05m": 0.065,
+    "inside_error_p90": 0.25
+   }
+  }
+ },
+ "cloud_with_fake_obj": {
+  "B6": {
+   "control": {
+    "run": "/data/acc/b6/run_control_cloud_with_fake_obj.jsonl",
+    "frames_with_path": 1506,
+    "steps_inside": 32098,
+    "steps_beyond": 14448,
+    "inside_over_0.5m": 0.056,
+    "inside_over_1.05m": 0.016,
+    "beyond_over_0.5m": 0.66,
+    "beyond_over_1.05m": 0.524,
+    "inside_error_p90": 0.32
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_cloud_with_fake_obj.jsonl",
+    "frames_with_path": 1506,
+    "steps_inside": 32098,
+    "steps_beyond": 14448,
+    "inside_over_0.5m": 0.046,
+    "inside_over_1.05m": 0.014,
+    "beyond_over_0.5m": 0.482,
+    "beyond_over_1.05m": 0.307,
+    "inside_error_p90": 0.29
+   }
+  },
+  "valid": {
+   "control": {
+    "run": "/data/acc/b6/run_control_cloud_with_fake_obj.jsonl",
+    "frames_with_path": 1506,
+    "steps_inside": 32098,
+    "steps_beyond": 14448,
+    "inside_over_0.5m": 0.056,
+    "inside_over_1.05m": 0.016,
+    "beyond_over_0.5m": 0.66,
+    "beyond_over_1.05m": 0.524,
+    "inside_error_p90": 0.32
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_cloud_with_fake_obj.jsonl",
+    "frames_with_path": 1506,
+    "steps_inside": 32098,
+    "steps_beyond": 14448,
+    "inside_over_0.5m": 0.046,
+    "inside_over_1.05m": 0.014,
+    "beyond_over_0.5m": 0.482,
+    "beyond_over_1.05m": 0.307,
+    "inside_error_p90": 0.29
+   }
+  }
+ },
+ "synthetic_platform": {
+  "B6": {
+   "control": {
+    "run": "/data/acc/b6/run_control_synthetic_platform.jsonl",
+    "frames_with_path": 366,
+    "steps_inside": 4224,
+    "steps_beyond": 1700,
+    "inside_over_0.5m": 0.556,
+    "inside_over_1.05m": 0.404,
+    "beyond_over_0.5m": 0.387,
+    "beyond_over_1.05m": 0.364,
+    "inside_error_p90": 2.63
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_synthetic_platform.jsonl",
+    "frames_with_path": 366,
+    "steps_inside": 4224,
+    "steps_beyond": 1700,
+    "inside_over_0.5m": 0.543,
+    "inside_over_1.05m": 0.395,
+    "beyond_over_0.5m": 0.381,
+    "beyond_over_1.05m": 0.345,
+    "inside_error_p90": 2.6
+   }
+  },
+  "valid": {
+   "control": {
+    "run": "/data/acc/b6/run_control_synthetic_platform.jsonl",
+    "frames_with_path": 362,
+    "steps_inside": 2469,
+    "steps_beyond": 1231,
+    "inside_over_0.5m": 0.284,
+    "inside_over_1.05m": 0.205,
+    "beyond_over_0.5m": 0.154,
+    "beyond_over_1.05m": 0.122,
+    "inside_error_p90": 2.14
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_synthetic_platform.jsonl",
+    "frames_with_path": 362,
+    "steps_inside": 2469,
+    "steps_beyond": 1231,
+    "inside_over_0.5m": 0.262,
+    "inside_over_1.05m": 0.189,
+    "beyond_over_0.5m": 0.145,
+    "beyond_over_1.05m": 0.097,
+    "inside_error_p90": 2.04
+   }
+  }
+ },
+ "synthetic_switch": {
+  "B6": {
+   "control": {
+    "run": "/data/acc/b6/run_control_synthetic_switch.jsonl",
+    "frames_with_path": 735,
+    "steps_inside": 17166,
+    "steps_beyond": 8783,
+    "inside_over_0.5m": 0.103,
+    "inside_over_1.05m": 0.035,
+    "beyond_over_0.5m": 0.831,
+    "beyond_over_1.05m": 0.651,
+    "inside_error_p90": 0.51
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_synthetic_switch.jsonl",
+    "frames_with_path": 735,
+    "steps_inside": 17166,
+    "steps_beyond": 8783,
+    "inside_over_0.5m": 0.06,
+    "inside_over_1.05m": 0.019,
+    "beyond_over_0.5m": 0.656,
+    "beyond_over_1.05m": 0.459,
+    "inside_error_p90": 0.36
+   }
+  },
+  "valid": {
+   "control": {
+    "run": "/data/acc/b6/run_control_synthetic_switch.jsonl",
+    "frames_with_path": 735,
+    "steps_inside": 17166,
+    "steps_beyond": 8783,
+    "inside_over_0.5m": 0.103,
+    "inside_over_1.05m": 0.035,
+    "beyond_over_0.5m": 0.831,
+    "beyond_over_1.05m": 0.651,
+    "inside_error_p90": 0.51
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_synthetic_switch.jsonl",
+    "frames_with_path": 735,
+    "steps_inside": 17166,
+    "steps_beyond": 8783,
+    "inside_over_0.5m": 0.06,
+    "inside_over_1.05m": 0.019,
+    "beyond_over_0.5m": 0.656,
+    "beyond_over_1.05m": 0.459,
+    "inside_error_p90": 0.36
+   }
+  }
+ },
+ "synthetic_tunnels": {
+  "B6": {
+   "control": {
+    "run": "/data/acc/b6/run_control_synthetic_tunnels.jsonl",
+    "frames_with_path": 543,
+    "steps_inside": 8161,
+    "steps_beyond": 6805,
+    "inside_over_0.5m": 0.222,
+    "inside_over_1.05m": 0.134,
+    "beyond_over_0.5m": 0.969,
+    "beyond_over_1.05m": 0.902,
+    "inside_error_p90": 1.51
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_synthetic_tunnels.jsonl",
+    "frames_with_path": 543,
+    "steps_inside": 8161,
+    "steps_beyond": 6805,
+    "inside_over_0.5m": 0.189,
+    "inside_over_1.05m": 0.093,
+    "beyond_over_0.5m": 0.815,
+    "beyond_over_1.05m": 0.735,
+    "inside_error_p90": 0.97
+   }
+  },
+  "valid": {
+   "control": {
+    "run": "/data/acc/b6/run_control_synthetic_tunnels.jsonl",
+    "frames_with_path": 541,
+    "steps_inside": 8161,
+    "steps_beyond": 6805,
+    "inside_over_0.5m": 0.222,
+    "inside_over_1.05m": 0.134,
+    "beyond_over_0.5m": 0.969,
+    "beyond_over_1.05m": 0.902,
+    "inside_error_p90": 1.51
+   },
+   "cand1": {
+    "run": "/data/acc/b6/run_cand1_synthetic_tunnels.jsonl",
+    "frames_with_path": 541,
+    "steps_inside": 8161,
+    "steps_beyond": 6805,
+    "inside_over_0.5m": 0.189,
+    "inside_over_1.05m": 0.093,
+    "beyond_over_0.5m": 0.815,
+    "beyond_over_1.05m": 0.735,
+    "inside_error_p90": 0.97
+   }
+  }
+ }
+}

@@ -1,0 +1,16 @@
+{
+ "src": "/dev/stdin",
+ "bytes": 20281548800,
+ "found": 4443,
+ "kept": 4443,
+ "lost": 0,
+ "order_violations": 0,
+ "duplicates": 0,
+ "frames": 4443,
+ "set": [],
+ "repo": "/opt/base",
+ "resets": [],
+ "wall_s": 407.7,
+ "cpu_s": 294.9,
+ "rss_peak_mb": 1361.4
+}
