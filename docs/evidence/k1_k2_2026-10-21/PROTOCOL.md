@@ -106,3 +106,36 @@ the final draft); B6 `track`/`measure` on `roundT_doubleT`; range probes B / C p
 model follows the curve (to place the judge's object on the curve), the 20 m-per-period hold of the curve range
 (C person frames 91–94 lost their votes when the reach jittered 115 → 87 → 115 m). The control values seen there
 (B 51.8 / 57.1 m, C 82.77 / 91.63 m, S_person_100 82/260, S_person_150 90/259) reproduce the historical ones exactly.
+
+## 7. Revision 1 (21.10, after measuring F-1 and M-1 on `0c39158`; before any measurement of `eb8b7aa`)
+
+**Measured on the first candidate `0c39158` (kept in the record, raw outputs under `runs/r0/`):**
+* ID: Falcon 4,443 rows and the three marked bags 1,667 rows, off = control in every non-timing field. **PASS.**
+* F-1: 0 of 1,360 person STOP frames lost; first person STOP frame 2966 at 125.53 m (control 2972, 124.84 m);
+  34 new STOP frames (2966–3058), each at a control warning of the person. **PASS.**
+* M-1: tunnels id 19 kept (29 → 29, 54.99 m); tunnels id 0 +3, switch ids 0 / 12 / 13 +7 / +10 / +5 STOP frames, all
+  new STOP frames on marked objects. **FAIL: platform id 23 loses STOP frames 106–112** (38 → 31, first STOP
+  86.76 → 76.44 m), the same frames v5c-30 lost.
+* The range matrix of the candidate was stopped after its first jobs (not used); the control matrix is complete.
+
+**Traced cause** (`/opt/cand` and `/opt/base` replays of the decoded `synthetic_platform`, frames 95–110, track 64:
+its observation record, `withheld`, the opinion probability per frame): in frames 98–100 the curve gauge added the
+object's cluster with its lateral measured from the curve axis (−0.55 m against the base's −0.97 … −1.11 m); the track
+reached its STOP onset at frame 103 (control: 106), when the track opinion was 0.008 (below `doubt_threshold` 0.015),
+and the sticky doubt rule (`doubt_sticky`: the onset decides) withheld it for its 10 extra frames although the opinion
+rose to 0.06–0.93 by frames 106–110 (control: 0.36 at its onset 106, released). Found on the way: the overlap test of
+`_curve_clusters` compared laterals measured from different axes (`detector._overlap`), so an added curve cluster
+could fail to recognise the base cluster of the same object.
+
+**Revision 1 = commit `eb8b7aa`** (`resense/detector.py`, `resense/tracking.py`; 3 new tests, the first two failing on
+`0c39158`'s logic):
+1. the curve gauge's clusters are compared with the base ones in the vehicle frame (`_overlap_xy`: X and Y extents);
+2. an added cluster carries, for the tracker's record and the report, the lateral and the opinion record of the base
+   advisory cluster it replaces (or, replacing none, its own record with the base lateral of its points);
+3. a track that matched a curve-gauge cluster (`Track.curve_seen`) is asked the opinion on every withheld frame (the
+   non-sticky rule) instead of being held by its onset; every other track keeps the sticky rule.
+
+The rows, tools and thresholds of §3–§5 are unchanged and are measured again on `eb8b7aa` + the same four YAML values
+(new evaluation tree from `make_cand.sh`). Dev checks of `eb8b7aa` before this revision, on the six Pandar decoded
+recordings only: 0 changed decisions or detections against control on all six; B / C person 71.19 / 94.58 m first,
+C held 104.98 m; `S_person_100` 255/260.
