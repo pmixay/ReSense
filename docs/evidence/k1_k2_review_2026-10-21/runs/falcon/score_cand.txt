@@ -1,0 +1,38 @@
+control STOP 1364 cand STOP 1397 | person R 1360 lost 0 []
+first person STOP control (2972, 124.84) cand (2958, 126.36)
+new STOP frames 33 | control STOP frames not STOP in cand (any) []
+STOP episodes control 7 cand 12 | outside the person segment (i<=2900 or FALSE): 2 -> 2
+  new 2958: cand STOP d=126.36 Y=0.08 | nearest control obj (126.36, 0.09) same object
+  new 2971: cand STOP d=124.02 Y=0.3 | nearest control obj (124.02, 0.3) same object
+  new 2977: cand STOP d=124.26 Y=0.15 | nearest control obj (123.86, 0.37) same object
+  new 2979: cand STOP d=124.02 Y=0.28 | nearest control obj (124.02, 0.28) same object
+  new 2980: cand STOP d=123.92 Y=0.31 | nearest control obj (123.92, 0.31) same object
+  new 2981: cand STOP d=123.82 Y=0.33 | nearest control obj (123.82, 0.33) same object
+  new 2982: cand STOP d=123.65 Y=0.13 | nearest control obj (123.65, 0.13) same object
+  new 2983: cand STOP d=123.53 Y=0.11 | nearest control obj (123.53, 0.11) same object
+  new 2984: cand STOP d=123.48 Y=0.14 | nearest control obj (123.48, 0.14) same object
+  new 2985: cand STOP d=123.32 Y=0.29 | nearest control obj (123.32, 0.29) same object
+  new 2986: cand STOP d=123.23 Y=0.32 | nearest control obj (123.23, 0.32) same object
+  new 2988: cand STOP d=122.98 Y=0.21 | nearest control obj (122.98, 0.21) same object
+  new 2993: cand STOP d=122.43 Y=0.3 | nearest control obj (122.43, 0.3) same object
+  new 3003: cand STOP d=121.2 Y=0.09 | nearest control obj (121.2, 0.09) same object
+  new 3007: cand STOP d=120.74 Y=0.11 | nearest control obj (120.74, 0.11) same object
+  new 3008: cand STOP d=120.62 Y=0.09 | nearest control obj (120.62, 0.09) same object
+  new 3041: cand STOP d=116.58 Y=0.1 | nearest control obj (115.12, 0.55) same object
+  new 3042: cand STOP d=116.47 Y=0.06 | nearest control obj (115.05, 0.57) same object
+  new 3044: cand STOP d=115.1 Y=0.59 | nearest control obj (115.1, 0.59) same object
+  new 3045: cand STOP d=114.99 Y=0.65 | nearest control obj (114.99, 0.65) same object
+  new 3046: cand STOP d=115.06 Y=0.57 | nearest control obj (115.06, 0.57) same object
+  new 3047: cand STOP d=115.03 Y=0.7 | nearest control obj (115.03, 0.7) same object
+  new 3048: cand STOP d=115.1 Y=0.66 | nearest control obj (115.1, 0.66) same object
+  new 3049: cand STOP d=115.09 Y=0.55 | nearest control obj (115.09, 0.55) same object
+  new 3050: cand STOP d=115.13 Y=0.59 | nearest control obj (115.13, 0.59) same object
+  new 3051: cand STOP d=115.31 Y=0.11 | nearest control obj (115.11, 0.53) same object
+  new 3052: cand STOP d=115.16 Y=0.55 | nearest control obj (115.16, 0.55) same object
+  new 3053: cand STOP d=115.09 Y=0.13 | nearest control obj (115.09, 0.43) same object
+  new 3054: cand STOP d=114.91 Y=0.09 | nearest control obj (114.91, 0.51) same object
+  new 3055: cand STOP d=114.84 Y=0.65 | nearest control obj (114.84, 0.65) same object
+  new 3056: cand STOP d=114.71 Y=0.12 | nearest control obj (114.71, 0.6) same object
+  new 3057: cand STOP d=114.57 Y=0.55 | nearest control obj (114.57, 0.55) same object
+  new 3058: cand STOP d=114.45 Y=0.51 | nearest control obj (114.45, 0.51) same object
+new STOP frames without a control detection/warning at the same place: []

@@ -1,0 +1,23 @@
+control STOP 1364 cand STOP 1368 | person R 1360 lost 10 [2972, 2973, 2974, 2975, 3059, 3060, 3061, 3062, 3063, 4382]
+first person STOP control (2972, 124.84) cand (2979, 124.02)
+new STOP frames 18 | control STOP frames not STOP in cand (any) [159, 2312, 2313, 2314, 2972, 2973, 2974, 2975, 3059, 3060, 3061, 3062, 3063, 4382]
+STOP episodes control 7 cand 5 | outside the person segment (i<=2900 or FALSE): 2 -> 0
+  new 2979: cand STOP d=124.02 Y=0.16 | nearest control obj (124.02, 0.28) same object
+  new 2980: cand STOP d=123.92 Y=0.13 | nearest control obj (123.92, 0.31) same object
+  new 2981: cand STOP d=123.82 Y=0.13 | nearest control obj (123.82, 0.33) same object
+  new 2982: cand STOP d=123.65 Y=0.13 | nearest control obj (123.65, 0.13) same object
+  new 2983: cand STOP d=123.53 Y=0.11 | nearest control obj (123.53, 0.11) same object
+  new 3003: cand STOP d=121.2 Y=0.09 | nearest control obj (121.2, 0.09) same object
+  new 3007: cand STOP d=120.74 Y=0.11 | nearest control obj (120.74, 0.11) same object
+  new 3008: cand STOP d=120.62 Y=0.09 | nearest control obj (120.62, 0.09) same object
+  new 3039: cand STOP d=116.8 Y=0.11 | nearest control obj (115.01, 0.72) NO MATCH
+  new 4373: cand STOP d=6.66 Y=0.2 | nearest control obj None NO MATCH
+  new 4374: cand STOP d=6.53 Y=0.17 | nearest control obj None NO MATCH
+  new 4375: cand STOP d=6.52 Y=0.14 | nearest control obj None NO MATCH
+  new 4376: cand STOP d=6.43 Y=0.1 | nearest control obj None NO MATCH
+  new 4377: cand STOP d=5.02 Y=0.65 | nearest control obj None NO MATCH
+  new 4378: cand STOP d=4.91 Y=0.68 | nearest control obj None NO MATCH
+  new 4379: cand STOP d=4.75 Y=0.72 | nearest control obj None NO MATCH
+  new 4410: cand STOP d=3.0 Y=0.4 | nearest control obj (22.28, -0.27) NO MATCH
+  new 4411: cand STOP d=2.96 Y=0.47 | nearest control obj (20.4, -0.3) NO MATCH
+new STOP frames without a control detection/warning at the same place: [3039, 4373, 4374, 4375, 4376, 4377, 4378, 4379, 4410, 4411]
