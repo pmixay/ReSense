@@ -668,7 +668,8 @@ class HealthConfig:
     # more than cluster.mount_cross_tol + mount_cross_grade * X away from the calibrated mount plane at some X =
     # 5, 10 .. mount_cross_range m (the H' criterion applied to the bed; needs cluster.mount_cross_tol > 0 and a
     # final mount calibration): clear_distance is 0, whatever the rail lock. ON: 0 of 15,269 Pandar frames qualify;
-    # on the Falcon 52 frames (4359-4410), 35 of the 39 overstating frames of 4373-4414
+    # on the Falcon 52 frames (4359-4410; falcon_ros profile 50 frames, 4361-4410), 35 of the 39 overstating
+    # frames of 4373-4414
     clear_lost_bed: bool = True
     # clear_round_down: a clear distance bounded by a confirmed obstacle or a candidate is rounded down to
     # 0.1 m, not to nearest (it exceeded a STOP detection by up to 0.05 m: 48.0 against 47.97). ON

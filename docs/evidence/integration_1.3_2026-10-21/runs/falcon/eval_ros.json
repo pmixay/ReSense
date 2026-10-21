@@ -1,0 +1,87 @@
+{
+ "case": "explicit_ros",
+ "base": {
+  "stop_frames": 1387,
+  "stop_episodes": 8,
+  "false_stop_episodes": 3,
+  "false_episode_frames": [
+   [
+    25,
+    28
+   ],
+   [
+    125,
+    125
+   ],
+   [
+    2312,
+    2314
+   ]
+  ],
+  "person_stop_frames": 1369,
+  "main_first_stop_frame": 2950,
+  "main_first_stop_raw_forward_m": 127.07173156738281,
+  "early_first_stop_frame": null,
+  "caution_frames": 3043
+ },
+ "cand": {
+  "ros": {
+   "stop_frames": 1416,
+   "stop_episodes": 8,
+   "false_stop_episodes": 3,
+   "false_episode_frames": [
+    [
+     25,
+     28
+    ],
+    [
+     125,
+     125
+    ],
+    [
+     2312,
+     2314
+    ]
+   ],
+   "person_stop_frames": 1398,
+   "main_first_stop_frame": 2950,
+   "main_first_stop_raw_forward_m": 127.07173156738281,
+   "early_first_stop_frame": null,
+   "caution_frames": 3014,
+   "lost_person_stop_frames": [],
+   "new_person_stop_frames": [
+    2954,
+    2955,
+    2958,
+    2959,
+    2972,
+    2973,
+    2974,
+    2980,
+    2981,
+    2982,
+    2983,
+    2984,
+    2985,
+    2986,
+    2987,
+    3004,
+    3005,
+    3006,
+    3045,
+    3046,
+    3047,
+    3050,
+    3051,
+    3052,
+    3053,
+    3054,
+    3055,
+    3056,
+    3057
+   ],
+   "H3_pass": true,
+   "G3_pass": true
+  }
+ }
+}
