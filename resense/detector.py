@@ -392,6 +392,8 @@ class Detector:
         merged, n_acc = self._accumulate(cand, speed, dt)
         t4 = time.perf_counter()
         clusters = self._cluster(merged, n_acc, valid, floor_valid, straddle, near)
+        if cfg.track.axis_joint_union and self.track.curve is not None:
+            clusters = self._curve_clusters(xyz, frame.intensity, clusters)
         if cfg.track.axis_joint_reach_dual > 0:
             self._dual_zone(clusters)
         if cfg.cluster.far_axis_both_sides == 2:
@@ -856,6 +858,32 @@ class Detector:
             inside = gauge_core_mask(dy, hh, xx, g) if has_edge_margin(g) else point_in_polygon(dy, hh, g.profile)
             if not bool(inside[0]):
                 c.zone, c.reason = "warning", "beyond_axis"
+
+    def _curve_clusters(self, xyz: np.ndarray, intensity: np.ndarray, clusters: List[Cluster]) -> List[Cluster]:
+        """21.10 (K2 union, ``track.axis_joint_union``): on a curve frame the joint shape (``track.curve``, trusted as far
+        as a tunnel boundary follows it) is a second gauge. The corridor and the clustering of the above-rail candidates
+        run again in its coordinates, on this frame's points alone (no accumulation, no low stage); each of its
+        obstacles (zone ``gauge``, no reason) that overlaps no obstacle of the base gauge is added, in place of the base
+        gauge's advisory clusters it overlaps. Nothing the base gauge reports as an obstacle is changed, and the bed,
+        low-object, ego-speed, mount and clear-distance stages keep the base model."""
+        saved = (self.track, self._far_axis, getattr(self, "_dy_rail", None), self._frame_hd, self._thin,
+                 getattr(self, "_low_height", []), getattr(self, "_near_low", []))
+        try:
+            self.track, self._far_axis = self.track.curve, None
+            cand, dy_k, h_k, _, (valid, _, floor_valid) = self._corridor(xyz, intensity)
+            self._frame_hd = (dy_k, h_k)
+            extra = self._cluster(cand, 1, valid, floor_valid, None, None) if len(cand) else []
+        finally:
+            (self.track, self._far_axis, self._dy_rail, self._frame_hd, self._thin, self._low_height,
+             self._near_low) = saved
+        obstacles = [c for c in clusters if c.zone == "gauge" and not c.reason]
+        add = [k for k in extra if k.zone == "gauge" and not k.reason
+               and not any(_overlap(k, c) for c in obstacles)]
+        self._curve_added = len(add)
+        if not add:
+            return clusters
+        keep = [c for c in clusters if not any(_overlap(c, k) for k in add)]
+        return sorted(keep + add, key=lambda c: c.distance)
 
     def _far_both_sides(self, clusters: List[Cluster], valid: float, floor_valid: float) -> float:
         """``cluster.far_axis_both_sides`` 2 (25.09, far_switch, opt-in): on a bent axis (no

@@ -64,6 +64,9 @@ class TrackModel:
     joint_shape: Optional[tuple] = field(default=None, repr=False, compare=False)
     joint_used: Optional[bool] = None
     joint_reach: float = 0.0
+    # 21.10 (K2 union, axis_joint_union): on a curve frame the joint shape as a model of its own, trusted to its walls'
+    # reach (axis_valid); the output above stays the estimate without the joint fit (None otherwise; not serialised)
+    curve: Optional["TrackModel"] = field(default=None, repr=False, compare=False)
 
     @property
     def bent(self) -> bool:
@@ -1160,7 +1163,11 @@ def rotate_track_model(model: TrackModel, dR: np.ndarray, n: int = 64) -> TrackM
             jm = rotate_track_model(replace(model.base, center=js[0], yaw=js[1], curvature=js[2], curv_step=js[3],
                                             curv_knot=js[4]), dR, n)
             js = (jm.center, jm.yaw, jm.curvature, jm.curv_step, jm.curv_knot)
+        cv = model.curve
+        if cv is not None:                              # 21.10 (K2 union): its own shape, its trusted range kept
+            cv = replace(rotate_track_model(cv, dR, n), axis_valid=cv.axis_valid)
         out = replace(base_r, base=base_r, joint_shape=js, joint_used=model.joint_used, joint_reach=model.joint_reach,
+                      curve=cv,
                       axis_valid=model.axis_valid, axis_valid_both=model.axis_valid_both,
                       axis_valid_bent=model.axis_valid_bent, wall_drift=model.wall_drift)
         if model.joint_used and js is not None:
@@ -1466,6 +1473,20 @@ def _joint_output(base: TrackModel, jshape: Optional[tuple], cfg: TrackConfig,
     ``.joint_reach`` an obstacle then also needs the base axis' gauge (``Detector._dual_zone``).
     ``bounds``: :func:`estimate_axis_from_walls`' boundaries of this frame, or None (no re-measure, no cap)."""
     use = jshape is not None and abs(base.curvature) >= cfg.axis_joint_min_curvature
+    if cfg.axis_joint_union:
+        # 21.10 (K2 union): the output is ``base`` itself (every stage reads it as without K2); on a curve frame the
+        # joint shape rides along as ``.curve``, trusted as far as a boundary follows it, for the detector's second
+        # gauge (Detector._curve_clusters), which can only add obstacles
+        out = replace(base, base=base, joint_shape=jshape, joint_used=None, joint_reach=0.0, curve=None)
+        if use and bounds:
+            cm = replace(base, base=None, joint_shape=None, joint_used=None, joint_reach=0.0, curve=None)
+            cm.center, cm.yaw, cm.curvature, cm.curv_step, cm.curv_knot = (float(v) for v in jshape)
+            reach = [_followed_reach(x, y, cm, cfg) for x, y in bounds.values() if len(x)]
+            reach = [r_ for r_ in reach if r_ > 0]
+            if reach:
+                cm.axis_valid = max(reach) + cfg.axis_valid_margin
+                out.curve = cm
+        return out
     out = replace(base, base=base, joint_shape=jshape, joint_used=bool(use), joint_reach=0.0)
     if not use:
         return out
