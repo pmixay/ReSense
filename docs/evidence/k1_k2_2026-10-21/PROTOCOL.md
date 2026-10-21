@@ -216,3 +216,58 @@ model of revision 3 equals revision 1's on `roundT_doubleT` and `squareT_platfor
 
 **Decision by §5: the switch stays off** (`track.axis_joint_union: false` in `resense/config.py` and both YAMLs). No
 further revision is registered by this lane; the failing rows and their traced mechanisms are in the README §2b.
+
+## 11. Amendment 1 (21.10, the captain's priority change from the user; received by this lane at 16:58 UTC)
+
+**Timing, stated plainly.** The captain sent two messages at 13:17 and 13:37 UTC; they reached this session only at
+16:58 UTC, after revision 3 had been measured on every row (§10). This amendment is therefore registered **after**
+the measurements of `b88d759`; nothing about the candidate is changed by it, and §10's verdict under the original
+terms (switch off) stays in the record. What follows re-scores the same, already committed outputs under the
+amended terms, and the final commit's identity with the measured tree is checked by a fresh gate (§12).
+
+**Amended terms (as the captain gave them):**
+* *False positives relaxed.* Added STOP episodes over the ride + the five empty Pandar recordings + the whole Falcon
+  recording together at most +25 % of v1.2.0's count; with this lane's fresh v1.2.0 runs: ride 26 + five empty 11 +
+  Falcon 7 = 44 episodes, so at most **+11** (the captain's working figure used Falcon 8: 45 → +11, the same bound).
+  CAUTION share may rise. Every added false episode is listed with its frames, its traced cause and a picture.
+  K1's added `doubleT_platform` STOP is inside this bound if it occurs.
+* *True detections still hard.* No positive object may lose its STOP (Falcon person, marked tunnels cube, set O,
+  labelled recordings, X3 positives, standing person 100 / 150 m). A first STOP may be later than v1.2.0 by at most
+  max(5 m, 5 %) and only on listed objects. The net change over the registered objects must be a gain. X3's lost-STOP
+  limits stay; its false-episode limit is replaced by the bound above.
+* *Gate.* Run without `--allow` and report what fails; then, if needed, with `--allow` covering exactly the
+  false-alarm rows inside the bound, naming them.
+* *Speed* is not an acceptance criterion now (no rejection for cost alone); per-frame p50 / p95 time is reported,
+  baseline against candidate, same machine. No new learned components (none were added).
+* If K1 alone passes and K2 does not, K1 is delivered on; this lane did not change K1 (§1).
+
+**Mapping of §3 rows under the amendment:** G-1b's "no new STOP frame on the empty recordings and the ride" is
+replaced by the episode bound; R-1's "STOP frame set ⊇ control's" is read as "every object keeps its STOP and its first
+STOP is not later than allowed" (the frame-level comparison is still reported); every other row is unchanged.
+
+## 12. Re-scoring of revision 3 under amendment 1 (same committed outputs; no new run of the candidate)
+
+| row (amended) | r3 against fresh v1.2.0 | verdict |
+|---|---|---|
+| added STOP episodes, ride + five empty + Falcon, ≤ +11 | ride 26 → 29 (+3), five empty 11 → 11 (+0), Falcon 7 → 12 STOP episodes, but all 33 new Falcon STOP frames are on the walking person (F-1 c), so 0 added false episodes there; total **+3 false** (+8 even counting the person's split episodes) | PASS |
+| the added false episodes, listed | ride piece 2 frames 1066–1069 and 1071–1072 (two episodes, one cause: curve hits at 1058 and 1062–1063 on a 7 m long structure at 102–124 m keep the zone votes of v1.2.0's doubt-withheld track 447 "gauge"; at 1066–1072 the object itself lies outside both gauges, e.g. 116 m, 1.6 m right of the curve axis, a tall thin post: [`r3_ride2_1066.png`](r3_ride2_1066.png), [`r3_ride2_1062.png`](r3_ride2_1062.png), [`r3_ride2_1071.png`](r3_ride2_1071.png)); frames 1317–1318 (one episode: the joint fit follows a diagonal low structure, a 0.5 m low cluster at 69 m is added: [`r3_ride2_1317.png`](r3_ride2_1317.png)) | listed |
+| no positive object loses its STOP; first STOP not later beyond max(5 m, 5 %) | Falcon person, marked objects, set O (gate labels, `small_center`), `doubleT_obstacle`, X3 positives: identical or more STOP frames, first STOP equal or earlier; standing person 100 / 150 m at v1.2.0's placement 82 / 90 frames kept; range jobs at v1.2.0's placement: every object keeps its STOP and first STOP (D_cube05: 120 of 121 frames, frame 330 one frame later, first STOP equal) | PASS |
+| net gain over the registered objects | curve range (B / C person, cubes), standing person 100 m 82 → 255 (own axis), Falcon first STOP 124.84 → 126.36 m, appearance at 100 m 28 → 5 frames; no registered object lost | PASS |
+| gate without `--allow` | exit 0 against the seal baseline; nothing to allow | PASS |
+| X3 lost-STOP limits | 0 failing comparisons, 0 changed frames | PASS |
+
+**Under amendment 1 every row of revision 3 passes.** The switch is nevertheless **left off on this branch**: the
+amendment reached this lane as a relayed message after the measurements, and turning a detector default on (and the
+tests that pin it) is left to the captain's integration decision, as the amendment itself says ("the user takes the
+trade-off decision at integration"). To turn it on: `axis_joint_fit: true`, `axis_joint_range: false`,
+`axis_joint_min_curvature: 0.0001`, `axis_joint_union: true` in `resense/config.py` and both YAMLs (exactly
+`cand_eval_commit.patch`), and update the two default-pinning tests (`test_k1_k2_axis.py::test_switches_default_off…`,
+`test_k2_union.py::test_union_default_off…`); the measured evaluation tree has exactly these values. K1 was not
+changed by this lane.
+
+Per-frame time (gate work directories, timing_ms.total, p50 / p95 ms; control and candidate each ran beside one other
+gate on the same 4-vCPU container, so treat as indicative): ride 31.9 / 55.0 → 37.0 / 62.5; set O 29.1 / 41.9 →
+31.2 / 51.0; `doubleT_obstacle` 48.6 / 77.3 → 60.9 / 97.8; `doubleT_platform` 40.0 / 62.5 → 45.0 / 82.9;
+`roundT_doubleT` 42.8 / 69.7 → 43.3 / 75.1; `roundT_pressureGate_roundT` 31.3 / 42.9 → 37.2 / 52.5;
+`roundT_squareT_pressureGate_squareT` 31.2 / 42.8 → 34.3 / 47.9; `squareT_platform_squareT_switch` 31.1 / 46.0 →
+36.4 / 55.2.

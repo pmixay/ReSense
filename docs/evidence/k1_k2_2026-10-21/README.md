@@ -6,6 +6,12 @@
 > every pre-registered row but two: **G-1b** (8 new STOP frames on the ride against a fresh v1.2.0 run; the gate
 > against the seal baseline passes) and **R-1** (one STOP frame, D_cube05 frame 330, lost at v1.2.0's placement).
 > `scripts/detector_freeze.py verify` **fails on this branch** (expected: `resense/` changed; the captain reseals).
+>
+> **Amendment 1 (the captain's priority change: range first, false-alarm bound +25 %), received after these
+> measurements:** re-scored on the same outputs, revision 3 passes every row (3 added false STOP episodes against a
+> bound of +11; no object loses its STOP). The switch is still left off on this branch for the captain's integration
+> decision; [PROTOCOL.md](PROTOCOL.md) §11–§12 give the terms, the listed false episodes with pictures, the per-frame
+> time table and the exact change that turns it on.
 
 ## 1. What was built
 
