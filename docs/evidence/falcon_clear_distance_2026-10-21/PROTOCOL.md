@@ -90,8 +90,8 @@ finding for the detector owner only); that the person-like object is a person (n
 
 # Amendment 1 (registered after the measurement of `clear_lost_model`, before any run of `clear_lost_bed`)
 
-**What was measured before this amendment (commit `a6a8a1a`... see README for the exact commit; switches `clear_lost_model` and
-`clear_round_down` on by `--set`):** Falcon F1-F5 passed (see README). Pandar: gate exit 0 without `--allow` and the gate's
+**What was measured before this amendment (detector commit `53fb331`, unchanged in `resense/`, `configs/`, `ros2_ws/`, `native/` up to this
+amendment; switches `clear_lost_model` and `clear_round_down` on by `--set`):** Falcon F1-F5 passed (see README). Pandar: gate exit 0 without `--allow` and the gate's
 non-latency rows equal to the control; the paired per-row diff of 15,269 rows has 0 differences outside `clear`, 1,731 lowered
 `clear` values, 0 raised, every one with its rule; **G3 failed for `clear_lost_model`**: `doubleT_platform` has 23 lost-model rows
 = 6.67 % of its frames (limit 3 %; the five obstacle-free recordings' and the ride's medians are unchanged, the ride has 1.53 %).
