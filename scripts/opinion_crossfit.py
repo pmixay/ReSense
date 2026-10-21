@@ -16,7 +16,6 @@ shipped one) or with the opinion off (``off``) for comparison on the same pieces
 from __future__ import annotations
 
 import argparse
-import glob
 import json
 import os
 import sys
@@ -34,14 +33,14 @@ from regression_gate import RIDE, recording_entry  # noqa: E402
 
 
 def _pieces(cache, chunks):
-    from resense.io import _natural_key
-    files = sorted(glob.glob(os.path.join(cache, RIDE, "*.npy")), key=_natural_key)
+    from cache_io import cache_files          # 21.10: .npy and verified .npy.zst ride caches
+    files = cache_files(os.path.join(cache, RIDE))
     return [list(p) for p in np.array_split(np.array(files), chunks)]
 
 
 def run(assign, a, tag):
     """``assign``: {piece index: list of --set overrides}; returns the ride entry of those pieces."""
-    from resense.io import load_cache_stamps
+    from cache_io import load_cache_stamps
     stamps = load_cache_stamps(os.path.join(a.cache, RIDE))
     pieces = _pieces(a.cache, a.chunks)
     work = os.path.join(a.work, tag)
