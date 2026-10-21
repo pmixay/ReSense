@@ -101,6 +101,14 @@ def test_nothing_there_is_phantom():
     assert r["class"] == "phantom" and r["n_all"] < 3
 
 
+def test_a_position_outside_the_gauge_with_nothing_seen_is_side_by_position():
+    r = L.classify_window(tunnel_points(), straight_track(), (20.0, 9.0, 0.5), SIZE, traveled=100.0)
+    assert r["class"] == "side" and r["by_position"] and r["dy_position"] == pytest.approx(9.0)
+    assert any(w.startswith("side_by_position") for w in r["ambiguous"])
+    # the same empty air inside the gauge is a phantom, not a side structure
+    assert L.classify_window(tunnel_points(), straight_track(), (20.0, 0.0, 1.0), SIZE, 0.0)["class"] == "phantom"
+
+
 def test_the_wall_or_vault_at_the_position_is_flagged_tunnel_fabric_not_a_localized_structure():
     wall = L.classify_window(tunnel_points(), straight_track(), (20.0, 2.2, 0.5), SIZE, traveled=100.0)
     assert wall["class"] == "side" and wall["on_fabric"] and "on_tunnel_fabric" in wall["ambiguous"]
@@ -132,8 +140,8 @@ def test_the_card_limits():
 def test_mixed_and_sparse_structures_are_ambiguous():
     tr = straight_track()
     mixed = np.vstack([tunnel_points(), box_points(19.8, 20.2, -0.2, 0.2, -1.1, -0.2, n=60),
-                       box_points(19.8, 20.2, 1.8, 2.1, -1.1, -0.2, n=50, seed=3)])
-    r = L.classify_window(mixed, tr, (20.0, 0.9, -0.6), SIZE, 100.0)
+                       box_points(19.8, 20.2, 1.5, 1.6, -1.1, -0.2, n=50, seed=3)])
+    r = L.classify_window(mixed, tr, (20.0, 0.8, -0.6), SIZE, 100.0)
     assert any(w.startswith("mixed") for w in r["ambiguous"])
     sparse = np.vstack([tunnel_points(), box_points(19.9, 20.1, -0.1, 0.1, -1.0, -0.5, n=6)])
     assert "few_points" in L.classify_window(sparse, tr, CENTER, SIZE, 100.0)["ambiguous"]
@@ -214,6 +222,19 @@ def test_transport_uses_the_track_of_each_frame_and_the_speed_series():
     assert L.band_frames(stop[:10])[2] == "none"
 
 
+def test_long_gaps_take_the_intake_speed_of_the_split():
+    rows = [{"frame_id": f"new_data_7_{i:03d}", "ego_speed": None,
+             "ego_speed_estimate": 10.0 if i in (0, 1, 2, 3, 4, 80, 81) else None} for i in range(90)]
+    v, src = L.speed_series(rows, {7: 12.0})
+    assert src[2] == "estimate" and src[40] == "intake" and v[40] == 12.0 and src[5:80].tolist().count("intake") == 75
+    short = [{"frame_id": "new_data_7_000", "ego_speed": None, "ego_speed_estimate": 10.0 if i % 20 == 0 else None}
+             for i in range(61)]
+    assert set(L.speed_series(short, {7: 12.0})[1][1:20]) == {"interp"}
+    v, src = L.speed_series([{"frame_id": "new_data_7_000", "ego_speed_estimate": None}] * 3, {7: 12.0})
+    assert set(src) == {"intake"} and np.allclose(v, 12.0)
+    assert L.split_of("new_data_12_034") == 12 and L.split_of("roundT_doubleT_0001") is None
+
+
 def test_speed_series_without_any_value_is_zero():
     v, src = L.speed_series([{"ego_speed": None, "ego_speed_estimate": None}] * 3)
     assert not v.any() and set(src) == {"none"}
@@ -270,7 +291,7 @@ def test_ride_frames_are_numbered_through_the_whole_ride():
 
 
 def test_reproduction_tolerances():
-    row = {"frame": 100, "distance": 120.0}
+    row = {"frame": 5100, "piece_frame": 100, "distance": 120.0}     # the ride's frame numbers run through the whole ride
     assert L.reproduces(row, {"stop_first": {"frame": 102, "distance": 121.9}})[0]
     assert not L.reproduces(row, {"stop_first": {"frame": 103, "distance": 120.0}})[0]
     assert not L.reproduces(row, {"stop_first": {"frame": 100, "distance": 122.1}})[0]
