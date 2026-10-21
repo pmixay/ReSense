@@ -222,3 +222,14 @@ the walk-control comparison of the final design, the node check, X3 and the gate
    range on the Falcon, a Falcon-profile-only change (doubt off under `with_falcon_profile`) is in scope; Pandar
    unchanged.
 6. **Timing** is not a criterion; per-frame time p50 / p95 (same machine, baseline vs candidate) is reported.
+
+### A5 (21.10, under A4, before its measurement; in-sample design change)
+
+The A3 history ages every observed contradiction over 1 s and takes the second-lowest, so a contradiction
+seen once or twice (the right row's 172 m column sits at the tube edge: contradiction after 142 m in 49 % of
+frames) holds the trust 5–20 m below the 142 m that most frames confirm. Change (C8 only): **the support is
+the farthest aged level that at least two frames reach and that more frames reach than contradict below
+it**; this frame's contradiction still caps at once; divergence of two fitted walls caps this frame.
+Expected on the recorded bins: support ≈ 142 m in most frames (trust ≈ 139 m), not more: the 172 m level is
+contradicted more often than confirmed. Unit tests 19/19 and negative controls 92/92 required fail-safe
+after the change. The registered criteria are A4's.

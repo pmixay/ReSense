@@ -1667,7 +1667,7 @@
     "occluded_inner": false,
     "required": true,
     "accepted_frames": 8,
-    "max_err": 0.09,
+    "max_err": 0.1,
     "max_valid": 167.0,
     "fail_safe": true,
     "first_failure": null
@@ -1716,7 +1716,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.06,
-    "max_valid": 202.0,
+    "max_valid": 204.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -1764,7 +1764,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.04,
-    "max_valid": 242.0,
+    "max_valid": 244.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -1774,7 +1774,7 @@
     "R": 600.0,
     "occluded_inner": false,
     "required": true,
-    "accepted_frames": 8,
+    "accepted_frames": 4,
     "max_err": 0.05,
     "max_valid": 242.0,
     "fail_safe": true,
@@ -1822,7 +1822,7 @@
     "R": 600.0,
     "occluded_inner": true,
     "required": true,
-    "accepted_frames": 8,
+    "accepted_frames": 7,
     "max_err": 0.11,
     "max_valid": 124.0,
     "fail_safe": true,
@@ -1835,7 +1835,7 @@
     "occluded_inner": true,
     "required": true,
     "accepted_frames": 8,
-    "max_err": 0.06,
+    "max_err": 0.07,
     "max_valid": 127.0,
     "fail_safe": true,
     "first_failure": null
@@ -1871,7 +1871,7 @@
     "occluded_inner": true,
     "required": true,
     "accepted_frames": 8,
-    "max_err": 0.09,
+    "max_err": 0.1,
     "max_valid": 167.0,
     "fail_safe": true,
     "first_failure": null
@@ -1908,7 +1908,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.05,
-    "max_valid": 202.0,
+    "max_valid": 204.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -1918,9 +1918,9 @@
     "R": 600.0,
     "occluded_inner": true,
     "required": true,
-    "accepted_frames": 5,
-    "max_err": 0.07,
-    "max_valid": 194.0,
+    "accepted_frames": 1,
+    "max_err": 0.06,
+    "max_valid": 192.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -1930,7 +1930,7 @@
     "R": 1000.0,
     "occluded_inner": true,
     "required": true,
-    "accepted_frames": 5,
+    "accepted_frames": 4,
     "max_err": 0.04,
     "max_valid": 199.0,
     "fail_safe": true,
@@ -1956,7 +1956,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.04,
-    "max_valid": 242.0,
+    "max_valid": 244.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -1966,9 +1966,9 @@
     "R": 600.0,
     "occluded_inner": true,
     "required": true,
-    "accepted_frames": 8,
+    "accepted_frames": 3,
     "max_err": 0.05,
-    "max_valid": 242.0,
+    "max_valid": 237.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2216,9 +2216,9 @@
    {
     "case": "G_niche_then_curve",
     "required": true,
-    "accepted_frames": 8,
+    "accepted_frames": 2,
     "max_err": 0.13,
-    "max_valid": 152.0,
+    "max_valid": 149.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2226,8 +2226,8 @@
     "case": "G_recess_then_curve",
     "required": true,
     "accepted_frames": 6,
-    "max_err": 0.07,
-    "max_valid": 134.0,
+    "max_err": 0.08,
+    "max_valid": 139.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2275,7 +2275,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.27,
-    "max_valid": 162.0,
+    "max_valid": 164.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2299,7 +2299,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.0,
-    "max_valid": 162.0,
+    "max_valid": 164.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2311,7 +2311,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.0,
-    "max_valid": 162.0,
+    "max_valid": 164.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2323,7 +2323,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.0,
-    "max_valid": 162.0,
+    "max_valid": 164.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2335,7 +2335,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.0,
-    "max_valid": 192.0,
+    "max_valid": 194.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2347,7 +2347,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.0,
-    "max_valid": 192.0,
+    "max_valid": 194.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2371,7 +2371,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.07,
-    "max_valid": 222.0,
+    "max_valid": 224.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2383,7 +2383,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.0,
-    "max_valid": 222.0,
+    "max_valid": 224.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2395,7 +2395,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.0,
-    "max_valid": 222.0,
+    "max_valid": 224.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2407,7 +2407,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.05,
-    "max_valid": 252.0,
+    "max_valid": 254.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2419,7 +2419,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.27,
-    "max_valid": 282.0,
+    "max_valid": 284.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2467,7 +2467,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.02,
-    "max_valid": 132.0,
+    "max_valid": 134.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2479,7 +2479,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.0,
-    "max_valid": 132.0,
+    "max_valid": 134.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2503,7 +2503,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.0,
-    "max_valid": 162.0,
+    "max_valid": 164.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2562,8 +2562,8 @@
     "R": 3000.0,
     "required": true,
     "accepted_frames": 8,
-    "max_err": 0.07,
-    "max_valid": 224.0,
+    "max_err": 0.1,
+    "max_valid": 227.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2575,7 +2575,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.0,
-    "max_valid": 222.0,
+    "max_valid": 224.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2611,7 +2611,7 @@
     "required": true,
     "accepted_frames": 8,
     "max_err": 0.02,
-    "max_valid": 252.0,
+    "max_valid": 254.0,
     "fail_safe": true,
     "first_failure": null
    },
@@ -2663,7 +2663,7 @@
     "case": "J_moving_curve_approach",
     "R": 300.0,
     "required": true,
-    "accepted_frames": 94,
+    "accepted_frames": 91,
     "max_err": 0.54,
     "max_valid": 282.0,
     "fail_safe": true,
@@ -2673,7 +2673,7 @@
     "case": "J_moving_curve_approach",
     "R": 600.0,
     "required": true,
-    "accepted_frames": 94,
+    "accepted_frames": 91,
     "max_err": 0.27,
     "max_valid": 282.0,
     "fail_safe": true,
