@@ -4,7 +4,7 @@ Finding only. No decision logic was changed in this lane (the lane's switches on
 Source: the v1.2.0 control run (`6ee469c`, detector bytes = v1.2.0) of the whole Falcon recording, state dumped from the
 detector itself for frames 4360-4430 (`scripts/run_falcon.py --dump`: corridor indices `res.corridor_idx`, cluster
 membership of every return and the owning track, the model rail head `track.rail_z`, the mount plane), analysed by
-`scripts/person_trace.py`. Table: `out/falcon/person_trace.tsv.xz` (every frame); pictures: `out/png/person_trace_f*.png`
+`scripts/person_trace.py`. Table: `results/falcon/person_trace.tsv.xz` (every frame); pictures: `results/png/person_trace_f*.png`
 (side and top view; the P4 pictures are `p4_review_h_mount_falcon_2026-10-20/out/png/person_f43xx.png`).
 
 "Person-like set" = returns with X >= 2.4 m, |Y| < 0.9 m, 0.2-1.6 m above the mount plane (z = -1.77 m, from the

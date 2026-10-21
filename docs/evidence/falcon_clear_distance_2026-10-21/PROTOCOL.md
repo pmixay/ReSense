@@ -55,7 +55,7 @@ Falcon (both switches on, ROS-node replica, whole recording, 4,443 rows):
   identical in all 4,443 rows.
 * F2. `clear` differs from the control only in rows where `last_clear_rule` is non-empty; in every changed row
   new <= old; in `lost_model` rows new = 0; in `round_down_*` rows old - new is 0.0 or 0.1 (a rounding, not a rule).
-  Every changed row is listed (`out/clear_changes_*.tsv`).
+  Every changed row is listed (`results/clear_changes_*.tsv`).
 * F3 (`clear_lost_model`). The 39 control rows 4373-4414 (non-STOP, `clear` > 0) have `clear` = 0, and so does the node
   path (both policies). Checked against the raw points: for these rows the nearest return in the lateral corridor
   (|Y| < 0.9 m) 0.2-1.6 m above the mount plane is computed from the dumped clouds without the track model.
