@@ -158,3 +158,28 @@ rows are reported. Not used: the held-out G3 set. Parameters are not tuned on se
    applied to the right-side bins recorded by `run_far.py --detail` on the v1.2.0 candidate run (4,312 frames
    with right bins): support 172 m in 70 %, 142 m in 22 %, 202–262 m in 5 %, none in 3 %; a contradiction in
    1.5 % of frames.
+
+### A2 (21.10, after the first `cand` replay of the real recording at `3de4534`; in-sample)
+
+The first `cand` replay (`3de4534`) gave 6 STOP episodes, **2 without a person** (frames 121, 147–148: the
+115 m left-wall structure), first STOP on the main person 127.1 m (no gain). Trace: the far trust was
+104–128 m because the divergence cap `join + T/|Δs|` used the second side's own fitted slope, which the
+column row's two lateral families bias (Δs median 0.0046, its standard error 0.0022 on the recorded bins),
+and the cap was aged over the history (another ~20 m). With the far trust below 115 m the structure got the
+near model's laterals (≈ 0.8 m off there) and the baseline's false STOP came back. Changes, all in C7:
+
+1. The second side is tested **against the primary line**: its bins, from the near end outwards, must stay
+   within T of a line parallel to the primary (offset = mean residual, rms ≤ 0.25 m). This bounds the
+   divergence at every observed bin; no slope estimate of the sparse row is used. A divergence cap
+   `join + T/|Δs|` remains only for two fitted walls (dense, small slope errors), and it caps the current
+   frame only (a property of the fit, not an observed location); observed contradictions are still aged.
+2. A contradiction caps at the **last consistent bin before** the breaking bin (a curve may start right after
+   it), for the second side and for a primary side's rejected run (was: at the breaking bin).
+3. A statistically reduced cap (Δs − 2 SE) was tried and dropped: it let the negative control "row follows a
+   R 3000 m curve from 160 m" fail (0.70 m error, allowed 0.70 m).
+
+Design check on the recorded bins after these changes: the right row stays within the tube to 142 m in 70 %
+of frames and to 172 m in 26 %; a contradiction after 142 m in 49 %. **Revised expectation: two-sided trust
+≈ 120–170 m on this recording.** Negative controls after the change: 92/92 required cases fail-safe; unit
+tests 19/19. All `cand` / `map300` numbers reported are from the commit after this amendment; the
+`3de4534` replay is kept as history (`raw/`).

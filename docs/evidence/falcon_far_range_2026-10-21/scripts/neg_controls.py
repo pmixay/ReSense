@@ -172,11 +172,12 @@ def cases():
                 p.append(columns(truth_of(k), -1.0, 52.5 - (2.0 * k) % 30.0, 400, np.random.default_rng(k + 50)))
             return np.concatenate(p)
         out.append(("J_moving_curve_approach", {"R": R}, fr, truth_of, 100, True))
-    # K. reported only: a turnout leaving a straight two-wall tunnel through a 40 m gap in the left wall
+    # K. reported only: a turnout leaving a straight two-wall tunnel through a 35 m gap in the left wall
+    #    (bins 147.5 and 187.5 m: 40 m apart, the longest gap the support bridges)
     for R in (300.0, 600.0):
         f = lambda X, R=R: arc(X, 150.0, R)  # noqa: E731
-        out.append(("K_turnout_through_gap", {"R": R, "gap": [150, 190]},
-                    lambda k: np.concatenate([wall(lambda X: 0 * X, 1.0, 52, 400, np.random.default_rng(k), skip=(150, 190)),
+        out.append(("K_turnout_through_gap", {"R": R, "gap": [150, 185]},
+                    lambda k: np.concatenate([wall(lambda X: 0 * X, 1.0, 52, 400, np.random.default_rng(k), skip=(150, 185)),
                                               wall(lambda X: 0 * X, -1.0, 52, 400, np.random.default_rng(k + 50))]), f, 12, False))
     return out
 

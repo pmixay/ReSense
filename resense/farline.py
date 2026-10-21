@@ -187,8 +187,9 @@ def measure(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_range: 
 
 
 def _rejected_run_start(xs: np.ndarray, ys: np.ndarray, cfg: FarRangeConfig) -> float:
-    """X of the first bin of the rejected run that ended a primary side's support (``_side_line``'s robust line and
-    loop), or inf when the support ended at a gap or at the last bin: an observed contradiction vs missing data."""
+    """When a run of rejected bins ended a primary side's support (``_side_line``'s robust line and loop): the X of
+    the last kept bin before it (a curve may start right after it); inf when the support ended at a gap or at the
+    last bin: an observed contradiction vs missing data."""
     if xs.size < 2:
         return np.inf
     o = np.argsort(xs)
@@ -208,42 +209,43 @@ def _rejected_run_start(xs: np.ndarray, ys: np.ndarray, cfg: FarRangeConfig) -> 
         else:
             run += 1
             if last is not None and run >= cfg.axis_max_rejected_run:
-                return float(xs[i - run + 1])
+                return float(xs[last])
     return np.inf
 
 
-def _second_tube(xs: np.ndarray, ys: np.ndarray, cfg: FarRangeConfig):
-    """21.10 (C7): a sparse second side (a column row) taken from the near end outwards while its bins stay
-    within T of one straight line (rms <= ``axis_second_max_rms``). Returns (slope, support X or None,
-    contradiction X): the first observed bin that breaks that line is a contradiction at its X; the support is
-    contiguous (a gap longer than ``axis_max_gap`` ends it: missing data, not a contradiction); a side that
-    bends away over its last bins is a contradiction there too."""
+def _second_tube(xs: np.ndarray, ys: np.ndarray, line, cfg: FarRangeConfig):
+    """21.10 (C7): a sparse second side (a column row) as a confirmation of the primary line ``line`` =
+    (slope, intercept): its bins, from the near end outwards, must stay within T of one line *parallel* to
+    the primary (offset = mean residual, rms about it <= ``axis_second_max_rms``). That bounds, at every
+    observed bin, how far the two sides have diverged, without a slope estimate from a few noisy bins.
+    Returns (support X or None, contradiction X): when an observed bin breaks the tube, the contradiction X is
+    the last bin before it (a curve may start right after it); the support is contiguous (a gap longer than
+    ``axis_max_gap`` ends it: missing data, not a contradiction); a side drifting away over its last bins is a
+    contradiction before them."""
     T = cfg.axis_second_tube
     if xs.size < 2:
-        return None, None, np.inf
+        return None, np.inf
     o = np.argsort(xs)
     xs, ys = xs[o], ys[o]
+    r = ys - (line[1] + line[0] * xs)
 
     def fits(n):
-        p = np.polyfit(xs[:n], ys[:n], 1)
-        r = ys[:n] - np.polyval(p, xs[:n])
-        return float(np.max(np.abs(r))) < T and float(np.sqrt(np.mean(r ** 2))) <= cfg.axis_second_max_rms
+        d = r[:n] - np.mean(r[:n])
+        return float(np.max(np.abs(d))) < T and float(np.sqrt(np.mean(d ** 2))) <= cfg.axis_second_max_rms
 
-    n = 2
+    n = 1
     while n < xs.size and fits(n + 1):
         n += 1
-    contra = float(xs[n]) if n < xs.size else np.inf
+    contra = float(xs[n - 1]) if n < xs.size else np.inf
     end = 0
     while end + 1 < n and xs[end + 1] - xs[end] <= cfg.axis_max_gap:
         end += 1
-    x, y = xs[:end + 1], ys[:end + 1]
+    x, d = xs[:end + 1], r[:end + 1] - np.mean(r[:end + 1])
     if x.size < cfg.axis_second_min_bins or x[-1] - x[0] < cfg.axis_min_span:
-        return None, None, contra
-    p = np.polyfit(x, y, 1)
-    res = y - np.polyval(p, x)
-    if abs(float(np.mean(res[-3:]))) > cfg.axis_second_max_rms:     # bending away over the last bins
-        return None, None, min(contra, float(x[-3]))
-    return float(p[0]), float(x[-1]), contra
+        return None, contra
+    if abs(float(np.mean(d[-3:]))) > cfg.axis_second_max_rms:       # drifting away over the last bins
+        return None, min(contra, float(x[-4]))
+    return float(x[-1]), contra
 
 
 def measure_stable(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_range: float):
@@ -266,22 +268,23 @@ def measure_stable(xyz: np.ndarray, model: TrackModel, cfg: FarRangeConfig, max_
         w = np.array([1.0 / f1[2] ** 2, 1.0 / f2[2] ** 2])
         slope = float((w[0] * f1[0] + w[1] * f2[0]) / w.sum())
         se = float(1.0 / np.sqrt(w.sum()))
-        two, ds, n = min(f1[3], f2[3]), abs(f1[0] - f2[0]), 2
+        two, n, ds = min(f1[3], f2[3]), 2, abs(f1[0] - f2[0])
         support = max(f1[3], f2[3])
     else:
         f1 = prim[0][0]
         slope, se, support, two, ds, n = f1[0], f1[2], f1[3], None, 0.0, 1
         if rest:
             _, xs, ys = rest[0]
-            s2, sup2, c2 = _second_tube(xs, ys, cfg)
+            sup2, c2 = _second_tube(xs, ys, (f1[0], f1[1]), cfg)
             contra = min(contra, c2)
-            if s2 is not None:
-                two, ds, n = min(f1[3], sup2), abs(f1[0] - s2), 2
-    if n == 2 and ds > 0:
-        contra = min(contra, cfg.axis_join + T / ds)              # the sides have diverged by T there
+            if sup2 is not None:
+                two, n = min(f1[3], sup2), 2                     # the tube bounds the divergence: no slope test
+    # two fitted walls: they have diverged by T at join + T / |slope difference|; a property of this frame's
+    # fit, not an observed location, so it caps this frame only (the contradictions are aged in the history)
+    diverge = cfg.axis_join + T / ds if len(prim) == 2 and ds > 0 else np.inf
     if abs(slope - tj) > (cfg.axis_max_kink if n == 2 else cfg.axis_max_kink_one_side):
         return None
-    return {"slope": slope, "se": se, "support": support, "two": two, "sides": n, "contra": contra}
+    return {"slope": slope, "se": se, "support": support, "two": two, "sides": n, "contra": contra, "diverge": diverge}
 
 
 class FarAxisTracker:
@@ -379,6 +382,7 @@ class FarAxisTracker:
             self.good += 1
             self.bad = 0
             self.hist.append((self.t, m["two"], m["contra"]))
+        diverge = m["diverge"] if m is not None else np.inf
         self.hist = [h for h in self.hist if h[0] > self.t - cfg.axis_history_frames * cfg.axis_frame_dt - 1e-9][-cfg.axis_history_frames:]
         if self.slope is None or self.good < cfg.axis_confirm_frames:
             return None
@@ -388,8 +392,7 @@ class FarAxisTracker:
         used, sides = None, 2
         if len(aged) >= max(cfg.axis_history_min, 1):
             used = aged[-max(cfg.axis_history_min, 1)]
-            if caps:
-                used = min(used, min(caps))
+            used = min([used, diverge] + caps)
             used -= 10.0 * self.bad                              # a held line decays as before (10 m per failed frame)
         if used is None or used <= j:
             if cfg.declared_straight_to <= 0:
