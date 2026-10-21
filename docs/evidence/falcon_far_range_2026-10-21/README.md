@@ -131,6 +131,37 @@ near model to 107–175 m. With the A6 guards both are fail-safe (no trust where
 unverified is a turnout between *tight* boundaries (≤ 2.5 m) through a gap shorter than the exit length,
 which is physically impossible for R ≥ 200 m under the stated envelope, and a real (non-synthetic) curve or turnout: none exists in the data.
 
+### Pandar gate and X3, revision 2
+
+* **Full regression gate on `c431b2e`.** `scripts/regression_gate.py --cache /data/cache --jobs 2 --baseline
+  docs/evidence/results/regression_baseline_2026-09-29_shell_off.json`, **without `--allow`**, run from a
+  detached `c431b2e` worktree on the same caches as the revision-1 runs:
+  * six recordings, set O, the ride via `cache_extended_ride.py` (221 splits, archive SHA-256 verified), set F;
+  * result: **GATE PASS, exit 0**, "8 gated better, 0 worse but allowed, 25 information rows changed", the same
+    line as v1.2.0's run ([results_rev2/gate_cand_c431b2e.json](results_rev2/gate_cand_c431b2e.json) and log).
+* **Per-row comparison with the v1.2.0 gate run** ([results_rev2/gate_rowdiff_c431b2e.json](results_rev2/gate_rowdiff_c431b2e.json)):
+  * Of the 15,269 per-frame rows, all are identical except 266, in five files.
+  * All 266 differ only in `health.messages` / `health.level`, and every one of their message differences contains
+    the wall-clock `latency p95 … over the 100 ms budget` message (checked programmatically). The gate runs ran at
+    different times on a shared 4-core machine.
+  * Set F straight: identical except the config hash, the wall time and `gt_vehicle_y_m` in 931 rows, at the
+    1e-10 m level. **A second v1.2.0 run of set F differs from the first v1.2.0 run in the same 931 rows**, so this
+    is run-to-run float noise of the set F ground truth, not this change.
+* **A4 bound:** ride and empty Pandar recordings add 0 STOP episodes; Falcon adds 5, all with the person. Total +5 ≤ +11.
+  No `--allow` run was needed.
+* **Unit tests, full suite** (open3d now loads, after `apt-get install libegl1`):
+  * `c431b2e`: 2,480 passed, 1 failed;
+  * v1.2.0: 2,471 passed, the same 1 failed (`tests/test_rail_start.py::test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop`,
+    identical on both);
+  * the 9 extra passes are this branch's tests.
+* **X3: NOT re-run on `c431b2e`.** Its decoded caches need three of the six bags, and Google Drive answered "Quota
+  exceeded" for the archive (twice, 22:39–22:40 UTC); the Yandex set O cache was rebuilt. What stands instead:
+  * X3 on `0eb4dda` PASSED with all 40 recording × variant metrics identical to a fresh v1.2.0 reference.
+  * Every detector change since `0eb4dda` is inside `farline.py` or guarded by `self.far is not None` /
+    `farrange.axis_stable` (the Falcon profiles only).
+  * The full gate above shows the Pandar rows unchanged.
+  * **X3 on the final commit is unverified.** See the update at the end if the retry succeeded.
+
 ## Revision 1 (`0eb4dda`, reviewed; kept as history)
 
 Branch `claude/falcon-far-range-1.3`, base `6ee469c` (detector = v1.2.0 `3b73bbe`). Author evidence; an
