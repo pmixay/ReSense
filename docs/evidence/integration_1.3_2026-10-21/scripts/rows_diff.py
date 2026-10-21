@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Per-frame comparison of two record sets (gate work directories of per-recording ``*.jsonl``, or two single
 ``.jsonl`` files): rows aligned by position (same count, same stamp; fails closed), every key compared recursively
-except timing keys and machine-speed latency health messages. Reports differing rows per file and per top-level
+except timing keys and machine-speed latency health messages (``messages`` / ``msgs``;
+on rows where either side has one, the health ``level`` it raises is not compared). Reports differing rows per file and per top-level
 key; with ``--skip K`` (repeatable) key K is left out at every depth and reported separately as lowered / raised
 (numeric) counts. ``--inject`` is the positive control: one row of the second set is altered (n_points + 1, or a
 detection distance + 0.1 m) and must come back as exactly one extra differing row.
@@ -31,7 +32,9 @@ def strip(o, skip, out):
             if k in skip:
                 out.setdefault(k, []).append(v)
                 continue
-            if k == "messages" and isinstance(v, list):
+            if k in ("messages", "msgs") and isinstance(v, list):
+                if any("latency" in str(m) for m in v):
+                    out["__latency__"] = True
                 v = [m for m in v if "latency" not in str(m)]
             r[k] = strip(v, skip, out)
         return r
@@ -62,7 +65,7 @@ def main():
     ap.add_argument("--show", type=int, default=3)
     x = ap.parse_args()
     skip = set(x.skip)
-    tot = dif = 0; keys = {}; lowered = raised = 0; injected = False
+    tot = dif = lat = 0; keys = {}; lowered = raised = 0; injected = False
     for name, fa, fb in pairs(x.a, x.b):
         ra, rb = load(fa), load(fb)
         if len(ra) != len(rb):
@@ -84,6 +87,13 @@ def main():
             tot += 1
             oa, ob = {}, {}
             a, b = strip(p, skip, oa), strip(q, skip, ob)
+            if oa.get("__latency__") or ob.get("__latency__"):
+                # the health level follows the machine-speed latency message: not compared on such rows
+                for r in (a, b):
+                    r.pop("level", None)
+                    if isinstance(r.get("health"), dict):
+                        r["health"].pop("level", None)
+                lat += 1
             for k in skip:
                 for u, v in zip(oa.get(k, []), ob.get(k, [])):
                     if isinstance(u, (int, float)) and isinstance(v, (int, float)):
@@ -98,7 +108,7 @@ def main():
                     shown += 1
         dif += d
         print(f"{name}: {len(ra)} rows, {d} differ")
-    print(f"TOTAL {tot} rows, {dif} differ; by key {keys}")
+    print(f"TOTAL {tot} rows, {dif} differ; by key {keys} (level not compared on {lat} rows with a latency message)")
     if skip:
         print(f"skipped keys {sorted(skip)}: lowered {lowered}, raised {raised} (numeric leaf values)")
 
