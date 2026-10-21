@@ -36,6 +36,36 @@
 > **P2** after 23.10. Section numbers of the old file are kept where other documents cite them (§1, §3, §4, §6, §9);
 > §2, §5, §7, §8, §9d and §9e are in the archive.
 
+## After v1.2.0 (21.10): the 1.3 lanes and what is queued
+
+v1.2.0 is tagged at `3b73bbe`. The user's terms for 1.3 ([`DECISIONS.md`](DECISIONS.md) row 50): range and accuracy first,
+a bounded false-alarm rise (+11 STOP episodes over Falcon + ride + the five empty Pandar recordings), no new ML components,
+false-alarm work later.
+
+| lane (branch) | state 21.10 evening |
+|---|---|
+| K2 union r3 (`claude/k1-k2-1.3`) | review ACCEPT WITH CONDITIONS, accepted (row 51); in the integration |
+| Falcon clear distance (`claude/falcon-clear-distance-1.3`) | review ACCEPT WITH CONDITIONS, accepted (row 52); in the integration |
+| Falcon far range (`claude/falcon-far-range-1.3`) | review ACCEPT WITH CONDITIONS; back with the author for F1 (GO with a person inside the reported clear range) and a better held STOP (row 53) |
+| F1a bounded head top (`claude/f1a-bounded-1.3`) | revision 1 REJECTED by review; revision 2 safe but keeps almost no ride gain, switch off; final run pending (row 54) |
+| track opinion (`claude/track-opinion-1.3`) | shipped model kept; new model off (row 54) |
+| X2 false-STOP ledger (`claude/x2-ledger-1.3`) | done (evidence for the later false-alarm work) |
+| Falcon demo through real ROS 2 (`claude/falcon-ros-demo-1.3`) | done: first STOP 23.2 s in, 130.5 m, rate 1.0 |
+| integration (`claude/integration-1.3`) | phase 1 (K2, clear distance, track opinion code, evidence) running; phase 2 adds far range and F1a |
+
+**Queued after the current lanes and the integration finish (user, 21.10), each from the integrated 1.3 source:**
+1. **Falcon near object** (frames 4373-4414): the bed model jumps 1.3-4.2 m above the mount plane, so an object 2.5-7 m
+   ahead falls below the gauge and is never STOP; frames 4411-4414 are also nearer than `gauge.range_min` 3 m
+   ([handoff](https://github.com/pmixay/ReSense/blob/16efbcc3125e817eb7dcee1f2ff7ac01bb395133/docs/evidence/falcon_clear_distance_2026-10-21/HANDOFF_not_stop.md)).
+2. **M1, moving-object system test**: crossing, receding, lateral random walk, stop-and-go and chaotic targets at
+   30-150 m on Pandar and Falcon, on v1.2.0 and the integrated 1.3; every rule that loses an in-gauge moving object traced.
+3. **H1, tall narrow objects**: continue the partial improvement (63 misses, wrong-rail-pair false core / STOP) where it
+   can be checked without the missing far-axis reference (H1-REF).
+4. **N6, the platform person** (first STOP 44 m, target 60 m).
+
+**Not pursued:** R1/R2, the organizers' small objects (0.3 m confirmed from ~45 m, the 80-100 m hole for 0.5 m cubes).
+They stay a stated limit and are not claimed ([`DECISIONS.md`](DECISIONS.md) row 55).
+
 ## Current plan (checked 20.10): priorities, code stop 20.10 23:59 MSK
 
 This section replaces every dated target below. **P0** must be in before the code stop (code, configuration, seal);
