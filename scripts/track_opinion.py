@@ -26,7 +26,6 @@ negatives, synthetic sequences split by ride piece, and set O / doubleT_obstacle
 from __future__ import annotations
 
 import argparse
-import glob
 import json
 import os
 import sys
@@ -156,7 +155,7 @@ def collect_injected(job):
 
 def cmd_collect(a):
     from concurrent.futures import ProcessPoolExecutor
-    from resense.io import _natural_key, load_cache_stamps
+    from resense.io import load_cache_stamps
     jobs = []
     if a.inject:
         from resense.synthetic import OBJECT_CATALOGUE
