@@ -89,7 +89,7 @@ def main():
              "axis_valid": float(tr.axis_valid), "floor_shadow": float(getattr(tr, "floor_shadow", 0.0)),
              "floor_held": bool(getattr(tr, "floor_held", False)),
              "rail_slabs": int(tr.rail_slabs), "msgs": h.get("messages", []), "level": h.get("level"),
-             "n_cl": len(res.candidates),
+             "n_cl": len(res.candidates), "rule": getattr(det.health, "last_clear_rule", None),
              "cl_gauge": [{"d": round(float(c.distance), 2), "lat": round(float(c.lateral), 2), "n": int(c.n),
                            "n_gauge": int(c.n_gauge), "kind": c.kind, "reason": c.reason, "zone": c.zone,
                            "hmin": round(float(c.height_min), 2), "hmax": round(float(c.height_max), 2)}

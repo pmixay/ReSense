@@ -44,6 +44,7 @@ path being unsafe; it stays in ``level``, ``messages`` and ``latency_p95_ms``.
 """
 from __future__ import annotations
 
+import math
 from collections import deque
 from typing import Optional
 
@@ -122,6 +123,7 @@ def visibility_along_track(xyz: np.ndarray, center_y, band: float = 3.0, k: int 
 class HealthMonitor:
     def __init__(self, cfg: HealthConfig):
         self.cfg = cfg
+        self.last_clear_rule = ""           # the clear-distance rule that fired in the last update (trace only)
         self._points = deque(maxlen=200)
         self._lock = deque(maxlen=max(1, int(cfg.lock_window)))
         self._lat = deque(maxlen=max(1, int(cfg.latency_window)))
@@ -188,7 +190,8 @@ class HealthMonitor:
 
         self._lock.append(bool(track.rail_score >= rails_min_score))
         lock = sum(self._lock) / len(self._lock)
-        if len(self._lock) >= min(5, self._lock.maxlen) and lock < cfg.min_lock_rate:
+        lock_lost = len(self._lock) >= min(5, self._lock.maxlen) and lock < cfg.min_lock_rate
+        if lock_lost:
             flag(1, f"rail pair found in {lock:.0%} of the last {len(self._lock)} frames: track model on its prior")
 
         if getattr(track, "floor_shadow", 0.0) > 0:
@@ -231,6 +234,15 @@ class HealthMonitor:
         clear = monitored if obstacle_distance is None else float(min(obstacle_distance, monitored))
         if candidate_distance is not None:     # clear_cap (25.09): an unconfirmed / advisory object in the envelope
             clear = float(max(0.0, min(clear, candidate_distance)))
+        rule, shipped = "", round(clear, 1)
+        if cfg.clear_lost_model and lock_lost:   # 21.10: the bed is not verified, nothing is known to be free
+            clear, rule = 0.0, "lost_model"
+        elif cfg.clear_round_down and (obstacle_distance is not None or candidate_distance is not None):
+            clear = math.floor(clear * 10.0) / 10.0   # bounded by evidence: never rounded beyond it
+            rule = "round_down_obstacle" if obstacle_distance is not None else "round_down_candidate"
+        if round(clear, 1) == shipped:
+            rule = ""                            # the trace names a rule only when it changed the reported value
+        self.last_clear_rule = rule
         out = {
             "level": LEVELS[level], "decision_level": LEVELS[dlevel], "messages": msgs,
             "points": n, "near_fraction": round(near_frac, 3), "blocked_sectors": blocked,

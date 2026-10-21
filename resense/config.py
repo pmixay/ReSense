@@ -653,6 +653,17 @@ class HealthConfig:
     # /resense/decision - on a loaded machine it did on most frames (set O 690 of 1 510). STOP,
     # FAULT and every other warning are unchanged. true = the v0.6 behaviour
     latency_affects_decision: bool = False
+    # 21.10 (P4 review 20.10 on the Falcon, docs/evidence/falcon_clear_distance_2026-10-21; off until the
+    # lane's pre-registered criteria pass). Both only lower clear_distance; detections, warnings, level,
+    # messages, monitored_range and the decision are untouched.
+    # clear_lost_model: while the track model is on its prior (the rail pair found in fewer than min_lock_rate
+    # of the last lock_window frames, at least 5 frames of history: the "track model on its prior" warning)
+    # the bed under the corridor is not verified and clear_distance is 0 (ALGORITHM §4b: a lost track model
+    # makes it 0; the Falcon frames 4373-4414 reported 3-40 m beyond a person-like object 2.5-7 m ahead)
+    clear_lost_model: bool = False
+    # clear_round_down: a clear distance bounded by a confirmed obstacle or a candidate is rounded down to
+    # 0.1 m, not to nearest (it exceeded a STOP detection by up to 0.05 m: 48.0 against 47.97)
+    clear_round_down: bool = False
     # 25.09 (SCORECARD §6 row 6, docs/evidence/results/p3_clear_distance_2026-09-25.json): cap the
     # monitored-range estimate at the nearest candidate of this frame that touches the envelope
     # although it is not a confirmed obstacle (unconfirmed, advisory); never changes a detection
