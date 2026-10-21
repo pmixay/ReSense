@@ -433,7 +433,7 @@ class Detector:
         result = FrameResult(
             stamp=frame.stamp, obstacle=len(gauge) > 0, warning=len(warn) > 0,
             nearest_distance=gauge[0].distance if gauge else None,
-            detections=gauge, warnings=warn, candidates=clusters, track=self.track,
+            detections=gauge, warnings=warn, candidates=clusters, track=self._published_track(),
             corridor_idx=cand.idx, n_points=frame.n,
             timing_ms={"track": (t1 - t0) * 1e3, "corridor": (t2 - t1) * 1e3,
                        "egomotion": (t3 - t2) * 1e3, "accumulate": (t4 - t3) * 1e3,
@@ -858,6 +858,17 @@ class Detector:
             inside = gauge_core_mask(dy, hh, xx, g) if has_edge_margin(g) else point_in_polygon(dy, hh, g.profile)
             if not bool(inside[0]):
                 c.zone, c.reason = "warning", "beyond_axis"
+
+    def _published_track(self) -> TrackModel:
+        """The model in the result (display, records): the track model, or with ``track.axis_joint_union`` on a curve
+        frame its copy with the curve's shape and trusted range (``joint_used`` true), so the drawn gauge follows the
+        curve as far as the walls confirm it. The detector itself keeps reading the track model."""
+        tr = self.track
+        cv = tr.curve if self.cfg.track.axis_joint_union else None
+        if cv is None:
+            return tr
+        return replace(tr, center=cv.center, yaw=cv.yaw, curvature=cv.curvature, curv_step=cv.curv_step,
+                       curv_knot=cv.curv_knot, axis_valid=cv.axis_valid, joint_used=True)
 
     def _curve_clusters(self, xyz: np.ndarray, intensity: np.ndarray, clusters: List[Cluster]) -> List[Cluster]:
         """21.10 (K2 union, ``track.axis_joint_union``): on a curve frame the joint shape (``track.curve``, trusted as far

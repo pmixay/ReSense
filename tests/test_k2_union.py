@@ -47,9 +47,9 @@ def _detect(kw, xyz, n=12):
             for k in range(n)]
 
 
-def _rows(results):
+def _rows(results, track=True):
     """Every decision-relevant field of a run, frame by frame (no timing)."""
-    return [(r.obstacle, r.warning, r.nearest_distance, r.clear_distance, r.track.to_dict(),
+    return [(r.obstacle, r.warning, r.nearest_distance, r.clear_distance, r.track.to_dict() if track else None,
              [(d.id, round(d.distance, 6), round(d.lateral, 6), d.zone, d.reason, d.kind) for d in r.detections],
              [(d.id, round(d.distance, 6), round(d.lateral, 6), d.zone, d.reason, d.kind) for d in r.warnings])
             for r in results]
@@ -104,7 +104,10 @@ def test_union_detector_adds_the_person_on_the_curve_and_changes_nothing_else():
     assert un[-1].obstacle and abs(un[-1].detections[0].distance - 130.0) < 2.0
     near = np.concatenate([xyz, _person(yt, 60.0)])
     a, b = _detect(OFF, near), _detect(UNION, near)
-    assert a[-1].obstacle and _rows(a) == _rows(b)
+    assert a[-1].obstacle and _rows(a, track=False) == _rows(b, track=False)
+    # the published model follows the curve on its frames and says so; elsewhere it is the track model itself
+    assert un[-1].track.joint_used is True and un[-1].track.to_dict()["joint_used"] is True
+    assert abs(float(un[-1].track.center_y(120.0)) - float(yt(120.0))) < 0.5
     xs, _ = _entry_scene(j=0.0)
     assert _rows(_detect(OFF, xs)) == _rows(_detect(UNION, xs))
 
