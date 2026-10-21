@@ -178,3 +178,27 @@ of piece 2 (the frames listed above) was made with the draft of rule 1 only, to 
 revision 2 is the measurement. Rows, tools and thresholds of §3–§5 are unchanged; every row is measured again on
 `cc703d1` + the four YAML values, except that the B6 rows are re-measured only if the published model differs from
 revision 1's (revision 2 does not change it; checked per frame on the B6 track outputs before reuse).
+
+## 9. Revision 3 (21.10, after the gate of `cc703d1`; before any measurement of `b88d759`)
+
+**Measured on revision 2 `cc703d1`** (`runs/r2/gate/`): ID gate 15,269 rows 0 different (PASS); **G-1 FAIL**: exit 1,
+`ride.stop_episodes` 30 → 31 (`ride.alarm_events` 27 → 27 now equal); new STOP frames only on the ride: piece 2
+frames 1062–1072, 1297–1298, 1317–1318 and piece 5 frames 310–314; 0 control STOP frames lost anywhere. The other rows
+were not measured on `cc703d1`.
+
+**Traced** (`ride_trk.py`-style replay of piece 2 frames 1040–1072 on the `cc703d1` evaluation tree: per frame the
+curve clusters added and every track that matched one, with its zone and `withheld`): at 1058 and 1062–1063 a curve
+cluster is added (the object's returns lie outside the base strict envelope, so rule 2 of revision 2 does not apply)
+and joins track 447, which control withholds by the track opinion; revision 1's non-sticky rule then re-asks the
+opinion for the curve-matched track and releases it (STOP 1062–1072 while it continues on base clusters). Piece 5
+310–314 is the same release. The remaining new STOPs (1297–1298, 1317–1318) are curve additions of low clusters
+beyond `curve_from` (52 m / 36 m: the base's followed reach on a boundary that mixes a wall, a column row and far
+structures); they are expected to stay.
+
+**Revision 3 = commit `b88d759`** (`resense/tracking.py`, test): revision 1's third change is withdrawn: a
+curve-matched track keeps the sticky opinion like every other track (`Track.curve_seen` stays as a record only).
+Revision 1's base-coordinate observation record and lateral stay, so the opinion of a curve-matched track reads the
+same features as control's track. Prediction stated before measuring: G-1 still fails by the frames 1297–1298 and
+1317–1318 unless the gate's episode count absorbs them; M-1 platform id 23 may lose frames again if a curve match
+moves its onset to a frame where the opinion is below its threshold. Every §3 row is measured on `b88d759` + the four
+YAML values, the gate first.
