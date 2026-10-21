@@ -45,4 +45,24 @@ PY
   python $S/stop_diff.py $T/ctl_cloud_with_fake_obj.jsonl $T/comb_cloud_with_fake_obj.jsonl | head -3
   python $S/rows_diff.py $T/ctl_cloud_with_fake_obj.jsonl $T/comb_cloud_with_fake_obj.jsonl --skip clear_distance --skip candidate_distance | tail -2
 } > $O/setO.txt 2>&1
+{
+  for t in ctl k2 preg2 comb; do xz -dc $R/ride/ride_$t.tar.xz | tar -C $T -xf -; done
+  python - $T <<'PY'
+import json, sys
+T = sys.argv[1]
+for t in ("ctl", "k2", "preg2", "comb"):
+    d = json.load(open(f"{T}/{t}/summary.json"))["bags"]["new_data"]
+    eps = 0
+    for k in range(8):
+        prev = False
+        for l in open(f"{T}/{t}/new_data_{k}.jsonl"):
+            o = json.loads(l)["obstacle"]; eps += o and not prev; prev = o
+    print(f"ride {t}: frames {d['frames']}, alarm events {d['alarm_events']}, STOP episodes {eps}, STOP frames {d['alarm_frames']}")
+PY
+  for pr in "ctl k2" "k2 preg2" "preg2 comb" "ctl comb"; do set -- $pr
+    echo "## ride $1 vs $2, per piece (STOP frames lost / new)"
+    for k in 0 1 2 3 4 5 6 7; do python $S/stop_diff.py $T/$1/new_data_$k.jsonl $T/$2/new_data_$k.jsonl | head -3 | sed "s/^/piece $k: /"; done
+    python $S/rows_diff.py $T/$1 $T/$2 --skip clear_distance --skip candidate_distance | tail -2
+  done
+} > $O/ride.txt 2>&1
 rm -rf $T; echo outputs written
