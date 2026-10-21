@@ -153,14 +153,22 @@ def main(argv=None):
     a.data["dto"] = collect(a, "test_dto", ["--bag", "doubleT_obstacle"])
     for name, args in positive_sets():
         a.data[name] = collect(a, name, args)
-    a.neg = [a.data["ride"], a.data["empty"]]
-    a.tests = [a.data["setO"], a.data["dto"], a.data["r0_crossing"]]
+    # negatives augmented as the X3 variants (PROTOCOL A2): training only, grouped with their piece
+    E = ",".join(EMPTY)
+    for n, bag in (("ride", ["--bag", "new_data", "--chunks", "8"]), ("empty", ["--bag", E])):
+        for tag, extra in (("hz5a", ["--every", "2", "--phase", "0"]), ("hz5b", ["--every", "2", "--phase", "1"]),
+                           ("d30s1", ["--drop", "0.3", "--seed", "101"]), ("d30s2", ["--drop", "0.3", "--seed", "102"])):
+            a.data[f"aug_{n}_{tag}"] = collect(a, f"aug_{n}_{tag}", bag + extra + ["--piece-suffix", f"|{tag}"])
+    a.neg = [a.data["ride"], a.data["empty"]] + [v for k, v in a.data.items() if k.startswith("aug_")]
+    a.tests = [a.data["setO"], a.data["dto"], a.data["r0_crossing"]]   # never trained on
     if a.falcon_rows:
         a.tests.append(a.falcon_rows)
     summary = {}
     if "r0" in stages:
+        a_neg, a.neg = a.neg, a.neg[:2]       # the 27.09 recipe: plain negatives
         summary["r0"] = train(a, "r0", R0_FEATURES, ["r0_moving", "r0_standing"],
                               ["--sticky", "--near", "25", "--extra", "10", "--pick", "0.5"])
+        a.neg = a_neg
     if "model" in stages:
         summary["model"] = train(a, "model", CANDIDATE["features"], CANDIDATE["pos"], CANDIDATE["args"],
                                  export=a.export)

@@ -316,7 +316,8 @@ def cmd_train(a):
     tp = (Mp[:, 2] > 0) & (Mp[:, 4] > a.near) & (Mp[:, 6] == 1)
     X = np.concatenate([Xn[tn], Xp[tp]])[:, cols]
     y = np.r_[np.zeros(int(tn.sum())), np.ones(int(tp.sum()))].astype(int)
-    G = np.array([ride_group(p) for p in np.r_[Pn[tn], Pp[tp]]])
+    names_train = np.r_[Pn[tn], Pp[tp]]
+    G = np.array([ride_group(p) for p in names_train])
     rep = {"features": feats, "near": a.near, "excluded": sorted(excl), "train_rows": {"negative": int((y == 0).sum()), "positive": int(y.sum()),
                                                              "positive_sequences": len(set(Pp[tp]))},
            "groups": sorted(set(G))}
@@ -395,7 +396,7 @@ def cmd_train(a):
                           "min_positive_onset_score": round(float(np.min(oof[y == 1])), 5),
                           "test_delayed_rows": len(t[4]), "test_delayed": t[4][:200]}
     if a.oof_out:
-        np.savez_compressed(a.oof_out, oof=oof, y=y, G=G, names=np.r_[Pn[tn], Pp[tp]], X=X, features=np.array(feats),
+        np.savez_compressed(a.oof_out, oof=oof, y=y, G=G, names=names_train, X=X, features=np.array(feats),
                             pt=pt, Pt=Pt, Mt=Mt)
     rep["importance"] = {f: round(float(v), 3) for f, v in sorted(zip(feats, clf.feature_importances_),
                                                                    key=lambda t: -t[1])}
