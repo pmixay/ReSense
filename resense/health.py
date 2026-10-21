@@ -120,6 +120,16 @@ def visibility_along_track(xyz: np.ndarray, center_y, band: float = 3.0, k: int 
     return float(np.partition(Xs, Xs.size - k)[Xs.size - k])
 
 
+def bed_off_mount_plane(track, plane: float, tol: float, grade: float, x_max: float, step: float = 5.0) -> bool:
+    """The bed is lost (``health.clear_lost_bed``): the track model's rail head is more than ``tol + grade * X`` away
+    from the calibrated mount plane (``z = plane``) at some X = ``step``, 2 ``step`` ... ``x_max`` m. The H' criterion
+    (``Detector._mount_cross_check``) applied to the bed instead of a cluster; ``tol`` <= 0 (H' off): never."""
+    if tol <= 0.0 or x_max < step:
+        return False
+    xs = np.arange(step, x_max + 1e-9, step)
+    return bool(np.any(np.abs(np.asarray(track.rail_z(xs), dtype=np.float64) - plane) > tol + grade * xs))
+
+
 class HealthMonitor:
     def __init__(self, cfg: HealthConfig):
         self.cfg = cfg
@@ -138,7 +148,7 @@ class HealthMonitor:
     def update(self, xyz: np.ndarray, meta: dict, track, gauge: GaugeConfig, trusted_range: float,
                rails_min_score: float, latency_ms: Optional[float], calibration: Optional[dict] = None,
                obstacle_distance: Optional[float] = None, candidate_distance: Optional[float] = None,
-               wall_drift: Optional[float] = None) -> dict:
+               wall_drift: Optional[float] = None, bed_conflict: bool = False) -> dict:
         """Update scene health once; append a supplied latency sample, or none for ``None``.
 
         ``wall_drift`` (15.10, ``track.axis_wall_drift``): the X from which the axis contradicts a
@@ -237,6 +247,8 @@ class HealthMonitor:
         rule, shipped = "", round(clear, 1)
         if cfg.clear_lost_model and lock_lost:   # 21.10: the bed is not verified, nothing is known to be free
             clear, rule = 0.0, "lost_model"
+        elif cfg.clear_lost_bed and bed_conflict:   # amendment 1: the bed left the calibrated mount plane
+            clear, rule = 0.0, "lost_bed"
         elif cfg.clear_round_down and (obstacle_distance is not None or candidate_distance is not None):
             clear = math.floor(clear * 10.0) / 10.0   # bounded by evidence: never rounded beyond it
             rule = "round_down_obstacle" if obstacle_distance is not None else "round_down_candidate"

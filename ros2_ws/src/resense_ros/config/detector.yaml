@@ -423,6 +423,10 @@ resense:
     # clear_distance is 0 (ALGORITHM 4b: a lost track model makes it 0). clear_round_down: a clear distance
     # bounded by a confirmed obstacle or a candidate is rounded down to 0.1 m, not to nearest
     clear_lost_model: false
+    # clear_lost_bed: the bed is lost when the track model's rail head is more than cluster.mount_cross_tol +
+    # mount_cross_grade * X away from the calibrated mount plane at some X = 5, 10 .. mount_cross_range m (the H'
+    # criterion applied to the bed; needs mount_cross_tol > 0 and a final mount calibration): clear_distance is 0
+    clear_lost_bed: false
     clear_round_down: false
     # 25.09 (SCORECARD §6 row 6; docs/evidence/results/p3_clear_distance_2026-09-25.json): cap
     # clear_distance at the nearest unconfirmed / advisory candidate touching the envelope;

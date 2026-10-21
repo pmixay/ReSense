@@ -34,6 +34,18 @@ from resense_ros.decision_policy import DecisionPolicy, candidate_ranges, evalua
 assert Path(resense.__file__).resolve().is_relative_to(ROOT.resolve()), (resense.__file__, ROOT)
 
 
+def bed_excess(det):
+    """Read-only trace: the largest excess of |model rail head - calibrated mount plane| over the H' tolerance
+    (cluster.mount_cross_tol + mount_cross_grade * X) at X = 5, 10 .. 30 m; None without a final mount calibration."""
+    st = det.calib.state
+    if st.height is None or st.status not in ("ok", "identity") or not np.isfinite(st.height):
+        return None
+    xs = np.arange(5.0, 30.01, 5.0)
+    cc = det.cfg.cluster
+    return round(float((np.abs(np.asarray(det.track.rail_z(xs)) + float(st.height))
+                        - (cc.mount_cross_tol + cc.mount_cross_grade * xs)).max()), 3)
+
+
 def messages(path):
     import zstandard
     with open(path, "rb") as raw:
@@ -90,6 +102,7 @@ def main():
              "floor_held": bool(getattr(tr, "floor_held", False)),
              "rail_slabs": int(tr.rail_slabs), "msgs": h.get("messages", []), "level": h.get("level"),
              "n_cl": len(res.candidates), "rule": getattr(det.health, "last_clear_rule", None),
+             "bed_excess": bed_excess(det),
              "cl_gauge": [{"d": round(float(c.distance), 2), "lat": round(float(c.lateral), 2), "n": int(c.n),
                            "n_gauge": int(c.n_gauge), "kind": c.kind, "reason": c.reason, "zone": c.zone,
                            "hmin": round(float(c.height_min), 2), "hmax": round(float(c.height_max), 2)}

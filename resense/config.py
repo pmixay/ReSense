@@ -661,6 +661,11 @@ class HealthConfig:
     # the bed under the corridor is not verified and clear_distance is 0 (ALGORITHM §4b: a lost track model
     # makes it 0; the Falcon frames 4373-4414 reported 3-40 m beyond a person-like object 2.5-7 m ahead)
     clear_lost_model: bool = False
+    # clear_lost_bed (amendment 1 of the lane's protocol): the bed is lost when the track model's rail head is
+    # more than cluster.mount_cross_tol + mount_cross_grade * X away from the calibrated mount plane at some X =
+    # 5, 10 .. mount_cross_range m (the H' criterion applied to the bed; needs cluster.mount_cross_tol > 0 and a
+    # final mount calibration): clear_distance is 0, whatever the rail lock. 0 Pandar frames in 15,269 qualify
+    clear_lost_bed: bool = False
     # clear_round_down: a clear distance bounded by a confirmed obstacle or a candidate is rounded down to
     # 0.1 m, not to nearest (it exceeded a STOP detection by up to 0.05 m: 48.0 against 47.97)
     clear_round_down: bool = False

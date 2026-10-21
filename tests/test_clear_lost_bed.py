@@ -16,7 +16,7 @@ from resense.track import TrackModel
 
 def _track(z0, slope=0.0, rail_score=1.0, rng=(4.0, 100.0)) -> TrackModel:
     return TrackModel(floor_coef=np.array([0.0, slope, z0]), floor_range=rng, center=0.0, yaw=0.0, curvature=0.0,
-                      rail_score=rail_score)
+                      rail_score=rail_score, rail_offset=0.0)    # rail head = the fitted level
 
 
 def test_the_bed_off_the_mount_plane_is_detected_with_the_h_prime_tolerance():
@@ -29,7 +29,7 @@ def test_the_bed_off_the_mount_plane_is_detected_with_the_h_prime_tolerance():
     assert not bed_off_mount_plane(_track(-1.77 + 2.0), plane, 0.0, 0.05, 30.0)            # H' off: no tolerance, no rule
     # the climb that leaves the tolerance only far away (slope 0.1 m per m) is found at the far samples of the range
     assert bed_off_mount_plane(_track(-1.77, slope=0.12), plane, 0.5, 0.05, 30.0)
-    assert not bed_off_mount_plane(_track(-1.77, slope=0.12), plane, 0.5, 0.05, 15.0)
+    assert not bed_off_mount_plane(_track(-1.77, slope=0.12), plane, 0.5, 0.05, 5.0)       # 0.6 m at 5 m: inside 0.75 m
 
 
 def _xyz():
@@ -66,8 +66,9 @@ def test_a_confirmed_obstacle_does_not_keep_a_range_over_a_lost_bed():
 
 
 def test_the_detector_passes_its_mount_plane_and_the_h_prime_tolerance_to_the_monitor(monkeypatch):
-    """Wiring: with the switch on the detector evaluates the bed against its own calibrated mount plane and hands the
-    result to the health monitor; with the switch off the check is not even evaluated (no cost, no change)."""
+    """Wiring: with the switch on and a final mount calibration the detector evaluates the bed against its own calibrated
+    mount plane with the H' tolerance and hands the result to the health monitor; with the switch off, or without a final
+    calibration, the check is not evaluated. Nothing but clear_distance moves."""
     import resense.detector as detmod
     from resense.config import DetectorConfig
     from resense.detector import Detector
@@ -81,27 +82,29 @@ def test_the_detector_passes_its_mount_plane_and_the_h_prime_tolerance_to_the_mo
 
     monkeypatch.setattr(detmod, "bed_off_mount_plane", fake)
     xyz = _xyz()
-    out = {}
-    for on in (False, True):
+    inten = np.full(len(xyz), 10.0, np.float32)
+
+    def run(on, status):
         cfg = DetectorConfig()
         cfg.health.clear_lost_bed = on
-        cfg.calibration.enabled = True
+        cfg.calibration.enabled = False
         det = Detector(cfg)
+        det.calib.state.height, det.calib.state.status = 1.77, status    # the state tests/test_f1_false_alarms.py sets
         calls.clear()
         res = None
-        for k in range(12):
-            res = det.process(Frame(xyz=xyz, intensity=np.full(len(xyz), 10.0, np.float32), ring=None, stamp=0.1 * k, meta={}))
-        out[on] = (res, list(calls))
-    off, on = out[False][0], out[True][0]
-    assert out[False][1] == []                                       # switch off: never evaluated
-    status = on.mount.get("status")
-    if status in ("ok", "identity") and on.mount.get("height") is not None:
-        assert out[True][1] and out[True][1][-1][1:] == (cfg.cluster.mount_cross_tol, cfg.cluster.mount_cross_grade,
-                                                        cfg.cluster.mount_cross_range)
-        assert out[True][1][-1][0] == pytest.approx(-float(on.mount["height"]), abs=1e-3)
-        assert on.clear_distance == 0.0
-    else:
-        assert out[True][1] == [] and on.clear_distance == off.clear_distance   # no final mount: the rule does not apply
-    assert (on.obstacle, on.warning, on.nearest_distance, on.health["level"], on.health["decision_level"]) == \
-        (off.obstacle, off.warning, off.nearest_distance, off.health["level"], off.health["decision_level"])
-    assert [(d.distance, d.zone) for d in on.detections] == [(d.distance, d.zone) for d in off.detections]
+        for k in range(6):
+            res = det.process(Frame(xyz=xyz, intensity=inten, ring=None, stamp=0.1 * k, meta={}))
+        return res, list(calls), cfg
+
+    off, calls_off, _ = run(False, "ok")
+    on, calls_on, cfg = run(True, "ok")
+    pend, calls_pend, _ = run(True, "pending")
+    assert calls_off == [] and calls_pend == []                                  # not evaluated
+    assert calls_on and calls_on[-1] == (-1.77, cfg.cluster.mount_cross_tol, cfg.cluster.mount_cross_grade,
+                                         cfg.cluster.mount_cross_range)
+    assert on.clear_distance == 0.0 and off.clear_distance > 0.0 and pend.clear_distance == off.clear_distance
+    for other in (on, pend):
+        assert (other.obstacle, other.warning, other.nearest_distance, other.health["level"],
+                other.health["decision_level"]) == (off.obstacle, off.warning, off.nearest_distance,
+                                                    off.health["level"], off.health["decision_level"])
+        assert [(d.distance, d.zone) for d in other.detections] == [(d.distance, d.zone) for d in off.detections]
