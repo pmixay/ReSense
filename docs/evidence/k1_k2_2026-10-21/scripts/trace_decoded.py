@@ -54,11 +54,11 @@ with open(a.out, "w") as fo:
         det_ = rep.detector
         det_._curve_added = 0
         res = det_.process(fr, ego_speed=None)
-        t = res.track
+        t = rep.detector.track                       # the model the detector reads (res.track: the published one)
         cv = getattr(t, "curve", None)
         fo.write(json.dumps({"i": k, "stamp": m["stamp"], "decision": jr.node_decision(res),
                              "clear": res.clear_distance, "det": [det(x) for x in res.detections],
-                             "warn": [det(x) for x in res.warnings], "track": shape(t),
+                             "warn": [det(x) for x in res.warnings], "track": shape(t), "published": shape(res.track),
                              "curve": shape(cv) if cv is not None else None,
                              "added": int(getattr(rep.detector, "_curve_added", 0)),
                              "speed": res.ego_speed}) + "\n")

@@ -890,7 +890,7 @@ class Detector:
         obstacles = [c for c in clusters if c.zone == "gauge" and not c.reason]
         add = [k for k in extra if k.zone == "gauge" and not k.reason
                and not any(_overlap(k, c) for c in obstacles)]
-        self._curve_added = len(add)
+        self._curve_added, self._curve_seen = len(add), extra      # read by evidence traces only
         if not add:
             return clusters
         keep = [c for c in clusters if not any(_overlap(c, k) for k in add)]

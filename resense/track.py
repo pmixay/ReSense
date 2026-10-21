@@ -1225,8 +1225,10 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
     whose curvature is at least that (:func:`_joint_output`)."""
     curves_only = cfg.axis_joint_fit and not cfg.axis_joint_range and cfg.axis_joint_min_curvature > 0
     jprev: Optional[tuple] = None                 # v5: the joint fit's own shape state
+    held = 0.0
     jnew: Optional[list] = None
     if curves_only and prev is not None and prev.base is not None:
+        held = prev.curve.axis_valid if prev.curve is not None else 0.0   # K2 union: the previous curve's range
         jprev, prev = prev.joint_shape, prev.base
     k = max(1, int(periods)) if cfg.rates_per_period else 1
     kw = max(1, int(periods)) if cfg.walls_smoothing_per_period else 1
@@ -1456,12 +1458,12 @@ def estimate_track(xyz: np.ndarray, cfg: TrackConfig, prev: Optional[TrackModel]
         model.wall_drift = wall_drift_range(bounds, model, cfg)
     model.floor_verified = verify_floor_extrapolation(xyz, model, cfg, floor_z_all=zf)
     if curves_only:
-        return _joint_output(model, jnew, cfg, bounds)
+        return _joint_output(model, jnew, cfg, bounds, held - 20.0 * k)
     return model
 
 
 def _joint_output(base: TrackModel, jshape: Optional[tuple], cfg: TrackConfig,
-                  bounds: Optional[dict] = None) -> TrackModel:
+                  bounds: Optional[dict] = None, held: float = 0.0) -> TrackModel:
     """The returned model with ``axis_joint_min_curvature`` > 0 (19.10, v5): ``base`` (the estimate without the joint
     fit, carried as ``.base`` to the next frame as its state) with the joint fit's shape ``jshape`` (centre, yaw,
     curvature, curv_step, curv_knot; carried as ``.joint_shape``) in place of its axis shape when ``base``'s curvature is
@@ -1484,7 +1486,9 @@ def _joint_output(base: TrackModel, jshape: Optional[tuple], cfg: TrackConfig,
             reach = [_followed_reach(x, y, cm, cfg) for x, y in bounds.values() if len(x)]
             reach = [r_ for r_ in reach if r_ > 0]
             if reach:
-                cm.axis_valid = max(reach) + cfg.axis_valid_margin
+                # a boundary hidden for a frame (an object in front of it, a noisy bin) does not end the trust at once:
+                # the previous curve frame's range, less 20 m per period (the base estimator's decay without boundaries)
+                cm.axis_valid = max(max(reach) + cfg.axis_valid_margin, held)
                 out.curve = cm
         return out
     out = replace(base, base=base, joint_shape=jshape, joint_used=bool(use), joint_reach=0.0)

@@ -131,3 +131,22 @@ def test_union_never_replaces_a_base_obstacle():
     assert out[0] is base[0]
     assert [c.distance for c in out] == [50.0, 90.0, 120.0]
     assert out[1] is curve[1] and out[2] is curve[2]
+
+
+def test_union_curve_range_is_held_over_a_hidden_boundary_and_decays():
+    """A frame whose far boundaries are hidden (every return beyond 70 m removed) keeps the previous curve range less
+    20 m per period instead of dropping to the shortened reach; the full scene restores the reach."""
+    xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
+    cfg, m = TrackConfig(**UNION), None
+    for _ in range(8):
+        m = estimate_track(xyz, cfg, prev=m)
+    before = m.curve.axis_valid
+    cut = xyz[xyz[:, 0] < 70.0]
+    hidden = estimate_track(cut, cfg, prev=m)
+    fresh = estimate_track(cut, cfg, prev=None)                     # positive control: what the cut alone supports
+    for _ in range(7):
+        fresh = estimate_track(cut, cfg, prev=fresh)
+    assert fresh.curve is None or fresh.curve.axis_valid < before - 20.0
+    assert hidden.curve is not None and hidden.curve.axis_valid == before - 20.0
+    again = estimate_track(xyz, cfg, prev=hidden)
+    assert again.curve is not None and again.curve.axis_valid >= before - 20.0
