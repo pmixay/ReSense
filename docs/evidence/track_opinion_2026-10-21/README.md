@@ -43,12 +43,12 @@
 
 | row | set | control (v1.2.0, shipped model) | candidate | criterion | pass |
 |---|---|---|---|---|---|
-| ID | branch at defaults vs v1.2.0 tree | — | gate: see "Not checked"; Falcon 0 of 4,443 rows differ (manual and `falcon_ros`) | identical | PASS (Falcon) |
+| ID | branch at its defaults vs the v1.2.0 tree | gate PASS | gate PASS, 0 of 15,269 per-frame rows differ (only the config hash, from the new key); Falcon 0 of 4,443 rows differ (manual and `falcon_ros`) | identical | PASS |
 | H1 | set O, inside objects (gate per frame) | 450 alarm frames, background 0 | every inside- and outside-object row identical; background 0 → 3 frames (2 track ids), total 450 → 451 | no first STOP later, no STOP frame lost | PASS |
 | H2 | `doubleT_obstacle` labels | hits / first alarm frame | identical | not fewer / not later | PASS |
 | H3 | Falcon person, `falcon_ros` | first STOP 127.1 m, 1,369 person STOP frames | identical (F-a and F-b) | not later, 0 lost | PASS |
 | H3 | Falcon person, manual path | 124.7 m, 1,350 frames | identical | same | PASS |
-| H4 | X3 positives | see [X3](#x3) | see [X3](#x3) | 0 lost matching STOP rows | see X3 |
+| H4 | X3 positives (`doubleT_obstacle`, set O; 10 variants each) | e.g. nominal: person 61, rail object 153 inside STOP rows; set O inside rows per object | every inside STOP row and every first STOP of every positive object identical in 20 / 20 cases | 0 lost, not later | PASS |
 | H5 | range test A / C, person and 1 m cube | A person 218.4 m, A cube 151.1 m, C person 82.8 m, C cube 85.7 m first STOP; 158 / 104 / 55 / 57 STOP frames | every row identical | not later, 0 lost | PASS |
 | H6 | far-target set 150–250 m (32 sequences) | first detections person median 106.3 m, box1.0 95.7 m, box0.5 60.8 m, trolley 107.3 m | first detection and every detected frame identical in 32 / 32; false detections +2 to +3 in 8 sequences | not later, 0 lost | PASS |
 | H6 | set F straight (gate) | | identical | not worse | PASS |
@@ -56,6 +56,7 @@
 | G1x | ride, cross-fitted (4 folds) | 23 / 26 (shipped model, same pieces) | 30 / 30 | ≤ control | **FAIL** |
 | G2 | five recordings, gate | 7 events / 11 episodes (all on `squareT_platform`) | 9 / 14 | ≤ control | **FAIL** |
 | G2x | five recordings, fold E model | 7 / 11 (gate) | fold E model at 0.0100, replayed on the five recordings' rows: 10 → 10 events (withholds nothing, so its run equals opinion-off: 9 / 14); not run in the detector | ≤ control | **FAIL** (by replay; see Not checked) |
+| X3 | battery comparison vs the control's X3 | MEASURED | **FAIL**: 6 of 260 comparisons, all `false_stop_episodes` of `squareT_platform` (nominal 3 → 9; −2°, roll, dropout s1 / s2 / judge7) | battery tolerances | **FAIL** |
 | G3 | Falcon false STOP episodes | 3 (`falcon_ros`), 2 (manual) | 3, 2 | ≤ control | PASS |
 | gate | full gate vs the seal baseline, no `--allow` | PASS (exit 0) | **FAIL** (exit 1: ride events, squareT events / episodes, set O background frames / ids) | exit 0 | **FAIL** |
 
@@ -127,6 +128,7 @@ and empty rows are not out of fold for the shipped model's 27.09 training on the
 
 | check | method | result |
 |---|---|---|
+| branch defaults = v1.2.0 (ID) | gate of the branch at `8cc0c13` defaults, `cmp_frames.py` against the control's work dir | 0 of 15,269 rows differ |
 | control reproduces published v1.2.0 figures | gate vs `f1a_acceptance_2026-10-20` (ride 23 / 26 / 111); Falcon vs the long-range REPORT and f1a | equal |
 | the candidate is inert | per-frame `cmp_frames.py` candidate vs opinion-off gate work dirs | 0 of 15,269 rows differ (639 latency-level only); positive control: control vs candidate 66 rows |
 | every changed gate row explained | [`scripts/explain_rows.py`](scripts/explain_rows.py) on all 66 rows | 64 withheld STOPs (`doubt`), 2 reason-label rows, inspected by hand |
@@ -146,13 +148,21 @@ and empty rows are not out of fold for the shipped model's 27.09 training on the
 
 ## X3
 
-(filled in below when the candidate battery finished)
+`scripts/robustness_battery.py -j 2` on the control tree (`/data/wt_ctl`, `6ee469c`; status MEASURED) and on the
+candidate-defaults tree (`9661cc7`, local) with the control as reference: **FAIL, 6 of 260 comparisons**
+([`out/x3_cand.json`](out/x3_cand.json), [`out/x3_compare.txt`](out/x3_compare.txt)). Every failing row is
+`false_stop_episodes` on the obstacle-free `squareT_platform_squareT_switch`: nominal 3 → 9, pitch −2° 7 → 10,
+roll +2° 7 → 9, dropout s1 12 → 16, s2 10 → 16, judge7 14 → 16 (+ within tolerance: 5 Hz 9 → 10, s3 13 → 14).
+On set O the candidate adds STOP frames that match no inside object (nominal 457 → 458, unmatched episodes
+7 → 8; `big_outside` gains a false STOP episode in four variants). **Every positive row is unchanged:** all 140
+per-object inside-STOP-row metrics and all 260 first-STOP fields of the 40 cases are equal, except the first STOP
+of `big_outside` (an outside object) in `drop30_judge7`, which is a new false STOP. Control reproduction: the
+historical X3 rows `doubleT_obstacle` nominal / +pitch / 5 Hz / judge7 / dedup = 193 / 192 / 95 / 154 / 189 STOP
+frames, `squareT_platform` episodes nominal / +pitch / −pitch / roll / 5 Hz / judge7 / dedup = 3 / 4 / 7 / 7 / 9 / 14 / 3 and `roundT_squareT` 0 everywhere (P4 X3 protocol) are reproduced exactly. Raw probe records of both runs:
+[`out/x3_raw_ctl_cand.tar.xz`](out/x3_raw_ctl_cand.tar.xz) (unpack to `/data/x3/`; each summary carries their sha256).
 
 ## Not checked / unverified
 
-* The gate of the branch **at its own defaults** (row ID on Pandar) was not run separately; ID rests on the code
-  (the new code is the appended features, read only by a model that names them, and the profile switch at
-  `true`), on the unit test that the shipped model's scores are unchanged, and on the Falcon identity run.
 * G2x was evaluated by the offline replay of the fold E model, not by a detector run of the five recordings.
 * The ride has no ground truth: "false" events are by construction (an obstacle-free ride).
 * The synthetic-versus-real comparison rests on two real Pandar objects (one person crossing at 56 m with the train
