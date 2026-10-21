@@ -693,7 +693,7 @@ class FarRangeConfig:
     profiles (``resense_ros.sensor_profiles``) switch it on when ``with_falcon_profile``. Pandar
     runs never read it. ``resense/farline.py`` has the far axis; the keys below the crop are its."""
     enabled: bool = False
-    with_falcon_profile: bool = False  # True: the falcon_ros / falcon_native profiles enable this block (off: report 19.10)
+    with_falcon_profile: bool = True   # True: the falcon_ros / falcon_native profiles enable this block (19.10 off; 21.10 on with axis_stable)
     max_range: float = 400.0           # m: sensor crop, gauge.range_max and track.floor_verify_max_range under the profile
     axis_enabled: bool = True          # the far straight axis beyond axis_join (resense/farline.py)
     axis_join: float = 50.0            # m: the near track model is used up to here, the far line from here on
@@ -727,7 +727,7 @@ class FarRangeConfig:
                                        # obstacle's visible part is short (the rays to its foot return from the track first)
     far_max_length: float = 4.0        # cluster.far_max_length under the profile (a 2 m deep box measures 3.1-3.2 m)
     # 21.10 (farrange.axis_stable, docs/evidence/falcon_far_range_2026-10-21): off = the far axis of 19.10 (89e0f3b)
-    axis_stable: bool = False          # C7-C9: a sparse second side as a parallel tube, an aged two-sided support history, two sides only
+    axis_stable: bool = True           # C7-C9: a sparse second side as a parallel tube, an aged two-sided support history, two sides only
     axis_second_tube: float = 0.5      # m, T: keep tolerance of the second side about its own robust line; its support ends at the first
                                        # observed bin outside; the sides diverge by T at join + T / |slope difference| (the divergence cap)
     axis_second_max_rms: float = 0.25  # m, residual of the second side (a column row with two lateral families: 0.17-0.25 m on the Falcon)

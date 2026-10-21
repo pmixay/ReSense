@@ -33,8 +33,8 @@ def test_default_and_pandar_profiles_leave_farrange_off():
 
 def test_falcon_profiles_enable_farrange_and_the_long_crop():
     cfg = DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml"))
-    resolved, _ = apply_sensor_profile(cfg, "falcon_ros")      # default: off, the Falcon profile as before
-    assert resolved.farrange.enabled is False and resolved.sensor.max_range == 250.0
+    resolved, _ = apply_sensor_profile(cfg, "falcon_ros")      # 21.10 default: on under the Falcon profiles
+    assert resolved.farrange.enabled is True and resolved.farrange.axis_stable is True
     cfg.farrange.with_falcon_profile = True                     # explicit switch
     for name in ("falcon_ros", "falcon_native"):
         resolved, model = apply_sensor_profile(cfg, name)
@@ -65,7 +65,7 @@ def _walls(curv=0.0, slope=0.0005, x1=260.0, seed=0):
 
 
 def test_far_axis_measures_a_straight_boundary_and_rejects_a_curve():
-    cfg = FarRangeConfig(enabled=True)
+    cfg = FarRangeConfig(enabled=True, axis_stable=False)
     m = measure(_walls(), _model(), cfg, 400.0)
     assert m is not None and abs(m[0] - 0.0005) < 2e-4 and m[2] > 250.0
     assert measure(_walls(curv=1.0 / 3000.0), _model(), cfg, 400.0) is None      # R 3 km: bow over 200 m
@@ -73,7 +73,7 @@ def test_far_axis_measures_a_straight_boundary_and_rejects_a_curve():
 
 
 def test_far_axis_tracker_confirms_offsets_and_bounds_the_trust():
-    cfg = FarRangeConfig(enabled=True)
+    cfg = FarRangeConfig(enabled=True, axis_stable=False)
     tr = FarAxisTracker(cfg)
     model = _model()
     out = [tr.update(_walls(seed=k), model, 400.0) for k in range(cfg.axis_confirm_frames)]
@@ -96,7 +96,7 @@ def _tracks(ds, tid=7):
 
 
 def test_far_confirm_needs_consistent_range_history():
-    cfg = FarRangeConfig(enabled=True, confirm_enabled=True)
+    cfg = FarRangeConfig(enabled=True, axis_stable=False, confirm_enabled=True)
     fc = FarConfirm(cfg)
     for d in (260.0, 259.9, 259.8, 259.7):
         fc.update(_tracks([d]))
@@ -138,7 +138,7 @@ def _check_within_sigma(far, model, truth):
 
 
 def test_far_axis_never_trusts_a_curve_beyond_its_support():
-    cfg = FarRangeConfig(enabled=True)
+    cfg = FarRangeConfig(enabled=True, axis_stable=False)
     model = _model()
     for occl in (False, True):
         for xc in (120.0, 160.0, 200.0, 240.0):
@@ -152,7 +152,7 @@ def test_far_axis_never_trusts_a_curve_beyond_its_support():
 
 
 def test_far_axis_single_diverging_wall_is_rejected_or_covered():
-    cfg = FarRangeConfig(enabled=True)
+    cfg = FarRangeConfig(enabled=True, axis_stable=False)
     model = _model()
     for slope in (0.003, 0.006, 0.009):
         for other_end in (52.0, 120.0):
@@ -174,13 +174,13 @@ def test_far_axis_single_diverging_wall_is_rejected_or_covered():
 
 def test_far_axis_straight_control_is_accepted_and_declared_map_extends_trust():
     model = _model()
-    cfg = FarRangeConfig(enabled=True)
+    cfg = FarRangeConfig(enabled=True, axis_stable=False)
     tr = FarAxisTracker(cfg)
     for k in range(8):
         far = tr.update(_curved_walls(1e6, 1e9, k), model, 400.0)
     assert far is not None and far.sides == 2 and far.join < far.valid <= far.support + cfg.axis_margin
     _check_within_sigma(far, model, lambda X: np.zeros_like(X))
-    cfg2 = FarRangeConfig(enabled=True, declared_straight_to=450.0)
+    cfg2 = FarRangeConfig(enabled=True, axis_stable=False, declared_straight_to=450.0)
     tr2 = FarAxisTracker(cfg2)
     for k in range(8):
         far2 = tr2.update(_walls(seed=k, x1=200.0), model, 400.0)
@@ -228,7 +228,7 @@ def _side(fy, s, x0, x1, rng, step=1.0, n=6, lat=1.9):
 def test_one_straight_wall_never_trusted_beyond_the_near_model():
     """Re-review R1: a straight wall (station, parked train) while the track curves away from it cannot be
     told from a straight track; one side is trusted no further than the near model (unless declared)."""
-    cfg = FarRangeConfig(enabled=True)
+    cfg = FarRangeConfig(enabled=True, axis_stable=False)
     model = _model()
     model.axis_valid = 150.0
     tr = FarAxisTracker(cfg)
@@ -238,7 +238,7 @@ def test_one_straight_wall_never_trusted_beyond_the_near_model():
 
 
 def test_two_sides_trust_ends_at_the_shorter_side():
-    cfg = FarRangeConfig(enabled=True)
+    cfg = FarRangeConfig(enabled=True, axis_stable=False)
     model = _model()
     for cend in (135.0, 150.0, 190.0):
         tr = FarAxisTracker(cfg)
