@@ -265,6 +265,12 @@ released: no tag or archive, no J1 score.
   runs, run (KPIs, decisions against labels), 3D player from the cab, comparison, live mode through rosbridge, parameters/presets.
   The same sealed `resense.Detector` runs in a worker; the image does not contain `webapp/`. Known limits: 60 fps not measured, live
   mode tested against a stand-in, no authentication.
+- **Changed (21.10):** the Player is now the driver's cab of a metro train seen from the seat (the 3D view is the windshield;
+  realistic Moskva-2020-style trim, pillars with camera monitors, sun visor, overhead panel and a desk with decorative displays,
+  manometers, buttons and controller) instead of a screen in a saloon wall. Entering the Player from another section is a walk
+  from the saloon into the cab (turn right, aisle, cab door, sitting down) instead of the doors, then the cab's screens boot with a
+  short initialization; any key or click skips; reduced motion keeps the fade. Web-only: no file under `resense/`, `native/`,
+  `configs/` or `ros2_ws/` changes.
 - **Changed (20.10, PR #47, merged):** a reworked Player workspace (a modeled train-interior display, reference-based 3D view,
   pinned transport and telemetry) and a persistent live preview at https://resense.amdm.life/. Web-only: no file under
   `resense/`, `native/`, `configs/` or `ros2_ws/` differs from `f56ad5e`, the seal still passes, the release image does not contain

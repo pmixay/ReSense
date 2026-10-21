@@ -17,6 +17,7 @@ function Harness({ isPrepared }: { isPrepared?: () => boolean }) {
     <button onClick={() => navigate('/player/second?pos=20')}>Run switch</button>
     <button onClick={() => navigate(-1)}>Back</button>
     <button onClick={doors.finishTravel}>Travel finished</button>
+    <button onClick={doors.finishBoarding}>Boarding finished</button>
     <TrainDoors phase={doors.phase} />
   </>;
 }
@@ -91,9 +92,70 @@ describe('train door navigation', () => {
     fireEvent.click(screen.getByText('Runs'));
     await finishTransition();
     fireEvent.click(screen.getByText('Back'));
-    expect(overlay.getAttribute('data-phase')).toBe('closing');
-    await finishTransition();
+    // back into the Player is a walk into the cab, not the doors
+    expect(overlay.getAttribute('data-phase')).toBe('boarding');
+    await advance(0);
     expect(router.state.location.pathname).toBe('/player/second');
+    fireEvent.click(screen.getByText('Boarding finished'));
+    await advance(320);
+    expect(overlay.getAttribute('data-phase')).toBe('idle');
+  });
+
+  it('walks into the cab instead of closing the doors when the Player is entered', async () => {
+    const onCover = vi.fn();
+    function Boarding() {
+      const doors = useTrainDoors({ onCover });
+      const navigate = useNavigate();
+      const location = useLocation();
+      return <>
+        <output>{location.pathname}</output>
+        <button onClick={() => navigate('/player/second?pos=20')}>Player</button>
+        <button onClick={doors.finishBoarding}>Seated</button>
+        <TrainDoors phase={doors.phase} />
+      </>;
+    }
+    vi.useFakeTimers();
+    const NativeRequest = globalThis.Request;
+    vi.stubGlobal('Request', class extends NativeRequest {
+      constructor(input: RequestInfo | URL, init?: RequestInit) { super(input, { ...init, signal: undefined }); }
+    });
+    vi.stubGlobal('matchMedia', () => ({ matches: false, addEventListener() { /* static */ }, removeEventListener() { /* static */ } }));
+    const router = createMemoryRouter([{ path: '*', element: <Boarding /> }], { initialEntries: ['/runs'] });
+    const view = render(<RouterProvider router={router} />);
+    const overlay = view.container.querySelector('[data-train-doors]')!;
+    fireEvent.click(screen.getByText('Player'));
+    // the leaving page is captured as it is; no closing phase, the Player commits at once (hidden)
+    expect(onCover).toHaveBeenCalledOnce();
+    expect(overlay.getAttribute('data-phase')).toBe('boarding');
+    await advance(0);
+    expect(router.state.location.pathname).toBe('/player/second');
+    expect(router.state.location.search).toBe('?pos=20');
+    await advance(3000);
+    expect(overlay.getAttribute('data-phase')).toBe('boarding');
+    fireEvent.click(screen.getByText('Seated'));
+    expect(overlay.getAttribute('data-phase')).toBe('arriving');
+    await advance(320);
+    expect(overlay.getAttribute('data-phase')).toBe('idle');
+  });
+
+  it('releases a boarding walk that never reports the seat', async () => {
+    const { router, overlay } = setup(false, '/runs');
+    fireEvent.click(screen.getByText('Run switch'));
+    expect(overlay.getAttribute('data-phase')).toBe('boarding');
+    await advance(12000);
+    expect(router.state.location.pathname).toBe('/player/second');
+    expect(overlay.getAttribute('data-phase')).toBe('idle');
+  });
+
+  it('keeps the short fade into the Player for reduced motion', async () => {
+    const { router, overlay } = setup(true, '/runs');
+    fireEvent.click(screen.getByText('Run switch'));
+    expect(overlay.getAttribute('data-phase')).toBe('closing');
+    await advance(75);
+    expect(router.state.location.pathname).toBe('/player/second');
+    await advance(25);
+    expect(overlay.getAttribute('data-phase')).toBe('opening');
+    await advance(100);
     expect(overlay.getAttribute('data-phase')).toBe('idle');
   });
 
@@ -167,13 +229,14 @@ describe('train door navigation', () => {
     fallback.remove();
   });
 
-  it('passes Runs between Queue and Player and creates only the selected history entry', async () => {
+  it('boards the Player from Queue and creates only the selected history entry', async () => {
     const { router, overlay } = setup(false, '/queue');
     fireEvent.click(screen.getByText('Run switch'));
     expect(JSON.parse(document.querySelector('[data-journey]')!.textContent!)).toMatchObject({ direction: 'right', via: ['runs'], steps: 2 });
-    for (const ms of [360, 25, 820]) await advance(ms);
-    fireEvent.click(screen.getByText('Travel finished'));
-    await advance(460);
+    expect(overlay.getAttribute('data-phase')).toBe('boarding');
+    await advance(0);
+    fireEvent.click(screen.getByText('Boarding finished'));
+    await advance(320);
     expect(router.state.location.pathname).toBe('/player/second');
     expect(overlay.getAttribute('data-phase')).toBe('idle');
     fireEvent.click(screen.getByText('Back'));

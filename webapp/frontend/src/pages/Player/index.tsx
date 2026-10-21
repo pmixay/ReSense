@@ -24,6 +24,10 @@ import { TelemetryTray } from './TelemetryTray';
 import { useDockHeight } from './useDockHeight';
 import styles from './Player.module.css';
 import { useNavigationPreview } from '../../lib/navigationPreview';
+import { COVERED_PHASES, useSectionMotion } from '../../lib/sectionMotion';
+import { CAB_BOOT_MS, type CabBootInfo } from '../../player/cabBoot';
+import { fmtFrames } from '../../lib/format';
+import { envelopeText } from './cab';
 
 // ---------------------------------------------------------------- the stage
 
@@ -43,6 +47,29 @@ interface CabChrome {
   toggleHeight: () => void;
 }
 
+/** The cab boots once per visit, when the driver has sat down (the walk-in has lifted); run switches keep it. */
+const BootContext = createContext<CabBootInfo>({ state: 'done', start: 0 });
+/** A run route reports when its content (the run, or its error) is there to boot into. */
+const BootReadyContext = createContext<(ready: boolean) => void>(() => undefined);
+
+function useCabBoot(preview: boolean, ready: boolean): CabBootInfo {
+  const motion = useSectionMotion();
+  const covered = COVERED_PHASES.includes(motion) || !ready;
+  const [boot, setBoot] = useState<CabBootInfo>(() => ({
+    state: preview || window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'done' : 'pending',
+    start: 0,
+  }));
+  useEffect(() => {
+    if (boot.state === 'pending' && !covered) setBoot({ state: 'running', start: performance.now() });
+  }, [boot.state, covered]);
+  useEffect(() => {
+    if (boot.state !== 'running') return;
+    const timer = window.setTimeout(() => setBoot(b => ({ ...b, state: 'done' })), Math.max(0, CAB_BOOT_MS - (performance.now() - boot.start)));
+    return () => window.clearTimeout(timer);
+  }, [boot]);
+  return boot;
+}
+
 /** Fullscreen state outlives run switches and the picker; AppShell remains the fullscreen element. */
 const ChromeContext = createContext<CabChrome>({ expanded: false, toggleHeight: () => undefined, fs: { active: false, real: false, pseudo: false, toggle: () => undefined, exit: async () => undefined } });
 
@@ -54,8 +81,9 @@ interface StageProps {
 
 /** Normal page flow; controls and telemetry retain their native CSS size. */
 function Stage({ children, state, stageRef }: StageProps) {
+  const boot = useContext(BootContext);
   return (
-    <div ref={stageRef} className={styles.workspace} data-player-workspace data-state={state}>
+    <div ref={stageRef} className={styles.workspace} data-player-workspace data-state={state} data-boot={boot.state}>
       {children}
     </div>
   );
@@ -103,14 +131,15 @@ function CabShell({ runId, runName, glass, console: cons }: { runId?: string; ru
   const sink = useRef<OverlaySink | null>(null);
   const back = useBack(runId);
   const { fs } = useContext(ChromeContext);
+  const boot = useContext(BootContext);
   // without a run only F and Esc mean something; every other key keeps its default
   usePlayerKeys({ fullscreen: fs.toggle, escape: () => (fs.active ? void fs.exit() : back()) });
   return (
     <Stage stageRef={stageRef}>
       <SceneLayer>
-        <World engine={null} mode="cab" pixelRatio={Math.min(2, window.devicePixelRatio || 1)} cloudBudget={null} displayRef={displayRef} sceneRef={sceneRef} sink={sink} onFreeChange={() => undefined} onError={() => undefined} />
+        <World engine={null} mode="cab" pixelRatio={Math.min(2, window.devicePixelRatio || 1)} cloudBudget={null} displayRef={displayRef} sceneRef={sceneRef} sink={sink} onFreeChange={() => undefined} onError={() => undefined} boot={boot} />
       </SceneLayer>
-      <div ref={displayRef} className={styles.stateArea}>{glass}</div>
+      <div ref={displayRef} className={styles.stateArea} data-cab-region>{glass}</div>
       <div ref={dockRef} className={styles.controlDock} data-player-controls>
         <ViewControls runId={runId} runName={runName} decision={null} fullscreen={fs.active} onFullscreen={fs.toggle} />
         {cons}
@@ -129,6 +158,8 @@ export default function Player() {
   const toggleHeight = useCallback(() => setExpanded(value => !value), []);
   const fs = useFullscreen(rootRef);
   const chrome = useMemo(() => ({ fs, expanded, toggleHeight }), [fs, expanded, toggleHeight]);
+  const [runReady, setRunReady] = useState(false);
+  const boot = useCabBoot(preview, !runId || runReady);
   useEffect(() => {
     if (preview) return;
     document.title = 'Плеер · ReSense';
@@ -136,7 +167,11 @@ export default function Player() {
   return (
     <div ref={rootRef} className={styles.root} data-expanded={expanded || undefined}>
       <ChromeContext.Provider value={chrome}>
-        {runId ? <PlayerRun key={runId} runId={runId} /> : <CabShell glass={<RunPickerGlass />} console={<PickerConsole />} />}
+        <BootContext.Provider value={boot}>
+          <BootReadyContext.Provider value={setRunReady}>
+            {runId ? <PlayerRun key={runId} runId={runId} /> : <CabShell glass={<RunPickerGlass />} console={<PickerConsole />} />}
+          </BootReadyContext.Provider>
+        </BootContext.Provider>
       </ChromeContext.Provider>
     </div>
   );
@@ -149,6 +184,11 @@ function PlayerRun({ runId }: { runId: string }) {
   const run = useRun(runId, { retry: false, refetchInterval: (q) => (q.state.error?.offline ? 3000 : false) });
   const series = useRunSeries(runId, { enabled: !!run.data });
   const clouds = useRunClouds(runId, { enabled: !!run.data?.has_clouds });
+  const markReady = useContext(BootReadyContext);
+  const settled = !!run.data || run.isError;
+  useEffect(() => {
+    if (settled) markReady(true);
+  }, [settled, markReady]);
 
   // a failed background refetch keeps the cab on screen: only a run that never arrived is an error
   if (!run.data && run.isError) {
@@ -235,6 +275,7 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
   const n = run.summary.n_frames;
   const hasClouds = run.has_clouds && run.cloud_frames > 0;
   const back = useBack(run.id);
+  const boot = useContext(BootContext);
   const schema = usePresetSchema();
   const stageRef = useRef<HTMLDivElement>(null);
   const displayRef = useRef<HTMLDivElement>(null);
@@ -254,12 +295,18 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
     const s = startRef.current;
     const e = new PlayerEngine({ id: run.id, n, t: null, clouds: [] }, { initialPos: s.pos ?? 0, speed: s.speed });
     setEngine(e);
-    if (s.pos === null) e.play();
     return () => {
       e.dispose();
       setEngine(null);
     };
   }, [run.id, n]);
+  // a run without a deep-link position plays by itself, once the cab has booted
+  const autoplayed = useRef(false);
+  useEffect(() => {
+    if (!engine || autoplayed.current || boot.state !== 'done') return;
+    autoplayed.current = true;
+    if (startRef.current.pos === null) engine.play();
+  }, [engine, boot.state]);
   useEffect(() => {
     engine?.updateRun({ t: seriesT });
   }, [engine, seriesT]);
@@ -361,6 +408,13 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
     return () => window.clearInterval(id);
   }, [engine]);
 
+  const bootLines = useMemo(() => [
+    `прогон · ${run.name}`,
+    `кадры · ${fmtFrames(n)}`,
+    hasClouds ? `облака точек · ${fmtFrames(run.cloud_frames)}` : 'облака точек · нет, схематичный режим',
+    `габарит · ${envelopeText()}`,
+    `параметры · ${run.preset.name}`,
+  ], [run.name, run.cloud_frames, run.preset.name, n, hasClouds]);
   const stateAttr = decision ? decision.toLowerCase() : undefined;
   const pr = Math.min(2, window.devicePixelRatio || 1);
   return (
@@ -377,6 +431,7 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
             sink={sink}
             sceneRef={sceneRef}
             onError={setWebglError}
+            boot={boot}
           />
         )}
         {webglError && <div className={styles.viewUnavailable} />}
@@ -394,9 +449,11 @@ function Cab({ run, seriesT, seriesFrames, latency, cloudFrames, cloudBudget, cl
           motion={snap.motion}
           register={register}
           noView={!!webglError}
+          boot={boot.state}
+          bootLines={bootLines}
         />
       </SceneLayer>
-      <div ref={displayRef} className={styles.display} data-player-display>
+      <div ref={displayRef} className={styles.display} data-player-display data-cab-region>
         {(webglError || snap.framesError !== null) && (
           <div className={styles.glassBanner}>
             <ErrorBanner

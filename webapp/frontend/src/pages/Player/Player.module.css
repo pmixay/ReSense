@@ -37,6 +37,8 @@
 .stateArea { position: absolute; z-index: 1; inset: 24px var(--pad) calc(var(--player-dock-h) + 16px); overflow-y: auto; display: flex; flex-direction: column; scrollbar-color: var(--hair-2) transparent; }
 .glassCenter { display: grid; place-items: center; min-height: 260px; }
 .glassCard { width: min(100%, 560px); }
+/* Over the dark windshield: the empty state sits on the shared card surface, headings are white. */
+.glassEmpty { border-radius: var(--r-sm); background: var(--card); color: var(--ink); }
 .glassBanner { position: absolute; left: 24px; right: 24px; bottom: 24px; max-width: 640px; margin-inline: auto; z-index: 2; pointer-events: auto; }
 
 /* Screen-space annotations share the exact active surface dimensions of the WebGL display. */
@@ -157,7 +159,7 @@
 
 /* Selection is an ordinary application state, not a miniature screen within the screen. */
 .pick { display: flex; flex-direction: column; gap: 20px; }
-.pickHead { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.pickHead { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; color: var(--white); }
 .pickTitle { font-size: 24px; font-weight: 800; }
 .pickGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr)); gap: 16px; }
 .pickCard { display: flex; flex-direction: column; gap: 14px; padding: 18px; min-width: 0; border: 1px solid var(--hair); border-radius: var(--r-sm); background: var(--card); color: var(--ink); }
@@ -171,3 +173,40 @@
 .keys { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 12px; }
 .key { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; }
 .key kbd { padding: 4px 8px; border: 1px solid var(--hair-2); border-radius: 6px; font-family: var(--f-body); font-weight: 700; background: var(--card); color: var(--ink); }
+
+/* The cab's power-up over the windshield display (timeline: player/cabBoot.ts, 2.1 s). */
+.hud[data-boot='pending'] > :not([data-cab-boot]) { opacity: 0; }
+.hud[data-boot='running'] > :not([data-cab-boot]) { opacity: 0; animation: boot-in 450ms ease-out 1550ms forwards; }
+.workspace[data-boot='pending'] .stateArea { opacity: 0; }
+.workspace[data-boot='running'] .stateArea { opacity: 0; animation: boot-in 420ms ease-out 650ms forwards; }
+.boot { position: absolute; inset: 0; z-index: 3; pointer-events: none; color: var(--white); animation: boot-out 320ms ease-in 1780ms forwards; }
+.bootFlash { position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; background: #eef8ff; box-shadow: 0 0 22px 6px rgba(150, 210, 255, .5); transform: scaleX(0); animation: boot-flash 480ms cubic-bezier(.2, .7, .2, 1) forwards; }
+.bootCorner { position: absolute; width: 38px; height: 38px; border: 2px solid var(--white); opacity: 0; animation: boot-corner 520ms cubic-bezier(.2, .8, .2, 1) 140ms forwards; }
+.bootCorner[data-corner='tl'] { left: 14px; top: 14px; border-right: 0; border-bottom: 0; --dx: 80px; --dy: 46px; }
+.bootCorner[data-corner='tr'] { right: 14px; top: 14px; border-left: 0; border-bottom: 0; --dx: -80px; --dy: 46px; }
+.bootCorner[data-corner='bl'] { left: 14px; bottom: 14px; border-right: 0; border-top: 0; --dx: 80px; --dy: -46px; }
+.bootCorner[data-corner='br'] { right: 14px; bottom: 14px; border-left: 0; border-top: 0; --dx: -80px; --dy: -46px; }
+.bootEdge { position: absolute; left: 60px; right: 60px; height: 1px; background: linear-gradient(90deg, transparent, var(--white) 20%, var(--white) 80%, transparent); transform: scaleX(0); animation: boot-edge 640ms cubic-bezier(.3, 0, .2, 1) 220ms forwards; }
+.bootEdge[data-edge='top'] { top: 30px; }
+.bootEdge[data-edge='bottom'] { bottom: 30px; }
+.bootReticle { position: absolute; left: 50%; top: 50%; width: 220px; height: 220px; margin: -110px 0 0 -110px; opacity: 0; animation: boot-reticle 1500ms ease-out 160ms forwards; }
+.bootReticle i { position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid rgba(255, 255, 255, .85); }
+.bootReticle i:nth-child(1) { border-style: dashed; animation: boot-spin 1.8s linear infinite; }
+.bootReticle i:nth-child(2) { inset: 28px; border-width: 3px; border-color: var(--red) transparent; animation: boot-spin 1.1s linear infinite reverse; }
+.bootReticle i:nth-child(3) { inset: 66px; border-width: 1px; }
+.bootLog { position: absolute; left: 24px; top: 50%; display: flex; flex-direction: column; gap: 6px; min-width: 270px; max-width: 42%; padding: 14px 16px; border-left: 3px solid var(--red); border-radius: 8px; background: var(--glass); font-size: 12px; font-weight: 600; transform: translateY(-50%); opacity: 0; animation: boot-in 260ms ease-out 200ms forwards; }
+.bootLog b { font-family: var(--f-head); font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.bootLog span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; opacity: 0; animation: boot-line 220ms ease-out forwards; animation-delay: calc(330ms + var(--i, 0) * 170ms); }
+.bootLog .bootBar { height: 4px; margin-top: 4px; border-radius: 2px; background: rgba(255, 255, 255, .18); opacity: 1; animation: none; }
+.bootBar i { display: block; width: 100%; height: 100%; border-radius: 2px; background: var(--go); transform: scaleX(0); transform-origin: left; animation: boot-bar 1100ms cubic-bezier(.4, 0, .2, 1) 300ms forwards; }
+.bootLog strong { color: var(--online); font-weight: 800; text-transform: uppercase; letter-spacing: .04em; opacity: 0; animation: boot-ready 360ms steps(3) 1420ms forwards; }
+@keyframes boot-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes boot-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes boot-flash { 0% { transform: scaleX(0); opacity: 1; } 45% { transform: scaleX(1); opacity: 1; } 100% { transform: scaleX(1) scaleY(90); opacity: 0; } }
+@keyframes boot-corner { from { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(.6); } 60% { opacity: 1; } to { opacity: 1; transform: none; } }
+@keyframes boot-edge { to { transform: scaleX(1); } }
+@keyframes boot-reticle { 0% { opacity: 0; transform: scale(.4); } 25% { opacity: 1; transform: scale(1); } 80% { opacity: 1; } 100% { opacity: 0; transform: scale(1.3); } }
+@keyframes boot-spin { to { transform: rotate(360deg); } }
+@keyframes boot-line { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+@keyframes boot-bar { to { transform: scaleX(1); } }
+@keyframes boot-ready { 0% { opacity: 0; } 33% { opacity: 1; } 66% { opacity: .3; } 100% { opacity: 1; } }

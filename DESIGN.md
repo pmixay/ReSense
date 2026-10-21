@@ -129,14 +129,15 @@ components:
 
 ReSense inherits a cool, compact engineering application: saturated metro-red chrome, a white station rail, pale continuous page ground and explicit emerald, amber, STOP-red and violet signal states. Self-hosted Raleway supports both Russian labels and tabular telemetry. The approved refinement strengthens color and control definition within this existing identity.
 
-The Player is a code-led, inherited-world integration. Its onboard display sits exactly straight at rest in a Moscow-2020-inspired cool-gray saloon, with black glass, rounded industrial housing, a sharp copper-toned foreground post and red door-edge light. The train fills the Player beneath the shared metro-line station rail; pressure parallax, restrained live-image optics and taller views accompany stationary native-size controls over a feathered dock. The Player's Operate contract lives in `.impeccable/surfaces/webapp-frontend-src-pages-player.md`.
+The Player is a code-led, inherited-world integration: the driver's cab of a metro train seen from the seat. The live LiDAR view is the windshield, in a black-bonded frit band and light-grey moulded trim, between A-pillars with platform-camera monitors and vent grilles, under a sun-visor housing and above a graphite desk with displays, manometers, push buttons and the driver's controller (Moskva-2020 cues, not a spaceship). The cab fills the Player beneath the shared metro-line station rail; head parallax, restrained live-image optics and taller views accompany stationary native-size controls over a feathered dock. Entering the Player is a walk from the saloon into this cab, and the cab boots its screens once the driver is seated. The Player's Operate contract lives in `.impeccable/surfaces/webapp-frontend-src-pages-player.md`.
 
 **Key Characteristics:**
 - Shared metro-line station navigation on Upload and Player, with grouped menus omitted on Player.
 - Cool neutral work surfaces, saturated red actions and distinct decision colors.
 - Native-size persistent bottom controls and button-toggled side telemetry around a clear central screen.
-- A straight-at-rest Moscow-2020-inspired scene with near-field railing parallax, physical glass and restrained live-image optics.
-- Full-viewport train context beneath pinned chrome and a feathered, stationary control dock.
+- A straight-at-rest Moskva-2020-style driver's cab around the live windshield, with head parallax, physical glass and restrained live-image optics.
+- Full-viewport cab context beneath pinned chrome and a feathered, stationary control dock.
+- Into the Player: a walk from the saloon into the cab and a short screen boot instead of the doors.
 - Taller views at unchanged width and explicitly bounded physical-render effects.
 
 ## Colors
@@ -166,13 +167,13 @@ AppShell is a viewport-height flex column with pinned route-level navigation abo
 
 **The One Shell Rule.** Player uses the shared metro-line station rail as its only pinned navigation, styled like Upload, including fullscreen; grouped TopBar menus and the System branch are omitted on that route. Other routes keep their full shared chrome. No local Player logo, duplicate title, rail or back bar is added.
 
-Player is a viewport-height workspace with a fixed train/display layer and a bottom-anchored dock. Scenario, camera, height/fullscreen, play/pause, frame/event steps, seek, speed and loop remain visible at native CSS sizes. Telemetry starts hidden; tapping the centered «Телеметрия» button opens two compact side columns above the dock. Track map and decision sit left; distance, timing/rate and health sit right. The center remains unobstructed, and the train, screen, HUD and transport do not move or resize. Each side scrolls independently. Wheel/trackpad and swipes never toggle the panels. No whole-page scaling or fixed design-resolution stage is used.
+Player is a viewport-height workspace with a fixed cab layer and a bottom-anchored dock. Scenario, camera, height/fullscreen, play/pause, frame/event steps, seek, speed and loop remain visible at native CSS sizes. Telemetry starts hidden; tapping the centered «Телеметрия» button opens two compact side columns above the dock. Track map and decision sit left; distance, timing/rate and health sit right. The center remains unobstructed, and the cab, windshield, HUD and transport do not move or resize. Each side scrolls independently. Wheel/trackpad and swipes never toggle the panels. No whole-page scaling or fixed design-resolution stage is used.
 
 `useDockHeight.ts` observes the responsive persistent dock, publishing `--player-dock-h`. The display region fills the remaining viewport, with an 8px upper margin and shared side gutters. The height toggle adds 36px to the region while keeping width and bottom controls fixed; the active image uses tighter physical top/bottom clearances. Expanded hardware remains within the viewport canvas rather than creating page scrolling. The hidden telemetry panel never contributes to the dock measurement.
 
 The interface is desktop-only, with a 1280px minimum workspace width. Use the same desktop navigation, camera tools, telemetry columns and playback row across supported windows; retain full labels and icons. Side height is capped at 72% of the available display region, preserving the image center. Picker/loading/error content has its own scrollable region above measured bottom actions. Future interface work and captures follow this desktop-only scope.
 
-The train canvas spans exactly the non-scrolling Player viewport beneath the shared rail. `World.tsx` measures the DisplayRegion relative to the canvas, preserving hardware/HUD alignment. Mouse dragging still orbits the live visualization; wheel/trackpad does not zoom the physical Player. Touch scrolls an open side column and taps toggle its button. Pointer-pressure parallax is independent of telemetry and disabled for touch/reduced motion.
+The cab canvas spans exactly the non-scrolling Player viewport beneath the shared rail. `World.tsx` measures the DisplayRegion relative to the canvas, preserving hardware/HUD alignment. Mouse dragging still orbits the live visualization; wheel/trackpad does not zoom the physical Player. Touch scrolls an open side column and taps toggle its button. Pointer-pressure parallax is independent of telemetry and disabled for touch/reduced motion.
 
 The pinned dock sits above the scene (z-index 2), with shared gutters and bottom safe-area padding. A clear-to-dark gradient and short feathered backdrop blur keep transport readable without blurring the display annotations. Supporting dock copy is white; telemetry/control surfaces retain their own ink. The shared «Телеметрия» button has `aria-expanded`/`aria-controls`, a focus ring and active red state. Hidden panels use native `hidden`; Escape closes them and returns focus to the toggle. Enter/Space toggle without reaching playback shortcuts. The scenario menu opens upward within the viewport.
 
@@ -180,39 +181,31 @@ The pinned dock sits above the scene (z-index 2), with shared gutters and bottom
 
 The shared system combines neutral tonal layering with soft card, popover and primary-action shadows; it is not shadow-free. Card, popover and red-action shadow tokens, keyboard rings and shared CSS state transitions are preserved in the sidecar. CSS reduced-motion handling suppresses CSS animation/transition durations; Player pointer pressure also honors reduced motion independently of the existing camera/orbit behavior.
 
-The Player's depth is actual Three.js geometry: beveled rear and rounded housing sit in a real wall opening and recessed rubber gasket. `trainInterior.ts` supplies cool-gray panels, seams, fasteners, bevelled aluminium door reveals, rubber/glazing, red edge diffuser, release rosette and lit charging sockets. The charging plate and release share the pillar's centerline; paired indicators are centered within the plate. Horizontal dado/service seams terminate before the door. The previously invented ceiling valance, vent fins and horizontal light bands have been removed from this close wall crop; broad ceiling illumination and reflections remain off-camera. The sharp curved copper-toned post and collars retain independent 24% parallax. Model checks verify screen clearance, rail depth, centered charging geometry and trim/door separation.
+The Player's depth is actual Three.js geometry seen through a perspective eye. `cockpit.ts` builds the driver's cab around the measured display region (`cabLayout`): the windshield plane is z = 0, the seated eye looks straight down −z from 1.6 m with a 50° vertical field over the Player canvas, so the live face projects affinely and the DOM HUD stays aligned. Around the active face run the windshield glass with its black ceramic frit band (shader, fading to dots), a black bonding bead and an extruded light-grey moulding with screws; the A-pillars flare back to the cab sides with seams, a vent grille, a bronze grab handle, a platform-camera monitor on an arm and the side window beyond; the header carries a sun-visor roller housing with a red line, the ceiling an LED panel and an overhead switch panel whose lower edge is computed to stay above the glass at every head position. Below the glass a matte glare shield with defroster slots leads to the sloping graphite desk: traction and diagnostics displays, two manometers, rows of backlit push buttons, toggle switches, the driver's controller with its red grip and reverser lock, the emergency stop and the radio handset, with angled wing panels. Most of the desk sits under the dock in the Player and is seen whole during the walk-in. The instrument faces (`cabShaders.ts`) are procedural and decorative in the application palette: they draw blocks, traces and dials, never a value that could be read as a measurement. No photograph pixels ship in the scene, and no factory-dimensional scan is claimed.
 
-`images (1).jpg` (commit `5118a17`) remains the physical display authority. The inspected Moscow-2020 saloon/touchscreen photographs cited in the gallery README inform cool-gray paneling, black surrounds, copper-toned rails and red door-edge lighting. These are reference-only material cues; no photograph pixels ship in the scene, and no factory-dimensional scan is claimed.
+The opaque cab fills the Player background. Colours are sRGB values converted to linear light, lit, compressed and gamma-encoded in the material (`encodePbr`; the LiDAR target keeps its display values). Neutral ceiling LEDs, a soft windshield fill, a warm fill from the saloon side and a hemispheric bounce light the cab (`cabLights`, shared with the walk-in); a small procedural cab reflection probe (the windshield ahead, roof strips above) is prefiltered once per renderer and cached. Dynamic shadow maps stay disabled. Geometry is rebuilt on resize; repeated parts share geometry and everything owned is disposed. Model checks verify the projection/HUD alignment, that no opaque cab part covers the live picture at any head position (with a positive control), the boot timeline and disposal.
 
-The opaque train-wall scene fills the Player background. Deterministic DataTexture grain supplies laminate bump and steel roughness without image assets. A neutral broad ceiling area light, cool overhead key, warm cove fill and dimmer lower hemispheric bounce reproduce the references' lighting hierarchy. A small procedural saloon reflection environment is prefiltered once per renderer and cached, giving copper/aluminium broad luminaire reflections rather than unlit metallic surfaces. The shared area-light lookup tables initialize once. Dynamic shadow maps remain disabled. An analytic rounded signed-distance contact shadow follows the enclosure at the wall plane, using `fwidth` antialiasing for a smooth penumbra. A transparent clear-coated MeshPhysicalMaterial cover plane remains above the live face (z .205 versus .175), with mild ceiling-light glare in the display shader.
+Normalized mouse displacement sets a bounded quadratic head target: up to 6 cm sideways and 3.5 cm vertically. The eye translates and never rotates, so the windshield stays parallel to the screen (the HUD transform remains a pure translation) while nearer cab parts move more than farther ones. Exponential smoothing (10 per second, allowing up to .5s elapsed time per slow frame) settles to the exact target; centre, pointer leave and window blur return to exact neutral. Mouse pressure requires no held button; touch does not drive it, and reduced motion blocks new pressure and resets the pose. The canvas publishes the current offset as `data-head-x`/`data-head-y`.
 
-The near-field handrail is rendered sharply in the same physical scene pass. Its separate depth and parallax layer remain, but the defocus shader, offscreen rail target and compositing pass have been removed.
+**The Neutral Pressure Rule.** The cab rests exactly straight. Pressure leans the eye; native application controls remain stationary, and touch/reduced-motion interaction keeps the eye at rest.
 
-Normalized mouse displacement sets a bounded quadratic pressure target: maximum pitch (0.035 radians), yaw (0.055 radians) and a tiny coupled roll (0.004 radians, opposite the horizontal displacement). Exponential smoothing (10 per second, allowing up to .5s elapsed time per slow frame) settles to the exact target; foreground railings use 24% of the background's rotation on all three axes. Center, pointer leave and window blur return to exact neutral after settling. Mouse pressure requires no held button; touch does not drive it, and reduced motion blocks new pressure and resets the pose.
-
-**The Neutral Pressure Rule.** The train scene rests exactly straight. Pressure moves the modeled layers with foreground railings at 24% of the background rotation; native application controls remain stationary, and touch/reduced-motion interaction keeps pressure neutral.
-
-`screenEffects.ts` retains continuous source sampling beneath a subtle simulated RGB aperture (approximately 1.85 CSS-pixel pitch), mild bloom and diffused emission. Two low-resolution GPU passes extract/filter changed images with hue-preserving compression. `screenLighting.ts` adds a bounded five-sample area-light approximation to PBR wall, enclosure, trim and rail materials: four image-area samples plus a local edge sample, distance falloff in display coordinates, and no light from a black source. The display inverse matrix updates with pressure so the independently moving rail receives coherent image light. The edge pool and black-glass emission also follow the texture. Pointer-only frames reuse unchanged LiDAR/emission targets. PlayerEngine owns on-demand drawing for active runs; engine-less wall states use a bounded requestAnimationFrame sequence, and pressure rendering stops when settled. No runtime CPU readback is added. Owned geometry, materials, procedural textures, reflection targets and instancing resources are disposed.
+`screenEffects.ts` retains continuous source sampling beneath a subtle simulated RGB aperture (approximately 1.85 CSS-pixel pitch), mild bloom and diffused emission; a boot uniform reveals the picture behind a scan line and is bypassed once steady. Two low-resolution GPU passes extract/filter changed images with hue-preserving compression. `screenLighting.ts` adds a bounded five-sample area-light approximation to the cab's PBR materials: four image-area samples plus a local edge sample, distance falloff in display coordinates, no light from a black source, and none while the display is powered down. Pointer-only frames reuse unchanged LiDAR/emission targets. PlayerEngine owns on-demand drawing for active runs; engine-less cab states use a bounded requestAnimationFrame sequence, and rendering stops when the eye and the boot have settled. No runtime CPU readback is added.
 
 `displayQuality.ts` budgets physical-canvas resolution: at most 1.5 DPR, a nominal 2.6-million-pixel target and a 0.5 DPR floor; low-memory/core hints cap DPR at 1. World treats reported device memory of 4GB or less, or 1–4 logical cores, as constrained. The floor takes precedence on very large viewports. DOM controls and annotations retain native size/resolution; emission/extraction targets are separately bounded. Hardware-specific low-end FPS has not been measured.
 
-**The Bounded Effects Rule.** Render foreground rails directly without defocus passes, keep enclosure contact shading analytic and antialiased, and bound physical rendering by explicit resolution budgets; preserve native DOM controls/HUD and on-demand settling. These bounds are not a device-specific FPS guarantee.
+**The Bounded Effects Rule.** Keep the cab a single direct scene pass without shadow maps or defocus passes, bound physical rendering by explicit resolution budgets, and preserve native DOM controls/HUD and on-demand settling. These bounds are not a device-specific FPS guarantee.
 
-**The Content-Driven Light Rule.** Player emission, wall spill and reflected light on housing, trim and handrail derive from the live image, retaining local hue and emitting nothing from black. Keep them restrained within the lit saloon; environment and rendering constants stay local to the renderer.
+**The Content-Driven Light Rule.** Light from the windshield display on the trim, pillars, header and desk derives from the live image, retaining local hue and emitting nothing from black or from a powered-down display. Keep it restrained within the lit cab; environment and rendering constants stay local to the renderer.
 
 ### Photo-led interior refinement and section transitions
 
 The uploaded `IMG_8349.jpeg` / `IMG_8350.jpeg` saloon views and `1591221.jpeg`
-exterior in main commit `7e38c01` are the current material/seating/door authority.
-Screen housing, right-hand door and foreground post positions stay locked to their
-existing responsive geometry. Refine the wall toward warm off-white laminate,
-polished bronze rails and brushed aluminium; add a black-enamel glazing lip and
-lower bead to the fixed door. Below the housing, individually piped gray-taupe
-woven backrests, contoured cushions, rounded shells and bronze end armrests form a
-cantilevered bench. A shared 128×128 procedural weave/bump tile is disposed with the
-interior. Seat geometry stays clear of the active display and behind the foreground
-post at all pressure extremes. The dock blur is now 8px with a longer feather, so
-the upper bench remains recognizable while controls retain their dark ground.
+exterior in main commit `7e38c01` remain the saloon/door material authority. Since
+the Player became the driver's cab they dress the saloon of the boarding walk:
+warm off-white panels, black glazing surrounds, individually piped gray-taupe
+seats on cantilevered shells with bronze end armrests, curved bronze poles, broad
+ceiling LED strips with warm coves, a metro-red line-map strip and red door-edge
+lights at the open side doors.
 
 Section navigation uses one authored paired-door sequence in AppShell: close in
 260ms, settle until 270ms, capture the outgoing DOM/canvas appearance and commit
@@ -292,15 +285,47 @@ Earlier jitter-regression captures and CPU-throttled evidence are in
 compositing optimization is recorded in
 [`docs/images/slide-performance/`](docs/images/slide-performance/README.md).
 
-### Restored interior and restrained controls
+### Boarding the Player
 
-The latest user correction restores `trainInterior.ts` and `screenDisplay.ts`
-byte-for-byte to the pre-gloss `af2ecd8^` implementation. Original wall/door/seat
-geometry, copper-toned rails, material roughness, screen housing, ceiling lighting,
-reflection probe and direct physical rendering are authoritative again. This also
-restores the original screen/glass materials and removes the later ACES/sRGB pass.
-The supplied photograph-led installation, woven bench and existing independent
-pressure layers remain the visual reference.
+Entering the Player from any other section (rail, links, Back/Forward) plays no
+doors. `useTrainDoors` captures the leaving page exactly as it is (no closing
+phase), enters `boarding` and commits the Player at once, hidden and inert under
+the overlay so its layout can be measured; its renderer is detached while the walk
+plays. `CabEntry.tsx` lazily loads `player/cabEntry.ts` (one temporary WebGL
+renderer, disposed afterwards). The leaving page is a CSS3D plane standing in the
+saloon's open side doors: a camera with the same focal length as the walk's,
+centred on the Player canvas's principal point, makes the first frame identical to
+the page. The time-keyed path (`entryPose`, 3.4 s) turns right by a quarter turn
+(the page swings away to the left), walks the aisle with a small step bob, the cab
+door slides open over 0.52 s, the eye steps past the seat and sits down (the view
+lowers 0.45 m with a forward dip and a small landing bounce) and ends exactly in the
+Player's seated pose over the same `cockpit.ts` geometry with its instruments dark.
+The walk's camera is the Player's camera with a view offset that also covers the
+pinned rail. The overlay then fades in 0.3 s and the Player boots. Any key or click
+skips to the seat; keys are swallowed so the hidden Player never acts on them.
+Failures (no WebGL, chunk error) reveal the Player at once; the 12 s watchdog
+releases a walk that never finishes. Leaving the Player still uses the doors.
+Reduced motion keeps the short fade. Initial loads do not play the walk.
+
+**The boot.** The Player page boots its cab once per visit, when the walk has lifted
+and the run (or picker/error) is there (`cabBoot.ts`, 2.1 s): button backlights and
+the instrument faces strike with a flicker and draw in one after another, the
+windshield shows a standby grid and a scan line reveals the live picture, and HUD
+annotations fade in at 1.55 s. Over the windshield, `CabBoot.tsx` draws an
+Iron Man-style initialization in the application's palette: a line of light opens
+the screen, white brackets snap to the corners, a reticle with a metro-red arc
+spins up and a short log types out the run's facts (name, frames, point clouds or
+schematic mode, envelope, preset) before «Система готова». Controls stay usable;
+autoplay waits for the boot; run switches keep the booted cab. Reduced motion and
+passing previews skip it.
+
+### Driver's cab and restrained controls
+
+The wall-mounted display of earlier passes (`trainInterior.ts`) is gone: the user
+asked for the Player to be a driver's cab instead of a screen on a wall, then
+corrected a first spaceship styling to a realistic metro cab in the application's
+general style, with more detail (see Elevation & Depth).
+
 
 `trainModel.ts` replaces the outside cameras' block carriage with rounded formed
 shells, wraparound cab glazing, individual side panes, paired sliding leaves,
@@ -318,8 +343,9 @@ at 5.5% white, with a 16% light edge and 4% lower edge; primary red shadow opaci
 is 16%. Selected segments/speed use 6% soft shadow and icon buttons use 16% bounded
 drop shadow. Keyboard focus rings retain their full strength. Existing geometry,
 Russian copy, semantic decisions and keyboard rings remain authoritative.
-Current desktop captures and material provenance are in
-[`docs/images/interior-restored/`](docs/images/interior-restored/).
+Captures of the previous wall installation stay in
+[`docs/images/interior-restored/`](docs/images/interior-restored/); the cab, the walk-in and the boot are in
+[`docs/images/player-cab/`](docs/images/player-cab/README.md).
 
 ## Shapes
 
@@ -361,9 +387,9 @@ buttons inside Stepper. Evidence: `docs/images/d1-controls-journey/`.
 
 **Navigation.** Outside Player, TopBar retains the ReSense identity, grouped destinations and backend status, and LineRail retains its station rings and System branch. Player uses that same metro-line rail styling for Главная, Загрузка, Очередь, Прогоны, Плеер and Сравнение, retaining existing URLs and shared responsive wrapping. TopBar groups and System branch DOM are absent on Player. The sidecar's metro-navigation preview represents the shared rail used by both Upload and Player.
 
-**Player display and annotations.** `World.tsx` observes the fixed background viewport and DisplayRegion separately, applies the physical-render budget, then updates `PlayerScene`, modeled targets, camera aspect, HUD bounds and close-up; MiniMap observes its own region. `screenDisplay.ts` rebuilds the installation parametrically and mutates the live face's affine projection in place on resize, height changes and pressure steps. `Hud.tsx` applies the exact matrix to the native annotation plane and close-up. The close-up reserves ruler/caption gutters (44px/24px); display labels and handrails are sharp. Toggling side telemetry changes no scene dimensions or projection.
+**Player display and annotations.** `World.tsx` observes the fixed background viewport and DisplayRegion separately, applies the physical-render budget, then updates `PlayerScene`, modeled targets, camera aspect, HUD bounds and close-up; MiniMap observes its own region. `screenDisplay.ts` rebuilds the cab parametrically and mutates the live face's affine projection in place on resize, height changes and head steps. `Hud.tsx` applies the exact matrix to the native annotation plane and close-up. The close-up reserves ruler/caption gutters (44px/24px); display labels and handrails are sharp. Toggling side telemetry changes no scene dimensions or projection.
 
-**Player controls and data.** The run selector, camera Segmented, decision status, height/fullscreen tools and transport stay in the pinned bottom dock. Five telemetry regions live in the two side columns with a 132px minimum tile height. Height-toggle labels switch between «Увеличить высоту экрана» and «Обычная высота экрана». Camera, speed and primary play/pause retain red states; tools remain native-size rounded squares. White telemetry keeps crisp outlines/ink; map and decision regions keep dark/signal surfaces. Mouse orbit/reset, seeking, frame/event steps, speed, looping and keyboard operation remain. Picker/loading/run-load errors use the same wall with independently scrollable content above measured actions. Cloud-load failures persist until success independently of retry cooldown. API contracts, PlayerEngine clock and URL position/speed/camera behavior remain authoritative.
+**Player controls and data.** The run selector, camera Segmented, decision status, height/fullscreen tools and transport stay in the pinned bottom dock. Five telemetry regions live in the two side columns with a 132px minimum tile height. Height-toggle labels switch between «Увеличить высоту экрана» and «Обычная высота экрана». Camera, speed and primary play/pause retain red states; tools remain native-size rounded squares. White telemetry keeps crisp outlines/ink; map and decision regions keep dark/signal surfaces. Mouse orbit/reset, seeking, frame/event steps, speed, looping and keyboard operation remain. Picker/loading/run-load errors use the same cab (no live picture) with independently scrollable content above measured actions. Cloud-load failures persist until success independently of retry cooldown. API contracts, PlayerEngine clock and URL position/speed/camera behavior remain authoritative.
 
 ## Do's and Don'ts
 
@@ -372,12 +398,12 @@ buttons inside Stepper. Evidence: `docs/images/d1-controls-journey/`.
 - **Do** retain Raleway, Russian formatting and explicit decision semantics.
 - **Do** resize the render targets, model projection, HUD and close-up together; keep map and distance labels responsive at native size.
 - **Do** preserve global Card radii and typography when adding local compact panels.
-- **Do** keep the default train pose exactly straight and the native control dock stationary during pressure parallax.
+- **Do** keep the seated eye exactly at rest by default and the native control dock stationary during head parallax.
 
 ### Don't:
 - **Don't** add a second Player identity, header, stage rail or back bar.
 - **Don't** scale the entire workspace or impose a fixed design-resolution canvas on application controls.
-- **Don't** extend the modeled display housing into a separate instrument/cab mini-site.
+- **Don't** let cab geometry cover the live picture at any head position, or let instrument faces show values that could be read as measurements.
 - **Don't** substitute brand red for STOP or imply unverified distance is clear.
 
-Evidence sources: shared tokens/styles, AppShell/LineRail, Player page/World/ViewControls/HUD and `player/{screenDisplay,screenLighting,screenEffects,displayQuality,trainInterior,scene}.ts`. Current captures: `.impeccable/review/{desktop,user-1366,user-1920}.png` and `docs/images/player-workspace/{taller-display-1440,parallax-right-1440,installed-display-1440,clear-1440,picker-1440}.png`. The installed-display capture covers the visible 1440×816 below-rail viewport. Gallery `README.md` and `capture.json` record reference sources, bounds and neutral/pressure poses. `interior-lighting-verification.json` records current real GPU black/RGB/split-color receiver checks and exact cached neutral return; `optics-verification.json` remains historical evidence for the pixel aperture. No hardware-specific low-end FPS measurement is claimed.
+Evidence sources: shared tokens/styles, AppShell/LineRail/`CabEntry.tsx`, Player page/World/ViewControls/HUD/`CabBoot.tsx` and `player/{cockpit,cabEntry,cabShaders,cabBoot,screenDisplay,screenLighting,screenEffects,displayQuality,scene}.ts`. Current captures (SwiftShader software WebGL on synthetic demo runs, not evaluation evidence): [`docs/images/player-cab/`](docs/images/player-cab/README.md). Earlier galleries (`docs/images/player-workspace/`, `docs/images/interior-restored/`, `.impeccable/review/`) show the previous wall installation and are kept for the record. No hardware-specific low-end FPS measurement is claimed.

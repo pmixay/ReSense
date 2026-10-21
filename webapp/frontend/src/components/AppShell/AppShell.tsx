@@ -9,7 +9,9 @@ import styles from './AppShell.module.css';
 import { RailContext } from './rail';
 import { TrainDoors, useTrainDoors } from './TrainDoors';
 import { TransitPages } from './TransitPages';
+import { CabEntry } from './CabEntry';
 import { navigationSnapshot, type NavigationSnapshot } from '../../lib/navigationSnapshot';
+import { SectionMotionContext } from '../../lib/sectionMotion';
 
 export function PageFallback() {
   return (
@@ -60,6 +62,7 @@ export function AppShell() {
   const queueBusy = !!counts && counts.jobs_running + counts.jobs_queued > 0;
   return (
     <RailContext.Provider value={setSub}>
+      <SectionMotionContext.Provider value={doors.phase}>
       <div className={styles.shell} data-app-shell data-section-motion={doors.phase} data-travel-direction={doors.journey.direction}
         style={{ '--travel-sign': doors.journey.direction === 'right' ? 1 : -1, '--travel-steps': doors.journey.steps, '--travel-duration': `${doors.journey.duration}ms` } as CSSProperties}>
         <a href="#main" className={styles.skip} tabIndex={doors.active ? -1 : undefined}>
@@ -74,9 +77,11 @@ export function AppShell() {
             <Outlet />
           </Suspense>
         </main>
-        {doors.active && !doors.reduced && doors.phase !== 'opening' && <TransitPages phase={doors.phase} journey={doors.journey} snapshot={snapshot} captureDestination={captureDestination} onPrepared={onPrepared} onFinished={doors.finishTravel} registerFinish={registerFinish} />}
+        {(doors.phase === 'boarding' || doors.phase === 'arriving') && <CabEntry phase={doors.phase} snapshot={snapshot} onFinished={doors.finishBoarding} />}
+        {doors.active && !doors.reduced && (doors.phase === 'closing' || doors.phase === 'covered' || doors.phase === 'travelling') && <TransitPages phase={doors.phase} journey={doors.journey} snapshot={snapshot} captureDestination={captureDestination} onPrepared={onPrepared} onFinished={doors.finishTravel} registerFinish={registerFinish} />}
         <TrainDoors phase={doors.phase} />
       </div>
+      </SectionMotionContext.Provider>
     </RailContext.Provider>
   );
 }
