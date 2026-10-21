@@ -14,24 +14,25 @@ from tests.test_wall_drift import _entry_scene
 
 ROOT = Path(__file__).resolve().parents[1]
 JOINT = dict(axis_joint_fit=True)
-# every switch of this module off (the shipped defaults have K2 variant B on since 19.10): the tests build each
+# every switch of this module off (the shipped defaults have the K2 union on since 1.3): the tests build each
 # variant from this base, so they keep testing the code paths, not the current defaults
 OFF = dict(axis_joint_fit=False, axis_joint_range=True, axis_joint_min_curvature=0.0, axis_joint_reach_cap=False,
-           walls_smoothing_distance=0.0)
+           axis_joint_union=False, walls_smoothing_distance=0.0)
 
 
 def _cfg(**kw) -> TrackConfig:
     return TrackConfig(**{**OFF, **kw})
 
 
-def test_switches_default_off_in_code_and_both_parameter_files():
-    """K2 held off for P4 (captain, 19.10 evening: variant B delayed the Falcon person's first STOP by 12 m);
-    variant B = axis_joint_fit true, axis_joint_range false, axis_joint_min_curvature 1e-4, reach cap on."""
+def test_switches_default_in_code_and_both_parameter_files():
+    """1.3 (user's decision 21.10): K2 union r3 on, i.e. axis_joint_fit true, axis_joint_range false,
+    axis_joint_min_curvature 1e-4 (docs/evidence/k1_k2_2026-10-21/cand_eval_commit.patch); variant B's reach cap,
+    v5c and K1 stay off (variant B was held off for P4, captain 19.10: it delayed the Falcon person's first STOP)."""
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
         t = cfg.track
-        assert t.axis_joint_fit is False and t.walls_smoothing_distance == 0.0 and t.axis_joint_range is True
-        assert t.axis_joint_min_curvature == 0.0 and t.axis_joint_reach_cap is False      # v5 switches
+        assert t.axis_joint_fit is True and t.walls_smoothing_distance == 0.0 and t.axis_joint_range is False
+        assert t.axis_joint_min_curvature == 1e-4 and t.axis_joint_reach_cap is False     # v5 switches
         assert t.axis_joint_reach_dual == 0.0                                                # v5c switch
         assert (t.axis_joint_knot, t.axis_joint_step_sigma, t.axis_joint_tolerance) == (60.0, 1e-3, 0.3)
 

@@ -55,10 +55,13 @@ def _rows(results, track=True):
             for r in results]
 
 
-def test_union_default_off_in_code_and_both_parameter_files():
+def test_union_default_on_in_code_and_both_parameter_files():
+    """1.3 (user's decision 21.10): the union is on with exactly the values of cand_eval_commit.patch."""
     for cfg in (DetectorConfig(), DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml")),
                 DetectorConfig.from_yaml(str(ROOT / "ros2_ws/src/resense_ros/config/detector.yaml"))):
-        assert cfg.track.axis_joint_union is False
+        t = cfg.track
+        assert t.axis_joint_union is True and t.axis_joint_fit is True and t.axis_joint_range is False
+        assert t.axis_joint_min_curvature == 1e-4
 
 
 def test_union_output_is_the_estimate_without_the_joint_fit_and_the_curve_rides_along():
