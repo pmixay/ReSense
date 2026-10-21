@@ -48,76 +48,103 @@ def bed_points(x0=0.0, x1=60.0, n=2000, seed=1):
     return np.column_stack([r.uniform(x0, x1, n), r.uniform(-1.5, 1.5, n), np.full(n, -1.5)]).astype(np.float32)
 
 
-# --- classifier: one known case per class --------------------------------------------------------------
+def tunnel_points(x0=0.0, x1=100.0, seed=1):
+    """A straight tunnel: bed 1.5 m below the sensor, rails at -1.15, walls at |y| = 2.3, a vault 3 m above."""
+    r = np.random.default_rng(seed)
+    n = int((x1 - x0) * 150)
+    x = lambda: r.uniform(x0, x1, n)            # noqa: E731
+    bed = np.column_stack([x(), r.uniform(-2.3, 2.3, n), np.full(n, -1.5)])
+    rails = np.column_stack([x(), r.choice([-0.72, 0.72], n), np.full(n, -1.15)])
+    wall = np.column_stack([x(), r.choice([-2.3, 2.3], n), r.uniform(-1.5, 2.9, n)])
+    vault = np.column_stack([x(), r.uniform(-2.3, 2.3, n), np.full(n, 3.0)])
+    return np.vstack([bed, rails, wall, vault]).astype(np.float32)
+
+
+def bed_points():
+    return tunnel_points()
+
 
 CENTER = (20.0, 0.0, -0.6)
 SIZE = (0.5, 0.5, 1.0)
 
 
 def test_in_envelope_structure():
-    pts = np.vstack([bed_points(), box_points(19.8, 20.2, -0.25, 0.25, -1.1, -0.2)])
+    pts = np.vstack([tunnel_points(), box_points(19.8, 20.2, -0.25, 0.25, -1.1, -0.2)])
     r = L.classify_window(pts, straight_track(), CENTER, SIZE, traveled=100.0)
     assert r["class"] == "in_envelope"
-    assert r["n_up"] >= 100 and abs(r["dy_med"]) < 0.3 and 0.15 < r["h_med"] < 1.5
+    assert r["n_env"] >= 100 and abs(r["dy_med"]) < 0.3 and 0.15 < r["h_med"] < 1.5
     assert r["ambiguous"] == []
 
 
-def test_side_structure():
-    pts = np.vstack([bed_points(), box_points(19.8, 20.2, 2.0, 2.4, -1.1, 0.5)])
-    r = L.classify_window(pts, straight_track(), (20.0, 2.2, -0.3), SIZE, traveled=100.0)
+def test_side_structure_in_front_of_the_wall():
+    pts = np.vstack([tunnel_points(), box_points(19.8, 20.2, 1.8, 2.1, -1.1, 0.5)])
+    r = L.classify_window(pts, straight_track(), (20.0, 1.95, -0.3), SIZE, traveled=100.0)
     assert r["class"] == "side"
-    assert r["dy_med"] > L.SIDE_DY + 0.5
+    assert r["dy_med"] > L.SIDE_DY + 0.3 and r["n_env"] == 0 and r["n_fabric"] > 0
 
 
-def test_overhead_structure():
-    pts = np.vstack([bed_points(), box_points(19.8, 20.2, -0.3, 0.3, 2.3, 2.5)])      # 3.45-3.65 m above the rail head
+def test_overhead_structure_below_the_vault():
+    pts = np.vstack([tunnel_points(), box_points(19.8, 20.2, -0.3, 0.3, 2.3, 2.5)])    # 3.45-3.65 m above the rail head
     r = L.classify_window(pts, straight_track(), (20.0, 0.0, 2.4), (0.5, 0.5, 0.3), traveled=100.0)
     assert r["class"] == "overhead"
     assert r["h_med"] > L.OVERHEAD_H + 0.3
 
 
 def test_bed_and_rail_only():
-    pts = bed_points()
-    rails = np.column_stack([np.linspace(0, 60, 400), np.full(400, 0.72), np.full(400, -1.15)]).astype(np.float32)
-    r = L.classify_window(np.vstack([pts, rails]), straight_track(), (20.0, 0.0, -1.2), (0.5, 0.5, 0.5), traveled=100.0)
+    r = L.classify_window(tunnel_points(), straight_track(), (20.0, 0.0, -1.2), (0.5, 0.5, 0.5), traveled=100.0)
     assert r["class"] == "bed_rail"
-    assert r["n_up"] < 3 and r["n_all"] > 10
+    assert r["n_bed"] > 10 and r["n_env"] == 0
 
 
 def test_nothing_there_is_phantom():
-    pts = np.vstack([bed_points(0.0, 10.0), bed_points(30.0, 60.0)])                    # a hole at 10-30 m
-    r = L.classify_window(pts, straight_track(), CENTER, SIZE, traveled=100.0)
+    r = L.classify_window(tunnel_points(), straight_track(), (20.0, 0.0, 1.0), SIZE, traveled=0.0)
     assert r["class"] == "phantom" and r["n_all"] < 3
 
 
+def test_the_wall_or_vault_at_the_position_is_flagged_tunnel_fabric_not_a_localized_structure():
+    wall = L.classify_window(tunnel_points(), straight_track(), (20.0, 2.2, 0.5), SIZE, traveled=100.0)
+    assert wall["class"] == "side" and wall["on_fabric"] and "on_tunnel_fabric" in wall["ambiguous"]
+    assert wall["n_side"] == 0 and wall["n_fabric"] > 0                       # nothing localized
+    vault = L.classify_window(tunnel_points(), straight_track(), (20.0, 0.0, 2.6), SIZE, traveled=100.0)
+    assert vault["class"] == "overhead" and vault["on_fabric"]
+    # the same position in the middle of the tunnel, away from every surface, sees only the bed
+    mid = L.classify_window(tunnel_points(), straight_track(), (20.0, 0.0, -0.9), SIZE, traveled=0.0)
+    assert mid["class"] == "bed_rail" and not mid.get("on_fabric")
+
+
+def test_a_structure_that_starts_in_the_window_is_not_fabric():
+    # a wall niche cover that exists only for x >= 19: nothing behind the window, so it is localized
+    pts = np.vstack([tunnel_points(), box_points(19.0, 60.0, 1.8, 2.1, -1.0, 1.0, n=3000)])
+    r = L.classify_window(pts, straight_track(), (20.0, 1.95, 0.0), SIZE, traveled=100.0)
+    assert r["class"] == "side"
+
+
 def test_the_card_limits():
-    # a structure 1.35 m / 1.5 m off the axis is on either side of the |dy| > 1.4 limit
     tr = straight_track()
-    inside = np.vstack([bed_points(), box_points(19.8, 20.2, 1.25, 1.35, -1.1, -0.2)])
-    outside = np.vstack([bed_points(), box_points(19.8, 20.2, 1.5, 1.6, -1.1, -0.2)])
+    inside = np.vstack([tunnel_points(), box_points(19.8, 20.2, 1.25, 1.35, -1.1, -0.2)])
+    outside = np.vstack([tunnel_points(), box_points(19.8, 20.2, 1.5, 1.6, -1.1, -0.2)])
     assert L.classify_window(inside, tr, (20.0, 1.3, -0.6), SIZE, 100.0)["class"] == "in_envelope"
     assert L.classify_window(outside, tr, (20.0, 1.55, -0.6), SIZE, 100.0)["class"] == "side"
-    # the limit itself is flagged
-    edge = np.vstack([bed_points(), box_points(19.8, 20.2, 1.35, 1.45, -1.1, -0.2)])
+    edge = np.vstack([tunnel_points(), box_points(19.8, 20.2, 1.35, 1.45, -1.1, -0.2)])
     assert "dy_near_limit" in L.classify_window(edge, tr, (20.0, 1.4, -0.6), SIZE, 100.0)["ambiguous"]
 
 
 def test_mixed_and_sparse_structures_are_ambiguous():
     tr = straight_track()
-    mixed = np.vstack([bed_points(), box_points(19.8, 20.2, -0.2, 0.2, -1.1, -0.2, n=60),
-                       box_points(19.8, 20.2, 2.0, 2.4, -1.1, -0.2, n=50, seed=3)])
+    mixed = np.vstack([tunnel_points(), box_points(19.8, 20.2, -0.2, 0.2, -1.1, -0.2, n=60),
+                       box_points(19.8, 20.2, 1.8, 2.1, -1.1, -0.2, n=50, seed=3)])
     r = L.classify_window(mixed, tr, (20.0, 0.9, -0.6), SIZE, 100.0)
     assert any(w.startswith("mixed") for w in r["ambiguous"])
-    sparse = np.vstack([bed_points(), box_points(19.9, 20.1, -0.1, 0.1, -1.0, -0.5, n=5)])
-    assert any(w.startswith("few_points") for w in L.classify_window(sparse, tr, CENTER, SIZE, 100.0)["ambiguous"])
+    sparse = np.vstack([tunnel_points(), box_points(19.9, 20.1, -0.1, 0.1, -1.0, -0.5, n=6)])
+    assert "few_points" in L.classify_window(sparse, tr, CENTER, SIZE, 100.0)["ambiguous"]
 
 
 def test_the_window_grows_with_the_distance_travelled_and_is_capped():
     p = L.ClassifierParams()
-    pts = np.vstack([bed_points(), box_points(19.8, 20.2, -0.25, 0.25, -1.1, -0.2)])
+    pts = np.vstack([tunnel_points(), box_points(19.8, 20.2, -0.25, 0.25, -1.1, -0.2)])
     near = L.classify_window(pts, straight_track(), CENTER, SIZE, 0.0)
     far = L.classify_window(pts, straight_track(), CENTER, SIZE, 1000.0)
-    assert near["radius"] == p.radius0 and far["radius"] == p.radius_max
+    assert near["lon"] == p.lon0 and far["lon"] == p.lon_max and far["lat"] == p.lat_max
 
 
 def test_the_episode_class_needs_agreeing_frames():
@@ -125,7 +152,7 @@ def test_the_episode_class_needs_agreeing_frames():
     assert L.episode_class([f("side")] * 5) == ("side", 1.0, [])
     cls, agree, why = L.episode_class([f("side"), f("side"), f("in_envelope"), f("phantom")])
     assert cls == "side" and agree == 0.5 and why and why[0].startswith("frames_disagree")
-    assert L.episode_class([f("side", ["few_points(4)"])] * 4)[2] == ["frames_ambiguous"]
+    assert L.episode_class([f("side", ["few_points(4)"])] * 4)[2] == ["frames_ambiguous", "flags:few_points"]
     assert L.episode_class([])[2] == ["no_frames"]
 
 
@@ -176,9 +203,15 @@ def test_transport_uses_the_track_of_each_frame_and_the_speed_series():
     assert path[0]["range"] == pytest.approx(math.hypot(60.0, 0.4))
     # 10 m/s * 0.1 s = 1 m per frame; the walk ends at the end of the piece (79 frames) or when x < -10
     assert path[10]["p"][0] == pytest.approx(50.0) and path[10]["traveled"] == pytest.approx(10.0)
-    inb, closest = L.band_frames(path)
-    assert inb and all(L.BAND[0] <= q["range"] <= L.BAND[1] for q in inb) and len(inb) <= 6
+    inb, closest, mode = L.band_frames(path)
+    assert mode == "band" and inb and all(L.BAND[0] <= q["range"] <= L.BAND[1] for q in inb) and len(inb) <= 6
     assert closest < 25.0
+    # a train that stops 30 m short: the closest approach is used and said so; 80 m short: nothing
+    stop = [{"i": k, "p": np.array([60.0 - k, 0.0, 0.0]), "range": 60.0 - k, "traveled": float(k), "src": "x"}
+            for k in range(31)]
+    inb, closest, mode = L.band_frames(stop)
+    assert mode == "nearest" and closest == 30.0 and all(q["range"] <= 32.5 for q in inb)
+    assert L.band_frames(stop[:10])[2] == "none"
 
 
 def test_speed_series_without_any_value_is_zero():
@@ -288,7 +321,7 @@ def test_track_dict_round_trip_reproduces_the_coordinates():
 
 
 def test_render_episode_writes_a_small_png(tmp_path):
-    pts = np.vstack([bed_points(), box_points(19.8, 20.2, -0.25, 0.25, -1.1, -0.2)])
+    pts = np.vstack([tunnel_points(), box_points(19.8, 20.2, -0.25, 0.25, -1.1, -0.2)])
     row = {"id": "bag:5", "distance": 120.0, "lateral": 0.2, "kind": "free", "reason": "far_cluster",
            "center": [120.0, 0.2, -0.5], "size": [0.4, 0.8, 1.1]}
     r = L.classify_window(pts, straight_track(), CENTER, SIZE, 100.0)

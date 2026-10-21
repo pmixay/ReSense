@@ -71,19 +71,29 @@ CLASSES = ("in_envelope", "side", "overhead", "bed_rail", "phantom")
 
 @dataclass
 class ClassifierParams:
-    radius0: float = 1.5            # m: horizontal radius of the window around the transported position ...
-    radius_per_m: float = 0.012     # ... plus this per metre travelled (odometry drift) ...
-    radius_max: float = 3.0         # ... at most this
+    lon0: float = 2.0               # m: half length (along the track) of the window around the transported position ...
+    lon_per_m: float = 0.05         # ... plus this per metre travelled (the speed integral is off by up to 5 % on set O) ...
+    lon_max: float = 7.0            # ... at most this
+    lat0: float = 1.2               # m: half width of the window ...
+    lat_per_m: float = 0.012        # ... plus this per metre travelled (heading drift) ...
+    lat_max: float = 2.5            # ... at most this
+    fabric_lat: float = 1.0         # m: half width / height of the tight window for tunnel fabric (no structure found)
     z_half_min: float = 0.4         # m: half height of the window (at least; or half the onset size) ...
     z_pad: float = 0.6              # ... plus this ...
     z_per_m: float = 0.01           # ... plus this per metre travelled (pitch drift)
     min_any: int = 3                # fewer returns in the window than this = nothing there
-    min_up: int = 3                 # fewer returns above BED_H than this = bed or rail only
-    few_up: int = 8                 # ambiguous below this many points above the bed
+    min_struct: int = 5             # fewer structure points than this = no structure of that kind
+    few_up: int = 12                # ambiguous below this many structure points
     share_min: float = 0.7          # ambiguous when the winning share of the structure points is lower
     margin_dy: float = 0.2          # m: ambiguous when the median |dy| is this close to SIDE_DY
     margin_h: float = 0.3           # m: ... or the median h to OVERHEAD_H
     frame_agree: float = 0.7        # episode class: the share of the evaluated frames that agree
+    fabric_near: float = 6.0        # m: the tunnel fabric is read from the slices this far (or farther) from the window ...
+    fabric_far: float = 40.0        # ... up to this far, on each side
+    fabric_x_min: float = 3.0       # m: the first station of the sensor's view
+    fabric_cell: float = 0.3        # m: cell of the (dy, h) cross-section
+    fabric_slice: float = 2.0       # m: length of a slice along the track
+    fabric_occ: float = 0.5         # a cell occupied in at least this share of the slices on both sides is tunnel fabric
 
 
 # ---------------------------------------------------------------------------------------------
@@ -300,64 +310,149 @@ def transport(rows, i0, center, speeds=None, max_frames=1500, max_range=BAND[1] 
     return out
 
 
-def band_frames(path, band=BAND, n_max=6):
-    """The frames of a transport path in the band, thinned to at most ``n_max`` (evenly), the nearest ones
-    first reached. Returns (frames, closest range reached)."""
+def band_frames(path, band=BAND, n_max=6, nearest_max=50.0, nearest_pad=2.5):
+    """The frames of a transport path in the band, thinned to at most ``n_max`` (evenly). When the train never
+    comes that close (it stops at a platform, the recording ends) the frames within ``nearest_pad`` m of the
+    closest approach are used instead, if that is within ``nearest_max`` m. Returns (frames, closest range, mode)
+    with mode 'band', 'nearest' or 'none'."""
     inb = [q for q in path[1:] if band[0] <= q["range"] <= band[1] and q["p"][0] > 0.0]
     closest = min((q["range"] for q in path), default=None)
+    mode = "band"
+    if not inb and closest is not None and closest <= nearest_max:
+        inb = [q for q in path[1:] if q["range"] <= closest + nearest_pad and q["p"][0] > 0.0]
+        mode = "nearest" if inb else "none"
+    elif not inb:
+        mode = "none"
     if len(inb) > n_max:
         idx = np.unique(np.linspace(0, len(inb) - 1, n_max).round().astype(int))
         inb = [inb[j] for j in idx]
-    return inb, closest
+    return inb, closest, mode
 
 
 # ---------------------------------------------------------------------------------------------
 # the pass-by classifier
 # ---------------------------------------------------------------------------------------------
 
+def fabric_occupancy(xyz, track, cx, params: ClassifierParams):
+    """The tunnel fabric around station ``cx``: for every (dy, h) cell of the cross-section the share of the 1 m
+    slices (``fabric_slice`` m long), behind and ahead of the window (``fabric_near`` .. ``fabric_far`` m away), that hold a return in it.
+    Walls, ceiling, bed, rails and continuous trays fill the same cells along the whole tunnel; an object does
+    not. Returns {(i, j): the smaller of the shares behind and ahead (a side with under three slices is ignored)}."""
+    from resense.gauge import corridor_coordinates
+    x = xyz[:, 0]
+    occ = []
+    for sign in (-1.0, 1.0):
+        lo, hi = sorted((cx + sign * params.fabric_near, cx + sign * params.fabric_far))
+        lo = max(lo, params.fabric_x_min)             # nothing is seen behind the sensor's first metres
+        n_slices = int((hi - lo) / params.fabric_slice)
+        if n_slices < 3:
+            continue                                  # a side with less than three slices tells nothing
+        sel = (x >= lo) & (x < lo + n_slices * params.fabric_slice)
+        if not sel.any():
+            occ.append({})
+            continue
+        dy, h = corridor_coordinates(xyz[sel].astype(np.float32), track)
+        ci = np.floor(dy / params.fabric_cell).astype(np.int64)
+        cj = np.floor(h / params.fabric_cell).astype(np.int64)
+        sl = np.floor((x[sel] - lo) / params.fabric_slice).astype(np.int64)
+        cnt = {}
+        for i, j, _ in set(zip(ci.tolist(), cj.tolist(), sl.tolist())):
+            cnt[(i, j)] = cnt.get((i, j), 0) + 1
+        occ.append({k: v / n_slices for k, v in cnt.items()})
+    if not occ:
+        return {}
+    keys = set(occ[0]).intersection(*occ[1:])
+    return {k: min(o[k] for o in occ) for k in keys}
+
+
 def classify_window(xyz, track, center, size, traveled, params: ClassifierParams = ClassifierParams()):
-    """Classify the structure around ``center`` (vehicle frame of this frame) in the cloud ``xyz`` with the
-    re-fitted ``track``. Returns the class, the counts and shares, and why it is ambiguous (if so)."""
+    """Classify what stands around ``center`` (the onset's position carried into the vehicle frame of this frame)
+    in the cloud ``xyz`` with the re-fitted ``track``:
+
+    * ``in_envelope``: returns inside the strict envelope (|dy| <= SIDE_DY, BED_H < h <= OVERHEAD_H) in the window;
+      an empty tunnel has none, so no fabric baseline is needed;
+    * else the window's returns outside the envelope that are *not tunnel fabric* (their (dy, h) cell is rarely
+      occupied in the slices around): ``side`` (|dy| > SIDE_DY) or ``overhead`` (h > OVERHEAD_H), the larger share;
+    * else ``bed_rail`` when the window holds bed or rail returns (h <= BED_H, |dy| <= SIDE_DY), else ``phantom`` (nothing there).
+    The window is a box around ``center`` that grows with the distance travelled (odometry drift)."""
     from resense.gauge import corridor_coordinates
     cx, cy, cz = (float(v) for v in center)
-    radius = min(params.radius_max, params.radius0 + params.radius_per_m * traveled)
+    lon = min(params.lon_max, params.lon0 + params.lon_per_m * traveled)
+    lat = min(params.lat_max, params.lat0 + params.lat_per_m * traveled)
     zhalf = max(params.z_half_min, 0.5 * float(size[2])) + params.z_pad + params.z_per_m * traveled
     xyz = np.asarray(xyz)
-    sel = (np.hypot(xyz[:, 0] - cx, xyz[:, 1] - cy) <= radius) & (np.abs(xyz[:, 2] - cz) <= zhalf)
+    sel = (np.abs(xyz[:, 0] - cx) <= lon) & (np.abs(xyz[:, 1] - cy) <= lat) & (np.abs(xyz[:, 2] - cz) <= zhalf)
     n_all = int(sel.sum())
-    out = {"radius": round(radius, 2), "z_half": round(zhalf, 2), "n_all": n_all, "n_up": 0,
-           "share": {"in_envelope": 0.0, "side": 0.0, "overhead": 0.0},
-           "dy_med": None, "h_med": None, "h_range": None, "dy_range": None, "ambiguous": [], "class": None}
+    out = {"lon": round(lon, 2), "lat": round(lat, 2), "z_half": round(zhalf, 2), "n_all": n_all, "n_up": 0, "n_bed": 0,
+           "n_env": 0, "n_side": 0, "n_over": 0, "n_fabric": 0, "dy_med": None, "h_med": None, "h_range": None,
+           "dy_range": None, "ambiguous": [], "class": None}
     if n_all < params.min_any:
         out["class"] = "phantom"
         return out
     dy, h = corridor_coordinates(xyz[sel].astype(np.float32), track)
-    up = h > BED_H
-    n_up = int(up.sum())
-    out["n_up"] = n_up
     out["h_range"] = [round(float(h.min()), 2), round(float(h.max()), 2)]
-    if n_up < params.min_up:
-        out["class"] = "bed_rail"
-        return out
-    dy, h = dy[up], h[up]
-    over = h > OVERHEAD_H
-    side = (~over) & (np.abs(dy) > SIDE_DY)
-    env = ~over & ~side
-    share = {"in_envelope": float(env.mean()), "side": float(side.mean()), "overhead": float(over.mean())}
-    order = ("in_envelope", "side", "overhead")             # a tie goes to the class the STOP is about
-    cls = max(order, key=lambda k: (share[k], -order.index(k)))
-    out.update({"class": cls, "share": {k: round(v, 3) for k, v in share.items()},
-                "dy_med": round(float(np.median(dy)), 2), "h_med": round(float(np.median(h)), 2),
-                "h_range": [round(float(h.min()), 2), round(float(h.max()), 2)],
-                "dy_range": [round(float(dy.min()), 2), round(float(dy.max()), 2)]})
+    up = h > BED_H
+    out["n_bed"] = int((~up & (np.abs(dy) <= SIDE_DY)).sum())          # the bed between the walls, not their foot
+    out["n_up"] = int(up.sum())
+    env = up & (h <= OVERHEAD_H) & (np.abs(dy) <= SIDE_DY)
+    out["n_env"] = int(env.sum())
     amb = out["ambiguous"]
-    if n_up < params.few_up:
-        amb.append(f"few_points({n_up})")
-    if share[cls] < params.share_min:
-        amb.append(f"mixed({cls} {share[cls]:.2f})")
-    if abs(abs(float(np.median(dy))) - SIDE_DY) < params.margin_dy:
+
+    def describe(m):
+        out.update({"dy_med": round(float(np.median(dy[m])), 2), "h_med": round(float(np.median(h[m])), 2),
+                    "h_range": [round(float(h[m].min()), 2), round(float(h[m].max()), 2)],
+                    "dy_range": [round(float(dy[m].min()), 2), round(float(dy[m].max()), 2)]})
+
+    outside = up & ~env
+    loc = np.zeros(len(h), dtype=bool)
+    fab_mask = np.zeros(len(h), dtype=bool)
+    if outside.any():
+        occ = fabric_occupancy(xyz, track, cx, params)
+        ci = np.floor(dy[outside] / params.fabric_cell).astype(np.int64)
+        cj = np.floor(h[outside] / params.fabric_cell).astype(np.int64)
+        fab = np.array([occ.get((i, j), 0.0) >= params.fabric_occ for i, j in zip(ci.tolist(), cj.tolist())],
+                       dtype=bool)
+        loc[np.flatnonzero(outside)[~fab]] = True
+        fab_mask[np.flatnonzero(outside)[fab]] = True
+        out["n_fabric"] = int(fab.sum())
+    over = loc & (h > OVERHEAD_H)
+    side = loc & ~over
+    out["n_side"], out["n_over"] = int(side.sum()), int(over.sum())
+    if out["n_env"] >= params.min_struct:
+        out["class"] = "in_envelope"
+        describe(env)
+        n = out["n_env"]
+        other = out["n_side"] + out["n_over"]
+        if other >= params.min_struct and other > 0.3 * n:
+            amb.append(f"mixed(env {n}, other {other})")
+    elif max(out["n_side"], out["n_over"]) >= params.min_struct:
+        cls = "side" if out["n_side"] >= out["n_over"] else "overhead"
+        out["class"] = cls
+        m = side if cls == "side" else over
+        describe(m)
+        n, other = int(m.sum()), int((over if cls == "side" else side).sum())
+        if other >= params.min_struct and other > (1.0 - params.share_min) * (n + other):
+            amb.append(f"mixed({cls} {n}, other {other})")
+    else:
+        # no localized structure: tunnel fabric (wall, platform edge, vault, tray) right at the position?
+        tight = outside & fab_mask & (np.abs(dy - (cy - float(track.center_y(np.array([cx]))[0]))) <= params.fabric_lat)
+        if int(tight.sum()) >= params.min_struct:
+            describe(tight)
+            out["on_fabric"] = True
+            out["class"] = ("overhead" if out["h_med"] > OVERHEAD_H else
+                            "side" if abs(out["dy_med"]) > SIDE_DY else "in_envelope")
+            amb.append("on_tunnel_fabric")
+            out["n_fabric_tight"] = int(tight.sum())
+            return out
+        out["class"] = "bed_rail" if out["n_bed"] >= params.min_any else "phantom"
+        return out
+    if int(out["n_" + {"in_envelope": "env", "side": "side", "overhead": "over"}[out["class"]]]) < params.few_up:
+        amb.append("few_points")
+    if out["class"] == "side" and abs(abs(out["dy_med"]) - SIDE_DY) < params.margin_dy:
         amb.append("dy_near_limit")
-    if abs(float(np.median(h)) - OVERHEAD_H) < params.margin_h:
+    if out["class"] == "in_envelope" and abs(abs(out["dy_med"]) - SIDE_DY) < params.margin_dy:
+        amb.append("dy_near_limit")
+    if abs(out["h_med"] - OVERHEAD_H) < params.margin_h:
         amb.append("h_near_limit")
     return out
 
@@ -375,7 +470,13 @@ def episode_class(frame_results, params: ClassifierParams = ClassifierParams()):
         why.append(f"frames_disagree({agree:.2f})")
     amb_frames = sum(1 for r in frame_results if r["class"] == cls and r["ambiguous"])
     if amb_frames > 0.5 * classes.count(cls):
+        flags = {}
+        for r in frame_results:
+            if r["class"] == cls:
+                for w in r["ambiguous"]:
+                    flags[w.split("(")[0]] = flags.get(w.split("(")[0], 0) + 1
         why.append("frames_ambiguous")
+        why.append("flags:" + ",".join(sorted(flags, key=lambda k: -flags[k])))
     return cls, agree, why
 
 
@@ -481,16 +582,13 @@ def _scatter_panels(ax_bev, ax_side, xyz, track_dict, center, size, title, xmax,
     ax_side.plot(xg, m.rail_z(xg), "r-", lw=0.7)
     ax_side.plot(xg, m.rail_z(xg) + OVERHEAD_H, "r:", lw=0.6)
     cx, cyy, cz = (float(v) for v in center)
-    ax_bev.add_patch(__import__("matplotlib.patches", fromlist=["Rectangle"]).Rectangle(
-        (cyy - size[1] / 2, cx - size[0] / 2), size[1], size[0], fill=False, ec="orange", lw=1.2))
-    ax_side.add_patch(__import__("matplotlib.patches", fromlist=["Rectangle"]).Rectangle(
-        (cx - size[0] / 2, cz - size[2] / 2), size[0], size[2], fill=False, ec="orange", lw=1.2))
+    from matplotlib.patches import Rectangle
+    ax_bev.add_patch(Rectangle((cyy - size[1] / 2, cx - size[0] / 2), size[1], size[0], fill=False, ec="orange", lw=1.2))
+    ax_side.add_patch(Rectangle((cx - size[0] / 2, cz - size[2] / 2), size[0], size[2], fill=False, ec="orange", lw=1.2))
     if window is not None:
-        r, zh = window
-        ax_bev.add_patch(__import__("matplotlib.patches", fromlist=["Circle"]).Circle(
-            (cyy, cx), r, fill=False, ec="magenta", lw=0.9))
-        ax_side.add_patch(__import__("matplotlib.patches", fromlist=["Rectangle"]).Rectangle(
-            (cx - r, cz - zh), 2 * r, 2 * zh, fill=False, ec="magenta", lw=0.9))
+        lon, lat, zh = window
+        ax_bev.add_patch(Rectangle((cyy - lat, cx - lon), 2 * lat, 2 * lon, fill=False, ec="magenta", lw=0.9))
+        ax_side.add_patch(Rectangle((cx - lon, cz - zh), 2 * lon, 2 * zh, fill=False, ec="magenta", lw=0.9))
     ax_bev.set_xlim(-9, 9)
     ax_bev.set_ylim(0, xmax)
     ax_side.set_xlim(0, xmax)
@@ -523,7 +621,7 @@ def render_episode(path, row, saved, passby):
         _scatter_panels(axs[1][0], axs[1][1], saved["passby_xyz"][f], saved["passby_track"][f], q["p"], row["size"],
                         f"pass-by frame {f}: {best['range']:.0f} m from the onset position -> {passby['class']} "
                         f"(n_up={best['n_up']}, dy={best['dy_med']}, h={best['h_med']})", 45.0,
-                        window=(best["radius"], best["z_half"]))
+                        window=(best["lon"], best["lat"], best["z_half"]))
     else:
         for a in axs[1]:
             a.axis("off")
@@ -591,8 +689,8 @@ def make_jobs(pieces, all_rows, episodes, cache, cfg, pre_roll, passby_pre, with
         if not with_passby:
             continue
         path = transport(rows, onset, e["center"], speeds[n])
-        fr, closest = band_frames(path)
-        paths[e["id"]] = (path, fr, closest)
+        fr, closest, mode = band_frames(path)
+        paths[e["id"]] = (path, fr, closest, mode)
         if fr:
             first, lastf = min(q["i"] for q in fr), max(q["i"] for q in fr)
             pass_jobs.append({**base, "onset": first, "lo": max(0, first - passby_pre), "hi": lastf, "eval": fr,
@@ -641,21 +739,23 @@ def cmd_ledger(a):
                        "first_stop": r["stop_first"], "frames_replayed": r["frames"], "wall_s": round(r["wall_s"], 2)}
         if a.no_passby:
             continue
-        path, fr, closest = paths[e["id"]]
-        pb = {"closest_range_m": None if closest is None else round(closest, 1), "frames": []}
+        path, fr, closest, mode = paths[e["id"]]
+        pb = {"closest_range_m": None if closest is None else round(closest, 1), "frames": [], "mode": mode}
         if e["id"] in pas:
             pb["frames"] = pas[e["id"]][0]["passby"]
             cls, agree, why = episode_class(pb["frames"], ClassifierParams())
+            if mode == "nearest":
+                why = [*why, f"beyond_band(closest {pb['closest_range_m']} m)"]
         else:
-            cls, agree, why = ("unreached", 0.0, [f"closest_range_{pb['closest_range_m']}"])
-        pb.update({"class": cls, "agreement": round(agree, 2), "ambiguous": why or any(
-            f["ambiguous"] for f in pb["frames"] if f["class"] == cls) and "frames_ambiguous" in why,
-            "ambiguous_why": why, "traveled_m": round(path[-1]["traveled"], 1),
-            "speed_sources": sorted({q["src"] for q in path})})
+            cls, agree, why = "unreached", 0.0, [f"closest_range_{pb['closest_range_m']}"]
+        pb.update({"class": cls, "agreement": round(agree, 2), "ambiguous": bool(why), "ambiguous_why": why,
+                   "traveled_m": round(path[-1]["traveled"], 1), "speed_sources": sorted({q["src"] for q in path}),
+                   "interp_share": round(float(np.mean([q["src"] in ("interp", "hold", "none") for q in path[1:]]))
+                                         if len(path) > 1 else 0.0, 2)})
         e["passby"] = pb
         if save:
             ps = pas[e["id"]][1] if e["id"] in pas else {}
-            sv = {**r[1], **ps} if False else {**saved, **ps}
+            sv = {**saved, **ps}
             if "onset_xyz" in sv:
                 render_episode(os.path.join(png_dir, e["id"].replace(":", "_") + ".png"), e, sv,
                                {**pb, "path": path} if pb["frames"] else pb)
