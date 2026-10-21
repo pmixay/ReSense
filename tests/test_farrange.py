@@ -247,3 +247,138 @@ def test_two_sides_trust_ends_at_the_shorter_side():
             pts = [_side(lambda X: 0 * X, 1.0, 52, 400, r), _side(lambda X: 0 * X, -1.0, 52, cend, r)]
             far = tr.update(np.concatenate(pts).astype(np.float32), model, 400.0)
         assert far is not None and far.sides == 2 and far.valid <= cend + cfg.axis_margin
+
+
+# 21.10 (farrange.axis_stable, docs/evidence/falcon_far_range_2026-10-21): a sparse second side (a column row every
+# 30 m, two lateral families) confirms the primary wall as a parallel tube; the two-sided support is kept over a
+# short aged history; one side alone gives no far axis. Every curve case must still fail safe.
+
+def _stable_cfg(**kw):
+    return FarRangeConfig(enabled=True, axis_stable=True, **kw)
+
+
+def _columns(fy, s, x0, x1, rng, spacing=30.0, lat=1.9, family=0.25, every=1, phase=0):
+    """A column row: a 0.6 m deep column every ``spacing`` m, alternating +-``family`` m laterally."""
+    pts = []
+    for n, c in enumerate(np.arange(x0, x1, spacing)):
+        if (n + phase) % every:
+            continue
+        X = np.repeat(c + np.array([0.0, 0.3, 0.6]), 4)
+        off = family if n % 2 else -family
+        pts.append(np.stack([X, fy(X) + s * (lat + off) + rng.normal(0, 0.03, X.size),
+                             -1.75 + rng.uniform(1.1, 2.6, X.size)], 1))
+    return np.concatenate(pts) if pts else np.zeros((0, 3))
+
+
+def _err_ok(far, model, truth):
+    X = np.arange(60.0, far.valid + 1.0, 5.0)
+    err = np.abs(far.offset(X, model) - truth(X))
+    return bool(np.all(err <= far.sigma(X) + 0.3) and np.all(err <= 1.05)), float(err.max(initial=0.0))
+
+
+def test_stable_sparse_parallel_row_confirms_the_wall_as_second_side():
+    model = _model()
+    model.axis_valid = 150.0
+    straight = lambda X: 0 * X  # noqa: E731
+    for stable in (False, True):
+        cfg = FarRangeConfig(enabled=True, axis_stable=stable)
+        tr = FarAxisTracker(cfg)
+        for k in range(10):
+            r = np.random.default_rng(k)
+            pts = [_side(straight, 1.0, 52, 400, r), _columns(straight, -1.0, 52.5, 263, r)]
+            far = tr.update(np.concatenate(pts).astype(np.float32), model, 400.0, dt=0.1)
+        if stable:
+            assert far is not None and far.sides == 2 and far.valid >= 235.0, None if far is None else far.to_dict()
+            assert _err_ok(far, model, straight)[0]
+        else:                                                    # 89e0f3b: the row is no second side, one-sided cap
+            assert far is None or far.valid <= 150.0
+
+
+def test_stable_one_side_gives_no_far_axis_unless_declared():
+    model = _model()
+    model.axis_valid = 150.0
+    tr = FarAxisTracker(_stable_cfg())
+    for k in range(10):
+        far = tr.update(_side(lambda X: 0 * X, 1.0, 52, 400, np.random.default_rng(k)).astype(np.float32), model, 400.0, dt=0.1)
+    assert far is None
+    tr = FarAxisTracker(_stable_cfg(declared_straight_to=300.0))
+    for k in range(10):
+        far = tr.update(_side(lambda X: 0 * X, 1.0, 52, 400, np.random.default_rng(k)).astype(np.float32), model, 400.0, dt=0.1)
+    assert far is not None and far.valid > 150.0
+
+
+def test_stable_row_following_a_curve_fails_safe():
+    """The column row follows the track, which curves away from (or towards) a straight wall."""
+    model = _model()
+    for sign in (1.0, -1.0):
+        for xc in (120.0, 160.0, 200.0, 240.0):
+            for radius in (300.0, 600.0, 1000.0, 3000.0):
+                truth = lambda X, xc=xc, radius=radius, sign=sign: -sign * _centre(X, xc, radius)  # noqa: E731
+                tr = FarAxisTracker(_stable_cfg())
+                for k in range(12):
+                    r = np.random.default_rng(k)
+                    pts = [_side(lambda X: 0 * X, 1.0, 52, 400, r), _columns(truth, -1.0, 52.5, 400, r)]
+                    far = tr.update(np.concatenate(pts).astype(np.float32), model, 400.0, dt=0.1)
+                    if far is not None:
+                        ok, e = _err_ok(far, model, truth)
+                        assert ok, (sign, xc, radius, k, far.to_dict(), e)
+
+
+def test_stable_valid_is_steady_when_the_row_is_seen_intermittently():
+    model = _model()
+    tr = FarAxisTracker(_stable_cfg())
+    straight = lambda X: 0 * X  # noqa: E731
+    valids = []
+    for k in range(40):
+        r = np.random.default_rng(k)
+        pts = [_side(straight, 1.0, 52, 400, r)]
+        if k % 2 == 0:                                           # the row in every other frame,
+            x1 = 263 if k % 4 == 0 else 200                      # its far end in every fourth
+            pts.append(_columns(straight, -1.0, 52.5, x1, r))
+        far = tr.update(np.concatenate(pts).astype(np.float32), model, 400.0, dt=0.1)
+        if k >= 10:
+            assert far is not None
+            valids.append(far.valid)
+    assert np.max(np.abs(np.diff(valids))) < 20.0, valids
+
+
+def test_stable_history_never_outruns_an_approaching_curve():
+    """Moving scene at 20 m/s: the curve start approaches 2 m per frame; the row is seen in 2 of 3 frames."""
+    model = _model()
+    for radius in (300.0, 600.0):
+        tr = FarAxisTracker(_stable_cfg())
+        for k in range(100):
+            xc = 300.0 - 2.0 * k
+            truth = lambda X, xc=xc, radius=radius: -_centre(X, xc, radius)  # noqa: E731
+            r = np.random.default_rng(k)
+            pts = [_side(lambda X: 0 * X, 1.0, 52, 400, r)]
+            if k % 3:
+                pts.append(_columns(truth, -1.0, 52.5 - (2.0 * k) % 30.0, 400, r))
+            far = tr.update(np.concatenate(pts).astype(np.float32), model, 400.0, dt=0.1)
+            if far is not None:
+                ok, e = _err_ok(far, model, truth)
+                assert ok, (radius, k, xc, far.to_dict(), e)
+
+
+def test_stable_contradiction_caps_the_history_at_once():
+    model = _model()
+    tr = FarAxisTracker(_stable_cfg())
+    straight = lambda X: 0 * X  # noqa: E731
+    for k in range(10):
+        r = np.random.default_rng(k)
+        far = tr.update(np.concatenate([_side(straight, 1.0, 52, 400, r), _columns(straight, -1.0, 52.5, 263, r)]).astype(np.float32),
+                        model, 400.0, dt=0.1)
+    assert far is not None and far.valid >= 235.0
+    bent = lambda X: np.where(X > 150.0, -1.0, 0.0)  # noqa: E731
+    r = np.random.default_rng(99)
+    far = tr.update(np.concatenate([_side(straight, 1.0, 52, 400, r), _columns(bent, -1.0, 52.5, 263, r)]).astype(np.float32),
+                    model, 400.0, dt=0.1)
+    assert far is None or far.valid <= 160.0, far.to_dict()
+
+
+def test_stable_switch_is_off_by_default_and_enabled_with_the_profile_switch_only():
+    cfg = DetectorConfig.from_yaml(str(ROOT / "configs/default.yaml"))
+    assert cfg.farrange.axis_stable is False or cfg.farrange.with_falcon_profile is True
+    for name in ("manual", "pandar128"):
+        resolved, _ = apply_sensor_profile(cfg, name)
+        assert resolved.farrange.enabled is False
