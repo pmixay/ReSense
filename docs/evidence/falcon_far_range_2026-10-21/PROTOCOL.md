@@ -339,3 +339,25 @@ not merged with structures seen only in the other. Hard rows and reporting as A6
 
 No held-STOP gain, more false episodes: `axis_union_separate` is **off** (class default False) and the final
 detector behaves as A7. The final full replay is compared row by row with the A7 replay to confirm it.
+
+### A9 (21.10, after the review scenes on `73421f6`; in-sample)
+
+`73421f6` (= A7 behaviour; its full replay is row-identical to the A7 replay) on the review's 82 scenes:
+* 0 lost or delayed STOPs; false episodes 141 → 81 (added only in `curve_all_xc150_R300_d+1` +1 and the
+  non-physical `row_offset_+0.8` +2, as the review's F4).
+* GO with the target inside clear: v1.2.0 92, candidate 63 frames. In no scene is the candidate's count above
+  v1.2.0's.
+* Per frame (`scripts/scene_go_frames.py`), **1** frame is the candidate's alone: `row_step_0.45_from150` frame
+  2730. There the far trust grew 142 → 146 → 154 m in three frames, and the reported clear (154.0 m) ran 0.26 m
+  past the person at 153.7 m before the detector had a frame to see them.
+* The other 62 are v1.2.0's own frames (near-model false clear where the far axis does not form: curves,
+  turnouts, the scrolled moving scenes). The Falcon clear-distance model is another lane's; I report them.
+
+Change (`farrange.axis_report_lag_frames` = 3): the reported monitored / clear range covers the far line's
+stretch only as far as it has been trusted in each of the last 3 frames (a frame without a far line counts as
+no far trust; the near model's own range is not lagged, as v1.2.0). Detection and trust are unchanged.
+Re-measured on the final commit: everything in A6's list.
+
+**H1 as written** ("0 on the review's scenes") cannot pass by this lane's change alone: the 62 inherited v1.2.0
+frames remain. It is reported per frame. The criterion this lane can meet, and reports as H1':
+no GO-with-target-inside-clear frame that v1.2.0 does not also have.
