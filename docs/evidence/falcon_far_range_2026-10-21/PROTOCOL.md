@@ -196,3 +196,29 @@ frames agree** (the second-lowest aged one), the same rule as for supports. A va
 current-frame cap was rejected because it failed the registered acceptance test
 `test_stable_contradiction_caps_the_history_at_once`. Unit tests 19/19, negative controls 92/92 required
 fail-safe after the change.
+
+### A4 (21.10, priority change from the user via the captain; before the measurements it governs)
+
+Registered after the `52d2447` replay (A3 rows: 3 STOP episodes, 0 false, CAUTION 0.200, first STOP on the main
+person 127.07 m = v1.2.0) and before: the doubt-model runs, any further design change, the candidate matrix,
+the walk-control comparison of the final design, the node check, X3 and the gate.
+
+1. **Distance first.** False-alarm rows may regress within a bound: the STOP episodes added over the whole
+   Falcon recording + the ride + the five empty Pandar recordings together ≤ +25 % of v1.2.0 (8 + 26 + 11 = 45,
+   so ≤ +11). CAUTION share may rise. Every added false episode is listed with frames, traced cause and a
+   picture. Criteria 1, 2, 4, 5 and the outside rows of 9 and 10 become this bound.
+2. **Still hard:** no positive object (Falcon main / far person, injected targets, set O, labelled
+   recordings, X3 positives) loses its STOP; a first STOP may come later than v1.2.0 by at most max(5 m, 5 %)
+   and only on objects listed; the net change over the registered objects must be a gain. Criteria 3, 7, 8,
+   the in-gauge rows of 9, and 11 (no trust across an unseen curve) are unchanged. `declared_straight_to`
+   stays a separately reported conditional variant.
+3. **Gate:** first without `--allow` (failures reported), then with `--allow` covering exactly the
+   false-alarm rows inside the bound (listed).
+4. **Switch on** in the final commit if the range gain and the hard rows pass and the false alarms stay
+   inside the bound.
+5. **Learned track opinion** (`tracking.doubt_model`, Pandar-trained, not profile-gated): measured on the
+   Falcon for `base` and `cand` with `tracking.doubt_model=""` against the default: delay of the main person's
+   first STOP (frames, m) and of the injected targets' first STOP, with the withheld tracks traced. If it costs
+   range on the Falcon, a Falcon-profile-only change (doubt off under `with_falcon_profile`) is in scope; Pandar
+   unchanged.
+6. **Timing** is not a criterion; per-frame time p50 / p95 (same machine, baseline vs candidate) is reported.
