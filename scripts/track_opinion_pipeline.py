@@ -72,9 +72,9 @@ def positive_sets():
         ("p13_standing", ["--inject", kinds, "--files", j(st), "--start", "30:180", "--seed", "12",
                           "--piece-tag", "_st"]),
         ("p13_toward", ["--inject", "person,hivis,trolley,dog", "--files", j(mv), "--start", "120:240",
-                        "--move", "0.5:3.0", "--seed", "13", "--piece-tag", "_tw"]),
+                        "--move=0.5:3.0", "--seed", "13", "--piece-tag", "_tw"]),
         ("p13_away", ["--inject", "person,trolley,box1.0", "--files", j(st), "--start", "35:120",
-                      "--move", "-2.0:-0.5", "--seed", "14", "--piece-tag", "_aw"]),
+                      "--move=-2.0:-0.5", "--seed", "14", "--piece-tag", "_aw"]),
         ("p13_cross", ["--inject", "person,hivis,dog", "--files", j(mv2), "--start", "40:160", "--cross", "1.2",
                        "--seed", "15", "--piece-tag", "_cx"]),
     ]
