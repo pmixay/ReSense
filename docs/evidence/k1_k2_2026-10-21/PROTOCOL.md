@@ -139,3 +139,42 @@ The rows, tools and thresholds of §3–§5 are unchanged and are measured again
 (new evaluation tree from `make_cand.sh`). Dev checks of `eb8b7aa` before this revision, on the six Pandar decoded
 recordings only: 0 changed decisions or detections against control on all six; B / C person 71.19 / 94.58 m first,
 C held 104.98 m; `S_person_100` 255/260.
+
+## 8. Revision 2 (21.10, after measuring every §3 row on `eb8b7aa`; before any measurement of `cc703d1`)
+
+**Measured on revision 1 `eb8b7aa` (raw outputs under `runs/r1/`):**
+
+| row | result |
+|---|---|
+| ID | gate 15,269 rows 0 different (set F equal; 7 latency-only health rows), Falcon 4,443 and marked bags 1,667 rows 0 different: **PASS** |
+| G-1 | **FAIL**: exit 1, `ride.alarm_events` 27 → 31, `ride.stop_episodes` 30 → 35 (every other gated row equal to control) |
+| G-1b | **FAIL**: 0 control STOP frames lost on any recording; new STOP frames only on the ride (pieces 2, 3, 4, 5: 32 frames); none on set O, the six recordings or set F |
+| G-1c / G-1d | PASS (`small_center` and `doubleT_platform` frame for frame equal to control) |
+| G-2 | PASS: 0 of 260 comparisons failing; per frame 0 STOP frames lost or gained in all 40 cases |
+| F-1 | PASS: 0 of 1,360 lost; first person STOP 2958 at 126.36 m (control 2972, 124.84 m); 33 new STOP frames, all at the person |
+| M-1 | PASS: tunnels 19 29 → 29; platform 23 38 → 41 (first 86.76 → 90.54 m); every new STOP frame on a marked object |
+| K1-150 / K1-100 / R-1 / K2-G | PASS (at control's placement 0 lost frames in all 37 jobs; `S_person_150` 90 → 90; `S_person_100` 82 → 255 own / 248 at control's placement; B person first 51.8 → 71.19 m; C person 82.77 / 91.63 → 94.58 / 104.98 m; B6 `roundT_doubleT` 80–100 m p50 1.78 → 0.534 m) |
+
+**Traced cause of G-1** (`scripts/gate_pairs.py` on the two gate work directories; `scripts/ride_piece.py` /
+`scripts/ride_topview.py` replays of ride piece 2 with the curve model and the clusters added; pictures
+`ride2_1062.png`, `ride2_1297.png`, `ride2_1317.png`): (a) in open sections the joint fit follows a diagonal low
+structure while a column row still runs parallel to the base axis (frame 1317: the column row at +1.3 m straight to
+140 m, the curve bent 2.5 m right at 100 m); the second gauge then admits low trackside clusters; (b) the curve's
+clustering re-judged objects that the base gauge had already seen inside its strict envelope and demoted (`doubt`,
+`beyond_height_ref`; frames 1062–1072 at 102–124 m, piece 5 frames 310–314), and a track once matched to a curve
+cluster lost the sticky opinion rule.
+
+**Revision 2 = commit `cc703d1`** (`resense/track.py`, `resense/detector.py`; 2 new tests). Two restrictions, no new
+parameter; each only removes additions of revision 1, so the base gauge's own detections stay untouched:
+1. `curve.curve_from` = the farthest X to which a tunnel boundary still follows the **base** axis
+   (`_followed_reach` along the base model); the curve gauge adds nothing nearer than that (the base is not
+   contradicted there);
+2. an object with any return inside the base strict envelope within the base trusted range (`valid` of the base
+   corridor) was judged by the base gauge: its verdict stands and the curve does not add it.
+
+Dev checks before this revision (six Pandar decoded recordings only): 0 changed decisions or detections on all six;
+B / C person 71.19 / 94.58 m first, C held 104.98 m, `S_person_100` 255/260 (as revision 1). The ride diagnosis replay
+of piece 2 (the frames listed above) was made with the draft of rule 1 only, to see the mechanism; the full gate of
+revision 2 is the measurement. Rows, tools and thresholds of §3–§5 are unchanged; every row is measured again on
+`cc703d1` + the four YAML values, except that the B6 rows are re-measured only if the published model differs from
+revision 1's (revision 2 does not change it; checked per frame on the B6 track outputs before reuse).
