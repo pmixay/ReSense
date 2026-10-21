@@ -164,3 +164,67 @@ def test_union_missing_bed_fit_adds_nothing_and_keeps_the_base_hold():
     assert _same(a, b) and _same(a, off[-1]) and b.curve is None       # the hold is the base estimator's own
     c = estimate_track(xyz, TrackConfig(**UNION), prev=b)
     assert c.curve is not None
+
+
+def test_union_curve_seen_track_is_released_when_the_opinion_rises(tmp_path):
+    """Revision 1 (marked platform object 23, frames 106-112): a track that matched a cluster of the curve gauge is
+    asked again every withheld frame, so an earlier doubtful onset cannot withhold it past the frame where the
+    opinion rises; the same track without a curve cluster keeps the sticky rule (positive control)."""
+    from resense.config import TrackingConfig
+    from resense.tracking import Tracker
+    from tests.test_track_opinion import _cl, _stump
+    m = _stump(tmp_path, "rise.json", 75.5, 5.0, -5.0)          # p low beyond 75.5 m, high within
+    kw = dict(doubt_model=m, doubt_extra_hits=6, doubt_near=30.0, doubt_sticky=True)
+
+    def run(curve):
+        tr, out = Tracker(TrackingConfig(**kw)), []
+        for k in range(14):
+            c = _cl(80.0 - k)
+            if curve:
+                c.curve = True
+            tr.update([c], ego_shift=1.0, frame_dt=0.1)
+            t = [t for t in tr.tracks if t.id == 1][0]
+            out.append((t.reported, t.zone))
+        return out
+    sticky, loose = run(False), run(True)
+    first = next(i for i, (r, z) in enumerate(loose) if r)
+    first = next(i for i in range(first, 14) if sticky[i][0] and sticky[i][1] == "warning")
+    assert sticky[first + 1] == (True, "warning")                      # sticky: still withheld
+    assert loose[first] == (True, "warning") and loose[first + 1] == (True, "gauge")
+
+
+def test_union_added_cluster_keeps_the_base_observation_and_lateral():
+    """Revision 1: an added curve obstacle that replaces a base advisory cluster carries that cluster's lateral and
+    opinion record; one that replaces nothing carries its own record with the base lateral of its points."""
+    from resense.opinion import observation
+    from tests.test_k1_k2_axis import _cluster
+    cfg = DetectorConfig()
+    det = Detector(replace(cfg, track=replace(cfg.track, **UNION)))
+    adv = _cluster(90.0, 90.5, 1.0, 1.5, "warning", "beyond_axis")
+    adv.lateral = 1.25
+    lone = _cluster(120.0, 120.5, 0.0, 0.5)
+    lone.points_idx = np.array([0, 1, -1])
+    curve = [_cluster(90.0, 90.5, 1.0, 1.5), lone]
+    curve[0].lateral = 0.4
+    det.track = TrackModel(floor_coef=np.array([0.0, 0.0, -1.5]), floor_range=(4.0, 100.0), center=0.0, yaw=0.0,
+                           curvature=0.0, curve=TrackModel(floor_coef=np.array([0.0, 0.0, -1.5]),
+                                                           floor_range=(4.0, 100.0), center=0.0, yaw=0.0,
+                                                           curvature=2e-4, axis_valid=150.0))
+    det._dy_rail = np.array([1.9, 2.1, 0.0])
+    det._corridor = lambda xyz, inten: (np.zeros(1), None, None, None, (150.0, 150.0, 100.0))
+    det._cluster = lambda *a, **k: curve
+    out = det._curve_clusters(np.zeros((3, 3), np.float32), np.zeros(3, np.float32), [adv])
+    assert out[0] is curve[0] and out[0].lateral == 1.25 and out[0].obs_as == observation(adv) and out[0].curve
+    assert out[1] is lone and abs(lone.lateral - 2.0) < 1e-9 and lone.obs_as[1] == lone.lateral
+
+
+def test_union_overlap_is_tested_in_the_vehicle_frame():
+    """Revision 1: the laterals of the two gauges are measured from different axes (1.8 m apart at 60 m on the
+    roundT_doubleT curve); the same box with laterals 0.0 (base) and 1.8 (curve) is one object, not two."""
+    from tests.test_k1_k2_axis import _cluster
+    from resense.detector import _overlap, _overlap_xy
+    a, b = _cluster(60.0, 60.5, -0.3, 0.3), _cluster(60.0, 60.5, -0.3, 0.3)
+    a.lateral, b.lateral = 0.0, 1.8
+    assert _overlap_xy(a, b) and not _overlap(a, b)                   # positive control: the lateral test misses it
+    c = _cluster(60.0, 60.5, 1.0, 1.6)
+    assert not _overlap_xy(a, c)

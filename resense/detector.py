@@ -24,6 +24,7 @@ from resense.gauge import (has_edge_margin, axis_union_coordinates, axis_union_o
 from resense.health import HealthMonitor
 from resense.lowobj import (BedTemplate, low_candidates, low_free_mask, mark_rail_line, no_rail_advisory,
                             rail_reference_check)
+from resense.opinion import observation
 from resense.track import TrackModel, estimate_track, rotate_track_model
 from resense.tracking import Tracker
 
@@ -32,6 +33,13 @@ def _overlap(a: Cluster, b: Cluster, margin: float = 0.3) -> bool:
     """Two clusters of the same object: their along-track extents and lateral widths overlap."""
     return (b.bbox_min[0] - margin < a.bbox_max[0] and b.bbox_max[0] + margin > a.bbox_min[0]
             and abs(b.lateral - a.lateral) < 0.5 * float(a.size[1] + b.size[1]) + margin)
+
+
+def _overlap_xy(a: Cluster, b: Cluster, margin: float = 0.3) -> bool:
+    """21.10 (K2 union): :func:`_overlap` in the vehicle frame (the boxes' X and Y extents), for clusters whose
+    laterals are measured from different axes."""
+    return (b.bbox_min[0] - margin < a.bbox_max[0] and b.bbox_max[0] + margin > a.bbox_min[0]
+            and b.bbox_min[1] - margin < a.bbox_max[1] and b.bbox_max[1] + margin > a.bbox_min[1])
 
 
 @dataclass
@@ -889,11 +897,26 @@ class Detector:
              self._near_low) = saved
         obstacles = [c for c in clusters if c.zone == "gauge" and not c.reason]
         add = [k for k in extra if k.zone == "gauge" and not k.reason
-               and not any(_overlap(k, c) for c in obstacles)]
+               and not any(_overlap_xy(k, c) for c in obstacles)]
         self._curve_added, self._curve_seen = len(add), extra      # read by evidence traces only
         if not add:
             return clusters
-        keep = [c for c in clusters if not any(_overlap(c, k) for k in add)]
+        dy_base = saved[2]
+        for k in add:
+            # the tracker's record (track opinion) and the reported lateral stay in the base coordinates, as the
+            # base advisory cluster it replaces would have given them (a curve lateral mixed into a track's history
+            # reads as a lateral jump to the opinion: marked platform object 23 was withheld 7 frames, revision 1)
+            over = [c for c in clusters if _overlap_xy(c, k)]
+            if over:
+                b = min(over, key=lambda c: float(np.linalg.norm(c.centroid - k.centroid)))
+                k.lateral, k.obs_as = b.lateral, observation(b)
+            else:
+                own = k.points_idx[k.points_idx >= 0]
+                if dy_base is not None and own.size:
+                    k.lateral = float(np.mean(dy_base[own]))
+                k.obs_as = observation(k)
+            k.curve = True
+        keep = [c for c in clusters if not any(_overlap_xy(c, k) for k in add)]
         return sorted(keep + add, key=lambda c: c.distance)
 
     def _far_both_sides(self, clusters: List[Cluster], valid: float, floor_valid: float) -> float:
