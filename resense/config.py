@@ -739,6 +739,8 @@ class FarRangeConfig:
     axis_frame_dt: float = 0.1         # s, elapsed time per frame when the caller gives none
     axis_union_beyond: bool = True     # 21.10 (A6, review F1): beyond the far line's trusted end, up to the near model's trusted range, the
                                        # corridor is the union of the near model's and the continued far line's laterals (axis_stable only)
+    axis_report_tolerance: float = 1.05  # m (A7, review F1): beyond far.valid the reported monitored / clear range ends where the near
+                                       # model's corridor centre is farther than this from the continued far line (0 = off)
     axis_max_boundary_lateral: float = 2.5  # m (A6, C3): a side whose boundary stands farther from the axis confirms nothing (two-track box,
                                        # cavern: a turnout or crossover can curve away between wide boundaries); 0 = off
     axis_turnout_radius: float = 200.0  # m (A6, C3): a gap of sqrt(2 R (d + axis_vehicle_half)) in a confirming side ends it there (a

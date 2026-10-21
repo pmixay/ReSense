@@ -206,6 +206,7 @@ class Detector:
         self.far = FarAxisTracker(fr) if fr.enabled and fr.axis_enabled else None
         self._far_axis = None
         self._union_shift = None        # 21.10 (farrange.axis_union_beyond): this frame's lateral shift of the points the union took
+        self._far_report_cap: Optional[float] = None    # 21.10 (A7): where the reported range ends beyond the far line
         self.far_confirm = FarConfirm(fr) if fr.enabled and fr.confirm_enabled else None
         self.dust_guard = DustGuard(self.cfg.dust) if self.cfg.dust.enabled else None  # 19.10 N3, off by default
 
@@ -420,6 +421,8 @@ class Detector:
         t6 = time.perf_counter()
         mount = self.calib.state.to_dict()
         drift = self.track.wall_drift
+        if self._far_report_cap is not None:
+            drift = min(drift, self._far_report_cap)      # 21.10 (A7): see _corridor
         health = self.health.update(xyz, frame.meta, self.track, cfg.gauge, valid, cfg.track.rails_min_score,
                                     previous_latency_ms, mount, gauge[0].distance if gauge else None, cap,
                                     wall_drift=drift if drift < 1e9 else None)
@@ -556,6 +559,18 @@ class Detector:
             dy_all = dy_all - far.offset(xyz[:, 0], self.track)
         self._dy_rail = dy_all
         self._union_shift = None
+        self._far_report_cap = None
+        if far is not None and cfg.farrange.axis_stable and cfg.farrange.axis_report_tolerance > 0:
+            # 21.10 (A7, review F1): beyond the far line's trusted end the near model's corridor is not where the
+            # track is once its centre leaves the continued far line by more than the tolerance: the reported
+            # monitored / clear range ends there (as health's wall_drift cap); detection is unchanged
+            top = max(min(self.track.axis_valid, cfg.gauge.range_max), far.valid)
+            if top > far.valid:
+                Xg = np.arange(far.valid, top + 1e-6, 1.0)
+                off = np.abs(far.line_offset(Xg, self.track))
+                bad = np.flatnonzero(off > cfg.farrange.axis_report_tolerance)
+                if bad.size:
+                    self._far_report_cap = float(Xg[bad[0]])
         if far is not None and cfg.farrange.axis_stable and cfg.farrange.axis_union_beyond:
             # 21.10 (farrange.axis_union_beyond, review F1): between the far line's trusted end and the near model's
             # own trusted range the corridor is the union of both hypotheses, the near model's lateral (v1.2.0's

@@ -203,6 +203,9 @@ def test_buffer_cleared_when_far_axis_switches(monkeypatch):
         def offset(self, X, model):
             return np.zeros(np.shape(X))
 
+        def line_offset(self, X, model):               # 21.10 (A6 / A7): the continued line
+            return np.zeros(np.shape(X))
+
         def sigma(self, X):
             return np.zeros(np.shape(X))
 

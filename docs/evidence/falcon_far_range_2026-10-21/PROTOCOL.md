@@ -291,3 +291,22 @@ start frame. A first STOP that is a short blip is called one. Goal: improve the 
 
 If H1–H5 pass, the switches stay on (`axis_union_beyond` on with them); otherwise the failing rows are reported
 and the switch state is decided by the A4 rule.
+
+### A7 (21.10, after the first A6 replay at `884b572`; the cap A6 §1 anticipated)
+
+`884b572`, whole recording (`a6_cand`):
+* GO with the person inside clear and monitored: 30 → **6** frames (person at 150.9–162.3 m).
+* STOP episodes 13, all with the person (0 without one); first person STOP 150.5 m; held STOP 129.4 m.
+
+Traced at frame 2660 from frame 0 (`scripts/trace_person.py`): the union works. The person's 17 points get
+the far-line lateral (≈ 0) and are all strict-gauge candidates. But the near-model hypothesis of the same
+stretch places the left wall (152–162 m) inside the corridor, because the near model is 2.3–3.0 m off there.
+The person merges with it into one 10 m blob (x 152.7–162.7, y −0.54…2.41), which the shape rules drop. v1.2.0
+has the same wall-in-corridor; it never sees the person there.
+
+Change (the reviewer's cap, A6 §1), `farrange.axis_report_tolerance` = 1.05 m (the strict-gauge half-width):
+beyond `far.valid`, the reported monitored and clear range ends at the first X where the near model's corridor
+centre is farther than that from the continued far line. Through the existing `wall_drift` cap of
+`health.update`: "the corridor beyond is not where the track is". Detection, trust and clustering are
+unchanged, so no STOP can be lost by it. The union stays (it adds person detections where they do not merge).
+Hard rows and reporting as A6.
