@@ -155,12 +155,15 @@ which is physically impossible for R ≥ 200 m under the stated envelope, and a 
     identical on both);
   * the 9 extra passes are this branch's tests.
 * **X3: NOT re-run on `c431b2e`.** Its decoded caches need three of the six bags, and Google Drive answered "Quota
-  exceeded" for the archive (twice, 22:39–22:40 UTC); the Yandex set O cache was rebuilt. What stands instead:
+  exceeded" for the archive (21.10 22:39 and 22:40 UTC, 22.10 00:12 and 03:14 UTC); the Yandex set O cache was
+  rebuilt. What stands instead:
   * X3 on `0eb4dda` PASSED with all 40 recording × variant metrics identical to a fresh v1.2.0 reference.
   * Every detector change since `0eb4dda` is inside `farline.py` or guarded by `self.far is not None` /
     `farrange.axis_stable` (the Falcon profiles only).
   * The full gate above shows the Pandar rows unchanged.
-  * **X3 on the final commit is unverified.** See the update at the end if the retry succeeded.
+  * **X3 on the final commit is unverified.** To run it once Drive serves the archive: decode the three bags with
+    `docs/evidence/judgement_2026-10-13/scripts/cache_decoded.py`, then `scripts/robustness_battery.py --repo <v1.2.0 checkout>
+    --cache /data/decoded --out ref.json -j 2` and `--repo <c431b2e checkout> ... --reference ref.json`.
 
 ## Revision 1 (`0eb4dda`, reviewed; kept as history)
 
