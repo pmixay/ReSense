@@ -22,7 +22,7 @@
 
 Total per frame, mean / p95 / max, all from `bench_v063.txt`: `roundT_doubleT` 50.2 / 63.4 / 76.1 ms;
 `doubleT_obstacle` (360 degrees) 63.6 / 77.8 / 119.2 ms; `doubleT_platform` 53.7 / 75.2 / 115.1 ms. Every one
-of the seven blocks has a p95 total between 52.8 and 77.8 ms. The log table (around line 2780) copies these
+of the seven blocks has a p95 total between 52.8 and 77.8 ms. The log table (around line 2790) copies these
 values, checked for all seven rows.
 
 ## 3. Supports
