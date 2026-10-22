@@ -13,7 +13,7 @@ while :; do
       if [ "$n" -eq "$want" ] && ! head -c 15 "$OUT.part" | grep -q "<!DOCTYPE"; then cat "$OUT.part" >> "$OUT"; break; fi
       echo "bad chunk at $have: $n bytes"
     fi
-    sleep 180
+    sleep 20
   done
   [ "$(stat -c %s "$OUT")" -eq "$have" ] && { echo "FAILED at $have"; exit 1; }
   echo "$(date -u +%T) $(stat -c %s "$OUT")"

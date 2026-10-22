@@ -12,10 +12,10 @@ fi
 sha256sum /data/markers.zst | tee $O/markers_zst.sha256
 for b in tunnels platform switch; do
   bag=synthetic_${b}_cloud_with_markers
-  [ -s $O/comb_$b.jsonl ] && continue
+  [ -s $O/${LAST:-comb}_$b.jsonl ] && continue
   python /home/user/ReSense/scripts/unpack_dataset.py /data/markers.zst --out /data/mbags --only $bag
   bd=$(find /data/mbags -maxdepth 3 -type d -name $bag | head -1); echo "bag dir $bd"; du -sh $bd
-  for t in ctl:/home/user/wt/base k2:/home/user/wt/k2 preg2:/home/user/wt/preg2 comb:/home/user/wt/comb; do
+  for t in ${TREES:-ctl:/home/user/wt/base k2:/home/user/wt/k2 preg2:/home/user/wt/preg2 comb:/home/user/wt/comb}; do
     n=${t%%:*}; r=${t#*:}
     (cd $r; RESENSE_REPO=$r PYTHONPATH=$r:$r/ros2_ws/src/resense_ros python $S/judge_runner_set.py --bag $bd --out $O/${n}_$b > $O/${n}_$b.log 2>&1; echo "exit $?" >> $O/${n}_$b.log) &
   done
