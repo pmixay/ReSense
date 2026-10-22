@@ -1,6 +1,6 @@
 # ReSense working and live-preview workflow
 
-The repository is deployed from the `ui-improvement` checkout on this server.
+The repository is deployed from the checkout on this server (the former `ui-improvement` branch was merged by PR #47 on 20.10 and no longer exists).
 
 ## Interface scope
 

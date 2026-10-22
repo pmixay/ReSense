@@ -1,6 +1,6 @@
 # Role 2 — publication on 20 October 2026
 
-**Live URL:** https://resense.amdm.life/
+**Live URL:** resense.amdm.life (22.10: that host now serves another app; the preview is https://resense.arbuz.lol)
 
 The user requested “push and publish everything”, then supplied
 `resense.amdm.life` as the target. It resolves to this server (`5.83.140.123`).
