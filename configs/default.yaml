@@ -93,7 +93,7 @@ resense:
     floor_verify_tolerance: 0.5    # m, allowed deviation of the far side base from its near-range height
     floor_verify_min_points: 5     # side points per bin for the bin to count
     floor_verify_max_range: 250.0  # m, how far the verification is attempted
-    axis_joint_fit: true          # (K2 held off for P4, captain 19.10; variant B: true / range false / min_curvature 0.0001 / reach_cap true) 19.10 (K2, off): joint least-squares axis of the near rail-pair midpoints and every tunnel-boundary segment (track.joint_axis_fit): tangent, curvature and a curvature step at axis_joint_knot from one fit, grown outward; off = as before
+    axis_joint_fit: true          # 1.3 (user 21.10): on, with axis_joint_range false / min_curvature 0.0001 / union true (K2 union r3); 19.10 (K2): joint least-squares axis of the near rail-pair midpoints and every tunnel-boundary segment (track.joint_axis_fit): tangent, curvature and a curvature step at axis_joint_knot from one fit, grown outward; off = as before
     axis_joint_knot: 60.0          # 19.10: m, X from which the curvature may change (C1 piecewise axis); 0 = a single quadratic
     axis_joint_step_sigma: 0.001   # 19.10: 1/m, prior SD of that curvature step
     axis_joint_min_far_bins: 4     # 19.10: boundary bins beyond the knot needed to fit a step
@@ -107,7 +107,7 @@ resense:
     axis_joint_min_curvature: 0.0001  # 19.10 (v5, off; 1/m; with axis_joint_fit and axis_joint_range false): > 0 = the estimator without the joint fit runs on its own state and is the output; the joint fit's shape replaces its axis shape only on frames with |curvature| >= this (a curve as it sees it); 0 = off (v4)
     axis_joint_reach_cap: false    # 19.10 (v5b, off; needs axis_joint_min_curvature > 0): on the frames with the joint shape, the trusted range also capped at the boundaries' reach along that axis + axis_valid_margin
     axis_joint_reach_dual: 0.0     # 20.10 (v5c, off; m; needs axis_joint_reach_cap): extends the capped range by this much (not beyond the base range); an obstacle starting between the cap and that end must also reach into the gauge from the base axis, else advisory as in v5b; 0 = off (v5b)
-    axis_joint_union: true        # 21.10 (K2 union, off; with axis_joint_fit true / axis_joint_range false / axis_joint_min_curvature > 0): the track model stays the estimate without the joint fit; on a curve frame the joint shape, trusted as far as a boundary follows it, is a second gauge that only adds obstacles (Detector._curve_clusters)
+    axis_joint_union: true        # 21.10 (K2 union, on since 1.3; with axis_joint_fit true / axis_joint_range false / axis_joint_min_curvature > 0): the track model stays the estimate without the joint fit; on a curve frame the joint shape, trusted as far as a boundary follows it, is a second gauge that only adds obstacles (Detector._curve_clusters)
     walls_smoothing_distance: 0.0  # 19.10 (K1, off): m; > 0: the axis EMA exponent and rate limits per distance travelled (travel / this, at least walls_smoothing_min_k, at most the frame periods); unknown speed as before
     walls_smoothing_min_k: 0.05    # 19.10 (K1): lower bound of that exponent
     walls_smoothing_standstill_speed: 1.0  # 19.10 (K1): m/s; no speed estimate and a texture profile without any change count as standing while the last confident estimate is at most this
