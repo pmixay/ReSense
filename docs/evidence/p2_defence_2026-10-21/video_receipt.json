@@ -1,0 +1,26 @@
+{
+  "file": "docs/video/p2_defence_2026-10-21.mp4",
+  "sha256": "e5f219f35d3f1314984e703c03b730fe9b3280a90e3ba7b703f9724d32a2ae28",
+  "bytes": 36432210,
+  "duration_s": 105.666667,
+  "size": [
+    1920,
+    1080
+  ],
+  "fps": "15/1",
+  "full_decode": "PASS (ffmpeg -xerror)",
+  "parts": [
+    {
+      "name": "Pandar",
+      "start_s": 0,
+      "source_duration_s": 48.4
+    },
+    {
+      "name": "Falcon",
+      "start_s": 48.4,
+      "source_duration_s": 57.266667
+    }
+  ],
+  "editing": "concatenate two uninterrupted separate runs; reencode H.264 CRF22 medium; no audio",
+  "rehearsal": false
+}

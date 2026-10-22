@@ -1,0 +1,7 @@
+# Local capture tools layered over the named current-source runtime.
+# Detector/configuration/native/ROS source bytes are inherited unchanged.
+FROM resense:p2-1.2.0-31154690
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    xvfb xauth xterm openbox xdotool ffmpeg fonts-dejavu-core \
+    && rm -rf /var/lib/apt/lists/*
+WORKDIR /
