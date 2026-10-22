@@ -16,9 +16,9 @@ base() { local tag=$1 repo=$2; mkdir -p $O/cache_$tag $O/$tag
 job() { local tag=$1 repo=$2 name=$3; set -- ${ARGS[$name]}; local bag=$1; shift
   (cd $repo; RESENSE_REPO=$repo PYTHONPATH=$repo:$repo/ros2_ws/src/resense_ros python $T/range_test.py $O/cache_$tag/$bag \
     /data/x1/icp/icp_$bag.json $O/$tag/$name "$@" > $O/$tag/$name.log 2>&1; echo "$tag $name exit $?"); }
-base ctl /home/user/wt/ctl & base fin /home/user/wt/fin & wait
-mkdir -p $O/cache_ctlatfin; cp $O/cache_fin/*_baseline.json $O/cache_ctlatfin/
+[ -n "${ONLY_TAG:-}" ] || { base ctl /home/user/wt/ctl & base fin /home/user/wt/fin & wait; }
+mkdir -p $O/cache_ctlatfin $O/ctlatfin; cp $O/cache_fin/*_baseline.json $O/cache_ctlatfin/
 for b in $B $C; do [ -e $O/cache_ctlatfin/$b ] || ln -s /data/decoded/$b $O/cache_ctlatfin/$b; done
-for n in "${!ARGS[@]}"; do for t in ctl:/home/user/wt/ctl fin:/home/user/wt/fin ctlatfin:/home/user/wt/ctl; do echo "${t%%:*} ${t#*:} $n"; done; done \
+for n in "${!ARGS[@]}"; do for t in ctl:/home/user/wt/ctl fin:/home/user/wt/fin ctlatfin:/home/user/wt/ctl; do [ -n "${ONLY_TAG:-}" ] && [ "${t%%:*}" != "$ONLY_TAG" ] && continue; echo "${t%%:*} ${t#*:} $n"; done; done \
   | xargs -P ${JOBS:-3} -L 1 bash -c "$(declare -f job); $(declare -p ARGS O T B C); job \$0 \$1 \$2"
 echo RANGE_DONE

@@ -21,7 +21,9 @@ claims, and every comparator I used found its positive control:
 
 * **No true STOP lost or delayed** anywhere I looked: the full regression gate's 15,269 Pandar rows (six recordings,
   set O, the ride), X3 (40 cases, 29,765 frames: 0 decision changes at all), the whole Falcon recording on both paths,
-  the 6-start Falcon table, the three marked bags. *(K2 range jobs: §2, row "K2 range sample".)*
+  the 6-start Falcon table, the three marked bags, and a sample of 6 K2 range jobs (B, C × person / cube 0.5 / cube 1)
+  at the same object placement (0 frames lost, first STOP B person 46.49 → 71.19 m, C person 76.89 → 94.58 m). The
+  accepted D_cube05 delay was not re-run (D jobs not in my sample).
 * **Range gain is real and on the person:** `falcon_ros` first person STOP 127.3 → 150.5 m, held STOP 123.0 → 129.4 m
   (114.4–123.0 → 129.4–135.6 m over 6 starts); manual path 124.9 → 126.4 m.
 * **False alarms inside the bound:** ride +3 false episodes (all K2, piece 2), five empty +0, Falcon false episodes
@@ -43,7 +45,8 @@ Conditions (none is a lost STOP; each is a decision or a statement that must be 
    every Falcon `falcon_ros` frame** (median 102 → 48.2 m), so none of the far-range lane's 130–150 m gain is visible in
    the published clear distance. The `falcon_prime` small-target prior that produces the 48.2 m was **not part of the
    approved 17.10 C2 profile** (its README: "Falcon Prime and unknown profiles return `monitored_small: null`"; the
-   19.10 Falcon raster changed that). The decision is not in `docs/DECISIONS.md` (rows 50–57 on
+   Falcon raster entered the prior on 19.10, `0acb18c` / PR #42; v1.2.0 computes the same 48.2 m, but only behind the
+   opt-in policy). The decision is not in `docs/DECISIONS.md` (rows 50–57 on
    `claude/p1-work-list-verification-o1hdlh`). The integration README §4 reports the `unknown` → 0 part; the Falcon
    48.2 m cap is not called out there. If the user wants it as is, record it; the alternative is `legacy` as default or
    `conservative` only with an explicit sensor model.
@@ -89,7 +92,7 @@ and by measurement and are clean.
 | Marked bags other decisions | — | tunnels 3 frames GO → CAUTION, nothing else | tunnels 191–193 | yes |
 | Node, decisions under `conservative` vs `legacy` | — | 0 changed (Falcon 2 × 4,443, marked bags 3 × 2 models) | 0 | yes |
 | Node, clear under `conservative` | — | never raised; manual/unknown → 0 on every frame; `falcon_ros` ≤ 48.2 m; pandar128 ≤ 88.7 m | 0 raised; unknown → 0 | yes; Falcon cap not stated (N1) |
-| K2 range sample (B, C × person / cube05 / cube1) | see §4.4 | see §4.4 | 0 frames lost at the final tree's placement | see §4.4 |
+| K2 range sample at the same placement (B, C × person / cube05 / cube1), first STOP X | B 46.49 / 50.03 / 53.57; C 76.89 / 75.42 / 81.3 m | **B 71.19 / 71.19 / 72.94; C 94.58 / 90.15 / 84.25 m; 0 frames lost in 6 jobs** | B person 46.49 → 71.19, C person 76.89 → 94.58, B cube05 50.03 → 71.19, C cube05 75.42 → 90.15; 0 lost | yes |
 
 **6-start table** (`out/falcon/starts_table.txt`; first / held person STOP in m, STOP episodes (false), GO with the
 person inside clear):
@@ -184,12 +187,29 @@ streams; marked bags `04d176b4…8682760`.
   1317–1318 (`out/ride_k2off.txt`). The +3 ride episodes are K2's and nothing else's.
 
 ### 4.4 K2 range sample
-*(see `out/range_sample.txt`)*
+`scripts/range_prep.sh` (B, C decoded from the zip; ICP odometry computed here with the K1/K2 tools on v1.2.0) and
+`scripts/range_sample.sh` (the judge's `range_test.py` of `k1_k2_gauge_2026-10-19/tools`, job arguments as
+`prebuild_range.py`); `scripts/range_cmp.py` per frame → `out/range_sample.txt`.
+
+| job | v1.2.0 at 1.3.0's placement: STOP frames, first / held X | 1.3.0: STOP frames, first / held X | lost | v1.2.0 own placement |
+|---|---|---|---|---|
+| B person | 25, 46.49 / 50.03 | 39, 71.19 / 78.19 | 0 | 28, 51.8 / 57.11 |
+| B cube05 | 27, 50.03 / 55.34 | 39, 71.19 / 78.19 | 0 | 27, 50.03 / 55.34 |
+| B cube1 | 29, 53.57 / 58.88 | 40, 72.94 / 79.94 | 0 | 27, 50.03 / 55.34 |
+| C person | 51, 76.89 / 84.25 | 63, 94.58 / 104.98 | 0 | 55, 82.77 / 91.63 |
+| C cube05 | 50, 75.42 / 82.77 | 60, 90.15 / 99.04 | 0 | 50, 75.42 / 82.77 |
+| C cube1 | 53, 81.3 / 87.2 | 55, 84.25 / 91.63 | 0 | 57, 85.72 / 94.58 (2 frames, 96 and 150, not hit by 1.3.0 at its own placement) |
+
+The same placement is by construction: the `ctlatfin` tag reads byte-identical copies of `fin`'s object-free baseline
+files (SHA-256 listed in `out/range_sample.txt`). The rows equal the K2 review's same-placement rows. The own-placement
+C_cube1 difference (85.72 → 84.25 m first STOP, frames 96 / 150) is the placement effect the K2 review reported as
+finding 1 (the harness moves the object with each tree's published track); at the same placement 1.3.0 gains on it
+(81.3 → 84.25 m). Positive control: a planted lost hit is reported (B_cube05 frame 165).
 
 ## 5. Not checked / unverified
 * The ROS node itself (no ROS 2 in this container): its range path was replayed offline with its own
   `decision_policy` functions on detector records.
-* The full 37-job K2 range matrix and the K2 review's attacks; the far-range review's 82 scenes and matrices; B6.
+* The full 37-job K2 range matrix (only the 6 jobs of §4.4; A, D and S jobs, including the accepted D_cube05 delay, not re-run) and the K2 review's attacks; the far-range review's 82 scenes and matrices; B6.
 * The full test suite (only `tests/test_release.py`); the integration reports 2,551 passed and one pre-existing failure.
 * An opinion-off toggle on the final tree (identity taken from the integration).
 * Timing on a quiet machine (N3 is side-by-side).
