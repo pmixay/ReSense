@@ -8,5 +8,5 @@ Those changes are **not** in the 1.3.0 line: they would change the sealed 1.3.0 
 deleted (captain, 22.10, at the user's request).
 
 * `code_not_merged.patch`: `git diff --binary 2a64cfe 7599136`, everything outside `docs/evidence/`.
-* To continue: `git worktree add --detach ../work 2a64cfe && cd ../work && git apply /home/user/ReSense/docs/evidence/ml_far_axis_2026-10-22/code_not_merged.patch`,
+* To continue: `git worktree add --detach ../work 2a64cfe && cd ../work && git apply --index <this repository>/docs/evidence/ml_far_axis_2026-10-22/code_not_merged.patch`,
   then rebase onto the current line; any detector change needs the strict gate, X3, an independent review and a reseal.
