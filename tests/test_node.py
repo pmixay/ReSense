@@ -71,7 +71,7 @@ def test_node_and_launch_defaults_match_published_source_baseline():
                 cwd=root, text=True, encoding="utf-8")
             assert _declared_defaults(published) == PUBLISHED_DEFAULTS
     additions = {"decision_policy": "v1", "caution_distance_m": 80.0,
-                 "caution_compact_max_size_m": 3.0, "clear_range_policy": "conservative",
+                 "caution_compact_max_size_m": 3.0, "clear_range_policy": "auto",
                  "range_sensor_model": "unknown", "sensor_profile": "manual", "keep_up_axis": True,
                  "input_topic": "/lidar_points,/sensing/lidar/hesai128/pointcloud,/iv_points"}
     assert _declared_defaults((NODE_PKG / "resense_ros" / "detector_node.py").read_text()) == {
@@ -1860,20 +1860,47 @@ def test_orientation_readiness_warning_retains_stop_and_fault_precedence(freshne
     assert send(30.1)['decision'] == 'FAULT'
 
 
-def test_default_clear_range_policy_is_conservative_and_needs_a_sensor_prior(node_cls, tunnel):
-    """1.3 (user decision 22.10): the node's default ``clear_range_policy`` is ``conservative``. The decision is the
-    legacy one; only the reported range changes, never upward. With ``range_sensor_model`` unknown (the ``manual``
-    profile's default) the small-target range is unavailable, so the reported clear distance is 0; with an explicit
-    prior (``pandar128``) it is a range no longer than the detector's."""
+def test_default_clear_range_policy_is_auto_conservative_only_with_a_known_sensor(node_cls, tunnel):
+    """1.3 (user decision 22.10): the node's default ``clear_range_policy`` is ``auto``: ``conservative`` when a
+    range-density model is known (named profile, explicit ``range_sensor_model`` or detected from the point fields),
+    ``legacy`` otherwise. The decision is the same in every case; only the reported range changes, never upward. The
+    test cloud's ``ring`` is constant, so nothing is detected and ``auto`` reports the legacy range."""
     runs = {}
     for name, over in (("legacy", {"clear_range_policy": "legacy"}), ("default", {}),
+                       ("conservative", {"clear_range_policy": "conservative"}),
                        ("pandar", {"range_sensor_model": "pandar128"})):
         _Node.overrides = over
         node = node_cls()
-        assert node.clear_range_policy == ("legacy" if name == "legacy" else "conservative")
+        assert node.clear_range_policy == {"legacy": "legacy", "conservative": "conservative"}.get(name, "auto")
         _feed(node, tunnel[0].xyz, 6)
-        runs[name] = (node.published["/resense/decision"][-1].data, node.published["/resense/clear_distance"][-1].data)
-    assert runs["legacy"][0] == runs["default"][0] == runs["pandar"][0] == "GO"
+        status = json.loads(node.published["/resense/status"][-1].data)
+        runs[name] = (node.published["/resense/decision"][-1].data, node.published["/resense/clear_distance"][-1].data,
+                      node.range_policy(), status.get("range_model_source"))
+    assert runs["legacy"][0] == runs["default"][0] == runs["conservative"][0] == runs["pandar"][0] == "GO"
     assert runs["legacy"][1] > 100.0
-    assert runs["default"][1] == 0.0
-    assert 0.0 < runs["pandar"][1] <= runs["legacy"][1]
+    assert runs["default"][1] == runs["legacy"][1] and runs["default"][2:] == ("legacy", "none")
+    assert runs["conservative"][1] == 0.0                     # explicit conservative without a model: no range
+    assert 0.0 < runs["pandar"][1] <= runs["legacy"][1] and runs["pandar"][2:] == ("conservative", "parameter")
+
+
+def test_auto_range_policy_detects_pandar_from_the_ring_field_and_forgets_it_on_reset(node_cls, tunnel):
+    """With 128 real channels in ``ring`` the default ``auto`` detects ``pandar128`` and caps the range; an input
+    reset forgets the detection (the next recording may be another sensor)."""
+    _Node.overrides = {}
+    node = node_cls()
+    xyz = tunnel[0].xyz
+    for k in range(6):
+        msg, _ = _cloud(xyz, 0.1 * k)
+        arr = np.frombuffer(msg.data, dtype=np.dtype({"names": ["x", "y", "z", "intensity", "ring"],
+                                                      "formats": ["f4", "f4", "f4", "f4", "u2"],
+                                                      "offsets": [0, 4, 8, 12, 16], "itemsize": 18})).copy()
+        arr["ring"] = np.arange(arr.size) % 128
+        msg.data = arr.tobytes()
+        node.on_cloud(msg, "/lidar_points", {"source_timestamp": time.time_ns()})
+    status = json.loads(node.published["/resense/status"][-1].data)
+    assert (node.range_sensor_model, node.range_model_source, node.range_policy()) == ("pandar128", "detected", "conservative")
+    assert status["range_model_source"] == "detected" and status["range_sensor_model"] == "pandar128"
+    assert node.published["/resense/decision"][-1].data == "GO"
+    node.reset_input("test boundary")
+    assert (node.range_sensor_model, node.range_model_source, node.range_policy()) == ("unknown", "none", "legacy")
+

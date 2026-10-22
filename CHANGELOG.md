@@ -50,12 +50,18 @@ against a fresh v1.2.0 (`3b73bbe`) run on the same data. Not a G3 run. The tag `
 
 ### Node
 
-- **The node now uses the conservative range policy by default; `clear_range_policy:=legacy` restores the old
-  behaviour.** Decisions, detections and warnings are identical (Falcon 2 × 4,443 frames, 15,269 Pandar gate frames);
-  only the reported clear range changes and never upward. With a named sensor prior the range is capped by the
-  small-target density limit (`pandar128`: at most 88.7 m; `falcon_prime`: Falcon 4,050 of 4,443 rows lowered). **With
-  `range_sensor_model` unknown (the default `manual` profile, the image's default command) the reported clear distance
-  is 0 on every frame**; use `sensor_profile:=pandar128` / `falcon_ros` or `range_sensor_model`.
+- **Range policy `clear_range_policy:=auto` by default (user decision 22.10, DECISIONS row 59):** `conservative` when
+  the sensor's range-density model is known, `legacy` otherwise. The model comes from a named `sensor_profile`, an
+  explicit `range_sensor_model`, or the cloud's own point fields (`sensor_profiles.detect_range_model`): Falcon Prime
+  by `scan_id` / `scan_idx` / `elongation` without `ring`, Pandar128 by `ring` with 64–128 channels in view; the
+  detection is retried on the first 10 frames of each input and forgotten at every input reset. Only the range model
+  is detected; axes, calibration and the detector's profile stay explicit. Status reports `range_model_source`
+  (`profile` / `parameter` / `detected` / `none`). Decisions, detections and warnings are identical under every
+  policy (Falcon 2 × 4,443 frames, 15,269 Pandar gate frames); only the reported clear range changes and never upward.
+  Under `conservative` the range is capped by the small-target density limit (`pandar128`: at most 88.7 m;
+  `falcon_prime`: Falcon 4,050 of 4,443 rows lowered); without a known model `auto` reports the legacy range, so the
+  default `manual` launch no longer reports 0 on every frame. `clear_range_policy:=conservative` / `legacy` force a
+  policy.
 
 ### Release rows (final tree, against fresh v1.2.0)
 
