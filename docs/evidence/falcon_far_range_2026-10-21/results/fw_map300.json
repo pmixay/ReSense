@@ -1,0 +1,71 @@
+{
+ "map300": {
+  "far_walker": {
+   "frames": 1183,
+   "stop_frames": 338,
+   "output_frames": 392,
+   "first_stop": [
+    9,
+    253.7
+   ],
+   "bands": {
+    "240-250": {
+     "frames": 94,
+     "stop": 0.83,
+     "output": 0.968
+    },
+    "250-260": {
+     "frames": 175,
+     "stop": 0.909,
+     "output": 0.909
+    },
+    "260-270": {
+     "frames": 223,
+     "stop": 0.404,
+     "output": 0.475
+    },
+    "270-280": {
+     "frames": 238,
+     "stop": 0.046,
+     "output": 0.151
+    },
+    "280-290": {
+     "frames": 184,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "290-300": {
+     "frames": 180,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "300-310": {
+     "frames": 89,
+     "stop": 0.0,
+     "output": 0.0
+    }
+   }
+  },
+  "far_251": {
+   "frames": 254,
+   "stop_frames": 13,
+   "output_frames": 42,
+   "first_stop": [
+    1712,
+    249.8
+   ],
+   "bands": {
+    "240-250": {
+     "frames": 18,
+     "stop": 0.722,
+     "output": 1.0
+    },
+    "250-260": {
+     "frames": 236,
+     "stop": 0.0,
+     "output": 0.102
+    }
+   }
+  }
+ }
+}

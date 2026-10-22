@@ -21,9 +21,10 @@ from resense.frame import Frame
 from resense.gauge import (has_edge_margin, axis_union_coordinates, axis_union_offset, axis_union_strict, corridor_coordinates,
                            corridor_mask, gauge_core_mask, point_in_polygon, reference_offset, union_shift,
                            widened_profile)
-from resense.health import HealthMonitor
+from resense.health import HealthMonitor, bed_off_mount_plane
 from resense.lowobj import (BedTemplate, low_candidates, low_free_mask, mark_rail_line, no_rail_advisory,
                             rail_reference_check)
+from resense.opinion import observation
 from resense.track import TrackModel, estimate_track, rotate_track_model
 from resense.tracking import Tracker
 
@@ -32,6 +33,13 @@ def _overlap(a: Cluster, b: Cluster, margin: float = 0.3) -> bool:
     """Two clusters of the same object: their along-track extents and lateral widths overlap."""
     return (b.bbox_min[0] - margin < a.bbox_max[0] and b.bbox_max[0] + margin > a.bbox_min[0]
             and abs(b.lateral - a.lateral) < 0.5 * float(a.size[1] + b.size[1]) + margin)
+
+
+def _overlap_xy(a: Cluster, b: Cluster, margin: float = 0.3) -> bool:
+    """21.10 (K2 union): :func:`_overlap` in the vehicle frame (the boxes' X and Y extents), for clusters whose
+    laterals are measured from different axes."""
+    return (b.bbox_min[0] - margin < a.bbox_max[0] and b.bbox_max[0] + margin > a.bbox_min[0]
+            and b.bbox_min[1] - margin < a.bbox_max[1] and b.bbox_max[1] + margin > a.bbox_min[1])
 
 
 @dataclass
@@ -205,6 +213,9 @@ class Detector:
         fr = self.cfg.farrange
         self.far = FarAxisTracker(fr) if fr.enabled and fr.axis_enabled else None
         self._far_axis = None
+        self._union_shift = None        # 21.10 (farrange.axis_union_beyond): this frame's lateral shift of the points the union took
+        self._far_report_cap: Optional[float] = None    # 21.10 (A7): where the reported range ends beyond the far line
+        self._far_valid_hist: deque = deque(maxlen=max(int(fr.axis_report_lag_frames), 1))  # 21.10 (A10): recent trusted ranges
         self.far_confirm = FarConfirm(fr) if fr.enabled and fr.confirm_enabled else None
         self.dust_guard = DustGuard(self.cfg.dust) if self.cfg.dust.enabled else None  # 19.10 N3, off by default
 
@@ -237,6 +248,7 @@ class Detector:
         if self.far is not None:
             self.far.reset()
         self._far_axis = None
+        self._far_valid_hist.clear()
         if self.far_confirm is not None:
             self.far_confirm.reset()
         if self.dust_guard is not None:
@@ -356,7 +368,7 @@ class Detector:
         xyz = self._fit_track(frame.xyz, self._periods())
         if self.far is not None:
             prev = self._far_axis
-            self._far_axis = self.far.update(xyz, self.track, cfg.gauge.range_max)
+            self._far_axis = self.far.update(xyz, self.track, cfg.gauge.range_max, dt=dt)
             # buffered corridor points carry laterals from the axis of their frame: when the far axis
             # appears, disappears or moves (0.2 m at the far end), the buffer is not comparable
             if (prev is None) != (self._far_axis is None) or (
@@ -367,6 +379,10 @@ class Detector:
         t1 = time.perf_counter()
         cand, dy_all, h_all, mask, (valid, axis_valid, floor_valid) = self._corridor(xyz, frame.intensity)
         self._frame_hd = (dy_all, h_all)
+        if cfg.track.axis_joint_union and self.track.curve is not None:
+            # K2 union (revision 2): the returns the base gauge holds inside its strict envelope, read by _curve_clusters
+            self._base_in = np.zeros(len(xyz), dtype=bool)
+            self._base_in[cand.idx[cand.in_gauge & (cand.idx >= 0)]] = True
         trust = min(valid, floor_valid)  # the trusted range before the clustering (health.clear_cap_thin)
         dy_rail = self._dy_rail          # = dy_all unless gauge.axis_union 2 re-measured the corridor coordinate
         # Paired rails support lateral axis placement, not a farther bed-anomaly
@@ -392,6 +408,8 @@ class Detector:
         merged, n_acc = self._accumulate(cand, speed, dt)
         t4 = time.perf_counter()
         clusters = self._cluster(merged, n_acc, valid, floor_valid, straddle, near)
+        if cfg.track.axis_joint_union and self.track.curve is not None:
+            clusters = self._curve_clusters(xyz, frame.intensity, clusters, valid)
         if cfg.track.axis_joint_reach_dual > 0:
             self._dual_zone(clusters)
         if cfg.cluster.far_axis_both_sides == 2:
@@ -419,9 +437,23 @@ class Detector:
         t6 = time.perf_counter()
         mount = self.calib.state.to_dict()
         drift = self.track.wall_drift
+        bed_conflict = False
+        if cfg.health.clear_lost_bed:       # amendment 1 of falcon_clear_distance_2026-10-21: the bed against the mount plane
+            st = self.calib.state
+            if st.height is not None and st.status in ("ok", "identity") and np.isfinite(st.height):
+                bed_conflict = bed_off_mount_plane(self.track, -float(st.height), cfg.cluster.mount_cross_tol,
+                                                   cfg.cluster.mount_cross_grade, cfg.cluster.mount_cross_range)
+        if self._far_report_cap is not None:
+            drift = min(drift, self._far_report_cap)      # 21.10 (A7): see _corridor
+        if self.far is not None and cfg.farrange.axis_stable and cfg.farrange.axis_report_lag_frames > 0:
+            # 21.10 (A9 / A10): the reported range grows only as far as the trusted range reached in each of the last
+            # frames (an object entering a newly trusted stretch gets those frames to be seen before it is reported
+            # clear); the Falcon profiles only; detection and trust are unchanged
+            self._far_valid_hist.append(float(min(valid, drift)))
+            drift = min(drift, min(self._far_valid_hist))
         health = self.health.update(xyz, frame.meta, self.track, cfg.gauge, valid, cfg.track.rails_min_score,
                                     previous_latency_ms, mount, gauge[0].distance if gauge else None, cap,
-                                    wall_drift=drift if drift < 1e9 else None)
+                                    wall_drift=drift if drift < 1e9 else None, bed_conflict=bed_conflict)
         health["latency_basis"] = "previous_complete_process"
         health["latency_sample_age_frames"] = 1 if previous_latency_ms is not None else None
         if dust_removed is not None:
@@ -431,7 +463,7 @@ class Detector:
         result = FrameResult(
             stamp=frame.stamp, obstacle=len(gauge) > 0, warning=len(warn) > 0,
             nearest_distance=gauge[0].distance if gauge else None,
-            detections=gauge, warnings=warn, candidates=clusters, track=self.track,
+            detections=gauge, warnings=warn, candidates=clusters, track=self._published_track(),
             corridor_idx=cand.idx, n_points=frame.n,
             timing_ms={"track": (t1 - t0) * 1e3, "corridor": (t2 - t1) * 1e3,
                        "egomotion": (t3 - t2) * 1e3, "accumulate": (t4 - t3) * 1e3,
@@ -554,6 +586,37 @@ class Detector:
             # 19.10 (farrange): beyond the join the lateral is measured from the far straight axis
             dy_all = dy_all - far.offset(xyz[:, 0], self.track)
         self._dy_rail = dy_all
+        self._union_shift = None
+        self._far_report_cap = None
+        if far is not None and cfg.farrange.axis_stable and cfg.farrange.axis_report_tolerance > 0:
+            # 21.10 (A7, review F1): beyond the far line's trusted end the near model's corridor is not where the
+            # track is once its centre leaves the continued far line by more than the tolerance: the reported
+            # monitored / clear range ends there (as health's wall_drift cap); detection is unchanged
+            top = max(min(self.track.axis_valid, cfg.gauge.range_max), far.valid)
+            if top > far.valid:
+                Xg = np.arange(far.valid, top + 1e-6, 1.0)
+                off = np.abs(far.line_offset(Xg, self.track))
+                bad = np.flatnonzero(off > cfg.farrange.axis_report_tolerance)
+                if bad.size:
+                    cap = float(Xg[bad[0]])
+                    self._far_report_cap = cap if self._far_report_cap is None else min(self._far_report_cap, cap)
+        if far is not None and cfg.farrange.axis_stable and cfg.farrange.axis_union_beyond:
+            # 21.10 (farrange.axis_union_beyond, review F1): between the far line's trusted end and the near model's
+            # own trusted range the corridor is the union of both hypotheses, the near model's lateral (v1.2.0's
+            # corridor) and the far line continued straight, whichever is nearer the centre: a point is never
+            # removed from v1.2.0's corridor, and a clear range there means both are empty
+            X = xyz[:, 0]
+            hi = max(min(self.track.axis_valid, cfg.gauge.range_max), far.valid)
+            beyond = (X > far.valid) & (X <= hi)
+            if beyond.any():
+                alt = dy_all[beyond] - far.line_offset(X[beyond], self.track)
+                take = np.abs(alt) < np.abs(dy_all[beyond])
+                if take.any():
+                    shift = np.zeros(X.size, dtype=dy_all.dtype)
+                    sub = np.flatnonzero(beyond)[take]
+                    shift[sub] = alt[take] - dy_all[sub]
+                    dy_all = dy_all + shift
+                    self._union_shift = shift
         if cfg.gauge.axis_union == 2:
             # 26.09 (candidate B, off by default): the corridor coordinate re-measured so that the strict
             # envelope is the union of the rail and the sensor-axis envelopes (near field, straight
@@ -747,11 +810,36 @@ class Detector:
                                             in_rail=self.buffer.merged_rail(acc.min_range), dy_rail=dro))
             n_acc = 1 + len(self.buffer)
         far = (cand.xyz[:, 0] >= acc.min_range) & ~cand.low
-        self.buffer.push(cand.xyz[far, 0], cand.dy[far], cand.h[far], cand.intensity[far], cand.in_gauge[far],
+        dy_push = cand.dy
+        if self._union_shift is not None:
+            # 21.10 (axis_union_beyond): the buffer is rebuilt with the near model and the far line's trusted part
+            # only, so a point taken by the union is stored with its near lateral (its strict flag is kept)
+            ok = cand.idx >= 0
+            dy_push = cand.dy.copy()
+            dy_push[ok] = dy_push[ok] - self._union_shift[cand.idx[ok]]
+        self.buffer.push(cand.xyz[far, 0], dy_push[far], cand.h[far], cand.intensity[far], cand.in_gauge[far],
                          in_rail=None if cand.in_rail is None else cand.in_rail[far])
         return merged, n_acc
 
     # -- 5 -------------------------------------------------------------------------------------
+    def _corridor_clusters(self, corr: Candidates, valid: float, floor_valid: float, factor: float, dy_alt,
+                           keep_thin: bool, hd, n_acc: int) -> List[Cluster]:
+        """The corridor clustering of ``_cluster`` for one candidate group (21.10, A8: split by hypothesis)."""
+        cfg = self.cfg
+        acc = cfg.accumulation
+        return _clusters_of(corr, cfg.cluster, axis_valid=valid,
+                            height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
+                                min_points_factor=factor, factor_range=acc.min_range,
+                                smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
+                                smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge,
+                                dy_alt=dy_alt, keep_thin=keep_thin,
+                                weak_from=cfg.tracking.thin_far_min_distance
+                                if cfg.cluster.weak_min_points > 0 or cfg.cluster.weak_min_rings > 0 else 0.0,
+                                frame_xyz=self._frame_xyz if cfg.cluster.column_free_max_top > 0
+                                or cfg.cluster.column_core_margin > 0 else None,
+                                 frame_ring=self._frame_ring, frame_dy=hd[0], frame_h=hd[1],
+                                 frame_track=self.track, frame_track_cfg=cfg.track)
+
     def _cluster(self, cand: Candidates, n_acc: int, valid: float, floor_valid: float,
                  straddle: Optional[Candidates], near: Optional[Candidates] = None) -> List[Cluster]:
         """Voxelise, cluster, describe and filter: the corridor candidates (count thresholds
@@ -773,18 +861,22 @@ class Detector:
                 dy_alt = corr.dy + reg[1]
         keep_thin = cfg.tracking.stop_keep_thin > 0 or cfg.tracking.thin_far_min_distance > 0
         hd = self._frame_hd or (None, None)
-        clusters = _clusters_of(corr, cfg.cluster, axis_valid=valid,
-                                height_valid=floor_valid if cfg.cluster.far_min_height > 0 else None,
-                                min_points_factor=factor, factor_range=acc.min_range,
-                                smear_max_length=acc.smear_max_length if n_acc > 1 else 0.0,
-                                smear_max_width=acc.smear_max_width if n_acc > 1 else 0.0, gauge=cfg.gauge,
-                                dy_alt=dy_alt, keep_thin=keep_thin,
-                                weak_from=cfg.tracking.thin_far_min_distance
-                                if cfg.cluster.weak_min_points > 0 or cfg.cluster.weak_min_rings > 0 else 0.0,
-                                frame_xyz=self._frame_xyz if cfg.cluster.column_free_max_top > 0
-                                or cfg.cluster.column_core_margin > 0 else None,
-                                 frame_ring=self._frame_ring, frame_dy=hd[0], frame_h=hd[1],
-                                 frame_track=self.track, frame_track_cfg=cfg.track)
+        groups = [corr]
+        far = self._far_axis
+        if (far is not None and self._union_shift is not None and cfg.farrange.axis_union_separate
+                and dy_alt is None and len(corr)):
+            # 21.10 (A8): beyond far.valid the points that kept the near model's lateral are clustered on their own;
+            # up to far.valid and the points the union gave the far line are clustered together as before
+            ok = corr.idx >= 0
+            took = np.zeros(len(corr), dtype=bool)
+            took[ok] = self._union_shift[corr.idx[ok]] != 0
+            near_hyp = (corr.xyz[:, 0] > far.valid) & ~took & ok
+            if near_hyp.any() and not near_hyp.all():
+                groups = [corr.subset(~near_hyp), corr.subset(near_hyp)]
+        clusters = []
+        for grp in groups:
+            clusters += self._corridor_clusters(grp, valid, floor_valid, factor, dy_alt, keep_thin, hd, n_acc)
+        clusters.sort(key=lambda c: c.distance)
         if keep_thin:
             # 26.09 (tracking.stop_keep_thin, on since 26.09): the clusters flatter than min_height go
             # to the tracker only, to continue a track (Tracker._continue_thin); no other stage sees them
@@ -856,6 +948,73 @@ class Detector:
             inside = gauge_core_mask(dy, hh, xx, g) if has_edge_margin(g) else point_in_polygon(dy, hh, g.profile)
             if not bool(inside[0]):
                 c.zone, c.reason = "warning", "beyond_axis"
+
+    def _published_track(self) -> TrackModel:
+        """The model in the result (display, records): the track model, or with ``track.axis_joint_union`` on a curve
+        frame its copy with the curve's shape and trusted range (``joint_used`` true), so the drawn gauge follows the
+        curve as far as the walls confirm it. The detector itself keeps reading the track model."""
+        tr = self.track
+        cv = tr.curve if self.cfg.track.axis_joint_union else None
+        if cv is None:
+            return tr
+        return replace(tr, center=cv.center, yaw=cv.yaw, curvature=cv.curvature, curv_step=cv.curv_step,
+                       curv_knot=cv.curv_knot, axis_valid=cv.axis_valid, joint_used=True)
+
+    def _curve_clusters(self, xyz: np.ndarray, intensity: np.ndarray, clusters: List[Cluster],
+                        base_valid: float = 0.0) -> List[Cluster]:
+        """21.10 (K2 union, ``track.axis_joint_union``): on a curve frame the joint shape (``track.curve``, trusted as far
+        as a tunnel boundary follows it) is a second gauge. The corridor and the clustering of the above-rail candidates
+        run again in its coordinates, on this frame's points alone (no accumulation, no low stage); each of its
+        obstacles (zone ``gauge``, no reason) that overlaps no obstacle of the base gauge is added, in place of the base
+        gauge's advisory clusters it overlaps. Nothing the base gauge reports as an obstacle is changed, and the bed,
+        low-object, ego-speed, mount and clear-distance stages keep the base model. Revision 2: only beyond the
+        farthest X to which a boundary still follows the base axis (``curve.curve_from``), and only objects the base
+        gauge did not judge: none of their returns inside its strict envelope within its trusted range ``base_valid``."""
+        # integration 1.3: the far-range state that _corridor writes (_union_shift, _far_report_cap) is saved too, so
+        # the curve pass cannot clear the far line's report cap of this frame (read by the health stage)
+        saved = (self.track, self._far_axis, getattr(self, "_dy_rail", None), self._frame_hd, self._thin,
+                 getattr(self, "_low_height", []), getattr(self, "_near_low", []), self._union_shift,
+                 self._far_report_cap)
+        try:
+            self.track, self._far_axis = self.track.curve, None
+            cand, dy_k, h_k, _, (valid, _, floor_valid) = self._corridor(xyz, intensity)
+            self._frame_hd = (dy_k, h_k)
+            extra = self._cluster(cand, 1, valid, floor_valid, None, None) if len(cand) else []
+        finally:
+            (self.track, self._far_axis, self._dy_rail, self._frame_hd, self._thin, self._low_height,
+             self._near_low, self._union_shift, self._far_report_cap) = saved
+        obstacles = [c for c in clusters if c.zone == "gauge" and not c.reason]
+        start = float(saved[0].curve.curve_from)
+        base_in = getattr(self, "_base_in", None)
+
+        def judged(k: Cluster) -> bool:
+            # revision 2: an object with returns inside the base strict envelope within the base's trusted range was
+            # judged by the base gauge (its advisory reasons stand); the curve adds only what the base cannot see
+            own = k.points_idx[k.points_idx >= 0]
+            return (base_in is not None and float(k.distance) <= base_valid and own.size > 0
+                    and bool(base_in[own[own < base_in.size]].any()))
+        add = [k for k in extra if k.zone == "gauge" and not k.reason and float(k.distance) > start
+               and not judged(k) and not any(_overlap_xy(k, c) for c in obstacles)]
+        self._curve_added, self._curve_seen = len(add), extra      # read by evidence traces only
+        if not add:
+            return clusters
+        dy_base = saved[2]
+        for k in add:
+            # the tracker's record (track opinion) and the reported lateral stay in the base coordinates, as the
+            # base advisory cluster it replaces would have given them (a curve lateral mixed into a track's history
+            # reads as a lateral jump to the opinion: marked platform object 23 was withheld 7 frames, revision 1)
+            over = [c for c in clusters if _overlap_xy(c, k)]
+            if over:
+                b = min(over, key=lambda c: float(np.linalg.norm(c.centroid - k.centroid)))
+                k.lateral, k.obs_as = b.lateral, observation(b)
+            else:
+                own = k.points_idx[k.points_idx >= 0]
+                if dy_base is not None and own.size:
+                    k.lateral = float(np.mean(dy_base[own]))
+                k.obs_as = observation(k)
+            k.curve = True
+        keep = [c for c in clusters if not any(_overlap_xy(c, k) for k in add)]
+        return sorted(keep + add, key=lambda c: c.distance)
 
     def _far_both_sides(self, clusters: List[Cluster], valid: float, floor_valid: float) -> float:
         """``cluster.far_axis_both_sides`` 2 (25.09, far_switch, opt-in): on a bent axis (no

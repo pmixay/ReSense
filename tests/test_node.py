@@ -71,7 +71,7 @@ def test_node_and_launch_defaults_match_published_source_baseline():
                 cwd=root, text=True, encoding="utf-8")
             assert _declared_defaults(published) == PUBLISHED_DEFAULTS
     additions = {"decision_policy": "v1", "caution_distance_m": 80.0,
-                 "caution_compact_max_size_m": 3.0, "clear_range_policy": "legacy",
+                 "caution_compact_max_size_m": 3.0, "clear_range_policy": "conservative",
                  "range_sensor_model": "unknown", "sensor_profile": "manual", "keep_up_axis": True,
                  "input_topic": "/lidar_points,/sensing/lidar/hesai128/pointcloud,/iv_points"}
     assert _declared_defaults((NODE_PKG / "resense_ros" / "detector_node.py").read_text()) == {
@@ -293,6 +293,7 @@ def box_scene():
 # ---------------------------------------------------------------------------
 
 def test_clear_tunnel_is_go_with_an_estimated_monitored_range(node_cls, tunnel):
+    _Node.overrides = {"clear_range_policy": "legacy"}        # the detector's own range (default conservative since 1.3)
     node = node_cls()
     _feed(node, tunnel[0].xyz, 6)
     pub = node.published
@@ -306,6 +307,7 @@ def test_clear_tunnel_is_go_with_an_estimated_monitored_range(node_cls, tunnel):
 
 def test_obstacle_is_stop_and_published_in_the_sensor_frame(node_cls, box_scene):
     frame, labels = box_scene
+    _Node.overrides = {"clear_range_policy": "legacy"}        # the detector's own range (default conservative since 1.3)
     node = node_cls()
     R = _feed(node, frame.xyz, 6)
     pub = node.published
@@ -1052,6 +1054,7 @@ def test_c1_consumer_producer_examples(freshness_driver, tmp_path):
     target.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + "\n")
 
 
+@pytest.mark.parametrize("freshness_driver", [{"clear_range_policy": "legacy"}], indirect=True)
 def test_node_selected_policy_keeps_raw_column_warning_and_marker_matches(freshness_driver):
     node, clock, send = freshness_driver
     clock["warnings"] = [_advisory("column")]
@@ -1855,3 +1858,22 @@ def test_orientation_readiness_warning_retains_stop_and_fault_precedence(freshne
     clock.update(obstacle=False, health={'level': 'error', 'orientation_confirmed': False})
     send(30.)
     assert send(30.1)['decision'] == 'FAULT'
+
+
+def test_default_clear_range_policy_is_conservative_and_needs_a_sensor_prior(node_cls, tunnel):
+    """1.3 (user decision 22.10): the node's default ``clear_range_policy`` is ``conservative``. The decision is the
+    legacy one; only the reported range changes, never upward. With ``range_sensor_model`` unknown (the ``manual``
+    profile's default) the small-target range is unavailable, so the reported clear distance is 0; with an explicit
+    prior (``pandar128``) it is a range no longer than the detector's."""
+    runs = {}
+    for name, over in (("legacy", {"clear_range_policy": "legacy"}), ("default", {}),
+                       ("pandar", {"range_sensor_model": "pandar128"})):
+        _Node.overrides = over
+        node = node_cls()
+        assert node.clear_range_policy == ("legacy" if name == "legacy" else "conservative")
+        _feed(node, tunnel[0].xyz, 6)
+        runs[name] = (node.published["/resense/decision"][-1].data, node.published["/resense/clear_distance"][-1].data)
+    assert runs["legacy"][0] == runs["default"][0] == runs["pandar"][0] == "GO"
+    assert runs["legacy"][1] > 100.0
+    assert runs["default"][1] == 0.0
+    assert 0.0 < runs["pandar"][1] <= runs["legacy"][1]

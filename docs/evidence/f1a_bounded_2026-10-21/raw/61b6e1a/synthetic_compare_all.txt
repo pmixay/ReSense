@@ -1,0 +1,36 @@
+== approach_bed
+selftest PASS (self-comparison clean; one injected loss found and marked later)
+{"scenes": 48, "frames_any_gauge_ctrl": 866, "frames_any_gauge_cand": 866, "matched_ctrl": 831, "matched_cand": 831, "frames_lost": 0, "frames_gained": 0, "scenes_later": 0, "scenes_with_loss": 0, "scenes_with_gain": 0}
+== approach_empty
+selftest: self-comparison clean; no matched frame to inject (family without targets)
+{"scenes": 3, "frames_any_gauge_ctrl": 0, "frames_any_gauge_cand": 0, "matched_ctrl": 0, "matched_cand": 0, "frames_lost": 0, "frames_gained": 0, "scenes_later": 0, "scenes_with_loss": 0, "scenes_with_gain": 0}
+== empty
+selftest: self-comparison clean; no matched frame to inject (family without targets)
+{"scenes": 3, "frames_any_gauge_ctrl": 0, "frames_any_gauge_cand": 0, "matched_ctrl": 0, "matched_cand": 0, "frames_lost": 0, "frames_gained": 0, "scenes_later": 0, "scenes_with_loss": 0, "scenes_with_gain": 0}
+== centre
+selftest PASS (self-comparison clean; one injected loss found and marked later)
+{"scenes": 8, "frames_any_gauge_ctrl": 48, "frames_any_gauge_cand": 48, "matched_ctrl": 48, "matched_cand": 48, "frames_lost": 0, "frames_gained": 0, "scenes_later": 0, "scenes_with_loss": 0, "scenes_with_gain": 0}
+== beside
+selftest: self-comparison clean; no matched frame to inject (family without targets)
+{"scenes": 16, "frames_any_gauge_ctrl": 0, "frames_any_gauge_cand": 0, "matched_ctrl": 0, "matched_cand": 0, "frames_lost": 0, "frames_gained": 0, "scenes_later": 0, "scenes_with_loss": 0, "scenes_with_gain": 0}
+== approach
+selftest PASS (self-comparison clean; one injected loss found and marked later)
+{"scenes": 48, "frames_any_gauge_ctrl": 283, "frames_any_gauge_cand": 283, "matched_ctrl": 283, "matched_cand": 283, "frames_lost": 0, "frames_gained": 0, "scenes_later": 0, "scenes_with_loss": 0, "scenes_with_gain": 0}
+== rail
+selftest PASS (self-comparison clean; one injected loss found and marked later)
+{"scenes": 128, "frames_any_gauge_ctrl": 145, "frames_any_gauge_cand": 145, "matched_ctrl": 113, "matched_cand": 113, "frames_lost": 0, "frames_gained": 0, "scenes_later": 0, "scenes_with_loss": 0, "scenes_with_gain": 0}
+== rail_ranges
+selftest PASS (self-comparison clean; one injected loss found and marked later)
+{"scenes": 40, "frames_any_gauge_ctrl": 72, "frames_any_gauge_cand": 72, "matched_ctrl": 72, "matched_cand": 72, "frames_lost": 0, "frames_gained": 0, "scenes_later": 0, "scenes_with_loss": 0, "scenes_with_gain": 0}
+== ext_sizes
+selftest PASS (self-comparison clean; one injected loss found and marked later)
+{"scenes": 72, "frames_any_gauge_ctrl": 1012, "frames_any_gauge_cand": 1012, "matched_ctrl": 965, "matched_cand": 965, "frames_lost": 0, "frames_gained": 0, "scenes_later": 0, "scenes_with_loss": 0, "scenes_with_gain": 0}
+== ext_slope
+selftest PASS (self-comparison clean; one injected loss found and marked later)
+{"scenes": 48, "frames_any_gauge_ctrl": 906, "frames_any_gauge_cand": 906, "matched_ctrl": 883, "matched_cand": 883, "frames_lost": 0, "frames_gained": 0, "scenes_later": 0, "scenes_with_loss": 0, "scenes_with_gain": 0}
+== ext_rise
+selftest PASS (self-comparison clean; one injected loss found and marked later)
+{"scenes": 16, "frames_any_gauge_ctrl": 342, "frames_any_gauge_cand": 342, "matched_ctrl": 342, "matched_cand": 342, "frames_lost": 0, "frames_gained": 0, "scenes_later": 0, "scenes_with_loss": 0, "scenes_with_gain": 0}
+== ext_rest
+selftest PASS (self-comparison clean; one injected loss found and marked later)
+{"scenes": 12, "frames_any_gauge_ctrl": 71, "frames_any_gauge_cand": 71, "matched_ctrl": 71, "matched_cand": 71, "frames_lost": 0, "frames_gained": 0, "scenes_later": 0, "scenes_with_loss": 0, "scenes_with_gain": 0}

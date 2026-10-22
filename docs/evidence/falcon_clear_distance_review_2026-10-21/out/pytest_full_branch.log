@@ -1,0 +1,54 @@
+............................................................. [  2%]
+........................................................................ [  5%]
+........................................................................ [  8%]
+........................................................................ [ 11%]
+........................................................................ [ 14%]
+........................................................................ [ 16%]
+........................................................................ [ 19%]
+.......................................................................................................................................... [ 25%]
+........................................................................ [ 28%]
+........................................................................ [ 31%]
+........................................................................ [ 34%]
+........................................................................ [ 36%]
+........................................................................ [ 39%]
+........................................................................ [ 42%]
+........................................................................ [ 45%]
+........................................................................ [ 48%]
+........................................................................ [ 51%]
+........................................................................ [ 54%]
+........................................................................ [ 57%]
+........................................................................ [ 60%]
+........................................................................ [ 62%]
+........................................................................ [ 65%]
+........................................................................ [ 68%]
+........................................................................ [ 71%]
+........................................................................ [ 74%]
+........................................................................ [ 77%]
+........................................................................ [ 80%]
+........................................................................ [ 83%]
+........................................................................ [ 86%]
+........................................................................ [ 89%]
+........................................................................ [ 91%]
+........................................................................ [ 94%]
+........................................................................ [ 97%]
+.........................................................                [100%]
+=============================== warnings summary ===============================
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data-expected0]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[new_data_127.db3-expected1]
+tests/test_unpack_dataset.py::test_selective_unpack_of_both_archive_layouts[doubleT_obstacle-expected2]
+  /home/user/ReSense/scripts/unpack_dataset.py:133: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.
+    tar.extract(member, a.out)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+--------- 8 test(s) deselected: their recorded data cache is not here ----------
+  tests/test_evidence_coherence.py::test_measured_remaining_inventory_is_133_track_frames (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_interval_rule_is_not_a_single_false_history_separator (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_293_fields_and_reference_change_are_not_identity_evidence (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_association_residuals_do_not_prove_wrong_association (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_evidence_coherence.py::test_sparse_edge_positive_rows_are_unchanged_by_fresh_onset_replay (no C:/Users/alikh/AppData/Local/Temp/opencode/fresh-stop-positive-stress)
+  tests/test_evidence_coherence.py::test_all_saved_stop_rows_validate_against_base_and_source (no D:/Datasets/ReSense/cross_ring_2026-09-28_measurement)
+  tests/test_fresh_support_analysis.py::test_direct_fresh_selected_events_and_positive_counterexample_when_capture_available (no C:/Users/alikh/AppData/Local/Temp/opencode/direct-fresh-support-all)
+  tests/test_rail_start.py::test_finding_rail_heads_ahead_of_a_standing_fresh_start_do_not_stop (no /data/cache/new_data)
+2488 passed, 8 deselected, 5 warnings, 17 subtests passed in 191.73s (0:03:11)

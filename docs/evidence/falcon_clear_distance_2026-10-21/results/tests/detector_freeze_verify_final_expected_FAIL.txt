@@ -1,0 +1,6 @@
+- changed detector file: resense/config.py
+- changed detector file: resense/detector.py
+- changed detector file: resense/health.py
+- changed detector file: ros2_ws/src/resense_ros/config/detector.yaml
+- canonical / ROS config does not match the freeze
+- validation must use the current default config without overrides

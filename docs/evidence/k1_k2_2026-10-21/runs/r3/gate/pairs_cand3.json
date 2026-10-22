@@ -1,0 +1,722 @@
+{
+ "cloud_with_fake_obj.jsonl": {
+  "frames": 1510,
+  "stop": [
+   450,
+   450
+  ],
+  "lost": [],
+  "gained": [],
+  "changed_frames": [],
+  "new_episodes": [],
+  "episodes": [
+   8,
+   8
+  ]
+ },
+ "doubleT_obstacle.jsonl": {
+  "frames": 201,
+  "stop": [
+   193,
+   193
+  ],
+  "lost": [],
+  "gained": [],
+  "changed_frames": [],
+  "new_episodes": [],
+  "episodes": [
+   1,
+   1
+  ]
+ },
+ "doubleT_platform.jsonl": {
+  "frames": 345,
+  "stop": [
+   0,
+   0
+  ],
+  "lost": [],
+  "gained": [],
+  "changed_frames": [],
+  "new_episodes": [],
+  "episodes": [
+   0,
+   0
+  ]
+ },
+ "new_data_0.jsonl": {
+  "frames": 1409,
+  "stop": [
+   12,
+   12
+  ],
+  "lost": [],
+  "gained": [],
+  "changed_frames": [],
+  "new_episodes": [],
+  "episodes": [
+   3,
+   3
+  ]
+ },
+ "new_data_1.jsonl": {
+  "frames": 1409,
+  "stop": [
+   12,
+   12
+  ],
+  "lost": [],
+  "gained": [],
+  "changed_frames": [],
+  "new_episodes": [],
+  "episodes": [
+   3,
+   3
+  ]
+ },
+ "new_data_2.jsonl": {
+  "frames": 1409,
+  "stop": [
+   2,
+   10
+  ],
+  "lost": [],
+  "gained": [
+   {
+    "frame": 1066,
+    "new": [
+     {
+      "d": 116.21,
+      "lat": -1.18,
+      "c": [
+       116.23,
+       -2.44,
+       1.2
+      ],
+      "size": [
+       0.03,
+       0.49,
+       1.51
+      ],
+      "zone": "gauge",
+      "reason": "beyond_axis",
+      "kind": ""
+     }
+    ],
+    "control_dets": [],
+    "control_warns": [
+     {
+      "d": 86.67,
+      "lat": 0.56,
+      "c": [
+       86.74,
+       -0.2,
+       0.71
+      ],
+      "size": [
+       0.14,
+       0.65,
+       2.64
+      ],
+      "zone": "warning",
+      "reason": "beyond_axis",
+      "kind": ""
+     },
+     {
+      "d": 116.21,
+      "lat": -1.18,
+      "c": [
+       116.23,
+       -2.44,
+       1.2
+      ],
+      "size": [
+       0.03,
+       0.49,
+       1.51
+      ],
+      "zone": "warning",
+      "reason": "beyond_axis",
+      "kind": ""
+     }
+    ]
+   },
+   {
+    "frame": 1067,
+    "new": [
+     {
+      "d": 114.01,
+      "lat": -1.18,
+      "c": [
+       114.03,
+       -2.32,
+       1.73
+      ],
+      "size": [
+       0.03,
+       0.49,
+       1.51
+      ],
+      "zone": "gauge",
+      "reason": "beyond_axis",
+      "kind": ""
+     }
+    ],
+    "control_dets": [],
+    "control_warns": [
+     {
+      "d": 84.84,
+      "lat": 0.3,
+      "c": [
+       84.92,
+       -0.22,
+       0.78
+      ],
+      "size": [
+       0.22,
+       0.61,
+       2.41
+      ],
+      "zone": "warning",
+      "reason": "beyond_axis",
+      "kind": ""
+     },
+     {
+      "d": 114.2,
+      "lat": -1.18,
+      "c": [
+       114.21,
+       -2.39,
+       1.55
+      ],
+      "size": [
+       0.03,
+       0.49,
+       1.51
+      ],
+      "zone": "warning",
+      "reason": "beyond_axis",
+      "kind": ""
+     }
+    ]
+   },
+   {
+    "frame": 1068,
+    "new": [
+     {
+      "d": 112.57,
+      "lat": -1.19,
+      "c": [
+       112.61,
+       -2.47,
+       1.33
+      ],
+      "size": [
+       0.09,
+       0.35,
+       0.75
+      ],
+      "zone": "gauge",
+      "reason": "",
+      "kind": ""
+     }
+    ],
+    "control_dets": [],
+    "control_warns": [
+     {
+      "d": 83.0,
+      "lat": 0.6,
+      "c": [
+       83.09,
+       -0.2,
+       0.76
+      ],
+      "size": [
+       0.25,
+       0.64,
+       2.76
+      ],
+      "zone": "warning",
+      "reason": "column",
+      "kind": ""
+     },
+     {
+      "d": 112.57,
+      "lat": -1.19,
+      "c": [
+       112.61,
+       -2.47,
+       1.33
+      ],
+      "size": [
+       0.09,
+       0.35,
+       0.75
+      ],
+      "zone": "warning",
+      "reason": "",
+      "kind": ""
+     }
+    ]
+   },
+   {
+    "frame": 1069,
+    "new": [
+     {
+      "d": 110.76,
+      "lat": -1.19,
+      "c": [
+       110.8,
+       -2.48,
+       1.4
+      ],
+      "size": [
+       0.09,
+       0.35,
+       0.75
+      ],
+      "zone": "gauge",
+      "reason": "",
+      "kind": ""
+     }
+    ],
+    "control_dets": [],
+    "control_warns": [
+     {
+      "d": 54.43,
+      "lat": 1.3,
+      "c": [
+       54.76,
+       0.93,
+       0.45
+      ],
+      "size": [
+       0.75,
+       0.16,
+       2.77
+      ],
+      "zone": "warning",
+      "reason": "",
+      "kind": ""
+     },
+     {
+      "d": 81.19,
+      "lat": 0.43,
+      "c": [
+       81.26,
+       -0.19,
+       0.77
+      ],
+      "size": [
+       0.25,
+       0.59,
+       2.7
+      ],
+      "zone": "warning",
+      "reason": "beyond_axis",
+      "kind": ""
+     },
+     {
+      "d": 110.76,
+      "lat": -1.19,
+      "c": [
+       110.8,
+       -2.48,
+       1.4
+      ],
+      "size": [
+       0.09,
+       0.35,
+       0.75
+      ],
+      "zone": "warning",
+      "reason": "",
+      "kind": ""
+     }
+    ]
+   },
+   {
+    "frame": 1071,
+    "new": [
+     {
+      "d": 104.07,
+      "lat": -0.74,
+      "c": [
+       107.24,
+       -2.37,
+       0.51
+      ],
+      "size": [
+       7.02,
+       2.43,
+       2.8
+      ],
+      "zone": "gauge",
+      "reason": "",
+      "kind": ""
+     }
+    ],
+    "control_dets": [],
+    "control_warns": [
+     {
+      "d": 50.79,
+      "lat": 1.36,
+      "c": [
+       51.2,
+       0.9,
+       0.31
+      ],
+      "size": [
+       0.76,
+       0.11,
+       2.81
+      ],
+      "zone": "warning",
+      "reason": "",
+      "kind": ""
+     },
+     {
+      "d": 77.53,
+      "lat": 0.78,
+      "c": [
+       77.61,
+       -0.18,
+       0.79
+      ],
+      "size": [
+       0.25,
+       0.59,
+       2.73
+      ],
+      "zone": "warning",
+      "reason": "column",
+      "kind": ""
+     }
+    ]
+   },
+   {
+    "frame": 1072,
+    "new": [
+     {
+      "d": 102.29,
+      "lat": -0.74,
+      "c": [
+       105.46,
+       -2.31,
+       0.06
+      ],
+      "size": [
+       7.02,
+       2.43,
+       2.8
+      ],
+      "zone": "gauge",
+      "reason": "",
+      "kind": ""
+     }
+    ],
+    "control_dets": [],
+    "control_warns": [
+     {
+      "d": 48.95,
+      "lat": 1.35,
+      "c": [
+       49.32,
+       0.93,
+       0.49
+      ],
+      "size": [
+       0.76,
+       0.11,
+       2.63
+      ],
+      "zone": "warning",
+      "reason": "",
+      "kind": ""
+     },
+     {
+      "d": 75.71,
+      "lat": 0.64,
+      "c": [
+       75.78,
+       -0.17,
+       1.01
+      ],
+      "size": [
+       0.19,
+       0.58,
+       2.68
+      ],
+      "zone": "warning",
+      "reason": "beyond_axis",
+      "kind": ""
+     }
+    ]
+   },
+   {
+    "frame": 1317,
+    "new": [
+     {
+      "d": 68.74,
+      "lat": -1.69,
+      "c": [
+       70.91,
+       -2.39,
+       -1.34
+      ],
+      "size": [
+       2.74,
+       0.5,
+       0.54
+      ],
+      "zone": "gauge",
+      "reason": "",
+      "kind": ""
+     }
+    ],
+    "control_dets": [],
+    "control_warns": [
+     {
+      "d": 106.38,
+      "lat": 0.97,
+      "c": [
+       106.41,
+       0.97,
+       0.59
+      ],
+      "size": [
+       0.06,
+       0.12,
+       1.39
+      ],
+      "zone": "warning",
+      "reason": "",
+      "kind": ""
+     },
+     {
+      "d": 112.29,
+      "lat": 1.35,
+      "c": [
+       112.34,
+       0.82,
+       0.03
+      ],
+      "size": [
+       0.09,
+       0.05,
+       1.22
+      ],
+      "zone": "warning",
+      "reason": "beyond_height_ref",
+      "kind": ""
+     }
+    ]
+   },
+   {
+    "frame": 1318,
+    "new": [
+     {
+      "d": 67.25,
+      "lat": -1.69,
+      "c": [
+       69.42,
+       -2.28,
+       -1.27
+      ],
+      "size": [
+       2.74,
+       0.5,
+       0.54
+      ],
+      "zone": "gauge",
+      "reason": "",
+      "kind": ""
+     }
+    ],
+    "control_dets": [],
+    "control_warns": [
+     {
+      "d": 110.42,
+      "lat": 1.35,
+      "c": [
+       110.47,
+       0.96,
+       -0.05
+      ],
+      "size": [
+       0.09,
+       0.05,
+       1.22
+      ],
+      "zone": "warning",
+      "reason": "beyond_height_ref",
+      "kind": ""
+     }
+    ]
+   }
+  ],
+  "changed_frames": [
+   1066,
+   1067,
+   1068,
+   1069,
+   1071,
+   1072,
+   1317,
+   1318
+  ],
+  "new_episodes": [
+   [
+    1066,
+    1069
+   ],
+   [
+    1071,
+    1072
+   ],
+   [
+    1317,
+    1318
+   ]
+  ],
+  "episodes": [
+   1,
+   4
+  ]
+ },
+ "new_data_3.jsonl": {
+  "frames": 1409,
+  "stop": [
+   2,
+   2
+  ],
+  "lost": [],
+  "gained": [],
+  "changed_frames": [],
+  "new_episodes": [],
+  "episodes": [
+   1,
+   1
+  ]
+ },
+ "new_data_4.jsonl": {
+  "frames": 1409,
+  "stop": [
+   17,
+   17
+  ],
+  "lost": [],
+  "gained": [],
+  "changed_frames": [],
+  "new_episodes": [],
+  "episodes": [
+   4,
+   4
+  ]
+ },
+ "new_data_5.jsonl": {
+  "frames": 1409,
+  "stop": [
+   32,
+   32
+  ],
+  "lost": [],
+  "gained": [],
+  "changed_frames": [],
+  "new_episodes": [],
+  "episodes": [
+   5,
+   5
+  ]
+ },
+ "new_data_6.jsonl": {
+  "frames": 1409,
+  "stop": [
+   27,
+   27
+  ],
+  "lost": [],
+  "gained": [],
+  "changed_frames": [],
+  "new_episodes": [],
+  "episodes": [
+   6,
+   6
+  ]
+ },
+ "new_data_7.jsonl": {
+  "frames": 1408,
+  "stop": [
+   7,
+   7
+  ],
+  "lost": [],
+  "gained": [],
+  "changed_frames": [],
+  "new_episodes": [],
+  "episodes": [
+   3,
+   3
+  ]
+ },
+ "roundT_doubleT.jsonl": {
+  "frames": 252,
+  "stop": [
+   0,
+   0
+  ],
+  "lost": [],
+  "gained": [],
+  "changed_frames": [],
+  "new_episodes": [],
+  "episodes": [
+   0,
+   0
+  ]
+ },
+ "roundT_pressureGate_roundT.jsonl": {
+  "frames": 268,
+  "stop": [
+   0,
+   0
+  ],
+  "lost": [],
+  "gained": [],
+  "changed_frames": [],
+  "new_episodes": [],
+  "episodes": [
+   0,
+   0
+  ]
+ },
+ "roundT_squareT_pressureGate_squareT.jsonl": {
+  "frames": 545,
+  "stop": [
+   0,
+   0
+  ],
+  "lost": [],
+  "gained": [],
+  "changed_frames": [],
+  "new_episodes": [],
+  "episodes": [
+   0,
+   0
+  ]
+ },
+ "squareT_platform_squareT_switch.jsonl": {
+  "frames": 877,
+  "stop": [
+   37,
+   37
+  ],
+  "lost": [],
+  "gained": [],
+  "changed_frames": [],
+  "new_episodes": [],
+  "episodes": [
+   11,
+   11
+  ]
+ }
+}

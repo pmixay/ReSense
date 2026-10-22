@@ -1,0 +1,65 @@
+{
+ "v120_base": {
+  "far_walker": {
+   "frames": 1183,
+   "stop_frames": 0,
+   "output_frames": 0,
+   "first_stop": null,
+   "bands": {
+    "240-250": {
+     "frames": 94,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "250-260": {
+     "frames": 175,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "260-270": {
+     "frames": 223,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "270-280": {
+     "frames": 238,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "280-290": {
+     "frames": 184,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "290-300": {
+     "frames": 180,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "300-310": {
+     "frames": 89,
+     "stop": 0.0,
+     "output": 0.0
+    }
+   }
+  },
+  "far_251": {
+   "frames": 254,
+   "stop_frames": 0,
+   "output_frames": 0,
+   "first_stop": null,
+   "bands": {
+    "240-250": {
+     "frames": 18,
+     "stop": 0.0,
+     "output": 0.0
+    },
+    "250-260": {
+     "frames": 236,
+     "stop": 0.0,
+     "output": 0.0
+    }
+   }
+  }
+ }
+}

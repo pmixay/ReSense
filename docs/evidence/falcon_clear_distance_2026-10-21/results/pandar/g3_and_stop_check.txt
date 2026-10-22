@@ -1,0 +1,26 @@
+== v1: clear_lost_model + clear_round_down (53fb331, --set)
+recording                                rows    lost_*   changed  med_old  med_new      d% STOP_zero
+doubleT_obstacle                          201     0  0.00%    25.87%     56.1     56.1   0.00%      0
+doubleT_platform                          345    23  6.67%    12.75%    119.0    119.0   0.00%      0
+roundT_doubleT                            252     0  0.00%    15.08%    127.0    127.0   0.00%      0
+roundT_pressureGate_roundT                268     0  0.00%     4.48%     98.0     98.0   0.00%      0
+roundT_squareT_pressureGate_squareT       545     0  0.00%     4.95%    120.0    120.0   0.00%      0
+squareT_platform_squareT_switch           877     0  0.00%    21.55%     87.8     87.8   0.00%      0
+cloud_with_fake_obj                      1510     0  0.00%    18.74%     92.8     92.7  -0.05%      0
+new_data                                11271   173  1.53%     9.64%    120.0    120.0   0.00%      4
+
+== final: clear_lost_bed + clear_round_down (d85e265, defaults)
+recording                                rows    lost_*   changed  med_old  med_new      d% STOP_zero
+doubleT_obstacle                          201     0  0.00%    25.87%     56.1     56.1   0.00%      0
+doubleT_platform                          345     0  0.00%     7.25%    119.0    119.0   0.00%      0
+roundT_doubleT                            252     0  0.00%    15.08%    127.0    127.0   0.00%      0
+roundT_pressureGate_roundT                268     0  0.00%     4.48%     98.0     98.0   0.00%      0
+roundT_squareT_pressureGate_squareT       545     0  0.00%     4.95%    120.0    120.0   0.00%      0
+squareT_platform_squareT_switch           877     0  0.00%    21.55%     87.8     87.8   0.00%      0
+cloud_with_fake_obj                      1510     0  0.00%    18.74%     92.8     92.7  -0.05%      0
+new_data                                11271     0  0.00%     8.22%    120.0    120.0   0.00%      0
+
+== STOP rows: clear_distance > smallest detection distance
+control v1.2.0   STOP rows 791, clear beyond the detection: 257 (max excess 0.050 m)
+v1 (--set)       STOP rows 791, clear beyond the detection: 0 (max excess 0.000 m)
+final d85e265    STOP rows 791, clear beyond the detection: 0 (max excess 0.000 m)

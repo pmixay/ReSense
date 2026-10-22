@@ -1,0 +1,75 @@
+== D_cube03
+frames with truth: 320 |ctl placement - truth| p50 0.42 |cand placement - truth| p50 0.1
+  k=100 X=230.2 truthY=-1.76 ctlY=-1.33 candY=-1.33 ctl_hit=False cand_hit=False
+  k=126 X=195.6 truthY=-1.51 ctlY=-0.82 candY=-0.82 ctl_hit=False cand_hit=False
+  k=152 X=165.2 truthY=-1.24 ctlY=-1.08 candY=-1.08 ctl_hit=False cand_hit=False
+  k=178 X=139.9 truthY=-0.83 ctlY=-0.64 candY=-0.64 ctl_hit=False cand_hit=False
+  k=204 X=119.5 truthY=-0.65 ctlY=-0.45 candY=-0.45 ctl_hit=False cand_hit=False
+  k=230 X=104.0 truthY=-0.51 ctlY=-0.36 candY=-0.36 ctl_hit=False cand_hit=False
+  k=256 X=93.6 truthY=-0.42 ctlY=-0.44 candY=-0.44 ctl_hit=False cand_hit=False
+  k=282 X=87.9 truthY=-0.20 ctlY=-0.32 candY=-0.32 ctl_hit=False cand_hit=False
+  k=308 X=85.3 truthY=-0.13 ctlY=0.38 candY=0.07 ctl_hit=False cand_hit=False
+  k=334 X=84.8 truthY=-0.13 ctlY=0.45 candY=-0.09 ctl_hit=True cand_hit=False
+  k=360 X=84.8 truthY=-0.14 ctlY=0.48 candY=-0.12 ctl_hit=True cand_hit=False
+  k=386 X=84.8 truthY=-0.14 ctlY=0.45 candY=-0.13 ctl_hit=True cand_hit=False
+  k=412 X=84.8 truthY=-0.15 ctlY=0.45 candY=-0.09 ctl_hit=False cand_hit=False
+== S_cube05_100
+frames with truth: 260 |ctl placement - truth| p50 0.87 |cand placement - truth| p50 0.1
+  k=360 X=100.2 truthY=-0.11 ctlY=0.79 candY=-0.23 ctl_hit=False cand_hit=False
+  k=381 X=100.2 truthY=-0.12 ctlY=0.77 candY=-0.19 ctl_hit=False cand_hit=False
+  k=402 X=100.2 truthY=-0.10 ctlY=0.35 candY=-0.19 ctl_hit=True cand_hit=False
+  k=423 X=100.2 truthY=-0.10 ctlY=0.91 candY=-0.18 ctl_hit=True cand_hit=True
+  k=444 X=100.2 truthY=-0.12 ctlY=0.78 candY=-0.18 ctl_hit=True cand_hit=False
+  k=465 X=100.2 truthY=-0.10 ctlY=0.79 candY=-0.19 ctl_hit=False cand_hit=False
+  k=486 X=100.2 truthY=-0.10 ctlY=0.71 candY=-0.11 ctl_hit=False cand_hit=False
+  k=507 X=100.2 truthY=-0.08 ctlY=0.58 candY=-0.14 ctl_hit=False cand_hit=False
+  k=528 X=100.2 truthY=-0.08 ctlY=0.88 candY=-0.18 ctl_hit=False cand_hit=False
+  k=549 X=100.2 truthY=-0.09 ctlY=0.81 candY=-0.19 ctl_hit=False cand_hit=True
+  k=570 X=100.2 truthY=-0.10 ctlY=0.74 candY=-0.30 ctl_hit=False cand_hit=False
+  k=591 X=100.2 truthY=-0.09 ctlY=0.74 candY=-0.20 ctl_hit=True cand_hit=False
+  k=612 X=100.2 truthY=-0.10 ctlY=0.75 candY=-0.25 ctl_hit=False cand_hit=False
+== D_person
+frames with truth: 320 |ctl placement - truth| p50 0.42 |cand placement - truth| p50 0.1
+  k=100 X=230.2 truthY=-1.76 ctlY=-1.33 candY=-1.33 ctl_hit=False cand_hit=False
+  k=126 X=195.6 truthY=-1.51 ctlY=-0.82 candY=-0.82 ctl_hit=False cand_hit=False
+  k=152 X=165.2 truthY=-1.24 ctlY=-1.08 candY=-1.08 ctl_hit=False cand_hit=False
+  k=178 X=139.9 truthY=-0.83 ctlY=-0.64 candY=-0.64 ctl_hit=False cand_hit=False
+  k=204 X=119.5 truthY=-0.65 ctlY=-0.45 candY=-0.45 ctl_hit=False cand_hit=False
+  k=230 X=104.0 truthY=-0.51 ctlY=-0.36 candY=-0.36 ctl_hit=True cand_hit=True
+  k=256 X=93.6 truthY=-0.42 ctlY=-0.44 candY=-0.44 ctl_hit=True cand_hit=True
+  k=282 X=87.9 truthY=-0.20 ctlY=-0.32 candY=-0.32 ctl_hit=True cand_hit=True
+  k=308 X=85.3 truthY=-0.13 ctlY=0.38 candY=0.07 ctl_hit=True cand_hit=True
+  k=334 X=84.8 truthY=-0.13 ctlY=0.45 candY=-0.09 ctl_hit=True cand_hit=True
+  k=360 X=84.8 truthY=-0.14 ctlY=0.48 candY=-0.13 ctl_hit=True cand_hit=True
+  k=386 X=84.8 truthY=-0.14 ctlY=0.45 candY=-0.13 ctl_hit=True cand_hit=True
+  k=412 X=84.8 truthY=-0.15 ctlY=0.45 candY=-0.09 ctl_hit=True cand_hit=True
+== B_person
+frames with truth: 142 |ctl placement - truth| p50 12.52 |cand placement - truth| p50 1.16
+  k=50 X=230.2 truthY=-33.02 ctlY=-2.14 candY=-2.14 ctl_hit=False cand_hit=False
+  k=61 X=225.3 truthY=-31.65 ctlY=-1.62 candY=-1.62 ctl_hit=False cand_hit=False
+  k=72 X=207.8 truthY=-31.58 ctlY=-7.38 candY=-29.94 ctl_hit=False cand_hit=False
+  k=83 X=190.0 truthY=-31.66 ctlY=-9.68 candY=-38.89 ctl_hit=False cand_hit=False
+  k=94 X=171.9 truthY=-31.50 ctlY=-13.19 candY=-28.85 ctl_hit=False cand_hit=False
+  k=105 X=153.5 truthY=-30.12 ctlY=-13.45 candY=-27.53 ctl_hit=False cand_hit=False
+  k=116 X=135.1 truthY=-26.45 ctlY=-12.01 candY=-20.64 ctl_hit=False cand_hit=False
+  k=127 X=116.5 truthY=-20.98 ctlY=-11.26 candY=-19.28 ctl_hit=False cand_hit=False
+  k=138 X=97.6 truthY=-15.23 ctlY=-8.47 candY=-14.89 ctl_hit=False cand_hit=False
+  k=149 X=78.4 truthY=-10.25 ctlY=-6.53 candY=-9.94 ctl_hit=False cand_hit=False
+  k=160 X=59.1 truthY=-6.14 ctlY=-4.51 candY=-6.11 ctl_hit=False cand_hit=True
+  k=171 X=39.7 truthY=-3.16 ctlY=-3.03 candY=-3.14 ctl_hit=True cand_hit=True
+  k=182 X=20.1 truthY=-1.09 ctlY=-1.18 candY=-1.20 ctl_hit=True cand_hit=True
+== C_person
+frames with truth: 153 |ctl placement - truth| p50 1.64 |cand placement - truth| p50 0.53
+  k=0 X=230.2 truthY=-4.26 ctlY=-1.29 candY=-1.29 ctl_hit=False cand_hit=False
+  k=12 X=212.0 truthY=-4.15 ctlY=-2.33 candY=-2.33 ctl_hit=False cand_hit=False
+  k=24 X=193.8 truthY=-3.77 ctlY=-2.09 candY=-2.09 ctl_hit=False cand_hit=False
+  k=36 X=175.7 truthY=-3.85 ctlY=-2.06 candY=-2.06 ctl_hit=False cand_hit=False
+  k=48 X=157.6 truthY=-3.86 ctlY=-2.36 candY=-1.34 ctl_hit=False cand_hit=False
+  k=60 X=139.6 truthY=-3.64 ctlY=-1.18 candY=-1.18 ctl_hit=False cand_hit=False
+  k=72 X=121.6 truthY=-3.52 ctlY=-1.61 candY=-3.16 ctl_hit=False cand_hit=False
+  k=84 X=103.8 truthY=-3.67 ctlY=-2.00 candY=-3.28 ctl_hit=False cand_hit=False
+  k=96 X=86.0 truthY=-3.63 ctlY=-2.51 candY=-3.66 ctl_hit=False cand_hit=True
+  k=108 X=68.3 truthY=-3.41 ctlY=-3.12 candY=-3.36 ctl_hit=True cand_hit=True
+  k=120 X=50.7 truthY=-2.80 ctlY=-2.62 candY=-2.74 ctl_hit=True cand_hit=True
+  k=132 X=33.0 truthY=-1.74 ctlY=-1.64 candY=-1.68 ctl_hit=True cand_hit=True
+  k=144 X=15.3 truthY=-0.62 ctlY=-0.70 candY=-0.71 ctl_hit=True cand_hit=True

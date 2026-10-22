@@ -1,0 +1,230 @@
+{
+ "total": {
+  "lost": 0,
+  "gained": 0,
+  "changed_frames": 8,
+  "planted": {
+   "case": "cloud_with_fake_obj/dedup",
+   "frame": 4,
+   "found": true
+  },
+  "cases": 40
+ },
+ "cases": {
+  "cloud_with_fake_obj/dedup": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": [
+    152,
+    569
+   ]
+  },
+  "cloud_with_fake_obj/drop30_judge7": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": [
+    152
+   ]
+  },
+  "cloud_with_fake_obj/drop30_s1": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": [
+    152
+   ]
+  },
+  "cloud_with_fake_obj/drop30_s2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": [
+    152
+   ]
+  },
+  "cloud_with_fake_obj/drop30_s3": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": [
+    152
+   ]
+  },
+  "cloud_with_fake_obj/hz5": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": [
+    152
+   ]
+  },
+  "cloud_with_fake_obj/nominal": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "cloud_with_fake_obj/pitch_m2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "cloud_with_fake_obj/pitch_p2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": [
+    150
+   ]
+  },
+  "cloud_with_fake_obj/roll_p2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "doubleT_obstacle/dedup": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "doubleT_obstacle/drop30_judge7": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "doubleT_obstacle/drop30_s1": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "doubleT_obstacle/drop30_s2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "doubleT_obstacle/drop30_s3": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "doubleT_obstacle/hz5": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "doubleT_obstacle/nominal": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "doubleT_obstacle/pitch_m2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "doubleT_obstacle/pitch_p2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "doubleT_obstacle/roll_p2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "roundT_squareT_pressureGate_squareT/dedup": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "roundT_squareT_pressureGate_squareT/drop30_judge7": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "roundT_squareT_pressureGate_squareT/drop30_s1": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "roundT_squareT_pressureGate_squareT/drop30_s2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "roundT_squareT_pressureGate_squareT/drop30_s3": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "roundT_squareT_pressureGate_squareT/hz5": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "roundT_squareT_pressureGate_squareT/nominal": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "roundT_squareT_pressureGate_squareT/pitch_m2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "roundT_squareT_pressureGate_squareT/pitch_p2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "roundT_squareT_pressureGate_squareT/roll_p2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "squareT_platform_squareT_switch/dedup": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "squareT_platform_squareT_switch/drop30_judge7": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "squareT_platform_squareT_switch/drop30_s1": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "squareT_platform_squareT_switch/drop30_s2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "squareT_platform_squareT_switch/drop30_s3": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "squareT_platform_squareT_switch/hz5": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "squareT_platform_squareT_switch/nominal": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "squareT_platform_squareT_switch/pitch_m2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "squareT_platform_squareT_switch/pitch_p2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  },
+  "squareT_platform_squareT_switch/roll_p2": {
+   "lost": [],
+   "gained": [],
+   "changed_frames": []
+  }
+ }
+}

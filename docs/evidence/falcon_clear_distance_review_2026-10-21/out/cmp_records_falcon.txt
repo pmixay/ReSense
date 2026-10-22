@@ -1,0 +1,16 @@
+== P4 shipped record vs author control
+{"rows": 4443, "other_fields_differ": {}, "first_rows": {}, "clear_raised": 0, "clear_lowered": 0}
+== control vs final
+{"rows": 4443, "other_fields_differ": {}, "first_rows": {}, "clear_raised": 0, "clear_lowered": 1006}
+== P4 vs final
+{"rows": 4443, "other_fields_differ": {}, "first_rows": {}, "clear_raised": 0, "clear_lowered": 1006}
+== positive control: inject decision
+{"rows": 4443, "other_fields_differ": {"decision": 1}, "first_rows": {"decision": [2000]}, "clear_raised": 0, "clear_lowered": 1006}
+== positive control: inject dets
+{"rows": 4443, "other_fields_differ": {"dets": 1}, "first_rows": {"dets": [2000]}, "clear_raised": 0, "clear_lowered": 1006}
+== positive control: inject nearest
+{"rows": 4443, "other_fields_differ": {"nearest": 1}, "first_rows": {"nearest": [2000]}, "clear_raised": 0, "clear_lowered": 1006}
+== positive control: inject msgs
+{"rows": 4443, "other_fields_differ": {"msgs": 1}, "first_rows": {"msgs": [2000]}, "clear_raised": 0, "clear_lowered": 1006}
+== positive control: inject level
+{"rows": 4443, "other_fields_differ": {"level": 1}, "first_rows": {"level": [2000]}, "clear_raised": 0, "clear_lowered": 1006}

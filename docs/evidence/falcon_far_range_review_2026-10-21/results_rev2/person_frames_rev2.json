@@ -1,0 +1,43 @@
+{
+ "base": {
+  "frames_with_person": 2676,
+  "person_stop": 1379,
+  "person_warn_only": 134,
+  "decisions": {
+   "CAUTION": 1294,
+   "STOP": 1382
+  },
+  "go_with_person_inside_clear_and_monitored": 0,
+  "go_with_person_inside_monitored": 0,
+  "go_past_examples": [],
+  "go_past_x_range": null,
+  "first_person_stop": [
+   2950,
+   127.3
+  ]
+ },
+ "rev2": {
+  "frames_with_person": 2676,
+  "person_stop": 1519,
+  "person_warn_only": 39,
+  "decisions": {
+   "CAUTION": 263,
+   "GO": 894,
+   "STOP": 1519
+  },
+  "go_with_person_inside_clear_and_monitored": 0,
+  "go_with_person_inside_monitored": 0,
+  "go_past_examples": [],
+  "go_past_x_range": null,
+  "first_person_stop": [
+   2756,
+   150.5
+  ]
+ },
+ "transitions": {
+  "A_person_warn_or_stop__B_GO": [],
+  "A_person_stop__B_no_person_stop": [],
+  "A_person_warn_or_stop__B_neither": [],
+  "B_person_warn_or_stop__A_neither": 45
+ }
+}

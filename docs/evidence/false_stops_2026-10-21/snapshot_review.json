@@ -1,0 +1,384 @@
+{
+ "reviewed": 37,
+ "agree": 37,
+ "disagree": 0,
+ "note": "verdicts by the author from png/<id>.png (BEV and side, onset and pass-by); not a human confirmation",
+ "rows": [
+  {
+   "id": "squareT_platform_squareT_switch:312",
+   "class": "in_envelope",
+   "script_ambiguous": [
+    "frames_disagree(0.50)",
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree (boundary)",
+   "picture_shows": "platform edge / kerb at |dy| 1.42 m, h 0.3 m, along the track on the right: exactly at the 1.4 m limit",
+   "human_confirm": "platform kerb at the limit: in-envelope or side?"
+  },
+  {
+   "id": "squareT_platform_squareT_switch:316",
+   "class": "in_envelope",
+   "script_ambiguous": [
+    "frames_disagree(0.50)",
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree (boundary)",
+   "picture_shows": "platform edge / kerb at |dy| 1.42 m, h 0.3 m, along the track on the right: exactly at the 1.4 m limit",
+   "human_confirm": "platform kerb at the limit: in-envelope or side?"
+  },
+  {
+   "id": "squareT_platform_squareT_switch:437",
+   "class": "side",
+   "script_ambiguous": [],
+   "review_verdict": "agree",
+   "picture_shows": "the first wall of the diverging track (switch) on the right, 2.0-2.9 m from the axis, 83 m at onset",
+   "human_confirm": ""
+  },
+  {
+   "id": "squareT_platform_squareT_switch:490",
+   "class": "side",
+   "script_ambiguous": [],
+   "review_verdict": "agree",
+   "picture_shows": "the first wall of the diverging track (switch) on the right, 2.0-2.9 m from the axis, 83 m at onset",
+   "human_confirm": ""
+  },
+  {
+   "id": "squareT_platform_squareT_switch:500",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree",
+   "picture_shows": "straight tunnel at 19-28 m, the position is on the right wall (|dy| 2.2 m): the far axis (curvature 2.5e-4) had put it 3 m sideways",
+   "human_confirm": "wall, no object: confirm there is nothing on the wall"
+  },
+  {
+   "id": "squareT_platform_squareT_switch:522",
+   "class": "side",
+   "script_ambiguous": [],
+   "review_verdict": "agree",
+   "picture_shows": "the first wall of the diverging track (switch) on the right, 2.0-2.9 m from the axis, 83 m at onset",
+   "human_confirm": ""
+  },
+  {
+   "id": "squareT_platform_squareT_switch:527",
+   "class": "side",
+   "script_ambiguous": [],
+   "review_verdict": "agree",
+   "picture_shows": "the first wall of the diverging track (switch) on the right, 2.0-2.9 m from the axis, 83 m at onset",
+   "human_confirm": ""
+  },
+  {
+   "id": "squareT_platform_squareT_switch:580",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree",
+   "picture_shows": "straight tunnel at 19-28 m, the position is on the right wall (|dy| 2.2 m): the far axis (curvature 2.5e-4) had put it 3 m sideways",
+   "human_confirm": "wall, no object: confirm there is nothing on the wall"
+  },
+  {
+   "id": "squareT_platform_squareT_switch:612",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree",
+   "picture_shows": "wall / platform side at dy 1.9 m in the straight tunnel",
+   "human_confirm": ""
+  },
+  {
+   "id": "squareT_platform_squareT_switch:640",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric",
+    "beyond_band(closest 27.7 m)"
+   ],
+   "review_verdict": "agree",
+   "picture_shows": "straight tunnel at 19-28 m, the position is on the right wall (|dy| 2.2 m): the far axis (curvature 2.5e-4) had put it 3 m sideways",
+   "human_confirm": "wall, no object: confirm there is nothing on the wall"
+  },
+  {
+   "id": "squareT_platform_squareT_switch:692",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric",
+    "beyond_band(closest 28.9 m)"
+   ],
+   "review_verdict": "agree",
+   "picture_shows": "straight tunnel at 19-28 m, the position is on the right wall (|dy| 2.2 m): the far axis (curvature 2.5e-4) had put it 3 m sideways",
+   "human_confirm": "wall, no object: confirm there is nothing on the wall"
+  },
+  {
+   "id": "new_data:23",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree",
+   "picture_shows": "right wall of the straight tunnel (|dy| 2.3 m) at the position: far axis 1.7 m off",
+   "human_confirm": "wall, no object: confirm"
+  },
+  {
+   "id": "new_data:1378",
+   "class": "side",
+   "script_ambiguous": [],
+   "review_verdict": "agree",
+   "picture_shows": "row of columns (vertical stripes) of a multi-track station at dy 1.7 m; the onset box is tall and thin (1.9 x 0.3 m)",
+   "human_confirm": ""
+  },
+  {
+   "id": "new_data:1393",
+   "class": "side",
+   "script_ambiguous": [],
+   "review_verdict": "agree",
+   "picture_shows": "row of columns (vertical stripes) of a multi-track station at dy 1.7 m; the onset box is tall and thin (1.9 x 0.3 m)",
+   "human_confirm": ""
+  },
+  {
+   "id": "new_data:1847",
+   "class": "side",
+   "script_ambiguous": [],
+   "review_verdict": "agree",
+   "picture_shows": "the same column row (dy 1.7 m); a tall thin object at onset, 136-155 m",
+   "human_confirm": ""
+  },
+  {
+   "id": "new_data:2668",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree (boundary)",
+   "picture_shows": "low ledge at dy 1.43 m, h 0.2-0.3 m, 42 m at onset (a low object)",
+   "human_confirm": "low kerb at the 1.4 m limit"
+  },
+  {
+   "id": "new_data:2729",
+   "class": "in_envelope",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:mixed,dy_near_limit"
+   ],
+   "review_verdict": "agree",
+   "picture_shows": "a large dense block in the gauge ahead (30 000 returns in the window): another train or station equipment in front of the train",
+   "human_confirm": "real in-envelope structure? what is it"
+  },
+  {
+   "id": "new_data:3060",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree",
+   "picture_shows": "wide-station wall rows at dy 2.0 m",
+   "human_confirm": ""
+  },
+  {
+   "id": "new_data:5065",
+   "class": "side",
+   "script_ambiguous": [],
+   "review_verdict": "agree",
+   "picture_shows": "the same column row (dy 1.7 m); a tall thin object at onset, 136-155 m",
+   "human_confirm": ""
+  },
+  {
+   "id": "new_data:5699",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree",
+   "picture_shows": "left gallery wall with openings at dy -1.9 m",
+   "human_confirm": ""
+  },
+  {
+   "id": "new_data:5716",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree (boundary)",
+   "picture_shows": "low kerb / ledge near the 1.4 m limit (h 0.2-0.5 m)",
+   "human_confirm": "low kerb at the limit"
+  },
+  {
+   "id": "new_data:5901",
+   "class": "in_envelope",
+   "script_ambiguous": [
+    "frames_disagree(0.67)",
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree (boundary)",
+   "picture_shows": "low kerb / ledge near the 1.4 m limit (h 0.2-0.5 m)",
+   "human_confirm": "low kerb at the limit"
+  },
+  {
+   "id": "new_data:6859",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric,few_points"
+   ],
+   "review_verdict": "agree (boundary)",
+   "picture_shows": "low kerb / ledge near the 1.4 m limit (h 0.2-0.5 m)",
+   "human_confirm": "low kerb at the limit"
+  },
+  {
+   "id": "new_data:7338",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree",
+   "picture_shows": "left wall / trough at dy -1.7 m",
+   "human_confirm": ""
+  },
+  {
+   "id": "new_data:7347",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree",
+   "picture_shows": "left wall / trough at dy -1.7 m",
+   "human_confirm": ""
+  },
+  {
+   "id": "new_data:7859",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree",
+   "picture_shows": "right wall in a gentle curve (dy 2.0 m): the 5.5-6.0 m long onset clusters (K2's mid-range edge episodes) are the wall",
+   "human_confirm": ""
+  },
+  {
+   "id": "new_data:7868",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree",
+   "picture_shows": "right wall in a gentle curve (dy 2.0 m): the 5.5-6.0 m long onset clusters (K2's mid-range edge episodes) are the wall",
+   "human_confirm": ""
+  },
+  {
+   "id": "new_data:7943",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:side_by_position"
+   ],
+   "review_verdict": "agree (rests on odometry)",
+   "picture_shows": "tunnel straight at the pass-by, the carried position is 7-9 m beside it, in the rock: nothing can be seen there; the class rests on the transport (the onset axis curved 7-9 m away, the real tunnel does not)",
+   "human_confirm": "side by position: nothing seen; confirm by the far frames"
+  },
+  {
+   "id": "new_data:9125",
+   "class": "side",
+   "script_ambiguous": [],
+   "review_verdict": "agree",
+   "picture_shows": "column / wall row at dy -1.8 m, h 0.9 m",
+   "human_confirm": ""
+  },
+  {
+   "id": "new_data:9263",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:side_by_position"
+   ],
+   "review_verdict": "agree (rests on odometry)",
+   "picture_shows": "tunnel straight at the pass-by, the carried position is 7-9 m beside it, in the rock: nothing can be seen there; the class rests on the transport (the onset axis curved 7-9 m away, the real tunnel does not)",
+   "human_confirm": "side by position: nothing seen; confirm by the far frames"
+  },
+  {
+   "id": "new_data:9271",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:side_by_position"
+   ],
+   "review_verdict": "agree (rests on odometry)",
+   "picture_shows": "tunnel straight at the pass-by, the carried position is 7-9 m beside it, in the rock: nothing can be seen there; the class rests on the transport (the onset axis curved 7-9 m away, the real tunnel does not)",
+   "human_confirm": "side by position: nothing seen; confirm by the far frames"
+  },
+  {
+   "id": "new_data:9284",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:side_by_position"
+   ],
+   "review_verdict": "agree (rests on odometry)",
+   "picture_shows": "tunnel straight at the pass-by, the carried position is 7-9 m beside it, in the rock: nothing can be seen there; the class rests on the transport (the onset axis curved 7-9 m away, the real tunnel does not)",
+   "human_confirm": "side by position: nothing seen; confirm by the far frames"
+  },
+  {
+   "id": "new_data:9786",
+   "class": "bed_rail",
+   "script_ambiguous": [],
+   "review_verdict": "agree (nothing there)",
+   "picture_shows": "at the carried position only bed and rails: the 0.1 x 0.45 x 0.24 m onset cluster is not there at 19 m",
+   "human_confirm": "bed fitting or a phantom?"
+  },
+  {
+   "id": "new_data:9800",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree",
+   "picture_shows": "left wall at dy -1.84 m, h 2.0 m",
+   "human_confirm": ""
+  },
+  {
+   "id": "new_data:10486",
+   "class": "side",
+   "script_ambiguous": [
+    "frames_ambiguous",
+    "flags:on_tunnel_fabric"
+   ],
+   "review_verdict": "agree (boundary)",
+   "picture_shows": "low kerb / ledge near the 1.4 m limit (h 0.2-0.5 m)",
+   "human_confirm": "low kerb at the limit"
+  },
+  {
+   "id": "new_data:10644",
+   "class": "side",
+   "script_ambiguous": [],
+   "review_verdict": "agree (boundary)",
+   "picture_shows": "long low continuous ledge on the track side (dy 1.4-1.8 m, h 0.3-0.9 m); the onset boxes are 5.7 x 2.1 x 0.2 and 7.9 x 1.9 x 0.6 m",
+   "human_confirm": "long low ledge: object or fabric?"
+  },
+  {
+   "id": "new_data:10648",
+   "class": "side",
+   "script_ambiguous": [],
+   "review_verdict": "agree (boundary)",
+   "picture_shows": "long low continuous ledge on the track side (dy 1.4-1.8 m, h 0.3-0.9 m); the onset boxes are 5.7 x 2.1 x 0.2 and 7.9 x 1.9 x 0.6 m",
+   "human_confirm": "long low ledge: object or fabric?"
+  }
+ ]
+}

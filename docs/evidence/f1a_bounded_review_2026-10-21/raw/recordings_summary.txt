@@ -1,0 +1,28 @@
+== doubleT_obstacle
+{'frames': 201, 'differing': 0, 'first_diff': None, 'stop_a': 193, 'stop_b': 193, 'stop_added': [], 'stop_lost': [], 'episodes_a': 1, 'episodes_b': 1}
+  traced==plain differing 0
+  calls 201 new-branch rejections 0 frames 0 not_pre0 0 not_pre1 0 ctrl_only 0
+== cloud_with_fake_obj
+{'frames': 1510, 'differing': 0, 'first_diff': None, 'stop_a': 450, 'stop_b': 450, 'stop_added': [], 'stop_lost': [], 'episodes_a': 8, 'episodes_b': 8}
+  traced==plain differing 0
+  calls 1510 new-branch rejections 0 frames 0 not_pre0 0 not_pre1 0 ctrl_only 0
+== doubleT_platform
+{'frames': 345, 'differing': 168, 'first_diff': 31, 'stop_a': 0, 'stop_b': 0, 'stop_added': [], 'stop_lost': [], 'episodes_a': 0, 'episodes_b': 0}
+  traced==plain differing 0
+  calls 345 new-branch rejections 7 frames 4 not_pre0 0 not_pre1 0 ctrl_only 0
+== roundT_doubleT
+{'frames': 252, 'differing': 0, 'first_diff': None, 'stop_a': 0, 'stop_b': 0, 'stop_added': [], 'stop_lost': [], 'episodes_a': 0, 'episodes_b': 0}
+  traced==plain differing 0
+  calls 252 new-branch rejections 0 frames 0 not_pre0 0 not_pre1 0 ctrl_only 0
+== roundT_pressureGate_roundT
+{'frames': 268, 'differing': 0, 'first_diff': None, 'stop_a': 0, 'stop_b': 0, 'stop_added': [], 'stop_lost': [], 'episodes_a': 0, 'episodes_b': 0}
+  traced==plain differing 0
+  calls 268 new-branch rejections 0 frames 0 not_pre0 0 not_pre1 0 ctrl_only 0
+== roundT_squareT_pressureGate_squareT
+{'frames': 545, 'differing': 0, 'first_diff': None, 'stop_a': 0, 'stop_b': 0, 'stop_added': [], 'stop_lost': [], 'episodes_a': 0, 'episodes_b': 0}
+  traced==plain differing 0
+  calls 545 new-branch rejections 0 frames 0 not_pre0 0 not_pre1 0 ctrl_only 0
+== squareT_platform_squareT_switch
+{'frames': 877, 'differing': 0, 'first_diff': None, 'stop_a': 37, 'stop_b': 37, 'stop_added': [], 'stop_lost': [], 'episodes_a': 11, 'episodes_b': 11}
+  traced==plain differing 0
+  calls 877 new-branch rejections 0 frames 0 not_pre0 0 not_pre1 0 ctrl_only 0
