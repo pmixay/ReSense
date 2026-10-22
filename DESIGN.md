@@ -321,7 +321,7 @@ passing previews skip it.
 
 ### Driver's cab and restrained controls
 
-The wall-mounted display of earlier passes (`trainInterior.ts`) is gone: the user
+The wall-mounted display of earlier passes (`trainInterior.ts`, removed in commit `7017a02`; its role is taken by [`cabEntry.ts`](webapp/frontend/src/player/cabEntry.ts) and [`cockpit.ts`](webapp/frontend/src/player/cockpit.ts)) is gone: the user
 asked for the Player to be a driver's cab instead of a screen on a wall, then
 corrected a first spaceship styling to a realistic metro cab in the application's
 general style, with more detail (see Elevation & Depth).
