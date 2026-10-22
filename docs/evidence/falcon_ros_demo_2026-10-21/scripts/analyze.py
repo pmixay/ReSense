@@ -17,7 +17,7 @@ def idx(stamp):
 ins = {}
 for e in ev:
     if e["topic"] == "in":
-        j = idx(e["stamp"]);
+        j = idx(e["stamp"])
         if j is not None and j not in ins: ins[j] = e["t"]
 frames = {}          # bag index -> first frame-kind status
 extra_frame_status = 0
