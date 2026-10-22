@@ -1,0 +1,13 @@
+{
+ "d0": 460.82872873326426,
+ "d_per_frame": -0.11314503830733988,
+ "speed_m_per_s": 1.131,
+ "points_in_fit": 173,
+ "first_frame_with_object_on_the_line": 2713,
+ "distance_at_frame_2972": 124.56,
+ "distance_at_3033": 115.08,
+ "distance_at_3200": 97.17,
+ "tolerance_m": 3.5,
+ "record_stop_frames_2600_3400": 385,
+ "record_stop_frames_2600_3400_not_on_person": []
+}
