@@ -14,6 +14,63 @@ dates from 25.09. **The published release is v1.0.0 only.** 1.1.0 (sealed 16.10)
 [`README.md`](README.md), [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
 20-minute, 13 km recording `new_data`.
 
+## [1.3.0] — draft, unreleased: the integration of 21–22.10 (branch `claude/integration-1.3`)
+
+**State (draft by the integration agent; the captain's docs pass and P4's independent acceptance follow).** All four version
+declarations are 1.3.0. Measured detector tree `671ac9e`; the release commit `ed67d25` differs from it only by version
+strings and two YAML comments. Evidence: [`docs/evidence/integration_1.3_2026-10-21/README.md`](docs/evidence/integration_1.3_2026-10-21/README.md).
+Every row below is against a fresh v1.2.0 (`3b73bbe`) run on the same data. Not a release, not a G3 run.
+
+### Detector
+
+- **K2 union (curve gauge as a second gauge that only adds obstacles), on.** `track.axis_joint_fit` true,
+  `axis_joint_range` false, `axis_joint_min_curvature` 1e-4, `axis_joint_union` true. On a curve frame the joint
+  rail + boundary shape adds obstacles the base gauge does not report; nothing the base gauge reports is changed.
+  Range at the same object placement: curve person first STOP 46.49 → **71.19 m** (`roundT_doubleT`) and
+  76.89 / 84.25 → **94.58 / 104.98 m** (`roundT_pressureGate_roundT`); Falcon manual path first person STOP
+  124.84 → **126.36 m**, 0 of 1,360 person STOP frames lost. Cost: ride +3 STOP episodes (26 → 29), traced; one STOP
+  onset one frame later with the train standing (range job D_cube05 frame 330), accepted by the user; per-frame time
+  +25–38 % at p50 (K2 review, shared machine).
+- **Falcon clear distance.** `health.clear_lost_bed` and `clear_round_down` on: clear distance is 0 when the track
+  model's bed leaves the calibrated mount plane, and a bounded clear distance is rounded down. Clear distance only
+  goes down (Falcon 1,006 rows lowered, 0 raised; STOP rows with clear beyond the nearest STOP detection 575 → 0);
+  decisions, detections and warnings unchanged. With a lost bed, clear is 0 without a health message (accepted).
+- **Falcon far range (revision 2), on under the Falcon profiles only.** `falcon_ros` first person STOP 127.1 →
+  **150.5 m**, held STOP 114.4–123.0 → **129.4–135.6 m** over six start frames, false STOP episodes 3 → 0 on the whole
+  recording; 0 GO frames with the person inside the reported clear range. Pandar rows unchanged.
+- **Track opinion 1.3:** `tracking.doubt_falcon` (default true = v1.2.0 behaviour) and an off-by-default model file;
+  identical to v1.2.0 at its defaults (0 differing rows on the gate, the ride, Falcon and the marked bags).
+- **Integration fix:** the K2 curve pass now saves and restores the far-range state of the frame; without it the
+  far line's report cap was lost on curve frames under the Falcon profiles (728 rows with a larger clear / monitored
+  range, 4 GO frames with the person inside the monitored range).
+
+### Node
+
+- **The node now uses the conservative range policy by default; `clear_range_policy:=legacy` restores the old
+  behaviour.** Decisions, detections and warnings are identical (Falcon 2 × 4,443 frames, 15,269 Pandar gate frames);
+  only the reported clear range changes and never upward. With a named sensor prior the range is capped by the
+  small-target density limit (`pandar128`: at most 88.7 m; `falcon_prime`: Falcon 4,050 of 4,443 rows lowered). **With
+  `range_sensor_model` unknown (the default `manual` profile, the image's default command) the reported clear distance
+  is 0 on every frame**; use `sensor_profile:=pandar128` / `falcon_ros` or `range_sensor_model`.
+
+### Release rows (final tree, against fresh v1.2.0)
+
+| row | v1.2.0 | 1.3.0 |
+|---|---|---|
+| full regression gate, no `--allow` | PASS | **PASS** |
+| X3 (40 cases, 260 comparisons) | reference | **PASS**, 0 changed (0 STOP frames lost or gained per frame) |
+| ride events / STOP episodes / STOP frames | 23 / 26 / 111 | 25 / 29 / 119 |
+| five empty recordings, STOP episodes | 11 | 11 |
+| set O STOP frames | 450 | 450 |
+| marked bags STOP frames | 126 / 185 / 142 | identical, every marked object identical |
+| Falcon manual: person STOP lost, first STOP, episodes (false) | —, 124.8 m, 7 (2) | 0, 126.4 m, 12 (2) |
+| Falcon `falcon_ros`: person STOP lost, first STOP, episodes (false) | —, 127.1 m, 8 (3) | 0, 150.5 m, 13 (0) |
+| full test suite | — | 2,551 passed; 1 fails identically on v1.2.0 (`test_rail_start`, needs the ride) |
+
+False-alarm budget (user's terms, +11 STOP episodes over Falcon + ride + five empty): ride +3 (attributed, K2); Falcon
++5 on each path, all inside the person's own STOP sequence; false episodes on Falcon 2 → 2 (manual) and 3 → 0
+(`falcon_ros`); five empty +0.
+
 ## [1.2.0] — unreleased: LiDAR integration candidate of 18.10, the integration of 19.10 and the work of 20.10
 
 **State, 20.10 evening (`main` `8453458`).** All four version declarations are 1.2.0. `python3 scripts/detector_freeze.py verify`
