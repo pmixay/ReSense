@@ -146,7 +146,21 @@ is the user's call. The new test `test_default_clear_range_policy_is_conservativ
 ## 6. Version and seal
 
 Version 1.3.0 in `pyproject.toml`, `resense/__init__.py`, `resense_ros/package.xml`, `resense_ros/setup.py`
-(`tests/test_release.py` 53 passed). Seal: see the section appended below once the release gate has run.
+(`tests/test_release.py` passes).
+
+**Reseal (requested by the captain's session for 1.3.0; confirmed by the user in this session, 22.10).**
+
+* Strict full regression gate of the release commit **`ed67d25`** in a clean detached worktree (`scripts/relgate.sh`):
+  `GATE PASS`, exit 0, `allow` / `worse_gated` / `missing_gated` / `worse_allowed` / `missing_allowed` all empty,
+  no config overrides, `uncommitted_detector_changes` []. Baseline `regression_baseline_2026-09-29_shell_off.json`
+  (the R3 seal's). Ride 25 / 29 / 119, five empty 11. Its 15,269 per-frame rows equal the measured tree `671ac9e`'s
+  (0 differ). Files: `gate_release_ed67d25.json`, `.txt`, `runs/gate/work_rel_ed67d25.tar.xz`.
+* `detector_freeze.py create` → `docs/evidence/detector_freeze_2026-10-22_1.3.0.json`: **42 files, source
+  `853a05b73877df25cd99faf165d0103c7f390802fa452b97247ab6b0fb162d7d`**, measured commit `ed67d25`. The
+  `authorization` and `review_status` fields were then written by hand (as for the R3 seal); `verify` checks the files.
+* `DEFAULT_MANIFEST` points to it; `python scripts/detector_freeze.py verify` **PASS**;
+  `tests/test_detector_freeze.py` + `tests/test_release.py`: 65 passed.
+* The 1.2.0 R3 seal (`detector_freeze_2026-10-20_1.2.0_r3.json`) is kept as superseded.
 
 ## 7. Not done / unverified
 
