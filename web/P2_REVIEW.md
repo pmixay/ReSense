@@ -3,7 +3,7 @@
 > **Purpose:** each organizer requirement P2's work covers, its evidence, what is left, and the repeatable P2 checks.
 > **Audience:** team, reviewers · **Owner:** P2 for the interface; the pitch, deck and demo are the
 > captain's (P1) since 29.09 evening · **Language:** EN
-> **Last verified:** 2026-09-29 evening: ownership (P2 declined the pitch on 29.09 evening), the deck
+> **Last verified:** 2026-10-22: requirement section numbers against the specification, file names, scripts and flags in the checks, the evidence JSON numbers (83 passed / 0 skipped, 18 files / 4 760 records, 4 captures / 982 statuses, STOP 56.1 m), the overview video length (180 s) and the links re-checked against 1.3.0 (`f24d939`); earlier: 2026-09-29 evening: ownership (P2 declined the pitch on 29.09 evening), the deck
 > rebuild and the demo path checked; the media hashes of 28.09 below are historical (the deck and the
 > video were rebuilt after them)
 > **Status:** historical acceptance basis, supplemented by the
@@ -19,7 +19,7 @@ layouts and label tool: [`README.md`](README.md).
 | organizer requirement | P2 work and evidence | left (P2 unless noted) |
 |---|---|---|
 | §4: Docker → bag → raw cloud → detection → distance; preferably live | RViz layout with both known raw-cloud topics, corridor, boxes and status text; Foxglove layout; archival Docker/RViz chain [`docs/video/docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4); the browser's bundled roslib tested across subscribe, STOP, expiry, recovery and disconnect; CI on `main` runs the remote-viewer probe in a second container with link pause and recovery (`scripts/p2_viewer_test.sh`) | the live remote demo from a physical second device (visual layout import, link loss and recovery) at both rehearsals |
-| §5, §7.2: short video, accessible documentation | current overview is 3:00 (180.000 s remeasured by ffprobe 19.10), H.264/AAC with subtitles; older 2:50 descriptions are historical. The source-backed 18-slide draft is separate from the earlier 16-slide deck | final release-matched video, deck numbers and P1 approval remain pending; [media source](../docs/video/README.md) |
+| §5, §7.2: short video, accessible documentation | current overview is 3:00 (180.000 s remeasured by ffprobe 19.10), H.264/AAC with subtitles; older 2:50 descriptions are historical. The source-backed 18-slide draft (folder removed 19.10; git history keeps it) was separate from the earlier 16-slide deck | final release-matched video, deck numbers and P1 approval remain pending; [media source](../docs/video/README.md) |
 | §8.5: robustness, tests, honest documentation | live validity contract, STOP hold, stale overlays, report schema v2, label import and numeric validation, Foxglove split-advertisement checks; browser tests cannot skip silently in CI | the organizers' stand is not available to the team |
 | §8.6: easy launch | [`README.md`](README.md): offline replay, browser validation, live Foxglove; the jury path (`scripts/play_bag.sh`, Docker CI) is P1's | — |
 | §8.7–8.8: approach, trade-offs, pitch | deck with speaker notes in the spec's order (the «увидел за 56 м» main shot on slide 9); in-sample and held-out figures labelled; misses and false alarms named; the team's approach to other teams' ideas (8 gated, 5 rejected, `shell` switched off after our safety review); no claims of arbitrary mounts, ready braking integration or unmeasured competitor accuracy | the captain: named deck, two rehearsals, the defence on 23.10 |
