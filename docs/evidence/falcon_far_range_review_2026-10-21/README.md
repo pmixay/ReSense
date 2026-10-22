@@ -201,3 +201,95 @@ RESENSE_REPO=<checkout> python $S/pandar_sample.py --cache <cache> --work <out> 
 
 Scripts expect `/home/user/rv` and `/home/user/data`; paths are at the top of each script. Raw outputs: `raw/full_replays.tar.xz`
 (5 full replays), `raw/scenes.tar.xz` (164 scene runs and their specs), `raw/pandar_rows.tar.xz`, `raw/matrix.tar.xz`, `raw/starts.tar.xz`.
+
+---
+
+# Re-review: revision 2 (`claude/falcon-far-range-1.3` head `aec8b69`, detector `c431b2e`), 22.10
+
+Asked by the captain's session. Its questions, with my answers. The rev-1 section above is kept as history.
+`git diff c431b2e aec8b69 -- resense configs ros2_ws native` is empty. Checkout: a detached worktree `c431b2e` with its own
+native build. Nothing was downloaded from Google Drive; the Pandar sample reused my existing caches.
+
+## Verdict (revision 2): **ACCEPT WITH CONDITIONS**
+
+Every hard row I re-derived holds:
+* **No STOP lost or delayed** against v1.2.0: whole recording, 6 start frames, 82 scenes, and a matrix on seeds 70 and 71, which the author did not use.
+* **F1 is fixed as a regression.** The candidate has 0 GO-with-target-inside-clear frames that v1.2.0 does not have, everywhere I looked.
+* **The range gain is real and on the person:** held STOP 129.4–135.5 m against 114.4–123.0 m.
+* **Pandar is unchanged.**
+
+The one remaining finding (R2-1) concerns the stated turnout residual, which the README calls "physically impossible". It is
+reachable. It creates no lost STOP and no false STOP. It is a false-clear claim to about 390 m in a turnout geometry that does not occur in
+the data. Condition: correct that README sentence and file the residual. No detector change is required for this lane under the
+user's rules.
+
+| # | severity | finding | reproducer |
+|---|---|---|---|
+| R2-1 | Medium (not blocking: no STOP lost, no false STOP; a false clear claim) | **The C3 guard misses passable turnout openings.** The guard ends a confirming side at a gap ≥ √(2R(d+1.6)) (37–41 m at d 1.9–2.5 m, R 200 m). That formula assumes the diverging curve starts at the gap. A curve starting before the gap only needs the train's envelope to cross the boundary line, which takes an opening of √(2R)·(√(d+1.6) − √(d−1.6)): 21.5–26.5 m at R 200 m and 26.4–32.4 m at R 300 m. Synthetic, physically consistent scenes (the train envelope ±1.6 m is checked to be free of every structure point): a straight dense wall with such an opening on the diverging side and a straight wall opposite. The far axis trusts the straight line to **392 m, error 104–196 m, in 24 / 24 wall cases** (R 200 / 300, d 1.9 / 2.2 / 2.5, Xc 110 / 140, both sides). A 25 m column row at d 2.5 m, R 200 m: 2 more cases fail (valid 372 m). 30 m column rows, which is the real recording's spacing: fail-safe (the support ends before the curve). The README's "physically impossible for R ≥ 200 m under the stated envelope" is therefore wrong. v1.2.0 trusts its near model only to 107–175 m. The real Falcon scene cannot be exploited this way: the right column row stands 1.35–2.2 m from the track, too close for an R 200 m exit without hitting a column. | `scripts/turnout_probe.py --out t.json` (RESENSE_REPO = `c431b2e`) → `results_rev2/turnout_probe_rev2.json` |
+| R2-2 | Note | **The union adds points but changes cluster shapes.** Point level: correct, a point takes whichever lateral is nearer the centre, so no v1.2.0 corridor point leaves the corridor beyond `far.valid`. Up to `far.valid` the far line still *replaces* the near laterals, as in rev 1. At cluster level the two hypotheses can merge a person with a wall. Example, start 1800, frames 2704–2705: one 6.4 × 2.9 m detection holding the person (18 points at lat −0.2, up to 1.65 m) and the left wall (15 points at lat 1.2–2.75), centre between them. It STOPs. A merge could also produce a cluster that a size rule rejects, which would lose a STOP. I found none: 0 lost in every test. | `results_rev2/starts_rev2.txt`; the frame check in the item 2 answer |
+
+## 1. F1: union corridor (A6), report cap (A7), report lag (A9 / A10). Is "0 new" right?
+
+* **Whole recording** (`run_far.py` on `c431b2e`, `person_frames.py`): 0 GO frames with the person inside clear and monitored (v1.2.0 0; rev 1 30).
+  0 frames where v1.2.0 had a person warning or STOP and rev 2 has neither. First STOP 150.5 m (frame 2756); held STOP 129.4 m.
+* **6 starts**: 0 at every start. v1.2.0 has 1 at the 2400 start. Table (my rows reproduce the author's exactly):
+
+| start | v1.2.0 first / held, eps (false), GO-in | rev 2 first / held, eps (false), GO-in |
+|---|---|---|
+| 0 | 127.3 / 123.0, 8 (3), 0 | 150.5 / 129.4, 13 (0), 0 |
+| 600 | 127.1 / 120.5, 9 (2), 0 | 150.4 / 135.4, 8 (0), 0 |
+| 1200 | 127.3 / 114.4, 11 (3), 0 | 150.5 / 135.0, 7 (0), 0 |
+| 1800 | 127.3 / 122.4, 9 (1), 0 | 150.5 / 129.4, 15 (1), 0 |
+| 2100 | 124.0 / 122.3, 8 (2), 0 | 150.5 / 135.5, 8 (0), 0 |
+| 2400 | 123.4 / 120.5, 7 (2), 1 | 150.5 / 132.2, 9 (0), 0 |
+
+* **82 scenes** (all re-run on `c431b2e`; v1.2.0 rows are mine from rev 1): GO-inside-clear frames 92 for v1.2.0, **43** for rev 2.
+  Per frame and target, **0 rev-2 frames that v1.2.0 does not also have** (`results_rev2/scenes_rev2_compare.txt`). The author's claim is
+  right. False episodes 141 → 81. Added only in `curve_all_xc150_R300_d+1` (+1) and the non-physical `row_offset_+0.8` (+2), as in rev 1 (F4).
+  0 lost or delayed STOPs, by stop frames, first STOP or held STOP (tolerance 2 frames / 2 m).
+* **Matrix, seeds 70 and 71** (mine, not used before): `--check-prefix` 0 / 310 for both. Criteria 7–10 pass. Approach first STOP
+  133–139 m against 109–117 m. GO-inside-clear **0 / 0** (rev 1 had 324 on seeds 40 / 41). No case with fewer STOP frames.
+* **Is "0 new" the right bar?** Yes, for this lane. The bar asks that the change create no GO-with-target-inside-clear frame v1.2.0 does not have, and
+  it creates none. The 43 inherited frames are v1.2.0's near-model false clears where no far axis forms. They should be filed for
+  the clear-distance lane, not counted against this change. The positive control is rev 1, which my tools flagged at 30 / 827 / 324 frames.
+  A9 / A10 change only the reported `clear` / `monitored`. The author states, and my whole-recording replay agrees, that the decisions and
+  detections equal the uncapped A7 build's.
+
+## 2. Range claims and the 13 episodes
+
+* Held STOP 129.4–135.5 m against 114.4–123.0 m at the 6 starts: **confirmed** (table above).
+* First STOP 150.4–150.5 m at every start, intermittent: **confirmed**. Start 0: 3-frame episode 2756–2758, then 2–15-frame episodes
+  until the STOP is held from frame 2927 (129.4 m).
+* **Episodes 8 → 13: all 13 are on the person.** At each onset (start 0: 2756, 2760, 2764, 2768, 2782, 2800, 2809, 2856, 2858,
+  2875, 2879, 2902, 2927), the raw points in a 2 × 1.2 m box around the detection number 20–27, stand 1.43–1.67 m tall at lateral
+  −0.55…+0.36, and sit 0.0–0.2 m from the reviewed person anchor. The same box holds 0 points in background frame 1400.
+  Whole recording (`falcon_eval.py`): 13 episodes, 0 without a person, 0 non-person STOP frames, 0 person-STOP frames lost, CAUTION
+  share 0.186. Falcon +5 episodes against the A4 bound of +11.
+* **The start-1800 false episode (2704–2705)**: confirmed as the person merged with the left wall (R2-2). The detection centre at
+  155.96 m, lat +0.86, has no point within 1 × 0.6 m of it; the box holds the person (18 points, lat −0.2, 156.6–157.2 m) and
+  the left wall (15 points, lat 1.2–3, 152.8–159.3 m). It is a STOP while the person really is in the gauge, with a wrong centre. It is not
+  a false alarm in substance, though the per-centre association counts it as one. v1.2.0 has 1 false episode at that start too.
+
+## 3. C3 guards
+
+* My probe W and the author's case K: **fail-safe on `c431b2e`.** Tracker probes 40 / 40; the author's negative controls 92 / 92 required,
+  and K now has `valid` 142 m, error 0. Speed probes 0–40 m/s: fail-safe.
+* **Attack on the stated residual** (tight boundaries ≤ 2.5 m, an opening shorter than the guard's exit length): **not fail-safe**,
+  see R2-1. Suggested direction, for the author: use the crossing length √(2R)(√(d+h) − √(max(d−h, 0))) as the gap threshold.
+  A side whose boundary is closer than h confirms everywhere, since no train can pass it. Measure what this costs on the real row
+  (30 m column spacing, d 1.35–2.2 m), because a stricter threshold may end the right row's confirmation and with it the range gain.
+* "The union corridor only adds points": true per point beyond `far.valid`; not a guarantee per detection (R2-2); no loss observed.
+
+## 4. Pandar and configuration
+
+* Effective config per profile × YAML copy × class default (`scripts/cfgdiff.py`): `manual` / `pandar128` differ from v1.2.0 only
+  inside `farrange`, with `enabled` False. The new keys exist only as class defaults; neither YAML sets them, so both copies agree.
+  Every new code path in `detector.py` is gated on `self.far` / `self._far_axis` / `_union_shift`, which are None without the Falcon profile.
+* Rows: `doubleT_obstacle`, `roundT_doubleT`, `doubleT_platform` and the ride splits 30 / 58 / 200: **951 / 951 identical** to v1.2.0 on
+  every field except timing (`health.latency_p95_ms` differs in 39 rows). No Google Drive download.
+* Unit tests: `tests/test_farrange.py` 21 / 21 pass on `c431b2e`.
+
+## 5. Not checked (revision 2)
+
+The full Pandar gate, set O, set F and X3 on `c431b2e` (the author reports X3 as unverified because of the Drive quota). The node path, the walk control and
+the doubt model were not re-run. All curve and turnout evidence is synthetic.

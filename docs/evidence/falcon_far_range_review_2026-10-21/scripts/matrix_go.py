@@ -18,6 +18,7 @@ import numpy as np  # noqa: E402
 from assoc import associate  # noqa: E402
 from matrix2 import moving_path, APPROACH, PREFIX  # noqa: E402
 
+WS = ("wt_v120", "wt_rev2") if "7071" in " ".join(sys.argv) else ("wt_v120", "wt_cand")
 TRACK = json.loads(Path("/home/user/ReSense/docs/evidence/falcon_long_range_2026-10-19/track_reference.json").read_text())["track"]
 
 
@@ -37,7 +38,7 @@ def main():
     a = ap.parse_args()
     d = Path(a.dir)
     out = {}
-    for w in ("wt_v120", "wt_cand"):
+    for w in WS:
         summ = json.loads((d / f"{w}_summary.json").read_text())
         per = {}
         agg = defaultdict(lambda: defaultdict(int))
