@@ -32,6 +32,6 @@ description, not a tested script; the exact frame count is unverified.
 | `webapp/backend` pytest | 179 passed (needed `libegl1 libgl1 libgomp1 libusb-1.0-0`; before installing them: 168 passed, 11 errors, open3d import) |
 | frontend `npm ci && npm test && npm run build` | 46 files, 371 tests passed; build OK |
 | `web/demo` pytest | 81 passed |
-| e2e shards 1–4 | pending when this was written |
+| e2e shards 1–4 (`WEBAPP_E2E_SHARD=k/4`, as ci.yml, `WEBAPP_DIST` set, built frontend) | 16 + 26 + 30 + 6 = 78 passed, 0 skipped, 0 failed (junit per shard; 78 = all collected tests, each in exactly one shard); no flaky test seen, so no test changed |
 | ruff 0.15.8 `check_archived_lint.py --lint` | PASS (141 immutable, 392 audited) |
 | `detector_freeze.py verify` | PASS (42 files) |
