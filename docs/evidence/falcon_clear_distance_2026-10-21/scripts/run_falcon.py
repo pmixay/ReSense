@@ -92,7 +92,6 @@ def main():
         fj.write(json.dumps(r) + "\n")
         h = res.health
         tr = res.track
-        tracks = {t.id: t for t in det.tracker.tracks}
         x = {"i": n, "clear_raw": float(res.clear_distance), "monitored": h.get("monitored_range"),
              "visibility": h.get("visibility"), "candidate_distance": h.get("candidate_distance"),
              "wall_drift": h.get("wall_drift"), "nearest": res.nearest_distance,

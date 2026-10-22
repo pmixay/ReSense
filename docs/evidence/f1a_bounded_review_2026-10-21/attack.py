@@ -210,7 +210,7 @@ def run_scene(spec):
     return out
 
 
-def O(**kw):
+def obj_spec(**kw):
     base = dict(type="box", side=1, length=0.3, width=0.3, delta=0.05, bottom="bed")
     base.update(kw)
     return base
@@ -221,72 +221,72 @@ def scenes(family):
     if family == "apb":              # the review's approach_bed family re-created (positive-control harness check)
         for raise_, side, (L, W), delta in itertools.product((0.10, 0.18), (1, -1), ((0.3, 0.3), (1.0, 0.3), (4.0, 0.3), (4.0, 0.1)),
                                                               (0.05, 0.10, 0.20)):
-            S.append(dict(raise_=raise_, head_mode="const", objects=[O(side=side, length=L, width=W, delta=delta)]))
+            S.append(dict(raise_=raise_, head_mode="const", objects=[obj_spec(side=side, length=L, width=W, delta=delta)]))
     elif family == "apb_meas":       # the same 48 scenes with the real sensor's per-ring azimuth phases
         S = [dict(x, az_off=dict(mode="measured")) for x in scenes("apb")]
     elif family == "ext_meas":       # the author's ext_sizes rail scenes (top = real head + delta), real ring phases
         for raise_, side, width, delta in itertools.product((0.0, 0.10, 0.18), (1, -1), (0.07, 0.3),
                                                             (0.03, 0.05, 0.10, 0.15)):
-            S.append(dict(raise_=raise_, az_off=dict(mode="measured"), objects=[O(side=side, width=width, delta=delta)]))
+            S.append(dict(raise_=raise_, az_off=dict(mode="measured"), objects=[obj_spec(side=side, width=width, delta=delta)]))
     elif family in ("seeds", "seeds_off"):   # the losing configurations, 5 noise seeds each (+ switch off)
-        base = [dict(raise_=0.18, head_mode="const", az_off=dict(mode="measured"), objects=[O(side=-1, length=0.3)]),
-                dict(raise_=0.18, az_off=dict(mode="measured"), objects=[O(side=-1, delta=0.03)]),
-                dict(raise_=0.18, objects=[O(side=-1, type="wedge_toward", drop=0.15, length=1.0, delta=0.10)]),
-                dict(raise_=0.18, objects=[O(side=-1, type="cyl_y", length=0.3, width=0.4, delta=0.05)]),
-                dict(raise_=0.18, cant=0.10, objects=[O(side=1, delta=0.10)]),
-                dict(raise_=0.18, az_off=dict(mode="uniform", a=0.05, seed=1), objects=[O(side=-1, length=4.0, delta=0.10)])]
+        base = [dict(raise_=0.18, head_mode="const", az_off=dict(mode="measured"), objects=[obj_spec(side=-1, length=0.3)]),
+                dict(raise_=0.18, az_off=dict(mode="measured"), objects=[obj_spec(side=-1, delta=0.03)]),
+                dict(raise_=0.18, objects=[obj_spec(side=-1, type="wedge_toward", drop=0.15, length=1.0, delta=0.10)]),
+                dict(raise_=0.18, objects=[obj_spec(side=-1, type="cyl_y", length=0.3, width=0.4, delta=0.05)]),
+                dict(raise_=0.18, cant=0.10, objects=[obj_spec(side=1, delta=0.10)]),
+                dict(raise_=0.18, az_off=dict(mode="uniform", a=0.05, seed=1), objects=[obj_spec(side=-1, length=4.0, delta=0.10)])]
         for b in base:
             for so in (0, 101, 202, 303, 404):
                 S.append(dict(b, seed_off=so, switch_off=(family == "seeds_off")))
     elif family == "smoke":            # equals the review's approach_bed scene (raise 0.18, left, 0.3x0.3, delta 0.05)
-        S.append(dict(raise_=0.18, objects=[O()]))
+        S.append(dict(raise_=0.18, objects=[obj_spec()]))
     elif family == "fine_delta":     # objects just above the head (the H + 0.03 tolerance), both rails
         for raise_, side, (L, W), delta in itertools.product((0.0, 0.10, 0.18), (1, -1), ((0.3, 0.3), (1.0, 0.3), (0.3, 0.1)),
                                                                (0.0, 0.01, 0.02, 0.03, 0.04, 0.06)):
-            S.append(dict(raise_=raise_, objects=[O(side=side, length=L, width=W, delta=delta)]))
+            S.append(dict(raise_=raise_, objects=[obj_spec(side=side, length=L, width=W, delta=delta)]))
     elif family == "azoff":          # per-ring azimuth phase (real sensors are not on one azimuth grid)
         for mode, raise_, side, (L, W), delta in itertools.product(
                 (dict(mode="measured"), dict(mode="uniform", a=0.05, seed=1)), (0.10, 0.18), (1, -1),
                 ((0.3, 0.3), (1.0, 0.3), (4.0, 0.3), (4.0, 0.1)), (0.05, 0.10)):
-            S.append(dict(raise_=raise_, az_off=mode, objects=[O(side=side, length=L, width=W, delta=delta)]))
+            S.append(dict(raise_=raise_, az_off=mode, objects=[obj_spec(side=side, length=L, width=W, delta=delta)]))
     elif family == "shapes":         # no face toward the sensor / yawed / round
         for raise_, side, delta, shp in itertools.product((0.10, 0.18), (1, -1), (0.05, 0.10), (
                 dict(type="box", yaw=20.0), dict(type="box", yaw=45.0),
                 dict(type="wedge_toward", drop=0.15, length=0.3), dict(type="wedge_toward", drop=0.15, length=1.0),
                 dict(type="wedge_away", drop=0.15, length=0.3),
                 dict(type="cyl_x", length=1.0, width=0.3), dict(type="cyl_y", length=0.3, width=0.4))):
-            S.append(dict(raise_=raise_, objects=[O(side=side, delta=delta, **shp)]))
+            S.append(dict(raise_=raise_, objects=[obj_spec(side=side, delta=delta, **shp)]))
     elif family == "two":            # a second object on the other rail / both rails / own rail at the region edges
         for raise_, delta, conf in itertools.product((0.10, 0.18), (0.05, 0.10), (
                 "other_same", "other_same_tall", "pipes_both", "own_before_4.9", "own_after_4.9", "four_corners")):
-            t = O(side=1, delta=delta)
+            t = obj_spec(side=1, delta=delta)
             objs = [t]
             if conf == "other_same":
-                objs.append(O(side=-1, delta=delta))
+                objs.append(obj_spec(side=-1, delta=delta))
             elif conf == "other_same_tall":
-                objs.append(O(side=-1, delta=0.6))
+                objs.append(obj_spec(side=-1, delta=0.6))
             elif conf == "pipes_both":   # target box + a 10 cm pipe 8 m long lying on each rail head, from 3 m before
-                objs += [O(type="cyl_x", side=s, length=8.0, width=0.10, delta=delta + 0.0, bottom="rest", dx=-3.0)
+                objs += [obj_spec(type="cyl_x", side=s, length=8.0, width=0.10, delta=delta + 0.0, bottom="rest", dx=-3.0)
                          for s in (1, -1)]
             elif conf == "own_before_4.9":
-                objs.append(O(side=1, delta=delta, dx=-4.9, length=0.3))
+                objs.append(obj_spec(side=1, delta=delta, dx=-4.9, length=0.3))
             elif conf == "own_after_4.9":
-                objs.append(O(side=1, delta=delta, dx=4.9, length=0.3))
+                objs.append(obj_spec(side=1, delta=delta, dx=4.9, length=0.3))
             elif conf == "four_corners":  # small objects at the same height in all four regions
-                objs += [O(side=1, delta=delta, dx=-3.0), O(side=1, delta=delta, dx=3.0),
-                         O(side=-1, delta=delta, dx=-2.0), O(side=-1, delta=delta, dx=2.0)]
+                objs += [obj_spec(side=1, delta=delta, dx=-3.0), obj_spec(side=1, delta=delta, dx=3.0),
+                         obj_spec(side=-1, delta=delta, dx=-2.0), obj_spec(side=-1, delta=delta, dx=2.0)]
             S.append(dict(raise_=raise_, objects=objs, conf=conf))
     elif family == "cant":           # superelevation: left rail raised by cant (the model plane learns it)
         for cant, raise_, side, delta in itertools.product((0.05, 0.10, 0.15), (0.0, 0.10, 0.18), (1, -1), (0.05, 0.10)):
-            S.append(dict(raise_=raise_, cant=cant, objects=[O(side=side, delta=delta)]))
+            S.append(dict(raise_=raise_, cant=cant, objects=[obj_spec(side=side, delta=delta)]))
     elif family == "curve":
         for cr, raise_, side, delta in itertools.product((800.0, -800.0, 2000.0, -2000.0), (0.10, 0.18), (1, -1), (0.05, 0.10)):
-            S.append(dict(raise_=raise_, curve_r=cr, objects=[O(side=side, delta=delta)]))
+            S.append(dict(raise_=raise_, curve_r=cr, objects=[obj_spec(side=side, delta=delta)]))
     elif family == "moving":         # lateral motion onto the rail, receding, fast approach
         for raise_, delta, mv in itertools.product((0.10, 0.18), (0.05, 0.10), (
                 dict(lat_off=-0.4, lat_speed=0.01), dict(lat_off=0.3, lat_speed=-0.008),
                 dict(step=1.6, nframes=23), dict(step=-0.5, start=25.0, nframes=45))):
-            o = O(side=1, delta=delta, lat_off=mv.get("lat_off", 0.0), lat_speed=mv.get("lat_speed", 0.0))
+            o = obj_spec(side=1, delta=delta, lat_off=mv.get("lat_off", 0.0), lat_speed=mv.get("lat_speed", 0.0))
             sc = dict(raise_=raise_, objects=[o])
             for k in ("step", "nframes", "start"):
                 if k in mv:
@@ -294,10 +294,10 @@ def scenes(family):
             S.append(sc)
     elif family == "falcon":         # Falcon-like raster, default Hesai config (geometry stress only)
         for raise_, side, delta in itertools.product((0.10, 0.18), (1, -1), (0.05, 0.10)):
-            S.append(dict(raise_=raise_, rays="falcon", objects=[O(side=side, delta=delta)]))
+            S.append(dict(raise_=raise_, rays="falcon", objects=[obj_spec(side=side, delta=delta)]))
     elif family == "empty":          # false-alarm control (target spec only defines the match window)
         for raise_, cant in itertools.product((0.0, 0.10, 0.18), (0.0, 0.10)):
-            S.append(dict(raise_=raise_, cant=cant, objects=[O(delta=-1.0)], empty=True))
+            S.append(dict(raise_=raise_, cant=cant, objects=[obj_spec(delta=-1.0)], empty=True))
     else:
         raise SystemExit("unknown family " + family)
     for s in S:

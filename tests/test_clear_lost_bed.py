@@ -7,7 +7,6 @@ tolerance (``cluster.mount_cross_tol`` + ``mount_cross_grade`` * X) at some X = 
 clear distance is then 0 (ALGORITHM §4b: a lost track model makes it 0), whatever the rail lock. Only lowers clear.
 """
 import numpy as np
-import pytest
 
 from resense.config import GaugeConfig, HealthConfig
 from resense.health import HealthMonitor, bed_off_mount_plane

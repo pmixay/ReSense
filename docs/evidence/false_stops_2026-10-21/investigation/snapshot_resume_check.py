@@ -8,7 +8,7 @@ from resense.detector import Detector
 runs='/data/runs_dbg'
 pieces=L.piece_table(runs,'/data/cache',[L.RIDE])
 p=pieces[3]; rows=L.read_jsonl(p['path']); stamps=load_cache_stamps('/data/cache/new_data')
-cfg=DetectorConfig.from_dict(L.window_config(runs,[])); 
+cfg=DetectorConfig.from_dict(L.window_config(runs,[]))
 cfg2=DetectorConfig.from_dict(L.load_cfg_dict(runs+'/config.yaml',[])) if hasattr(L,'load_cfg_dict') else None
 det=Detector(cfg)
 out=[]
