@@ -46,12 +46,13 @@ false-alarm work later.
 |---|---|
 | K2 union r3 (`claude/k1-k2-1.3`) | review ACCEPT WITH CONDITIONS, accepted (row 51); in the integration |
 | Falcon clear distance (`claude/falcon-clear-distance-1.3`) | review ACCEPT WITH CONDITIONS, accepted (row 52); in the integration |
-| Falcon far range (`claude/falcon-far-range-1.3`) | review ACCEPT WITH CONDITIONS; back with the author for F1 (GO with a person inside the reported clear range) and a better held STOP (row 53) |
+| Falcon far range (`claude/falcon-far-range-1.3`) | revision 2 (`c431b2e`): F1 fixed (GO with a person inside clear 30 → 0), held STOP 129.4–135.5 m (v1.2.0 114.4–123.0); re-review ACCEPT WITH CONDITIONS 22.10 (R2-1: the turnout guard misses passable openings, README to correct); merged into the integration |
 | F1a bounded head top (`claude/f1a-bounded-1.3`) | revision 1 REJECTED by review; revision 2 safe but keeps almost no ride gain, switch off; final run pending (row 54) |
 | track opinion (`claude/track-opinion-1.3`) | shipped model kept; new model off (row 54) |
 | X2 false-STOP ledger (`claude/x2-ledger-1.3`) | done (evidence for the later false-alarm work) |
 | Falcon demo through real ROS 2 (`claude/falcon-ros-demo-1.3`) | done: first STOP 23.2 s in, 130.5 m, rate 1.0 |
-| integration (`claude/integration-1.3`) | phase 1 (K2, clear distance, track opinion code, evidence) running; phase 2 adds far range and F1a |
+| integration (`claude/integration-1.3`) | all lanes merged 22.10 (far range, F1a as evidence only; a K2 / far-range state fix `36c6cc4`, reviewed by P1); combined Falcon run done; gate, X3, K2 range jobs and the five empty recordings run from the team storage (Google Drive refused our downloads); then 1.3.0 version bump and reseal on the branch |
+| ML far-track geometry (`claude/ml-far-axis-1.3`) | started 22.10 ([`DECISIONS.md`](DECISIONS.md) row 56): self-supervised centreline 40–250 m with an uncertainty band, judged on lines it did not train on |
 
 **Queued after the current lanes and the integration finish (user, 21.10), each from the integrated 1.3 source:**
 1. **Falcon near object** (frames 4373-4414): the bed model jumps 1.3-4.2 m above the mount plane, so an object 2.5-7 m
