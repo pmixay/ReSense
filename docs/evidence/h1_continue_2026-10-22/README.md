@@ -35,3 +35,21 @@ Both need explicit user authorization before this work can continue.
 
 Run: `RESENSE_REPO=<checkout> OPENBLAS_CORETYPE=Haswell OMP_NUM_THREADS=1 python matrix.py OUT.json
 [--compare-archive <unpacked h1_rail_limits raw-evidence.tar.xz>]`
+
+## Paused 22.10
+Paused at P1's request (usage limits). No background jobs are running and nothing was run with the patch applied.
+
+Next steps, in order:
+1. Apply `rails_nearest_pair.UNVERIFIED.patch` in a separate worktree of this branch; run `matrix.py` in the
+   foreground with an explicit timeout; compare with `baseline-directed518-f24d939.json`; add a positive control
+   (a deliberate one-line change the comparator must catch).
+2. Run the rail-loss control with an outside target, which settles 2c with evidence.
+3. If both hold, commit the patch with regression tests and a working-tree reseal (`scripts/detector_freeze.py create`).
+4. Get the dataset and build the caches. Then: the A340 baseline (plain = traced), 2d (43 column-hold and 7 zone-vote
+   misses), the strict gate, X3, Falcon (both input paths, six start frames), the three marked bags (`markers.sh`),
+   the five empty recordings and K2. Then fetch and merge `claude/cleanup-switches-1.3` if it is READY, run the
+   full suite, push, record CI, and request an independent review.
+
+Blockers: the permission check refused the dataset download ("Code from External") and runs on a tree with
+detector changes ("Modify Shared Resources", then "Auto-Mode Bypass" for the worktree). The user must authorise
+both in the session that resumes this work.
