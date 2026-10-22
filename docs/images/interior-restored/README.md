@@ -1,7 +1,9 @@
 # Restored interior and softer buttons
 
+> **Superseded (22.10):** this gallery shows the saloon-wall display that the driver's cab replaced on 21.10; the current Player is documented in [`../player-cab/`](../player-cab/README.md). `trainInterior.ts` (removed in `7017a02`) no longer exists; the captures and `capture.json` stay as a historical record. See [`capture.note.md`](capture.note.md).
+
 The user's follow-up restores the train interior from before the glossy pass and
-reduces button highlight/shadow strength. `trainInterior.ts` and `screenDisplay.ts`
+reduces button highlight/shadow strength. `trainInterior.ts` (since removed) and `screenDisplay.ts`
 match `af2ecd8^` exactly, including original geometry, material finishes, screen
 housing, ceiling lights and saloon reflections.
 

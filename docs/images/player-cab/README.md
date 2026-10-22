@@ -29,8 +29,9 @@ not detector evaluation evidence; the cab's instrument faces are decorative.
   reticle and the initialization log over the dark windshield; the scan line revealing the
   picture; «Система готова»; playback started after the boot.
 
-The same frames, at 25 frames per second, make the 8.4 s review video sent to the user (not
-committed).
+The same frames at 25 frames per second were assembled into an 8.4 s review video that was sent
+to the user and never committed; no capture script for it exists in the repository. How to
+regenerate it: [`docs/evidence/webapp_cab_finish_2026-10-22/README.md`](../../evidence/webapp_cab_finish_2026-10-22/README.md#regenerating-the-review-video).
 
 Checked: the first walk frame's leaving-page plane spans the viewport within 1.5 px at
 1440×900 and 1280×720 (browser test), and a pixel diff against the page before the click

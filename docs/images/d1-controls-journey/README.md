@@ -1,5 +1,7 @@
 # Themed controls and strict final-stop navigation
 
+> **Partly superseded (22.10):** its Player captures (`clear/caution/stop-1440.png`, `final-player-before-reveal-1440.png`) show the wall-mounted display, replaced by the driver's cab on 21.10; current captures: [`../player-cab/`](../player-cab/README.md). The controls and navigation captures remain current.
+
 ## Delivered behavior
 
 - Shared native dropdowns use a themed `base-select` picker in supporting browsers:
