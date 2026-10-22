@@ -9,7 +9,7 @@ design «Линия» ([`design/mockup/`](design/mockup/README.md)).
 
 ## Run it
 
-**Live preview: [resense.arbuz.lol](https://resense.arbuz.lol/)** (the `ui-improvement` branch was merged by PR #47 on 20.10).
+**Live preview: [resense.arbuz.lol](https://resense.arbuz.lol/)** (merged by PR #47 on 20.10 as `8453458`).
 After changes on this server, run `scripts/deploy_webapp.sh` to update it. Deployment
 and service details are in [`../deploy/README.md`](../deploy/README.md); the live
 `/deployment.json` endpoint identifies the deployed commit.

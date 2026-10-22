@@ -45,7 +45,7 @@ below retains its historical verification dates.
 > protocol `058a451`; local 1.1.0 seal verification PASS. Review:
 > [`p2_plan_2026-10-16`](../docs/evidence/p2_plan_2026-10-16/README.md).
 > **Status:** the queue below is the state of 16.10 (statuses of 19.10: 1.1.0 will not be released, J1 and G3 run on the final
-> 1.2.0 seal; P2's `ui-improvement` was merged by PR #47 on 20.10 and the branch no longer exists). Execution receipt:
+> 1.2.0 seal; P2's UI branch was merged by PR #47 on 20.10 as `8453458`; the branch no longer exists). Execution receipt:
 > [`p2_execution_2026-10-16`](../docs/evidence/p2_execution_2026-10-16/README.md).
 > **Clean-up 19.10:** only stale version/seal statements were corrected, from `DECISIONS.md` rows 35–42; the queue itself is P2's.
 
