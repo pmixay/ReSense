@@ -27,6 +27,8 @@ def _live_files():
     if out.returncode != 0:
         pytest.skip("not a git checkout")
     for name in out.stdout.decode().split("\0"):
+        if name == "tests/test_data_paths.py":      # quotes the patterns it looks for
+            continue
         if name and Path(name).suffix in SUFFIXES and (ROOT / name).is_file():
             yield name
 
