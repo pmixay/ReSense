@@ -181,12 +181,13 @@ the repository.
 
 ## 4. Every folder, by date
 
-One row per folder of `docs/evidence/` (155 folders on 22.10, with `docs_pass_2026-10-22/`), newest first. "Date" is the date in the folder name (the run or the record), "topic" a short tag, the last column the title of the folder's own README. The README of a folder is the reference for its contents. The date of the *commit* that added a folder is often the squash-import date (16.10), not the run date; each README states which is which. Folders without a date in the name are at the end. The detector seals (`detector_freeze_*.json`) and the result files are indexed in "Start here" and §1, not here.
+One row per folder of `docs/evidence/` (156 folders on 22.10, with `docs_pass_2026-10-22/` and `competitor_screen_2026-10-22/`), newest first. "Date" is the date in the folder name (the run or the record), "topic" a short tag, the last column the title of the folder's own README. The README of a folder is the reference for its contents. The date of the *commit* that added a folder is often the squash-import date (16.10), not the run date; each README states which is which. Folders without a date in the name are at the end. The detector seals (`detector_freeze_*.json`) and the result files are indexed in "Start here" and §1, not here.
 
 ### A. 20–22.10: 1.3 line (F1a, Falcon, K1/K2, integration, P2 defence)
 
 | folder | date | topic | what it is |
 |---|---|---|---|
+| [`competitor_screen_2026-10-22/`](competitor_screen_2026-10-22/README.md) | 22.10 | competitors | Competitor survey ideas 1, 3, 5 screened on sealed 1.3.0 (six bags + set O, no ride): R1 / R5 rules lose real STOPs or give no clean gain, `farrange` on the Pandar gives none; one exploratory lead, nothing resealed |
 | [`docs_pass_2026-10-22/`](docs_pass_2026-10-22/README.md) | 22.10 | docs | Documentation pass: READMEs for 40 folders, this folder list, 17 pages re-verified, deleted-branch references |
 | [`track_opinion_2026-10-21/`](track_opinion_2026-10-21/README.md) | 21.10 | learned doubt model | Track opinion 1.3 (card G2): retrain and improve the learned doubt model |
 | [`p2_defence_2026-10-21/`](p2_defence_2026-10-21/README.md) | 21.10 | P2 (presentation, web) | P2 — подготовка защиты 23 октября |

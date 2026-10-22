@@ -1,0 +1,48 @@
+IDENTITY (no rule == baseline gate): OK
+rule                 emptySTOPfr emptyEp  dT hits dT fp  setO in O out  bg  vetoed STOP rows per recording
+none                          37      11      190     0      414     6   0  {}
+R1a_opacity                   25       6      190     0      410     6   0  {'squareT_platform_squareT_switch': 12, 'cloud_with_fake_obj': 4}
+R1b_front_lift                23       6      174     0      414     6   0  {'doubleT_obstacle': 16, 'squareT_platform_squareT_switch': 14}
+R1c_attach                    28      10       61     0      363     0   0  {'doubleT_obstacle': 133, 'squareT_platform_squareT_switch': 9, 'cloud_with_fake_obj': 59}
+R1_all                        19       6       61     0      359     0   0  {'doubleT_obstacle': 133, 'squareT_platform_squareT_switch': 18, 'cloud_with_fake_obj': 63}
+R5_line_elongated             32       8      190     0      409     6   0  {'squareT_platform_squareT_switch': 5, 'cloud_with_fake_obj': 5}
+R5_line_any                   32       8       75     0      394     6   0  {'doubleT_obstacle': 115, 'squareT_platform_squareT_switch': 5, 'cloud_with_fake_obj': 28}
+R1+R5                         19       6       61     0      354     0   0  {'doubleT_obstacle': 133, 'squareT_platform_squareT_switch': 18, 'cloud_with_fake_obj': 68}
+X_R1b_rail_head               16       7      190     0      413     6   0  {'squareT_platform_squareT_switch': 21, 'cloud_with_fake_obj': 1}
+X_R1a+R1b_rail                16       7      190     0      409     6   0  {'squareT_platform_squareT_switch': 21, 'cloud_with_fake_obj': 5}
+-- R1a_opacity: set O objects changed (stop_frames, first_stop_m, held_from_m) base -> rule:
+   big_center           (208, 98.0, 98.7) -> (204, 98.0, 98.7)
+-- R1b_front_lift: set O objects changed (stop_frames, first_stop_m, held_from_m) base -> rule:
+   doubleT_obstacle per label: {'object_on_rail': {'hits': 129, 'frames': 185}, 'person_crossing': {'hits': 61, 'frames': 61}, 'object_on_rail_from_frame_75': {'hits': 126, 'frames': 126}} -> {'object_on_rail': {'hits': 113, 'frames': 185}, 'person_crossing': {'hits': 61, 'frames': 61}, 'object_on_rail_from_frame_75': {'hits': 110, 'frames': 126}}
+-- R1c_attach: set O objects changed (stop_frames, first_stop_m, held_from_m) base -> rule:
+   big_center           (208, 98.0, 98.7) -> (204, 98.0, 98.7)
+   small_on_rail        (23, 42.7, 46.2) -> (21, 39.1, 42.7)
+   big_above            (56, 111.4, 123.6) -> (34, 73.3, 73.3)
+   long_low_on_rails    (52, 87.2, 95.9) -> (29, 87.2, 42.1)
+   doubleT_obstacle per label: {'object_on_rail': {'hits': 129, 'frames': 185}, 'person_crossing': {'hits': 61, 'frames': 61}, 'object_on_rail_from_frame_75': {'hits': 126, 'frames': 126}} -> {'object_on_rail': {'hits': 1, 'frames': 185}, 'person_crossing': {'hits': 60, 'frames': 61}, 'object_on_rail_from_frame_75': {'hits': 1, 'frames': 126}}
+-- R1_all: set O objects changed (stop_frames, first_stop_m, held_from_m) base -> rule:
+   big_center           (208, 98.0, 98.7) -> (200, 98.0, 98.7)
+   small_on_rail        (23, 42.7, 46.2) -> (21, 39.1, 42.7)
+   big_above            (56, 111.4, 123.6) -> (34, 73.3, 73.3)
+   long_low_on_rails    (52, 87.2, 95.9) -> (29, 87.2, 42.1)
+   doubleT_obstacle per label: {'object_on_rail': {'hits': 129, 'frames': 185}, 'person_crossing': {'hits': 61, 'frames': 61}, 'object_on_rail_from_frame_75': {'hits': 126, 'frames': 126}} -> {'object_on_rail': {'hits': 1, 'frames': 185}, 'person_crossing': {'hits': 60, 'frames': 61}, 'object_on_rail_from_frame_75': {'hits': 1, 'frames': 126}}
+-- R5_line_elongated: set O objects changed (stop_frames, first_stop_m, held_from_m) base -> rule:
+   big_edge_inside      (7, 18.3, 10.3) -> (5, 18.3, None)
+   long_low_on_rails    (52, 87.2, 95.9) -> (49, 87.2, 90.8)
+-- R5_line_any: set O objects changed (stop_frames, first_stop_m, held_from_m) base -> rule:
+   small_on_rail        (23, 42.7, 46.2) -> (14, 42.7, None)
+   big_edge_inside      (7, 18.3, 10.3) -> (0, None, None)
+   long_low_on_rails    (52, 87.2, 95.9) -> (48, 87.2, 89.0)
+   doubleT_obstacle per label: {'object_on_rail': {'hits': 129, 'frames': 185}, 'person_crossing': {'hits': 61, 'frames': 61}, 'object_on_rail_from_frame_75': {'hits': 126, 'frames': 126}} -> {'object_on_rail': {'hits': 14, 'frames': 185}, 'person_crossing': {'hits': 61, 'frames': 61}, 'object_on_rail_from_frame_75': {'hits': 14, 'frames': 126}}
+-- R1+R5: set O objects changed (stop_frames, first_stop_m, held_from_m) base -> rule:
+   big_center           (208, 98.0, 98.7) -> (200, 98.0, 98.7)
+   small_on_rail        (23, 42.7, 46.2) -> (21, 39.1, 42.7)
+   big_edge_inside      (7, 18.3, 10.3) -> (5, 18.3, None)
+   big_above            (56, 111.4, 123.6) -> (34, 73.3, 73.3)
+   long_low_on_rails    (52, 87.2, 95.9) -> (26, 87.2, 20.7)
+   doubleT_obstacle per label: {'object_on_rail': {'hits': 129, 'frames': 185}, 'person_crossing': {'hits': 61, 'frames': 61}, 'object_on_rail_from_frame_75': {'hits': 126, 'frames': 126}} -> {'object_on_rail': {'hits': 1, 'frames': 185}, 'person_crossing': {'hits': 60, 'frames': 61}, 'object_on_rail_from_frame_75': {'hits': 1, 'frames': 126}}
+-- X_R1b_rail_head: set O objects changed (stop_frames, first_stop_m, held_from_m) base -> rule:
+   small_on_rail        (23, 42.7, 46.2) -> (22, 40.9, 44.4)
+-- X_R1a+R1b_rail: set O objects changed (stop_frames, first_stop_m, held_from_m) base -> rule:
+   big_center           (208, 98.0, 98.7) -> (204, 98.0, 98.7)
+   small_on_rail        (23, 42.7, 46.2) -> (22, 40.9, 44.4)

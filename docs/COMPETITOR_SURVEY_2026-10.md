@@ -7,8 +7,9 @@
 > **Audience:** P3 (detector), P4 (evaluation), P1 · **Owner:** P1 · **Language:** EN
 > **Last verified:** 2026-10-22: the statements about our code (§2 table, the `beyond_axis`, `ego_veto`, `edge_margin_per_100m2`, `far_axis_both_sides`, `axis_disagree_range` and opinion-model facts, the `configs/experimental_*.yaml` and `robustness_battery.py` mentions) re-checked against the 1.3.0 tree (`f24d939`): the facts hold, three line references had moved and are corrected, the backlog-card references are corrected (see §3), and the "ours" figures in §1 are v1.0.0 measurements of 13.10, not re-measured on 1.3.0; the other repositories' contents are not re-checked. Earlier: 2026-10-16 against the sealed `resense/` of `main` (`3fdc879`, detector = `v1.0.0`): the four
 > "verified in our code" facts below were checked by the lead in the source; the rest is the agents' reading of
-> the other repositories, grepped against `resense/` but not run. **Status:** current; analysis only, nothing in
-> this document is measured on ReSense yet, and no detector file is changed.
+> the other repositories, grepped against `resense/` but not run. **Status:** current; analysis only. **Update 2026-10-22:** ideas 1, 3 (cheap form), 5 and 6 were screened on the sealed 1.3.0 detector with the six organizer
+> recordings and set O, without the ride and without a detector change: none gives a clean gain, and the §3 expectation for idea 3 does not hold on our straight-track data
+> ([`evidence/competitor_screen_2026-10-22/`](evidence/competitor_screen_2026-10-22/README.md)). The sentences below that say nothing is measured date from 16.10.
 
 ## 1. Headline
 

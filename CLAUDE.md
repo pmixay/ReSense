@@ -31,7 +31,18 @@ or was corrected. Anything not checked is reported as unverified.
 ## Practical traps in this container
 
 * `pkill -f` / `pgrep -f` with a pattern that also appears in your own shell command matches
-  that shell (exit 144, or a wait loop that never ends). Use a wrapper script or a PID.
+  that shell (exit 144, or a wait loop that never ends). This includes a pattern that only shows up
+  later in the same compound command (`pkill -f "venv/bin/pip"; ...; venv/bin/pip install` kills
+  itself). Do not use them on a bare pattern. Instead:
+  * start the job with `cmd & echo $! > job.pid` and later `kill "$(cat job.pid)"`; or
+  * look it up without matching yourself: `ps -eo pid,etime,cmd | grep '[v]env/bin/pip'` (the bracket
+    makes the pattern unable to match its own text), then `kill <pid>`; or
+  * if you must use `pkill -f`, write the pattern with a bracket (`pkill -f '[v]env/bin/pip'`) and
+    run it as its own command, never in the same command line as the text it matches.
+  The bare text must appear nowhere else on that command line (checked 22.10: a lookup whose command
+  also said `exec -a name` matched the harness shell, and `kill` on that PID ended the shell, exit 144;
+  with the name only in the bracket form it listed exactly the two real processes). Check afterwards that
+  the process is gone, after a second: `sleep 1; ps -p <pid>` (it can still show for a moment).
 * Background commands are killed at their `timeout`; give long jobs an explicit long timeout
   and write their output to a log file.
 * Evidence runs: set `RESENSE_REPO` to the checkout being evaluated and
