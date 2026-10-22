@@ -1,0 +1,34 @@
+{
+ "poses": "/data/b6/poses_squareT_platform_squareT_switch.json",
+ "mount_offset": 0.012,
+ "b6_defective_motions": 96,
+ "bands": {
+  "40-60": {
+   "n": 913,
+   "median": 0.039,
+   "abs_p50": 0.041,
+   "abs_p90": 0.054
+  },
+  "60-100": {
+   "n": 2451,
+   "median": -0.016,
+   "abs_p50": 0.022,
+   "abs_p90": 0.06
+  },
+  "100-150": {
+   "n": 424,
+   "median": 0.021,
+   "abs_p50": 0.027,
+   "abs_p90": 0.097
+  },
+  "150-200": {
+   "n": 114,
+   "median": 0.018,
+   "abs_p50": 0.022,
+   "abs_p90": 0.065
+  },
+  "200-250": {
+   "n": 0
+  }
+ }
+}

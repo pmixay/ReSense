@@ -1,0 +1,465 @@
+diff --git a/configs/default.yaml b/configs/default.yaml
+index 23751e5..58569e1 100644
+--- a/configs/default.yaml
++++ b/configs/default.yaml
+@@ -374,6 +374,17 @@ resense:
+     rail_band_margin: 0.05         # m ... with this margin, without rail_start_min_ref
+     local_rail_exclude_low: true   # 20.10 B1: exclude all low returns from an independent reference; both it and the original must reject (missing support keeps ordinary confirmation)
+     local_rail_cross_tol: 0.0      # m, 0 = off since 19.10 (it added a false STOP at ride 5714); > 0: rails' lines differing by more than this: the lower line is the reference (amendment 7, review B1)
++    rail_head_bounded: false       # 21.10 (F1a bounded, revision 2; off = 1.2.0): a cluster only the B1 uncapped top kept is weak again when it is the rail head's own top (lowobj.rail_head_top)
++    rail_head_margin: 0.03         # m above the bounded head top H (per rail the lower of two low-free maxima, the rails agreeing)
++    rail_head_max_above_plane: 0.25  # m; a higher H is not a rail head
++    rail_head_rails_tol: 0.03      # m; the rails' levels differ by more (cant, an object along one rail): no rejection
++    rail_head_extent: 1.0          # m beyond the cluster searched for the object's top (no return more than margin above H)
++    rail_head_extent_pad: 0.05     # m added to the cluster's lateral extent for that search
++    rail_head_top_band: 0.02       # m below the uncapped top: the returns forming the top surface ...
++    rail_head_max_spread: 0.10     # m ... at most this wide across the track (rail head 0.07 m)
++    rail_head_face_dx: 0.05        # m along: returns stacked 0.03-0.30 m apart within this ...
++    rail_head_face_dy: 0.07        # m ... and this across: a face toward the sensor (an obstacle's front), not a rail head
++    rail_head_clear_height: 1.5    # m; returns of the cluster's extent up to this height count
+     local_rail_advisory: false     # true: a cluster failing (a) / (b) is advisory 'below_rail_ref' instead of weak evidence (amendment 6 option; amendment 8)
+     no_rail_low_within: 0.0        # m, (c) > 0 on: no rail pair -> a low cluster beyond this is advisory (no_rail_low)
+   calibration:                     # v0.6: automatic mount calibration (resense/calibration.py)
+diff --git a/resense/config.py b/resense/config.py
+index 052ecde..d48d9e1 100644
+--- a/resense/config.py
++++ b/resense/config.py
+@@ -595,6 +595,26 @@ class LowObjectConfig:
+     rail_band_margin: float = 0.05       # m ... with this margin above the band's own line, without rail_start_min_ref
+     local_rail_exclude_low: bool = True   # 20.10 B1 repair: independent rail lines exclude every low cluster (also weak/advisory); F1a needs both original and independent references, so exclusion cannot newly suppress a cluster. False = unsafe original ablation
+     local_rail_cross_tol: float = 0.0    # amendment 7 (review B1), off since 19.10 (it added a false STOP at ride 5714): m; when the two rails' lines differ by more than this, the lower line is the reference (an object along one rail raises only its line); 0 = off
++    # 21.10 (F1a bounded, docs/evidence/f1a_bounded_2026-10-21, revision 2): a clean low cluster the pre-repair F1a
++    # rule rejected (capped top below the original line) but the B1 uncapped top kept is weak again when it is the
++    # rail head's own top: narrow, reaching one rail line; the head top H (lowobj.rail_head_top: per rail the lower of
++    # two low-free maxima - own rail before/after its extent, other rail before/after its centre - the two rails
++    # agreeing within rail_head_rails_tol, at most rail_head_max_above_plane above the plane); no return of its full
++    # extent (its lateral extent + rail_head_extent_pad, x0 - 0.3 to x1 + rail_head_extent, up to
++    # rail_head_clear_height) more than rail_head_margin above H; its top surface (footprint returns within
++    # rail_head_top_band of the top) at most rail_head_max_spread wide; no face toward the sensor
++    # (rail_head_face_dx / _dy). Every missing piece of evidence keeps the cluster. False = off (1.2.0)
++    rail_head_bounded: bool = False
++    rail_head_margin: float = 0.03       # m above the bounded head top (the organizers' 0.10 m object rises 0.10)
++    rail_head_max_above_plane: float = 0.25  # m; a higher bounded head top is not a rail head (ride heads: 0.15-0.24)
++    rail_head_rails_tol: float = 0.03    # m; the two rails' levels differ by more (cant, an object along one rail): no rejection
++    rail_head_extent: float = 1.0        # m beyond the cluster along the track searched for the object's top (ride: 34 of 37 fragments clear)
++    rail_head_extent_pad: float = 0.05   # m added to the cluster's lateral extent for that search
++    rail_head_top_band: float = 0.02     # m below the extent's highest return: the returns that form the top surface (amendment 2: over the extent)
++    rail_head_max_spread: float = 0.10   # m across the track; a wider top surface is not a rail head (head 0.07 m)
++    rail_head_face_dx: float = 0.05      # m along the track: returns stacked 0.03-0.30 m apart within this ...
++    rail_head_face_dy: float = 0.07      # m ... and this across (real per-ring azimuth phases) are a face toward the sensor
++    rail_head_clear_height: float = 1.5  # m; returns of the cluster's extent up to this height count
+     local_rail_advisory: bool = False    # amendment 6 option (measured in amendments 7-8: it costs the effect): a cluster failing (a) / (b) is advisory ('below_rail_ref', a signature), not weak continuation evidence
+     no_rail_low_within: float = 0.0      # m, (c) > 0 on: on a frame without the rail pair (track.rail_slabs == 0) a low cluster farther than this is advisory (reason 'no_rail_low', a signature: an earned STOP is kept by tracking.stop_keep_signature)
+ 
+diff --git a/resense/lowobj.py b/resense/lowobj.py
+index cc9bee3..2966f89 100644
+--- a/resense/lowobj.py
++++ b/resense/lowobj.py
+@@ -318,6 +318,60 @@ def low_free_mask(n: int, clusters, X: Optional[np.ndarray] = None,
+     return free
+ 
+ 
++def rail_head_top(c, X: np.ndarray, dy: np.ndarray, h: np.ndarray, d0: float, d1: float, cfg: LowObjectConfig,
++                  rails_spacing: float) -> Optional[float]:
++    """21.10 (F1a bounded, ``lowobj.rail_head_bounded``): the rail head's own top at low cluster ``c``, from evidence
++    the cluster's object cannot supply alone. ``X``, ``dy``, ``h``: the low-free returns (:func:`low_free_mask`);
++    ``d0``, ``d1``: the cluster's own lateral extent. Only for a cluster at most ``rail_start_max_width`` wide whose
++    extent reaches exactly one rail line within ``rail_start_lateral``. Four regions, each the highest return with
++    -0.3 < h < ``foot_max_top`` in a rail's band (``local_rail_band``) within ``local_rail_window`` along the track:
++    its own rail before ``x0`` - 0.3 and after ``x1`` + 0.3 (its own extent and guard excluded), the other rail
++    before and after the cluster's centre. Each rail's level is the lower of its two regions (a slope raises the far
++    region of each pair only, a local rise or a stray return one region); revision 2: the two rails' levels must
++    agree within ``rail_head_rails_tol`` (cant, or an object along one rail, makes them differ) and the head top is
++    the lower level. None (no rejection) when a region has no return, the rails disagree, or the result is more than
++    ``rail_head_max_above_plane`` above the model plane."""
++    half, tol = 0.5 * float(rails_spacing), float(cfg.rail_start_lateral)
++    if float(c.size[1]) > cfg.rail_start_max_width:
++        return None
++    sides = [s for s in (-1.0, 1.0) if d0 <= s * half + tol and d1 >= s * half - tol]
++    if len(sides) != 1:
++        return None
++    s, w, guard, band = sides[0], float(cfg.local_rail_window), 0.3, float(cfg.local_rail_band)
++    x0, x1 = float(c.bbox_min[0]), float(c.bbox_max[0])
++    xc = 0.5 * (x0 + x1)
++    ok = (h > -0.3) & (h < cfg.foot_max_top)
++    own = ok & (np.abs(dy - s * half) <= band)
++    other = ok & (np.abs(dy + s * half) <= band)
++    tops = []
++    for m, lo, hi in ((own, x0 - w, x0 - guard), (own, x1 + guard, x1 + w), (other, x0 - w, xc), (other, xc, x1 + w)):
++        k = m & (X >= lo) & (X <= hi)
++        if not k.any():
++            return None
++        tops.append(float(h[k].max()))
++    own_level, other_level = min(tops[:2]), min(tops[2:])
++    if abs(own_level - other_level) > cfg.rail_head_rails_tol:
++        return None
++    head = min(own_level, other_level)
++    return head if head <= cfg.rail_head_max_above_plane else None
++
++
++def _faces_sensor(X: np.ndarray, dy: np.ndarray, h: np.ndarray, footprint: np.ndarray, cfg: LowObjectConfig) -> bool:
++    """21.10 (F1a bounded, revision 2): two footprint returns at the same place along the track (within
++    ``rail_head_face_dx``) and across it (within ``rail_head_face_dy``), 0.03-0.30 m apart in height: one ring is a
++    cone of near-constant elevation, so returns at one range and different heights come from different rings - a
++    face toward the sensor (an obstacle's front), which a continuous rail head never shows (its next ring lands
++    metres further along). ``rail_head_face_dy`` admits the real sensor's per-ring azimuth phases (review
++    2026-10-21: neighbours 5.8 cm apart on a real box front)."""
++    F = np.flatnonzero(footprint)
++    for t in F:
++        dh = h[t] - h[F]
++        if ((np.abs(X[F] - X[t]) <= cfg.rail_head_face_dx) & (np.abs(dy[F] - dy[t]) <= cfg.rail_head_face_dy)
++                & (dh >= 0.03) & (dh <= 0.30)).any():
++            return True
++    return False
++
++
+ def rail_reference_check(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray, cfg: LowObjectConfig,
+                          rails_spacing: float, free: Optional[np.ndarray] = None) -> list:
+     """19.10 (F1 tasks a and b): the clean low clusters of ``clusters`` (kind ``low``, zone gauge, no
+@@ -330,7 +384,9 @@ def rail_reference_check(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray,
+     the independent lines may be measured on (:func:`low_free_mask`). With it, F1a requires both the original
+     and independent reference to reject the cluster; missing either retains ordinary confirmation. Removing
+     low returns can raise a median, so the independent reference is capped by the original one (B1 repair,
+-    20.10). None = every return (the original, unsafe ablation).
++    20.10). None = every return (the original, unsafe ablation). With ``rail_head_bounded`` (21.10), a cluster the
++    pre-repair rule rejected but the uncapped top kept is rejected again when that top is the rail head's own top
++    (:func:`rail_head_top`, ``rail_head_margin``) and its top surface is head-narrow with nothing above it.
+     Returns them; the detector makes them advisory (``local_rail_advisory``) or weak low evidence. The
+     clusters themselves are not modified here."""
+     out = []
+@@ -350,12 +406,36 @@ def rail_reference_check(clusters, X: np.ndarray, dy: np.ndarray, h: np.ndarray,
+             if footprint.any():
+                 top = max(top, float(h[footprint].max()))
+             ref = local_rail_reference(c, Xr, dyr, hr, cfg, rails_spacing)
++            original = None
+             if free is not None and ref is not None:
+                 original = local_rail_reference(c, X, dy, h, cfg, rails_spacing)
+                 ref = min(ref, original) if original is not None else None
+             if ref is not None and top < ref + float(cfg.local_rail_margin):
+                 out.append(c)
+                 continue
++            if cfg.rail_head_bounded and free is not None:
++                # 21.10 (F1a bounded): only a cluster the pre-repair rule rejected (capped top below the original
++                # line) and the B1 repair kept: weak again when its uncapped top is the rail head's own top
++                if original is None:
++                    original = local_rail_reference(c, X, dy, h, cfg, rails_spacing)
++                if original is not None and float(c.height_max) < original + float(cfg.local_rail_margin):
++                    head = rail_head_top(c, Xr, dyr, hr, float(d.min()), float(d.max()), cfg, rails_spacing)
++                    if head is not None and top <= head + float(cfg.rail_head_margin):
++                        # revision 2: the object's full extent, not only its low box - every return in its lateral
++                        # extent (+ rail_head_extent_pad) from x0 - 0.3 to x1 + rail_head_extent along the track, up
++                        # to rail_head_clear_height (its top face, a ramp's far end, a pipe's crown, a taller part)
++                        pad = float(cfg.rail_head_extent_pad)
++                        ext = ((X >= c.bbox_min[0] - 0.3) & (X <= c.bbox_max[0] + cfg.rail_head_extent)
++                               & (dy >= d.min() - pad) & (dy <= d.max() + pad) & (h < cfg.rail_head_clear_height))
++                        # amendment 2: the top surface over the same extent (a ramp crossed by one ring at head
++                        # height lies 1-2 mm outside the strict box: review shapes scene, 0.27 m wide)
++                        ext_top = float(h[ext].max()) if ext.any() else top
++                        surf = ext & (h >= ext_top - float(cfg.rail_head_top_band))
++                        if (ext_top <= head + float(cfg.rail_head_margin) and surf.any()
++                                and float(dy[surf].max() - dy[surf].min()) <= float(cfg.rail_head_max_spread)
++                                and not _faces_sensor(X, dy, h, footprint, cfg)):
++                            out.append(c)
++                            continue
+         if cfg.rail_band_range > 0 and c.distance < cfg.rail_band_range:
+             d = dy[c.points_idx]
+             d0, d1 = float(d.min()), float(d.max())
+diff --git a/ros2_ws/src/resense_ros/config/detector.yaml b/ros2_ws/src/resense_ros/config/detector.yaml
+index 23751e5..58569e1 100644
+--- a/ros2_ws/src/resense_ros/config/detector.yaml
++++ b/ros2_ws/src/resense_ros/config/detector.yaml
+@@ -374,6 +374,17 @@ resense:
+     rail_band_margin: 0.05         # m ... with this margin, without rail_start_min_ref
+     local_rail_exclude_low: true   # 20.10 B1: exclude all low returns from an independent reference; both it and the original must reject (missing support keeps ordinary confirmation)
+     local_rail_cross_tol: 0.0      # m, 0 = off since 19.10 (it added a false STOP at ride 5714); > 0: rails' lines differing by more than this: the lower line is the reference (amendment 7, review B1)
++    rail_head_bounded: false       # 21.10 (F1a bounded, revision 2; off = 1.2.0): a cluster only the B1 uncapped top kept is weak again when it is the rail head's own top (lowobj.rail_head_top)
++    rail_head_margin: 0.03         # m above the bounded head top H (per rail the lower of two low-free maxima, the rails agreeing)
++    rail_head_max_above_plane: 0.25  # m; a higher H is not a rail head
++    rail_head_rails_tol: 0.03      # m; the rails' levels differ by more (cant, an object along one rail): no rejection
++    rail_head_extent: 1.0          # m beyond the cluster searched for the object's top (no return more than margin above H)
++    rail_head_extent_pad: 0.05     # m added to the cluster's lateral extent for that search
++    rail_head_top_band: 0.02       # m below the uncapped top: the returns forming the top surface ...
++    rail_head_max_spread: 0.10     # m ... at most this wide across the track (rail head 0.07 m)
++    rail_head_face_dx: 0.05        # m along: returns stacked 0.03-0.30 m apart within this ...
++    rail_head_face_dy: 0.07        # m ... and this across: a face toward the sensor (an obstacle's front), not a rail head
++    rail_head_clear_height: 1.5    # m; returns of the cluster's extent up to this height count
+     local_rail_advisory: false     # true: a cluster failing (a) / (b) is advisory 'below_rail_ref' instead of weak evidence (amendment 6 option; amendment 8)
+     no_rail_low_within: 0.0        # m, (c) > 0 on: no rail pair -> a low cluster beyond this is advisory (no_rail_low)
+   calibration:                     # v0.6: automatic mount calibration (resense/calibration.py)
+diff --git a/tests/test_f1a_bounded.py b/tests/test_f1a_bounded.py
+new file mode 100644
+index 0000000..3e48b34
+--- /dev/null
++++ b/tests/test_f1a_bounded.py
+@@ -0,0 +1,271 @@
++"""21.10 F1a bounded head top (``lowobj.rail_head_bounded``; docs/evidence/f1a_bounded_2026-10-21).
++
++The B1 repair's uncapped top reads the rail head's own top surface on the ride and reports it as an object's body
++(ride events 18 -> 23). The rejected completion read that surface as a +-5 m maximum, which an object's own top, a
++slope or a local rise could supply (independent review, F1-F4). The bounded head top is the lowest of four maxima
++(own rail before / after the cluster's extent, other rail before / after its centre), so an object must cover all
++four regions to raise it. The defect test fails with the switch off; every control must keep the object."""
++from __future__ import annotations
++
++import dataclasses
++
++import numpy as np
++import pytest
++
++from resense.clustering import Cluster
++from resense.config import LowObjectConfig
++from resense.lowobj import low_free_mask, rail_head_top, rail_reference_check
++
++HALF = 0.5 * 1.59
++SPACING = 1.59
++
++
++def _cfg(on=True, **kw):
++    return dataclasses.replace(LowObjectConfig(), rail_head_bounded=on, **kw)
++
++
++def _scene(head=0.20, head_other=None, web=0.05, head_step=2.0, slope=0.0, x_lo=30.0, x_hi=50.0,
++           own_head=None, other_head=None):
++    """Both rails: web/foot returns every 0.4 m at ``web`` (inside the rail band, 5 cm off the line) and head-top
++    returns on the line every ``head_step`` m (a ring crossing) at ``head`` + slope * (x - 40) (other rail:
++    ``head_other``, default the same). ``own_head`` / ``other_head``: explicit head-top x positions. Bed at -0.15."""
++    head_other = head if head_other is None else head_other
++    X, dy, h = [], [], []
++    xs = np.arange(x_lo, x_hi, 0.4)
++    for s in (1.0, -1.0):
++        X += list(xs)
++        dy += [s * HALF + 0.05] * xs.size
++        h += [web] * xs.size
++        hx = np.arange(x_lo, x_hi, head_step) if (own_head if s > 0 else other_head) is None \
++            else np.asarray(own_head if s > 0 else other_head, float)
++        X += list(hx)
++        dy += [s * HALF] * hx.size
++        h += list((head if s > 0 else head_other) + slope * (hx - 40.0))
++    X += list(xs)
++    dy += [0.0] * xs.size
++    h += [-0.15] * xs.size
++    return [np.asarray(X, float), np.asarray(dy, float), np.asarray(h, float)]
++
++
++def _add(sc, pts):
++    for x, d, v in pts:
++        sc[0], sc[1], sc[2] = np.r_[sc[0], x], np.r_[sc[1], d], np.r_[sc[2], v]
++    return sc
++
++
++def _fragment(sc, x0=40.0, length=0.3, lat=HALF, width=0.24, low=0.04, tops=((40.15, 0.0, 0.20),)):
++    """A narrow low cluster on a rail: two low returns at its lateral edges (capped top ``low``) and ``tops``
++    (x, dy offset from ``lat``, h) returns in its footprint above the low-stage floor (not cluster members)."""
++    i = sc[0].size
++    _add(sc, [(x0, lat - width / 2, low), (x0 + length, lat + width / 2, low)])
++    _add(sc, [(x, lat + d, v) for x, d, v in tops])
++    idx = np.array([i, i + 1])
++    c = Cluster(points_idx=idx, n=2, n_raw=2, centroid=np.array([x0 + length / 2, lat, low]),
++                bbox_min=np.array([x0, lat - width / 2, 0.0]), bbox_max=np.array([x0 + length, lat + width / 2, low]),
++                distance=x0, lateral=lat, height_min=0.0, height_max=low, intensity=10.0, n_expected=5.0, score=1.0,
++                zone="gauge", n_gauge=2, kind="low")
++    return sc, c
++
++
++def _rejected(sc, c, cfg, others=()):
++    X, dy, h = sc
++    clusters = [c, *others]
++    free = low_free_mask(X.size, clusters, X, dy)
++    return any(o is c for o in rail_reference_check(clusters, X, dy, h, cfg, SPACING, free))
++
++
++# --- the defect: the head's own top kept as an object's body ----------------------------------------------------
++
++@pytest.mark.parametrize("side", [1.0, -1.0])
++def test_rail_head_fragment_is_weak_again_with_the_switch(side):
++    sc, c = _fragment(_scene(), lat=side * HALF)
++    assert not _rejected(sc, c, _cfg(False)), "1.2.0 keeps it (the B1 cost)"
++    assert _rejected(sc, c, _cfg(True))
++
++
++@pytest.mark.parametrize("slope", [-0.01, -0.005, 0.005, 0.01])
++def test_rail_head_fragment_under_a_slope_is_weak(slope):
++    head = 0.20 + slope * 0.15
++    sc, c = _fragment(_scene(slope=slope), tops=((40.15, 0.0, head),))
++    assert _rejected(sc, c, _cfg(True))
++
++
++@pytest.mark.parametrize("slope", [-0.02, 0.02])
++def test_a_steep_head_with_sparse_crossings_fails_open(slope):
++    """The nearest head crossing of a region lies up to 2 m away: under 2 cm/m the lowest region is > 3 cm below the
++    fragment's own top, so the head is not recognised (the cost of the bound, not a hidden object)."""
++    head = 0.20 + slope * 0.15
++    sc, c = _fragment(_scene(slope=slope), tops=((40.15, 0.0, head),))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++def test_the_head_top_is_the_lowest_of_four_regions():
++    sc, c = _fragment(_scene(head=0.20, head_other=0.18))
++    X, dy, h = sc
++    free = low_free_mask(X.size, [c], X, dy)
++    d = dy[c.points_idx]
++    assert rail_head_top(c, X[free], dy[free], h[free], d.min(), d.max(), _cfg(), SPACING) == pytest.approx(0.18)
++
++
++# --- an object must stay an object ---------------------------------------------------------------------------------
++
++@pytest.mark.parametrize("delta", [0.05, 0.10, 0.15, 0.20])
++@pytest.mark.parametrize("side", [1.0, -1.0])
++def test_object_above_the_head_is_kept(delta, side):
++    """Also when a head crossing lies inside the footprint (x = 40.0, 0.20) and the object's top is at or above
++    foot_max_top (0.35: deltas 0.15 and 0.20), where the uncapped top is the head crossing itself."""
++    sc, c = _fragment(_scene(), lat=side * HALF, tops=((40.15, 0.0, 0.20 + delta),))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++@pytest.mark.parametrize("cover", ["after", "before", "both"])
++def test_an_objects_own_returns_along_its_rail_cannot_define_the_head(cover):
++    """A long object (top 0.30, 10 cm above the 0.20 head) whose unclustered top returns lie on its own rail line
++    beyond its low fragment: it raises the own-rail regions it covers, never the other rail."""
++    xs = {"after": np.arange(40.6, 45.0, 0.2), "before": np.arange(35.2, 39.7, 0.2),
++          "both": np.r_[np.arange(35.2, 39.7, 0.2), np.arange(40.6, 45.0, 0.2)]}[cover]
++    sc = _add(_scene(), [(x, HALF, 0.30) for x in xs])
++    sc, c = _fragment(sc, tops=((40.15, 0.0, 0.30),))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++@pytest.mark.parametrize("region", ["own_before", "own_after", "other_before", "other_after"])
++def test_head_seen_in_three_regions_only_does_not_reject(region):
++    """Every region must see the rail; a region with web/foot returns only gives a low head top (fail-open)."""
++    own_b, own_a = np.arange(30.0, 39.7, 2.0), np.arange(41.0, 50.0, 2.0)
++    oth_b, oth_a = np.arange(30.0, 40.1, 2.0), np.arange(40.3, 50.0, 2.0)
++    own = {"own_before": own_a, "own_after": own_b}.get(region, np.r_[own_b, own_a])
++    oth = {"other_before": oth_a, "other_after": oth_b}.get(region, np.r_[oth_b, oth_a])
++    sc, c = _fragment(_scene(own_head=own, other_head=oth))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++def test_a_region_without_any_return_does_not_reject():
++    sc = _scene()
++    keep = ~((sc[1] < 0) & (np.abs(sc[1] + HALF) <= 0.1) & (sc[0] > 40.15))   # other rail after the centre: empty
++    sc = [a[keep] for a in sc]
++    sc, c = _fragment(sc)
++    assert not _rejected(sc, c, _cfg(True))
++
++
++@pytest.mark.parametrize("x,rise", [(36.0, 0.30), (36.0, 0.25), (44.0, 0.30)])
++def test_a_local_rise_cannot_hide_a_10cm_object(x, rise):
++    sc = _add(_scene(), [(x, HALF, rise), (x + 0.07, HALF, rise)])
++    sc, c = _fragment(sc, tops=((40.15, 0.0, 0.30),))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++@pytest.mark.parametrize("slope", [-0.02, -0.012, -0.01, 0.01, 0.012, 0.02])
++@pytest.mark.parametrize("delta", [0.05, 0.10])
++def test_a_slope_cannot_hide_an_object(slope, delta):
++    head = 0.20 + slope * 0.15
++    sc, c = _fragment(_scene(slope=slope), tops=((40.15, 0.0, head + delta),))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++@pytest.mark.parametrize("delta", [0.0, 0.02])
++def test_a_top_surface_wider_than_a_rail_head_is_kept(delta):
++    """An object at (or just above) head height whose top surface spans 0.2 m across the track is not a rail head."""
++    sc, c = _fragment(_scene(), tops=((40.10, -0.10, 0.20 + delta), (40.15, 0.0, 0.20 + delta),
++                                      (40.20, 0.10, 0.20 + delta)))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++def test_a_cluster_between_the_rails_is_not_eligible():
++    sc, c = _fragment(_scene(), lat=0.0, tops=((40.15, 0.0, 0.20),))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++def test_a_wide_cluster_is_not_eligible():
++    sc, c = _fragment(_scene(), width=0.6)
++    assert not _rejected(sc, c, _cfg(True))
++
++
++def test_a_head_top_far_above_the_plane_is_not_a_rail_head():
++    sc, c = _fragment(_scene(head=0.27, web=0.05), tops=((40.15, 0.0, 0.27),))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++def test_only_clusters_the_pre_repair_rule_rejected_are_eligible():
++    """Capped top above the original line: the pre-repair rule kept it, so the new branch cannot reject it."""
++    sc, c = _fragment(_scene(), low=0.08)
++    assert not _rejected(sc, c, _cfg(True))
++
++
++def test_the_unsafe_ablation_keeps_the_branch_off():
++    sc, c = _fragment(_scene())
++    X, dy, h = sc
++    assert not any(o is c for o in rail_reference_check([c], X, dy, h, _cfg(True), SPACING, None))
++
++
++@pytest.mark.parametrize("below", [0.04, 0.08, 0.20])
++def test_a_face_toward_the_sensor_is_an_obstacle(below):
++    """Amendment 1: the highest front-face return of an object can sit at head height when its top face lies beyond
++    the low footprint (review scene raise 0.18, 5 cm box: 0.168 over a head of 0.163); a return straight below it
++    (same x and dy) is a face toward the sensor, which a rail head never shows."""
++    sc, c = _fragment(_scene(), tops=((40.15, 0.0, 0.20), (40.16, 0.01, 0.20 - below)))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++def test_head_returns_side_by_side_are_not_a_face():
++    """Two azimuth samples on the head 0.05 m apart across the track at the same height (one ring, one range) are not
++    a face: the fragment is still the head."""
++    sc, c = _fragment(_scene(), tops=((40.15, 0.0, 0.20), (40.16, 0.05, 0.195)))
++    assert _rejected(sc, c, _cfg(True))
++
++
++def test_a_front_face_with_real_ring_phases_is_an_obstacle():
++    """Review 2026-10-21 F1: on the real sensor the rings sit on their own azimuth phases; the return below the
++    front-face top was 5.8 cm to the side (amendment 1's 2 cm missed it)."""
++    sc, c = _fragment(_scene(), tops=((40.15, 0.0, 0.215), (40.16, 0.058, 0.14)))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++@pytest.mark.parametrize("beyond,delta", [(0.1, 0.05), (0.4, 0.04), (0.9, 0.05), (0.6, 0.10)])
++def test_the_objects_top_beyond_its_low_box_keeps_it(beyond, delta):
++    """Review F6: the object's top face (or a ramp's far end, a pipe's crown) lies beyond the cluster's box along the
++    track; the box itself holds only a front return at head height."""
++    sc, c = _fragment(_scene(), tops=((40.15, 0.0, 0.205), (40.3 + beyond, 0.02, 0.20 + delta)))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++def test_a_ramp_crossed_at_head_height_is_wide_not_a_head():
++    """Amendment 2 (review shapes scene, 0.3 m ramp rising away from the sensor): one ring crosses the ramp exactly at
++    head height; its returns span 0.27 m across the track, some 1-2 mm outside the cluster's strict box."""
++    sc, c = _fragment(_scene(), width=0.26, tops=((40.29, -0.13, 0.201), (40.29, -0.05, 0.201), (40.30, 0.0, 0.2015),
++                                                   (40.31, 0.05, 0.201), (40.31, 0.135, 0.201)))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++def test_a_return_beyond_the_searched_extent_does_not_keep_a_rail_fragment():
++    sc, c = _fragment(_scene(), tops=((40.15, 0.0, 0.205), (41.5, 0.02, 0.30)))
++    assert _rejected(sc, c, _cfg(True))
++
++
++@pytest.mark.parametrize("cant", [0.05, 0.10, 0.15])
++@pytest.mark.parametrize("side", [1.0, -1.0])
++def test_a_canted_track_does_not_reject(cant, side):
++    """Review F3: the rails' levels differ by the cant; H from the lower rail would hide an object 10 cm above the
++    higher one. Disagreeing rails: no rejection (fail-open)."""
++    own = 0.17 + (cant if side > 0 else 0.0)      # every head below foot_max_top (0.35)
++    oth = 0.17 + (0.0 if side > 0 else cant)
++    sc, c = _fragment(_scene(head=own if side > 0 else oth, head_other=oth if side > 0 else own),
++                      lat=side * HALF, tops=((40.15, 0.0, own),))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++def test_rails_agreeing_within_the_tolerance_still_reject():
++    sc, c = _fragment(_scene(head=0.20, head_other=0.18))
++    assert _rejected(sc, c, _cfg(True))
++
++
++def test_returns_above_the_foot_cap_keep_the_cluster():
++    sc, c = _fragment(_scene(), tops=((40.15, 0.0, 0.20), (40.15, 0.02, 0.60)))
++    assert not _rejected(sc, c, _cfg(True))
++
++
++def test_switch_off_is_the_1_2_0_rule():
++    """Off, the decision equals the pre-change rule on the defect and on the controls."""
++    for top in (0.20, 0.25, 0.30):
++        sc, c = _fragment(_scene(), tops=((40.15, 0.0, top),))
++        assert not _rejected(sc, c, _cfg(False))
