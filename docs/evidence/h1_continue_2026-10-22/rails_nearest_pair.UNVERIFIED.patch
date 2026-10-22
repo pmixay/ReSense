@@ -1,0 +1,83 @@
+diff --git a/configs/default.yaml b/configs/default.yaml
+index acd985c..737309f 100644
+--- a/configs/default.yaml
++++ b/configs/default.yaml
+@@ -39,6 +39,7 @@ resense:
+     rails_percentile: 85.0
+     rails_spacing: 1.59
+     rails_min_score: 0.05
++    rails_nearest_pair: true       # 22.10 (H1): with two or more separate runs of qualifying rail-pair centres, the run nearest the prior axis (the track the vehicle stands on) instead of the most prominent pair; one run = as before; false = the most prominent pair
+     rails_head_height:
+     - 0.08
+     - 0.5
+diff --git a/resense/config.py b/resense/config.py
+index 9959a56..da69fb8 100644
+--- a/resense/config.py
++++ b/resense/config.py
+@@ -71,6 +71,7 @@ class TrackConfig:
+     rails_percentile: float = 85.0                  # per-bin height percentile (rail head)
+     rails_spacing: float = 1.59                     # m between rail-head centres (1520 gauge + head)
+     rails_min_score: float = 0.05                   # m, ridge prominence needed to accept
++    rails_nearest_pair: bool = True                 # 22.10 (H1): with two or more separate runs of candidate centres at rails_min_score, the pair whose run lies nearest the prior axis (the track the vehicle stands on) instead of the most prominent one; a single run = as before; false = the most prominent pair
+     rails_head_height: Tuple[float, float] = (0.08, 0.5)  # plausible rail head above bed ref
+     rails_smoothing: float = 0.7                    # EMA of the axis across frames
+     rail_offset_default: float = 0.35               # rail head above bed reference if not measured
+diff --git a/resense/track.py b/resense/track.py
+index 9426c30..f8d032f 100644
+--- a/resense/track.py
++++ b/resense/track.py
+@@ -933,6 +933,8 @@ def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
+     prior curvature held fixed) gives the axis at X = 0 (``center``) and its tangent
+     (``tan_yaw``); with fewer than ``rails_yaw_min_slabs`` slabs the mean midpoint over the
+     rail range is the centre and no yaw is reported.
++    With ``cfg.rails_nearest_pair`` (22.10, H1) and two or more separate runs of candidate centres at
++    ``rails_min_score``, the pair is the best of the run nearest ``prior_center``, not the most prominent one.
+     """
+     X, Y, Z = xyz[:, 0], xyz[:, 1], xyz[:, 2]
+     x0, x1 = cfg.rails_range
+@@ -969,6 +971,7 @@ def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
+     lo, hi = cfg.rails_head_height
+     best = (-1.0, prior_center, floor.rail_offset)
+     best_bins = None
++    scores = np.full(nb, -np.inf)
+     for b in range(half_sp, nb - half_sp):
+         bl, br = b - half_sp, b + half_sp
+         rl, rr = ridge[bl], ridge[br]
+@@ -976,10 +979,21 @@ def estimate_rails(xyz: np.ndarray, floor: TrackModel, cfg: TrackConfig,
+             continue
+         if not (lo < prof[bl] < hi and lo < prof[br] < hi):
+             continue
+-        sc = float(min(rl, rr))
+-        if sc > best[0]:
+-            best = (sc, float(yc[b]), float(0.5 * (prof[bl] + prof[br])))
+-            best_bins = (bl, br)
++        scores[b] = float(min(rl, rr))
++    pick = int(np.argmax(scores))                   # the first maximum, as a running strict '>'
++    if cfg.rails_nearest_pair:
++        # 22.10 (H1): two parallel pairs (a turnout, a gauntlet, a taller neighbouring pair) give separate runs
++        # of centres at rails_min_score; the train stands on the one nearest its own axis, not on the most
++        # prominent one (a distractor 0.4-0.6 m off set the corridor: false core / STOP outside the host envelope)
++        q = np.flatnonzero(scores >= cfg.rails_min_score)
++        if q.size and q[-1] - q[0] + 1 > q.size:    # more than one run
++            runs = np.split(q, np.flatnonzero(np.diff(q) > 1) + 1)
++            peaks = [int(r[np.argmax(scores[r])]) for r in runs]
++            pick = min(peaks, key=lambda j: (abs(yc[j] - prior_center), -scores[j]))
++    if scores[pick] > best[0]:
++        bl, br = pick - half_sp, pick + half_sp
++        best = (float(scores[pick]), float(yc[pick]), float(0.5 * (prof[bl] + prof[br])))
++        best_bins = (bl, br)
+     heads = {} if best_bins is None else {"head_left": float(prof[best_bins[1]]), "head_right": float(prof[best_bins[0]])}
+     if best_bins is None or best[0] < cfg.rails_min_score or not cfg.rails_yaw_enabled or cfg.rails_yaw_slabs < 2:
+         return RailsFit(*best, **heads)
+diff --git a/ros2_ws/src/resense_ros/config/detector.yaml b/ros2_ws/src/resense_ros/config/detector.yaml
+index acd985c..737309f 100644
+--- a/ros2_ws/src/resense_ros/config/detector.yaml
++++ b/ros2_ws/src/resense_ros/config/detector.yaml
+@@ -39,6 +39,7 @@ resense:
+     rails_percentile: 85.0
+     rails_spacing: 1.59
+     rails_min_score: 0.05
++    rails_nearest_pair: true       # 22.10 (H1): with two or more separate runs of qualifying rail-pair centres, the run nearest the prior axis (the track the vehicle stands on) instead of the most prominent pair; one run = as before; false = the most prominent pair
+     rails_head_height:
+     - 0.08
+     - 0.5
