@@ -41,6 +41,7 @@ def test_the_scan_finds_a_personal_path_when_there_is_one(tmp_path):
     assert len(hits) == 2
 
 
+@pytest.mark.realdata(str(ROOT / ".git"))     # needs a git checkout; the image has none (deselected there)
 def test_no_personal_windows_paths_in_live_code():
     hits = []
     for name in _live_files():
