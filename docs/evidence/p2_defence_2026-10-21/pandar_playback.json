@@ -1,0 +1,54 @@
+{
+  "source": "31154690",
+  "profile": "pandar128",
+  "rate": 0.5,
+  "input_cdr_count": 201,
+  "all_input_cdr_identical": true,
+  "all_frame_status_stamps_match_input": true,
+  "frame_status_count": 201,
+  "first_stop_after_player_command_s": 5.041545867919922,
+  "first_stop_after_first_input_s": 1.165283441543579,
+  "first_stop_distance_m": 55.53,
+  "decisions_in_status_stream": {
+    "FAULT": 3,
+    "CAUTION": 3,
+    "GO": 2,
+    "STOP": 193
+  },
+  "frame_freshness_reasons": {
+    "epoch_unconfirmed": 2,
+    "catchup": 3,
+    "source_stale": 2,
+    "current": 194
+  },
+  "counter_note": "node.frames is published before increment (detector_node.py:1053–1057); last index is N-1",
+  "final_node_stats": {
+    "latency_ms": 89.17,
+    "fps": 4.95,
+    "frames": 200,
+    "dropped_frames": 4,
+    "catchup_skipped": 0,
+    "catchup": false,
+    "input_period_ms": 100.0,
+    "ego_speed_mps": null,
+    "ego_speed_source": null,
+    "input_topic": "/sensing/lidar/hesai128/pointcloud",
+    "recording": 1,
+    "input_generation": 0,
+    "decode_ms": 30.12,
+    "detect_ms": 59.06,
+    "cpu_cores": 0.58,
+    "rss_peak_mb": 304.2
+  },
+  "sqlite_integrity": "ok",
+  "video": {
+    "duration_s": 48.4,
+    "size_bytes": 24942932,
+    "sha256": "516733d21965a9fc4ad33107bbbdffd4c41c1bf17a3dd080ba15ebd8c31677b0",
+    "full_decode": "PASS",
+    "size": [
+      1920,
+      1080
+    ]
+  }
+}
