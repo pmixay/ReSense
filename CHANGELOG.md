@@ -14,12 +14,16 @@ dates from 25.09. **Published releases: v1.0.0 and v1.2.0** (v1.2.0: tag `v1.2.0
 [`README.md`](README.md), [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
 20-minute, 13 km recording `new_data`.
 
-## [1.3.0] — draft, unreleased: the integration of 21–22.10 (branch `claude/integration-1.3`)
+## [1.3.0] — sealed and accepted with conditions 22.10, not yet tagged: the integration of 21–22.10
 
-**State (draft by the integration agent; the captain's docs pass and P4's independent acceptance follow).** All four version
-declarations are 1.3.0. Measured detector tree `671ac9e`; the release commit `ed67d25` differs from it only by version
-strings and two YAML comments. Evidence: [`docs/evidence/integration_1.3_2026-10-21/README.md`](docs/evidence/integration_1.3_2026-10-21/README.md).
-Every row below is against a fresh v1.2.0 (`3b73bbe`) run on the same data. Not a release, not a G3 run.
+**State (22.10).** All four version declarations are 1.3.0. Seal `docs/evidence/detector_freeze_2026-10-22_1.3.0.json`
+(42 files, source `853a05b7…162d7d`); measured detector tree `671ac9e`, release commit `ed67d25` (differs only by version
+strings and two YAML comments). Independent final-bundle review: **ACCEPT WITH CONDITIONS**
+([`docs/evidence/review_1.3.0_2026-10-22/README.md`](docs/evidence/review_1.3.0_2026-10-22/README.md); accepted,
+[`DECISIONS.md`](docs/DECISIONS.md) row 58). Integration evidence:
+[`docs/evidence/integration_1.3_2026-10-21/README.md`](docs/evidence/integration_1.3_2026-10-21/README.md). Merged into the
+P1 line at `f24d939`: CI run 39778805197 green on all nine jobs; full suite 2,552 passed, 0 failed. Every row below is
+against a fresh v1.2.0 (`3b73bbe`) run on the same data. Not a G3 run. The tag `v1.3.0` follows the user's approval.
 
 ### Detector
 
@@ -70,6 +74,11 @@ Every row below is against a fresh v1.2.0 (`3b73bbe`) run on the same data. Not 
 False-alarm budget (user's terms, +11 STOP episodes over Falcon + ride + five empty): ride +3 (attributed, K2); Falcon
 +5 on each path, all inside the person's own STOP sequence; false episodes on Falcon 2 → 2 (manual) and 3 → 0
 (`falcon_ros`); five empty +0.
+The budget counts false STOP episodes (no object in the gauge); splits of a real STOP are reported separately as hold
+quality and do not use it ([`DECISIONS.md`](docs/DECISIONS.md) row 58): **+3 of +11 used**.
+
+**Known limits.** The Falcon far-range turnout guard misses passable openings (far-range re-review R2-1; no STOP lost or
+added on our data); H1 tall narrow objects stays open; per-frame time on Falcon is up 40–54 % at the median.
 
 ## [1.2.0] — released 2026-10-20 (tag `v1.2.0`, `3b73bbe`): LiDAR integration candidate of 18.10, the integration of 19.10 and the work of 20.10
 
