@@ -492,3 +492,6 @@ resense:
     roi_half_width: 3.0
     roi_height: [-0.8, 4.5]
   voxel: 0.0
+  farrange:                        # 21.10 (Falcon long range, docs/evidence/falcon_far_range_2026-10-21): only the falcon_ros /
+    with_falcon_profile: true      #   falcon_native profiles read it (far straight axis, 400 m crop); Pandar never does
+    axis_stable: true              # 21.10: tube second side, aged two-sided support vote, two sides only (false = the 19.10 axis)

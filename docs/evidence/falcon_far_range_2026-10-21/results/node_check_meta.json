@@ -1,0 +1,14 @@
+{
+ "farrange": {
+  "enabled": true,
+  "with_falcon_profile": true,
+  "axis_stable": true
+ },
+ "max_range": 400.0,
+ "config": "/tmp/tmpxdwp0av0/detector_check.yaml",
+ "frames": [
+  2650,
+  2900
+ ],
+ "rows": 250
+}

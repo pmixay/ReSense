@@ -1,0 +1,134 @@
+{
+ "0": {
+  "v1.2.0": {
+   "first": 127.3,
+   "first_frame": 2950,
+   "held": 123.0,
+   "held_frame": 2988,
+   "episodes": 8,
+   "false": 3,
+   "go_inside_clear": 0,
+   "stop_frames": 296
+  },
+  "cand": {
+   "first": 150.5,
+   "first_frame": 2756,
+   "held": 129.4,
+   "held_frame": 2927,
+   "episodes": 13,
+   "false": 0,
+   "go_inside_clear": 0,
+   "stop_frames": 436
+  }
+ },
+ "600": {
+  "v1.2.0": {
+   "first": 127.1,
+   "first_frame": 2952,
+   "held": 120.5,
+   "held_frame": 3009,
+   "episodes": 9,
+   "false": 2,
+   "go_inside_clear": 0,
+   "stop_frames": 289
+  },
+  "cand": {
+   "first": 152.4,
+   "first_frame": 2741,
+   "held": 135.4,
+   "held_frame": 2875,
+   "episodes": 10,
+   "false": 1,
+   "go_inside_clear": 0,
+   "stop_frames": 456
+  }
+ },
+ "1200": {
+  "v1.2.0": {
+   "first": 127.3,
+   "first_frame": 2950,
+   "held": 114.4,
+   "held_frame": 3059,
+   "episodes": 11,
+   "false": 3,
+   "go_inside_clear": 0,
+   "stop_frames": 283
+  },
+  "cand": {
+   "first": 156.9,
+   "first_frame": 2704,
+   "held": 135.0,
+   "held_frame": 2878,
+   "episodes": 12,
+   "false": 1,
+   "go_inside_clear": 0,
+   "stop_frames": 448
+  }
+ },
+ "1800": {
+  "v1.2.0": {
+   "first": 127.3,
+   "first_frame": 2950,
+   "held": 122.4,
+   "held_frame": 2993,
+   "episodes": 9,
+   "false": 1,
+   "go_inside_clear": 0,
+   "stop_frames": 291
+  },
+  "cand": {
+   "first": 157.5,
+   "first_frame": 2699,
+   "held": 129.4,
+   "held_frame": 2927,
+   "episodes": 19,
+   "false": 1,
+   "go_inside_clear": 0,
+   "stop_frames": 454
+  }
+ },
+ "2100": {
+  "v1.2.0": {
+   "first": 124.0,
+   "first_frame": 2980,
+   "held": 122.3,
+   "held_frame": 2994,
+   "episodes": 8,
+   "false": 2,
+   "go_inside_clear": 0,
+   "stop_frames": 292
+  },
+  "cand": {
+   "first": 150.9,
+   "first_frame": 2753,
+   "held": 135.5,
+   "held_frame": 2874,
+   "episodes": 8,
+   "false": 0,
+   "go_inside_clear": 0,
+   "stop_frames": 451
+  }
+ },
+ "2400": {
+  "v1.2.0": {
+   "first": 123.4,
+   "first_frame": 2985,
+   "held": 120.5,
+   "held_frame": 3009,
+   "episodes": 7,
+   "false": 2,
+   "go_inside_clear": 1,
+   "stop_frames": 293
+  },
+  "cand": {
+   "first": 157.5,
+   "first_frame": 2699,
+   "held": 132.2,
+   "held_frame": 2903,
+   "episodes": 13,
+   "false": 1,
+   "go_inside_clear": 0,
+   "stop_frames": 449
+  }
+ }
+}

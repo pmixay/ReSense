@@ -1,0 +1,1005 @@
+{
+ "cloud_with_fake_obj.jsonl": {
+  "rows": [
+   1510,
+   1510
+  ],
+  "differing_rows": 0,
+  "fields": {},
+  "message_differences": []
+ },
+ "doubleT_obstacle.jsonl": {
+  "rows": [
+   201,
+   201
+  ],
+  "differing_rows": 0,
+  "fields": {},
+  "message_differences": []
+ },
+ "doubleT_platform.jsonl": {
+  "rows": [
+   345,
+   345
+  ],
+  "differing_rows": 0,
+  "fields": {},
+  "message_differences": []
+ },
+ "new_data_0.jsonl": {
+  "rows": [
+   1409,
+   1409
+  ],
+  "differing_rows": 0,
+  "fields": {},
+  "message_differences": []
+ },
+ "new_data_1.jsonl": {
+  "rows": [
+   1409,
+   1409
+  ],
+  "differing_rows": 0,
+  "fields": {},
+  "message_differences": []
+ },
+ "new_data_2.jsonl": {
+  "rows": [
+   1409,
+   1409
+  ],
+  "differing_rows": 0,
+  "fields": {},
+  "message_differences": []
+ },
+ "new_data_3.jsonl": {
+  "rows": [
+   1409,
+   1409
+  ],
+  "differing_rows": 0,
+  "fields": {},
+  "message_differences": []
+ },
+ "new_data_4.jsonl": {
+  "rows": [
+   1409,
+   1409
+  ],
+  "differing_rows": 97,
+  "fields": {
+   ".health.messages": 8,
+   ".health.messages[]": 89,
+   ".health.level": 1
+  },
+  "message_differences": [
+   {
+    "row": 189,
+    "a": [
+     "latency p95 102 ms over the 100 ms budget"
+    ],
+    "b": []
+   },
+   {
+    "row": 190,
+    "a": [
+     "latency p95 102 ms over the 100 ms budget"
+    ],
+    "b": []
+   },
+   {
+    "row": 191,
+    "a": [
+     "latency p95 102 ms over the 100 ms budget"
+    ],
+    "b": []
+   },
+   {
+    "row": 192,
+    "a": [
+     "latency p95 102 ms over the 100 ms budget"
+    ],
+    "b": []
+   },
+   {
+    "row": 193,
+    "a": [
+     "latency p95 102 ms over the 100 ms budget"
+    ],
+    "b": []
+   },
+   {
+    "row": 194,
+    "a": [
+     "latency p95 104 ms over the 100 ms budget"
+    ],
+    "b": []
+   },
+   {
+    "row": 195,
+    "a": [
+     "latency p95 104 ms over the 100 ms budget"
+    ],
+    "b": []
+   },
+   {
+    "row": 196,
+    "a": [
+     "latency p95 109 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 102 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 197,
+    "a": [
+     "latency p95 109 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 102 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 198,
+    "a": [
+     "latency p95 109 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 102 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 199,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 106 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 200,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 108 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 201,
+    "a": [
+     "latency p95 115 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 108 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 202,
+    "a": [
+     "latency p95 116 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 110 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 203,
+    "a": [
+     "latency p95 116 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 111 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 204,
+    "a": [
+     "latency p95 116 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 115 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 205,
+    "a": [
+     "latency p95 118 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 116 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 206,
+    "a": [
+     "latency p95 118 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 116 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 209,
+    "a": [
+     "latency p95 119 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 210,
+    "a": [
+     "latency p95 120 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 211,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 212,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 213,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 214,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 215,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 216,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 217,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 218,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 219,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 220,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 221,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 222,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 223,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 224,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 225,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 226,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 227,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 228,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 229,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 230,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 231,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 232,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 233,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 234,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 235,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 236,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 237,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 238,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 239,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 240,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 241,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 242,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 243,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 244,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 245,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 246,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 247,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 248,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 249,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 250,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 251,
+    "a": [
+     "latency p95 122 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 252,
+    "a": [
+     "latency p95 121 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 118 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 253,
+    "a": [
+     "latency p95 121 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 117 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 254,
+    "a": [
+     "latency p95 121 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 116 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 255,
+    "a": [
+     "latency p95 121 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 116 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 256,
+    "a": [
+     "latency p95 121 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 116 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 257,
+    "a": [
+     "latency p95 121 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 114 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 258,
+    "a": [
+     "latency p95 121 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 112 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 259,
+    "a": [
+     "latency p95 120 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 110 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 260,
+    "a": [
+     "latency p95 117 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 108 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 261,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 107 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 262,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 263,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 264,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 265,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 266,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 267,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 268,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 269,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 270,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 271,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 272,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 273,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 274,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 275,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 276,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 277,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 278,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 279,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 105 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 280,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 104 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 281,
+    "a": [
+     "latency p95 113 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 103 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 282,
+    "a": [
+     "latency p95 110 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 103 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 283,
+    "a": [
+     "latency p95 106 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 103 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 284,
+    "a": [
+     "latency p95 106 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 103 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 285,
+    "a": [
+     "latency p95 104 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 103 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 286,
+    "a": [
+     "latency p95 100 ms over the 100 ms budget"
+    ],
+    "b": [
+     "latency p95 102 ms over the 100 ms budget"
+    ]
+   },
+   {
+    "row": 287,
+    "a": [],
+    "b": [
+     "latency p95 100 ms over the 100 ms budget"
+    ]
+   }
+  ]
+ },
+ "new_data_5.jsonl": {
+  "rows": [
+   1409,
+   1409
+  ],
+  "differing_rows": 0,
+  "fields": {},
+  "message_differences": []
+ },
+ "new_data_6.jsonl": {
+  "rows": [
+   1409,
+   1409
+  ],
+  "differing_rows": 0,
+  "fields": {},
+  "message_differences": []
+ },
+ "new_data_7.jsonl": {
+  "rows": [
+   1408,
+   1408
+  ],
+  "differing_rows": 0,
+  "fields": {},
+  "message_differences": []
+ },
+ "roundT_doubleT.jsonl": {
+  "rows": [
+   252,
+   252
+  ],
+  "differing_rows": 0,
+  "fields": {},
+  "message_differences": []
+ },
+ "roundT_pressureGate_roundT.jsonl": {
+  "rows": [
+   268,
+   268
+  ],
+  "differing_rows": 0,
+  "fields": {},
+  "message_differences": []
+ },
+ "roundT_squareT_pressureGate_squareT.jsonl": {
+  "rows": [
+   545,
+   545
+  ],
+  "differing_rows": 0,
+  "fields": {},
+  "message_differences": []
+ },
+ "squareT_platform_squareT_switch.jsonl": {
+  "rows": [
+   877,
+   877
+  ],
+  "differing_rows": 0,
+  "fields": {},
+  "message_differences": []
+ },
+ "setF_straight.json": {
+  "fields": {
+   ".parameters.config_sha256": 1,
+   ".summary.wall_s": 1
+  }
+ }
+}
