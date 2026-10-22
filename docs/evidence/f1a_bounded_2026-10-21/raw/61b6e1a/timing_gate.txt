@@ -1,0 +1,6 @@
+total    ride            frames  11271/ 11271  p50   32.2 ->   31.9 ms  p95   56.8 ->   55.6 ms
+total    set O           frames   1510/  1510  p50   30.0 ->   30.8 ms  p95   49.1 ->   47.2 ms
+total    six recordings  frames   2488/  2488  p50   31.5 ->   32.1 ms  p95   56.2 ->   55.2 ms
+cluster  ride            frames  11271/ 11271  p50    8.3 ->    8.1 ms  p95   29.7 ->   28.9 ms
+cluster  set O           frames   1510/  1510  p50    6.5 ->    6.7 ms  p95   18.2 ->   17.3 ms
+cluster  six recordings  frames   2488/  2488  p50    7.9 ->    8.0 ms  p95   27.5 ->   26.5 ms

@@ -1,0 +1,14 @@
+selftest PASS (set O perturbation of big_center flagged; self-comparison clean)
+result leaves compared 2162, changed 7
+  /five_empty/advisory_frames: 1006 -> 1004
+  /recordings/doubleT_platform/advisory_frames: 182 -> 180
+  /ride/advisory_frames: 4764 -> 4759
+  /ride/alarm_events: 23 -> 21
+  /ride/alarm_frames: 111 -> 109
+  /ride/health/ok: 11009 -> 11085
+  /ride/health/warn: 262 -> 186
+doubleT_platform.jsonl: rows 345 changed 168 STOP 0 -> 0 lost [] added [] fields ['/warnings[]/id', '/health/candidate_distance', '/clear_distance', '/health/clear_distance', '/n_candidates', '/warnings[len]', '/warning']
+new_data_1.jsonl: rows 1409 changed 116 STOP 12 -> 11 lost [1265] added [] fields ['/warnings[]/id', '/health/candidate_distance', '/clear_distance', '/health/clear_distance', '/n_candidates', '/warnings[len]', '/nearest_distance', '/detections[]/lateral']
+new_data_2.jsonl: rows 1409 changed 53 STOP 2 -> 2 lost [] added [] fields ['/warnings[]/id', '/ego_speed_estimate', '/n_candidates', '/health/candidate_distance', '/clear_distance', '/health/clear_distance', '/ego_speed_confidence', '/warnings[len]']
+new_data_4.jsonl: rows 1409 changed 742 STOP 17 -> 16 lost [80] added [] fields ['/warnings[]/id', '/warnings[len]', '/detections[]/id', '/health/candidate_distance', '/clear_distance', '/health/clear_distance', '/warning', '/warnings[]/age']
+per-frame files compared: 15 with changes: 4
