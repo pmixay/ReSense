@@ -970,8 +970,11 @@ class Detector:
         low-object, ego-speed, mount and clear-distance stages keep the base model. Revision 2: only beyond the
         farthest X to which a boundary still follows the base axis (``curve.curve_from``), and only objects the base
         gauge did not judge: none of their returns inside its strict envelope within its trusted range ``base_valid``."""
+        # integration 1.3: the far-range state that _corridor writes (_union_shift, _far_report_cap) is saved too, so
+        # the curve pass cannot clear the far line's report cap of this frame (read by the health stage)
         saved = (self.track, self._far_axis, getattr(self, "_dy_rail", None), self._frame_hd, self._thin,
-                 getattr(self, "_low_height", []), getattr(self, "_near_low", []))
+                 getattr(self, "_low_height", []), getattr(self, "_near_low", []), self._union_shift,
+                 self._far_report_cap)
         try:
             self.track, self._far_axis = self.track.curve, None
             cand, dy_k, h_k, _, (valid, _, floor_valid) = self._corridor(xyz, intensity)
@@ -979,7 +982,7 @@ class Detector:
             extra = self._cluster(cand, 1, valid, floor_valid, None, None) if len(cand) else []
         finally:
             (self.track, self._far_axis, self._dy_rail, self._frame_hd, self._thin, self._low_height,
-             self._near_low) = saved
+             self._near_low, self._union_shift, self._far_report_cap) = saved
         obstacles = [c for c in clusters if c.zone == "gauge" and not c.reason]
         start = float(saved[0].curve.curve_from)
         base_in = getattr(self, "_base_in", None)

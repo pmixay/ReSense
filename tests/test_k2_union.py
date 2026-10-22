@@ -262,3 +262,21 @@ def test_union_curve_from_is_the_base_axis_followed_reach():
     xyz, _ = _entry_scene(j=1.0 / 60000.0, inner_to=70.0)
     m = _run_track(xyz, UNION)[-1]
     assert m.curve is not None and 0.0 < m.curve.curve_from < m.curve.axis_valid
+
+
+def test_union_curve_pass_keeps_the_far_range_state_of_the_frame():
+    """Integration 1.3 (K2 union with far range): the curve pass runs the real corridor with no far axis, which resets
+    the far-range state it writes; ``_far_report_cap`` (read later by the health stage) and ``_union_shift`` must come
+    back as the base pass left them."""
+    cfg = DetectorConfig()
+    det = Detector(replace(cfg, track=replace(cfg.track, **UNION)))
+    cv = TrackModel(floor_coef=np.array([0.0, 0.0, -1.5]), floor_range=(4.0, 100.0), center=0.0, yaw=0.0,
+                    curvature=2e-4, axis_valid=150.0)
+    det.track = TrackModel(floor_coef=np.array([0.0, 0.0, -1.5]), floor_range=(4.0, 100.0), center=0.0, yaw=0.0,
+                           curvature=0.0, axis_valid=150.0, curve=cv)
+    shift = np.array([0.0, 0.2, 0.0])
+    det._far_report_cap, det._union_shift = 77.0, shift
+    det._cluster = lambda *a, **kw: []
+    xyz = np.array([[30.0, 0.0, -1.0], [60.0, 0.5, -1.0], [90.0, -0.5, -1.0]], np.float32)
+    det._curve_clusters(xyz, np.full(3, 30.0, np.float32), [], 150.0)
+    assert det._far_report_cap == 77.0 and det._union_shift is shift
