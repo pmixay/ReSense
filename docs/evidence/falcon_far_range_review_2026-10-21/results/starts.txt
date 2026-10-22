@@ -1,0 +1,7 @@
+start  | v1.2.0 first/held STOP (m), eps | cand first/held STOP (m), eps
+0 | 127.3/123.0, 8 eps (3 false) | 149.7/129.5, 5 eps (0 false)
+600 | 127.1/120.5, 9 eps (2 false) | 149.7/130.2, 5 eps (0 false)
+1200 | 127.3/114.4, 11 eps (3 false) | 135.0/129.8, 3 eps (0 false)
+1800 | 127.3/122.4, 9 eps (1 false) | 149.7/129.5, 4 eps (0 false)
+2100 | 124.0/122.3, 8 eps (2 false) | 149.7/129.8, 4 eps (0 false)
+2400 | 123.4/120.5, 7 eps (2 false) | 135.4/127.4, 4 eps (0 false)
