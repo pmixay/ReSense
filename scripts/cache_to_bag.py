@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Rebuild a ROS 2 bag from cached real frames (``scripts/cache_frames.py --int16 --stamps``).
+"""Rebuild a ROS 2 bag from cached real frames (``scripts/cache_frames.py --int16 --stamps [--zstd]``).
 
 For replaying the organizers' recordings through the real node (``ros2 bag play``) when the
 original bags are not on disk: same topic, ``frame_id``, PointCloud2 layout (``point_step`` 26,
@@ -24,8 +24,8 @@ import yaml
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from resense.io import _natural_key  # noqa: E402
 from resense.pointcloud import compact_to_xyz, expand_compact16  # noqa: E402
+from scripts.cache_io import cache_file_stem, cache_files, load_cache_array  # noqa: E402
 
 MSGTYPE = "sensor_msgs/msg/PointCloud2"
 QOS = ("- history: 1\n  depth: 10\n  reliability: 1\n  durability: 2\n  deadline:\n    sec: 9223372036\n"
@@ -40,7 +40,7 @@ SENSOR_T0 = 946_684_800.0            # the sensors' unsynchronised clock starts 
 
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    p.add_argument("cache", help="cache directory of one recording (<bag>_NNNN.npy + <bag>_stamps.json)")
+    p.add_argument("cache", help="cache directory of one recording (<bag>_NNNN.npy or .npy.zst + <bag>_stamps.json)")
     p.add_argument("out", help="bag directory to create")
     p.add_argument("--start", type=int, default=0)
     p.add_argument("--limit", type=int, default=None)
@@ -58,10 +58,10 @@ def main(argv=None) -> int:
     if topic is None:
         meta = yaml.safe_load(open(os.path.join(os.path.dirname(os.path.normpath(a.cache)), f"{bag}_metadata.yaml")))
         topic = meta["rosbag2_bagfile_information"]["topics_with_message_count"][0]["topic_metadata"]["name"]
-    files = sorted(glob.glob(os.path.join(a.cache, f"{bag}_*.npy")), key=_natural_key)[a.start:]
+    files = cache_files(a.cache, f"{bag}_*.npy")[a.start:]       # plain and zstandard (--zstd) caches
     if a.limit:
         files = files[:a.limit]
-    stamps = [float(st["stamps"][os.path.basename(f)[len(bag) + 1:-4]]) for f in files]
+    stamps = [float(st["stamps"][cache_file_stem(f)[len(bag) + 1:]]) for f in files]
     fields = [T["sensor_msgs/msg/PointField"](name=n, offset=o, datatype=d, count=1)
               for n, o, d in (("x", 0, 7), ("y", 4, 7), ("z", 8, 7), ("intensity", 12, 7), ("ring", 16, 4),
                               ("timestamp", 18, 8))]
@@ -84,7 +84,7 @@ def main(argv=None) -> int:
     con.execute("INSERT INTO schema VALUES (3, 'humble')")
     con.execute("INSERT INTO topics VALUES (1, ?, ?, 'cdr', ?)", (topic, MSGTYPE, QOS))
     for i, (f, t) in enumerate(zip(files, stamps)):
-        arr = np.load(f)
+        arr = load_cache_array(f)
         if arr.dtype["x"].kind == "i":
             arr = expand_compact16(arr)
         xyz = compact_to_xyz(arr)
