@@ -9,20 +9,19 @@
 > the older sections against the archived text they were cut from (checked 19.10).
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), loosely; versions up to v0.6.4 are team labels; package 1.0.0
-dates from 25.09. **The published release is v1.0.0 only.** 1.1.0 (sealed 16.10) was not released and will not be (captain,
-19.10); **1.2.0 is the next release and is not released**: the detector seal passes `verify` since the R3 reseal of 20.10. Figures are the team's, measured when a change landed (detector figures on the 1 cm frame cache). Current results:
+dates from 25.09. **Published releases: v1.0.0 and v1.2.0** (v1.2.0: tag `v1.2.0` = `3b73bbe`, published on GitHub 2026-10-20 20:58 UTC, image archive with `.sha256` and `SHA256SUMS`, built and checked by release workflow run 39496692666; `scripts/verify_release.sh v1.2.0` exits 0, checked 22.10). 1.1.0 (sealed 16.10) was not released and will not be (captain,
+19.10); its content is part of 1.2.0. The detector seal passes `verify` since the R3 reseal of 20.10. Figures are the team's, measured when a change landed (detector figures on the 1 cm frame cache). Current results:
 [`README.md`](README.md), [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
 20-minute, 13 km recording `new_data`.
 
-## [1.2.0] — unreleased: LiDAR integration candidate of 18.10, the integration of 19.10 and the work of 20.10
+## [1.2.0] — released 2026-10-20 (tag `v1.2.0`, `3b73bbe`): LiDAR integration candidate of 18.10, the integration of 19.10 and the work of 20.10
 
 **State, 20.10 evening (`main` `8453458`).** All four version declarations are 1.2.0. `python3 scripts/detector_freeze.py verify`
 **PASSES** (40 files, R3 integrity reseal on the measured `0a472d6`; it is an integrity seal, not an acceptance; the F1a completion merged at `769d075` was reverted the same evening after its independent review, so the frozen bytes are those of `f56ad5e` again). CI on `main` was
 green at `5d83c5b` (run #667) and `f56ad5e` (#669), all five jobs; run #680 on `8453458` (PR #47) failed in the web job's browser
-suite (22 of 75 end-to-end tests; four jobs green), so `main` is red since the UI merge.
-PRs #43–#49 are merged (#46, #48, #49 are P4's reviews of H′ and the Falcon clear-distance model, of R3 and H1, and the dust and marked-bag run). **Not released:**
-release, tag and demo image wait for a final source, the last commit before the code stop 20.10 23:59 MSK (captain, 20.10); then
-the reseal, P4's independent acceptance of the final bundle, the image and the tag. Not a J1 score, not a G3 run
+suite (22 of 75 end-to-end tests; four jobs green). *(Note 22.10: main's browser suite stayed red in runs #702, #704, #709 and #711 (the other jobs, checks, docker, pytest and offline-build, passed); the v1.2.0 commit itself has no CI run, its squash message contains "[skip ci]". The e2e fixes (patient timeouts, reduced motion, four parallel shards) are on the `claude/p1-work-list-verification-o1hdlh` branch, branch run #718 on `6ee469c` passed all jobs; main's browser suite was red, the fix is in the pending pull request.)*
+PRs #43–#49 are merged (#46, #48, #49 are P4's reviews of H′ and the Falcon clear-distance model, of R3 and H1, and the dust and marked-bag run). **Released 20.10:**
+v1.2.0 was cut from the final source (tag `v1.2.0` = `3b73bbe`, published 20:58 UTC; asset sha256 `89bd6b54…eba67c`, 472,124,881 bytes). Not a J1 score, not a G3 run
 ([`docs/BACKLOG.md`](docs/BACKLOG.md) "Current plan"). (State of 19.10 evening, kept for the record: `verify` failed with 2 added
 and 11 changed files until the reseal; CI was red.)
 
@@ -272,12 +271,12 @@ released: no tag or archive, no J1 score.
   short initialization; any key or click skips; reduced motion keeps the fade. Web-only: no file under `resense/`, `native/`,
   `configs/` or `ros2_ws/` changes.
 - **Changed (20.10, PR #47, merged):** a reworked Player workspace (a modeled train-interior display, reference-based 3D view,
-  pinned transport and telemetry) and a persistent live preview at https://resense.amdm.life/. Web-only: no file under
+  pinned transport and telemetry) and a persistent live preview at https://resense.arbuz.lol/. Web-only: no file under
   `resense/`, `native/`, `configs/` or `ros2_ws/` differs from `f56ad5e`, the seal still passes, the release image does not contain
   `webapp/`. P2 reports 362 frontend, 179 backend and 81 dashboard tests and 75 browser cases in split batches (not one clean
   suite) on its host, and public checks of the preview ([README](docs/evidence/p2_2026-10-20/README.md),
   [PUBLISH](docs/evidence/p2_2026-10-20/PUBLISH.md)); `/deployment.json` at ~18:50 MSK named commit `432494f` of branch
-  `ui-improvement` (deployed 18:23 MSK), a pre-merge build.
+  `ui-improvement` (deployed 18:23 MSK), a pre-merge build. *(Note 22.10: the preview host was changed to https://resense.arbuz.lol/; the branch `ui-improvement` was merged by PR #47 and no longer exists.)*
 - **Changed (09.10):** resumable, checksummed uploads in 8 MiB chunks with adaptive gzip, retries and a second-tab guard; background
   finalize; a background read-ahead thread in processing; the 502 behind the reverse proxy fixed (idle keep-alive 130 s).
 - Tests at 29.09: 149 backend, 278 frontend, 44 browser end-to-end; CI job `webapp` after `checks`.

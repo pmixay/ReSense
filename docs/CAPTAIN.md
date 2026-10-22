@@ -63,8 +63,7 @@ sealed, so moving those needs the captain to unfreeze it (§6, [`DETECTOR_FREEZE
 the code stop (20.10 23:59 MSK), **P1** before the pitch, **P2** after 23.10. The captain's own list there (P1 table): CI repair,
 done (all five jobs green on `main`, runs #667 and #669); the integrity reseal of the R3 source, done (`verify` passes), with P4's
 acceptance of the bundle still open; the F1a ride cost, accepted 20.10 (P3's completion that removed it was rejected by its review and reverted, §9); the K2 and R3 B2 decisions, taken
-20.10 evening (§9); E1, tag and release 1.2.0, delayed until the final source exists (the last commit before the
-code stop), then reseal, P4's acceptance, image and tag; final numbers into the deck and speech and the rehearsals (planned
+20.10 evening (§9); E1, tag and release 1.2.0, **done 20.10** (`v1.2.0` = `3b73bbe`, published 20:58 UTC; checked 22.10); final numbers into the deck and speech and the rehearsals (planned
 20.10 and 22.10, no completion record; deck, speech and number edits come after the code stop, and rehearsal 2 on 22.10 is the
 real deadline); the S5 bench of the final image; the human read of the 29.09 safety review (below); the Falcon results and
 1.2.0 status to the organizers if updates are allowed. P1's agent (the second table there): the final gate, X3 and Falcon and
@@ -96,17 +95,15 @@ branches of 15–18.10 (merged: PR #33, #35–#38). No open PR.
 
 ## 5. Release and submission
 
-**v1.0.0 is the only published release** (tag `5d6e9b5`, 29.09, with `resense-image-v1.0.0.tar.gz`, its `.sha256` and
-`SHA256SUMS`; the judge verified it on 13.10; GitHub lists no other release or tag, checked 20.10). **1.1.0 (sealed 16.10) was
-not released and will not be** (captain, 19.10). The sources carry the **1.2.0 candidate**: all four version declarations are
+**Published releases (22.10): v1.0.0 and v1.2.0.** **v1.2.0**: tag `v1.2.0` = `3b73bbe`, GitHub release "ReSense v1.2.0" published 2026-10-20 20:58 UTC, assets `resense-image-v1.2.0.tar.gz` (472,124,881 B, sha256 `89bd6b54c139e57c86ed222845f80816d7364b9e39f3cb80878576c7d5eba67c`), `.sha256` and `SHA256SUMS`, built and checked by release workflow run 39496692666; `scripts/verify_release.sh v1.2.0` exits 0 and `detector_freeze.py verify` passes on the tag (both checked 22.10). **v1.0.0** (tag `5d6e9b5`, 29.09, with `resense-image-v1.0.0.tar.gz`, its `.sha256` and
+`SHA256SUMS`; the judge verified it on 13.10; at 20.10 GitHub listed no other release or tag, which was true before v1.2.0 was published). **1.1.0 (sealed 16.10) was
+not released and will not be** (captain, 19.10). The sources carry **1.2.0**: all four version declarations are
 1.2.0 (`tests/test_release.py`). **The detector seal passes `verify`** ([`detector_freeze_2026-10-20_1.2.0_r3.json`](evidence/detector_freeze_2026-10-20_1.2.0_r3.json),
 40 files, measured `0a472d6`, re-run 20.10 ~19:05 MSK on `8453458`). It is an **integrity seal only**: the author checks are
-complete, P4's independent acceptance of the final bundle is open. **Release, tag and demo image are delayed (captain, 20.10):**
-development is still active and there is no final source yet; the final source is the last commit before the code stop 20.10
-23:59 MSK, and only then the reseal, P4's acceptance, the image and the tag of **v1.2.0**. `.github/workflows/release.yml`
+complete, P4's independent acceptance of the final bundle is open. **Release, tag and image: done 20.10** (state before the release, kept: the captain delayed them until the final source, the last commit before the code stop 20.10 23:59 MSK). `.github/workflows/release.yml`
 builds the runtime image from a pushed `v*` tag, loads the archive back, plays both smoke bags with no internet, runs the E2
 check and publishes the archive with its checksums. **CI works now**: all five jobs passed on `main` at `5d83c5b` (run #667)
-and `f56ad5e` (#669); run #680 on `8453458` (PR #47) failed in the webapp browser suite (see §4). Since the captain's instruction of 20.10 evening the jobs are `checks` (which also decides what the push can affect), `pytest`, `webapp`, `webapp-e2e` (the browser suite, four parallel shards), `docker` and `offline-build`; `docker` and `offline-build` run only for a push that touches something the Dockerfile copies, `webapp` (the web tests, kept) only for a push that touches the web prototype or what it uses, and a push of documents runs `checks` and `pytest` (`scripts/ci_changes.py`). Pushes only, no pull-request CI. 19.10: 0 of the last 100 runs
+and `f56ad5e` (#669); run #680 on `8453458` (PR #47) failed in the webapp browser suite (see §4); 22.10: main's browser suite stayed red in runs #702, #704, #709 and #711 (checks, docker, pytest and offline-build passed), the v1.2.0 commit has no CI run ("[skip ci]"), and the e2e fix is in the pending pull request (branch run #718 on `6ee469c` passed all jobs). Since the captain's instruction of 20.10 evening the jobs are `checks` (which also decides what the push can affect), `pytest`, `webapp`, `webapp-e2e` (the browser suite, four parallel shards), `docker` and `offline-build`; `docker` and `offline-build` run only for a push that touches something the Dockerfile copies, `webapp` (the web tests, kept) only for a push that touches the web prototype or what it uses, and a push of documents runs `checks` and `pytest` (`scripts/ci_changes.py`). Pushes only, no pull-request CI. 19.10: 0 of the last 100 runs
 succeeded; the failure on `cefd4c4` before any step no longer reproduces; fallbacks: `scripts/release.sh`, `scripts/export_image.sh`. Whether an updated archive may be
 re-run is asked in O1 (sent, unanswered).
 

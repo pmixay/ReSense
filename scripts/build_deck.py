@@ -295,7 +295,7 @@ N = {
 
 # ==== 1.2.0 (19.10): the version shown at the defence and developed further; each number with its source.
 # The candidate is the sealed development build on main aec88d2 (measured source 0779db7; detector files
-# identical; `scripts/detector_freeze.py verify` PASS, 38 files), NOT released; 1.1.0 will not be released
+# identical; `scripts/detector_freeze.py verify` PASS, 38 files at that time), then a candidate; 1.1.0 will not be released
 # (the captain's decision, 19.10). Published: v1.0.0 (5d6e9b5), what the experts evaluated 30.09-14.10; 66/100 is
 # our independent agent judge's score of v1.0.0 (13.10), not an organizer score. On the Pandar recordings the
 # 1.2.0 gate equals GATE above (`build_deck.py --check-gate docs/evidence/b4_merge_reseal_2026-10-18/gate.json` ->
@@ -304,9 +304,9 @@ N = {
 # 20.10: the shipped detector bytes are those of f56ad5e (the R3 seal; the F1a completion of 20.10 was rejected by its
 # independent review and reverted), `detector_freeze.py verify` PASS, 40 files. tests: P4's independent run on the
 # f56ad5e bytes in the CI-like configuration, 20.10: 2,387 of 2,387 passed, 8 need recorded data
-# (docs/evidence/p4_review_final_bundle_2026-10-20/README.md; 1,969 on aec88d2 on 19.10). "release_tag": None until the
-# release is published; set to "v1.2.0" on 20.10 evening at the captain's request (before the tag existed: check the
-# release page before the deck is shown; None and --refresh put "релиз готовится" back).
+# (docs/evidence/p4_review_final_bundle_2026-10-20/README.md; 1,969 on aec88d2 on 19.10). "release_tag": the release
+# v1.2.0 is published (tag v1.2.0 = 3b73bbe, GitHub 2026-10-20 20:58 UTC; scripts/verify_release.sh v1.2.0 exits 0, 22.10);
+# None would put "релиз готовится" back.
 V12 = {"version": "1.2.0", "commit": "f56ad5e", "released": "v1.0.0", "judge_score": 66, "tests": "2 387",
        "release_tag": "v1.2.0"}
 def release_state():
@@ -1565,7 +1565,8 @@ NOTES[27] = (
     f"docker_chain_rviz.mp4: архив 23.09 (v0.6.2), не {_V}. Надёжность: нет свежих данных — FAULT или удержание "
     "STOP; потребитель проверяет время действия /resense/status своим таймером; при смене бэга узел явно "
     "сбрасывает очередь, калибровку, треки и свежесть. Команды: docs/PRESENTATION.md «Демонстрация», "
-    "docs/evidence/n1_n4_2026-10-18/HOWTO.md.")
+    "docs/evidence/n1_n4_2026-10-18/HOWTO.md. Falcon-бэг (432 кадра) проверен с настоящим ROS 2 на сервере моста: все кадры "
+    "обработаны, первый STOP через 23,2 с после play на 130,5 м при скорости 1,0 (при 0,5 — 42,9 с, дольше 30 с): играть со скоростью 1,0.")
 NOTES[20] = (
     f"По критериям экспертов 16.10. {of(N['person'])}: человек в габарите на реальной записи doubleT_obstacle — "
     f"STOP в каждом кадре, {person_alarm()}; вся запись — {obstacle_run()}; предмет на рельсе — "

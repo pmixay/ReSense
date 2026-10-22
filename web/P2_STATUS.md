@@ -3,7 +3,7 @@
 **20.10 code handoff:** [execution plan](../docs/evidence/p2_2026-10-20/PLAN.md)
 and [verification receipt](../docs/evidence/p2_2026-10-20/README.md). The UI/main
 integration and scoped rendering/navigation/live-replay fixes are verified locally.
-Preview publication is complete at [resense.amdm.life](https://resense.amdm.life/);
+Preview publication is complete at [resense.arbuz.lol](https://resense.arbuz.lol/) (22.10: the earlier preview host now serves another app);
 the [publication receipt](../docs/evidence/p2_2026-10-20/PUBLISH.md) records the public checks.
 **Asset cleanup, 20.10:** all five unused root reference images deleted at the
 user's request; the P0 photo item is complete. Remaining non-code deliverables
@@ -18,7 +18,7 @@ below retains its historical verification dates.
 > protocol `058a451`; local 1.1.0 seal verification PASS. Review:
 > [`p2_plan_2026-10-16`](../docs/evidence/p2_plan_2026-10-16/README.md).
 > **Status:** the queue below is the state of 16.10 (statuses of 19.10: 1.1.0 will not be released, J1 and G3 run on the final
-> 1.2.0 seal; P2's `ui-improvement` is not merged). Execution receipt:
+> 1.2.0 seal; P2's `ui-improvement` was merged by PR #47 on 20.10 and the branch no longer exists). Execution receipt:
 > [`p2_execution_2026-10-16`](../docs/evidence/p2_execution_2026-10-16/README.md).
 > **Clean-up 19.10:** only stale version/seal statements were corrected, from `DECISIONS.md` rows 35–42; the queue itself is P2's.
 
@@ -66,7 +66,7 @@ historical and must be updated before rehearsal.
 
 ## Rehearsals
 
-None held yet.
+None recorded here. (22.10: no rehearsal outcome is recorded in the repository, so none is stated; rehearsal 1 of 20.10 and rehearsal 2 of 22.10 are filled in from the template below only after they have taken place and been checked.)
 
 Planned by the captain on 19.10 (roles, pass criteria and the speech:
 [`PRESENTATION.md`](../docs/PRESENTATION.md) «Репетиции»). The live demo is 1.2.0 (an image built from
@@ -74,7 +74,7 @@ the final 1.2.0 commit, P1's choice): Pandar `doubleT_obstacle`, then the Falcon
 
 | # | date | scope | P2's part |
 |---|---|---|---|
-| 1 | **20.10** | full talk with a per-slide stopwatch; live demo (choose `--rate`; check the short Falcon demo bag, not prepared yet); first Q&A drill | second device: join the call as a viewer, confirm the shared RViz is readable, keep the fallback clip [`docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4) open and start it on the captain's cue |
+| 1 | **20.10** | full talk with a per-slide stopwatch; live demo (choose `--rate`; the short Falcon demo bag exists, 432 frames; play it at `--rate 1.0`, see PRESENTATION); first Q&A drill | second device: join the call as a viewer, confirm the shared RViz is readable, keep the fallback clip [`docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4) open and start it on the captain's cue |
 | 2 | **22.10** | dress rehearsal on the final deck and image; **forced** switch to the fallback clip; full Q&A drill | the same; perform the forced switch and time it |
 
 Pass criteria: total ≤ 5:00; Pandar STOP visible ≤ 30 s after playback starts; switch to the fallback
