@@ -41,11 +41,11 @@ below retains its historical verification dates.
 > [`docs/BACKLOG.md`](../docs/BACKLOG.md) "Current plan" (P2 table).
 > **Audience:** team · **Owner:** P2 for the interface; the pitch, deck, demo and rehearsals are the
 > captain's (P1) since 29.09 evening · **Language:** EN
-> **Last verified:** 2026-10-16: fetched integration `b0c9c17`, participant handoffs and active P4
+> **Last verified:** 2026-10-22: the receipts and figures of the 21.10 block (clip length, message counts, first-STOP times, 16 slides / 1 020 words), file names and links re-checked against the repository at 1.3.0 (`f24d939`); the queue itself is still the state of 16.10 / 19.10, and the preview host and rehearsals are not re-verified; earlier: 2026-10-16: fetched integration `b0c9c17`, participant handoffs and active P4
 > protocol `058a451`; local 1.1.0 seal verification PASS. Review:
 > [`p2_plan_2026-10-16`](../docs/evidence/p2_plan_2026-10-16/README.md).
 > **Status:** the queue below is the state of 16.10 (statuses of 19.10: 1.1.0 will not be released, J1 and G3 run on the final
-> 1.2.0 seal; P2's `ui-improvement` was merged by PR #47 on 20.10 and the branch no longer exists). Execution receipt:
+> 1.2.0 seal; P2's UI branch was merged by PR #47 on 20.10 as `8453458`; the branch no longer exists). Execution receipt:
 > [`p2_execution_2026-10-16`](../docs/evidence/p2_execution_2026-10-16/README.md).
 > **Clean-up 19.10:** only stale version/seal statements were corrected, from `DECISIONS.md` rows 35–42; the queue itself is P2's.
 

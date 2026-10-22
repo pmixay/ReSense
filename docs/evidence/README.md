@@ -4,7 +4,7 @@
 > `results/`, the logs, captures and bench output of each run, and the recordings' original
 > metadata. One line per file or folder: what it is, date, commit, result.
 > **Audience:** team, jury · **Owner:** P1 (runs, timing), P4 (result summaries) · **Language:** EN
-> **Last verified:** 2026-10-16: rows added for the two folders of 16.10; 2026-09-29 night (`fe27068`, before the merge into `main`): every link of this index; "Start
+> **Last verified:** 2026-10-22: §4 (every folder) added and its links checked, READMEs written for the 40 folders that had none (`docs_pass_2026-10-22/`); earlier: 2026-10-16: rows added for the two folders of 16.10; 2026-09-29 night (`fe27068`, before the merge into `main`): every link of this index; "Start
 > here" points at the seal of 29.09 night (shell off) and its gate, and at the superseded seal of
 > 29.09 evening; rows added for the 29.09 folders; each file remains the record of its own date ·
 > **Updated:** 2026-10-19: rows for the evidence folders of 19.10 added at the top of "Start here"; the 1.1.0 row relabelled
@@ -178,3 +178,192 @@ the repository.
   the earlier node and do not validate the subsequent node changes.
 * [Node startup A/B](node_startup_2026-09-29/README.md) is main branch evidence with startup
   thinning at 0.2 s; the experimental branch keeps startup thinning disabled by default.
+
+## 4. Every folder, by date
+
+One row per folder of `docs/evidence/` (155 folders on 22.10, with `docs_pass_2026-10-22/`), newest first. "Date" is the date in the folder name (the run or the record), "topic" a short tag, the last column the title of the folder's own README. The README of a folder is the reference for its contents. The date of the *commit* that added a folder is often the squash-import date (16.10), not the run date; each README states which is which. Folders without a date in the name are at the end. The detector seals (`detector_freeze_*.json`) and the result files are indexed in "Start here" and §1, not here.
+
+### A. 20–22.10: 1.3 line (F1a, Falcon, K1/K2, integration, P2 defence)
+
+| folder | date | topic | what it is |
+|---|---|---|---|
+| [`docs_pass_2026-10-22/`](docs_pass_2026-10-22/README.md) | 22.10 | docs | Documentation pass: READMEs for 40 folders, this folder list, 17 pages re-verified, deleted-branch references |
+| [`track_opinion_2026-10-21/`](track_opinion_2026-10-21/README.md) | 21.10 | learned doubt model | Track opinion 1.3 (card G2): retrain and improve the learned doubt model |
+| [`p2_defence_2026-10-21/`](p2_defence_2026-10-21/README.md) | 21.10 | P2 (presentation, web) | P2 — подготовка защиты 23 октября |
+| [`k1_k2_review_2026-10-21/`](k1_k2_review_2026-10-21/README.md) | 21.10 | K1/K2 gauge | Independent review: K2 "union" revision 3 (`b88d759`) for 1.3.0 |
+| [`k1_k2_2026-10-21/`](k1_k2_2026-10-21/README.md) | 21.10 | K1/K2 gauge | K1 / K2 toward 1.3.0: "K2 union", the curve gauge as a second gauge that only adds obstacles |
+| [`integration_1.3_2026-10-21/`](integration_1.3_2026-10-21/README.md) | 21.10 | integration | Integration 1.3 (21–22.10): phases 1 and 2, version 1.3.0, reseal |
+| [`false_stops_2026-10-21/`](false_stops_2026-10-21/README.md) | 21.10 | false-STOP ledger | X2: the false-STOP ledger of v1.2.0 (2026-10-21) |
+| [`falcon_ros_demo_2026-10-21/`](falcon_ros_demo_2026-10-21/README.md) | 21.10 | Falcon | Falcon demo bag through real ROS 2 (21.10): `ros2 bag play` into the node, measured |
+| [`falcon_far_range_review_2026-10-21/`](falcon_far_range_review_2026-10-21/README.md) | 21.10 | Falcon | Independent review: Falcon far range 1.3 (`claude/falcon-far-range-1.3`, head `ff59349`, detector `0eb4dda`) |
+| [`falcon_far_range_2026-10-21/`](falcon_far_range_2026-10-21/README.md) | 21.10 | Falcon | Falcon far range 1.3 (card N7), 21.10 |
+| [`falcon_clear_distance_review_2026-10-21/`](falcon_clear_distance_review_2026-10-21/README.md) | 21.10 | Falcon | Independent review: Falcon clear-distance fix (`claude/falcon-clear-distance-1.3`, head `16efbcc`, detector commit `d85e265`) |
+| [`falcon_clear_distance_2026-10-21/`](falcon_clear_distance_2026-10-21/README.md) | 21.10 | Falcon | Falcon clear distance (P4 review 20.10, findings 1, 2, 4): author evidence, lane `claude/falcon-clear-distance-1.3` |
+| [`f1a_bounded_review_2026-10-21/`](f1a_bounded_review_2026-10-21/README.md) | 21.10 | F1a / head top | Independent review of the F1a bounded head top (`61b6e1a`) — 21 October 2026 |
+| [`f1a_bounded_2026-10-21/`](f1a_bounded_2026-10-21/README.md) | 21.10 | F1a / head top | F1a bounded head top — 21 October 2026 |
+| [`r3_sustained_2026-10-20/`](r3_sustained_2026-10-20/README.md) | 20.10 | R3 cables | R3: Set F sustained median explained; reporting repaired — 20 October 2026 |
+| [`r3_completion_2026-10-20/`](r3_completion_2026-10-20/README.md) | 20.10 | R3 cables | R3 completion: current-frame cable support and moving-target disposition |
+| [`p4_review_shipping_2026-10-20/`](p4_review_shipping_2026-10-20/README.md) | 20.10 | P4 reviews | P4 review of what ships on in 1.2.0 (`4cf8e27`): L16/S3, the Falcon range model, F1a, H′, R3 (20.10) |
+| [`p4_review_r3_h1_2026-10-20/`](p4_review_r3_h1_2026-10-20/README.md) | 20.10 | P4 reviews | P4 review of the two switches that are on: R3 cable confirmation and H1 positive collision core (20.10) |
+| [`p4_review_integration_2026-10-20/`](p4_review_integration_2026-10-20/README.md) | 20.10 | P4 reviews | P4 review of the 19.10 integration: the identity proof (20.10) |
+| [`p4_review_h_mount_falcon_2026-10-20/`](p4_review_h_mount_falcon_2026-10-20/README.md) | 20.10 | P4 reviews | P4 review of two switches that are on: H′ mount cross-check and the Falcon clear-distance model (20.10) |
+| [`p4_review_final_bundle_2026-10-20/`](p4_review_final_bundle_2026-10-20/README.md) | 20.10 | P4 reviews | P4 independent final-bundle review of the R3 reseal (`f56ad5e`) and integration verification, 20.10 |
+| [`p4_handoff_2026-10-20/`](p4_handoff_2026-10-20/README.md) | 20.10 | P4 reviews | P4 data handoff of 20.10: tasks that need the recordings, and the override runner |
+| [`p4_dust_markers_final_2026-10-20/`](p4_dust_markers_final_2026-10-20/README.md) | 20.10 | P4 reviews | Organizer dust and the three marked bags on the final source (20.10) |
+| [`p4_acceptance_fb92213_2026-10-20/`](p4_acceptance_fb92213_2026-10-20/README.md) | 20.10 | P4 reviews | P4 final-bundle acceptance on `fb92213` (20.10) |
+| [`p3_review_response_2026-10-20/`](p3_review_response_2026-10-20/README.md) | 20.10 | P3 responses | P3: ответы на независимое ревью F1a / R3 / L16 и ограничение B4 |
+| [`p2_2026-10-20/`](p2_2026-10-20/README.md) | 20.10 | P2 (presentation, web) | Role 2 — 20 October code handoff |
+| [`n5_markers_2026-10-20/`](n5_markers_2026-10-20/README.md) | 20.10 | N5 labels / markers | N5 labels and the organizers' markers: supplement and per-object scoring (20.10) |
+| [`l16_open_air_2026-10-20/`](l16_open_air_2026-10-20/README.md) | 20.10 | L16/S3 orientation | L16/S3: open-air startup repair — 20 October 2026 |
+| [`l16_exposure_2026-10-20/`](l16_exposure_2026-10-20/README.md) | 20.10 | L16/S3 orientation | T1: is any real start exposed to the L16/S3 open-air FAULT? (20.10) |
+| [`l16_acceptance_2026-10-20/`](l16_acceptance_2026-10-20/README.md) | 20.10 | L16/S3 orientation | L16 open-air repair acceptance on `main` `5fa865b` (20.10) |
+| [`k2_v5c_2026-10-20/`](k2_v5c_2026-10-20/README.md) | 20.10 | K1/K2 gauge | K2 v5c: keep genuine detections beyond the reach cap (20.10) |
+| [`k1_k2_review_2026-10-20/`](k1_k2_review_2026-10-20/README.md) | 20.10 | K1/K2 gauge | K1/K2: independent v5c review — NO-GO for switch-on |
+| [`k1_k2_repair_2026-10-20/`](k1_k2_repair_2026-10-20/README.md) | 20.10 | K1/K2 gauge | K1/K2 author repairs — K2/K1 stay off in 1.2.0 |
+| [`h1_rail_limits_2026-10-20/`](h1_rail_limits_2026-10-20/README.md) | 20.10 | H1 collision core | H1: реальные wrong-selected-pair и no-rail limits |
+| [`h1_publication_2026-10-20/`](h1_publication_2026-10-20/README.md) | 20.10 | H1 collision core | H1 closure investigation — independent review BLOCKED |
+| [`h1_partial_integration_2026-10-20/`](h1_partial_integration_2026-10-20/README.md) | 20.10 | H1 collision core | H1 partial improvement accepted for main — 20 October 2026 |
+| [`h1_miss_audit_2026-10-20/`](h1_miss_audit_2026-10-20/README.md) | 20.10 | H1 collision core | Независимый P4: H1 / свежий A-axis replay и remaining visible misses |
+| [`h1_independent_2026-10-20/`](h1_independent_2026-10-20/README.md) | 20.10 | H1 collision core | H1 independent reference review — BLOCKED |
+| [`h1_final_review_2026-10-20/`](h1_final_review_2026-10-20/README.md) | 20.10 | H1 collision core | Fresh independent final H1 review — BLOCKED |
+| [`h1_current_source_2026-10-20/`](h1_current_source_2026-10-20/README.md) | 20.10 | H1 collision core | H1 current-source delta acceptance — 520e7dc |
+| [`gate_2026-10-20_reseal_merged/`](gate_2026-10-20_reseal_merged/README.md) | 20.10 | gates / seals | Regression gate for the 1.2.0 reseal with F1a and L16 (2026-10-20) |
+| [`gate_2026-10-20_reseal/`](gate_2026-10-20_reseal/README.md) | 20.10 | gates / seals | Regression gate for the 1.2.0 reseal (2026-10-20) |
+| [`falcon_demo_bag_2026-10-20/`](falcon_demo_bag_2026-10-20/README.md) | 20.10 | Falcon | Short Falcon demo bag with the walking person (pitch 23.10) — built and checked 20.10 |
+| [`falcon_clear_limit_2026-10-20/`](falcon_clear_limit_2026-10-20/README.md) | 20.10 | Falcon | Falcon clear distance: known limit for the 1.2.0 handoff |
+| [`f1a_exposure_2026-10-20/`](f1a_exposure_2026-10-20/README.md) | 20.10 | F1a / head top | T4: F1a exposure on set O and the ride (20.10) |
+| [`f1a_completion_review_2026-10-20/`](f1a_completion_review_2026-10-20/README.md) | 20.10 | F1a / head top | Independent review of the F1a completion (`a77d884`, merged as `769d075`) — 20 October 2026 |
+| [`f1a_completion_2026-10-20/`](f1a_completion_2026-10-20/README.md) | 20.10 | F1a / head top | F1a completion — the rail head's own top surface as the reference (20.10) |
+| [`f1a_b1_2026-10-20/`](f1a_b1_2026-10-20/README.md) | 20.10 | F1a / head top | F1a / B1 author repair — 20 October 2026 |
+| [`f1a_acceptance_2026-10-20/`](f1a_acceptance_2026-10-20/README.md) | 20.10 | F1a / head top | F1a fix acceptance: P3's B1 repair on `main` `99dab01` (20.10) |
+
+### B. 16–19.10: 1.1.0/1.2.0 candidates, lanes of 18–19.10, P4 reviews
+
+| folder | date | topic | what it is |
+|---|---|---|---|
+| [`synth_markers_2026-10-19/`](synth_markers_2026-10-19/README.md) | 19.10 | synthetic bags | The organizers' marked synthetic bags and `obstacles.md` (19.10) |
+| [`r3_h1_2026-10-19/`](r3_h1_2026-10-19/README.md) | 19.10 | R3 cables | P3 R3 cables and H1 tall-object diagnosis — 19 October 2026 |
+| [`p4_review_b4_merged_2026-10-19/`](p4_review_b4_merged_2026-10-19/README.md) | 19.10 | P4 reviews | P4 final review of the merged B4 source `0779db7`, 19.10 |
+| [`p2_d1_2026-10-19/`](p2_d1_2026-10-19/README.md) | 19.10 | P2 (presentation, web) | P2-01 / D1 reconciliation — 19 October 2026 |
+| [`organizer_markers_2026-10-19/`](organizer_markers_2026-10-19/README.md) | 19.10 | organizer data | Organizer dataset update: object markers — 19 October 2026 |
+| [`n3_dust_fix_2026-10-19/`](n3_dust_fix_2026-10-19/README.md) | 19.10 | N-cards (dust) | N3 dust guard: protocol, dev tables, acceptance battery with the guard on (19.10) |
+| [`l16_s3_2026-10-19/`](l16_s3_2026-10-19/README.md) | 19.10 | L16/S3 orientation | P3: ring-free directional orientation (L16) and bounded search (S3) |
+| [`k1_k2_gauge_2026-10-19/`](k1_k2_gauge_2026-10-19/README.md) | 19.10 | K1/K2 gauge | K1 / K2 gauge stability on curves: P3 lane versions v1 to v5, reviews, P4 package (19.10) |
+| [`integration_2026-10-19/`](integration_2026-10-19/README.md) | 19.10 | integration | Integration of 19.10: four agent lanes merged, identity proof, the captain's switch decisions |
+| [`h1_trajectory_2026-10-19/`](h1_trajectory_2026-10-19/README.md) | 19.10 | H1 collision core | H1 continuation: repaired initialization, unvalidated trajectory, main integrated locally |
+| [`h1_reference_2026-10-19/`](h1_reference_2026-10-19/README.md) | 19.10 | H1 collision core | H1: completed available repair, blocked far-axis reference |
+| [`h1_core_2026-10-19/`](h1_core_2026-10-19/README.md) | 19.10 | H1 collision core | P3 H1: positive collision evidence — 19 October 2026 |
+| [`h1_axis_range_2026-10-19/`](h1_axis_range_2026-10-19/README.md) | 19.10 | H1 collision core | H1 follow-up: absolute rail anchor and far collision cores |
+| [`falcon_long_range_2026-10-19/`](falcon_long_range_2026-10-19/README.md) | 19.10 | Falcon | Falcon long range (to 300 m): protocol, instruments, measurements, review (19.10) |
+| [`falcon_head_check_2026-10-19/`](falcon_head_check_2026-10-19/README.md) | 19.10 | Falcon | Falcon Prime check of `main` `aec88d2` (merged 1.2.0 candidate) — 19.10 |
+| [`f1_false_alarms_2026-10-19/`](f1_false_alarms_2026-10-19/README.md) | 19.10 | F1 false alarms | F1 and Falcon false STOPs: lane P3 protocol, measurements, handoff (19.10) |
+| [`version_1.2.0_2026-10-18/`](version_1.2.0_2026-10-18/README.md) | 18.10 | releases | Unreleased 1.2.0 candidate — version and acceptance record |
+| [`p4_review_1.2.0_2026-10-18/`](p4_review_1.2.0_2026-10-18/README.md) | 18.10 | P4 reviews | P4 independent review of the 1.2.0 candidate, 18.10 |
+| [`p4_followup_2026-10-18/`](p4_followup_2026-10-18/README.md) | 18.10 | P4 reviews | P4 branch-check follow-up and review handoff |
+| [`p4_audit_b4_6cc27be_2026-10-18/`](p4_audit_b4_6cc27be_2026-10-18/README.md) | 18.10 | P4 reviews | P4 audit of the B4 candidate `6cc27be` (det/b4-orientation), 18.10 |
+| [`p1_branch_check_2026-10-18/`](p1_branch_check_2026-10-18/README.md) | 18.10 | P1 | P4 check of P1's work branch, 18.10 |
+| [`orientation_2026-10-18/`](orientation_2026-10-18/README.md) | 18.10 | B4 orientation | B4: the 24 sensor orientations with auto-calibration (N2 task 1, W3) — 18.10 |
+| [`n6_platform_2026-10-18/`](n6_platform_2026-10-18/README.md) | 18.10 | N-cards | N6: platform person range, with negative controls |
+| [`n3_dust_2026-10-18/`](n3_dust_2026-10-18/README.md) | 18.10 | N-cards (dust) | N3 dust stress — complete development measurements |
+| [`n2_falcon_2026-10-18/`](n2_falcon_2026-10-18/README.md) | 18.10 | N-cards | N2: complete Falcon intake and measured input adaptation |
+| [`n1_n4_2026-10-18/`](n1_n4_2026-10-18/README.md) | 18.10 | N-cards | N1/N4 evidence — 18 October 2026 |
+| [`lidar_adaptation_2026-10-18/`](lidar_adaptation_2026-10-18/README.md) | 18.10 | sensor adaptation | LiDAR adaptation — integration record, 18 October 2026 |
+| [`gauge_stability_2026-10-18/`](gauge_stability_2026-10-18/README.md) | 18.10 | gauge stability | B6: how far the gauge is built and how stable it is (experts' criteria 2 and 3) — 18.10 |
+| [`falcon_switch_2026-10-18/`](falcon_switch_2026-10-18/README.md) | 18.10 | Falcon | B3 / B8: Pandar ↔ Falcon in one running detector, and Falcon frame time — 18.10 |
+| [`falcon_full_2026-10-18/`](falcon_full_2026-10-18/README.md) | 18.10 | Falcon | B2: the whole Falcon recording through one detector — 18.10 |
+| [`b4_release_2026-10-18/`](b4_release_2026-10-18/README.md) | 18.10 | B4 orientation | B4 release acceptance: protocol, first P4 review, author response (18.10) |
+| [`b4_orientation_fix_2026-10-18/`](b4_orientation_fix_2026-10-18/README.md) | 18.10 | B4 orientation | B4 author fix: channel-constrained orientation recovery |
+| [`b4_merge_reseal_2026-10-18/`](b4_merge_reseal_2026-10-18/README.md) | 18.10 | B4 orientation | B4 integration with main and P4 — 18 October 2026 |
+| [`b4_merge_clean_2026-10-18/`](b4_merge_clean_2026-10-18/README.md) | 18.10 | B4 orientation | Clean-checkout seal verification — 18 October 2026 |
+| [`synthetic_labels_2026-10-17/`](synthetic_labels_2026-10-17/README.md) | 17.10 | synthetic bags | Labels and scores for the organizers' new synthetic recordings (B1 / BACKLOG N5) — 17.10 |
+| [`n5_labels_2026-10-17/`](n5_labels_2026-10-17/README.md) | 17.10 | N5 labels / markers | N5: team annotations of all three new synthetic recordings — 17 October 2026 |
+| [`n5_c2_execution_2026-10-17/`](n5_c2_execution_2026-10-17/README.md) | 17.10 | N5 labels / markers | N5 labeling and C2 acceptance execution — 17 October 2026 |
+| [`extended_data_2026-10-17/`](extended_data_2026-10-17/README.md) | 17.10 | extended dataset | Extended dataset of 16.10: intake, characterization, sealed 1.1.0 observation |
+| [`c2_acceptance_2026-10-17/`](c2_acceptance_2026-10-17/README.md) | 17.10 | C2 acceptance | C2 conservative profile — approved 17 October; original profile FAIL |
+| [`rejudge_2026-10-16/`](rejudge_2026-10-16/README.md) | 16.10 | independent judgement | J1 preparation — re-judge copy of the 13.10 tools and v1.0.0 dry run (16.10) |
+| [`range_attribution_2026-10-16/`](range_attribution_2026-10-16/README.md) | 16.10 | X1 / range | X1 — range attribution: which rule or tracker hold costs each visible non-STOP frame (16.10) |
+| [`p4_eval_1.1.0_2026-10-16/`](p4_eval_1.1.0_2026-10-16/README.md) | 16.10 | P4 reviews | P4 evaluation of the sealed 1.1.0 detector — 16.10 (Linux cloud runtime) |
+| [`p2_plan_2026-10-16/`](p2_plan_2026-10-16/README.md) | 16.10 | P2 (presentation, web) | P2 planning review — 16 October 2026 |
+| [`p2_execution_2026-10-16/`](p2_execution_2026-10-16/README.md) | 16.10 | P2 (presentation, web) | Role 2 execution receipt — 16 October 2026 |
+| [`integration_docker_fixtures_2026-10-16/`](integration_docker_fixtures_2026-10-16/README.md) | 16.10 | integration | Integration Docker fixture repair — 16 October 2026 |
+| [`integration_ci_2026-10-16/`](integration_ci_2026-10-16/README.md) | 16.10 | integration | Integration full-CI routing — 16 October 2026 |
+| [`integration_2026-10-16/`](integration_2026-10-16/README.md) | 16.10 | integration | Integration checkpoint — 15–16 October 2026 |
+| [`axis_profile_2026-10-16/`](axis_profile_2026-10-16/README.md) | 16.10 | axis profile | Axis error, jitter and point counts by range, from the organizers' synthetic objects (16.10.2026) |
+
+### C. 13–15.10: independent judgement, held-out registration, caution policy, node start-up
+
+| folder | date | topic | what it is |
+|---|---|---|---|
+| [`structure_cut_bar_2026-10-15/`](structure_cut_bar_2026-10-15/README.md) | 15.10 | H2 structure cut | H2: resolved horizontal support for structure-cut fragments |
+| [`range_screen_2026-10-15/`](range_screen_2026-10-15/README.md) | 15.10 | X1 / range | R2/R1: preliminary configuration screen, 15.10 |
+| [`p4_start_2026-10-15/`](p4_start_2026-10-15/README.md) | 15.10 | P4 reviews | P4 H0 and X3: 15–16 October start |
+| [`p3_start_2026-10-15/`](p3_start_2026-10-15/README.md) | 15.10 | P3 responses | P3 checkpoint: the 15-16 October work started and measured |
+| [`p2_2026-10-15/`](p2_2026-10-15/README.md) | 15.10 | P2 (presentation, web) | P2 — D1 pass 1 and PT1 slide cuts, 15.10.2026 |
+| [`p1_start_2026-10-15/`](p1_start_2026-10-15/README.md) | 15.10 | P1 | P1 / P4 checkpoint: the 15–16 October work |
+| [`offline_rebuild_2026-10-15/`](offline_rebuild_2026-10-15/README.md) | 15.10 | VM offline | P1 E2: offline source rebuild and uid-1000 playback (15 October 2026) |
+| [`node_startup_2026-10-15/`](node_startup_2026-10-15/README.md) | 15.10 | node start-up | S1 node start-up: implementation notes and real-Docker acceptance (15.10 to 16.10) |
+| [`heldout_2026-10-15/`](heldout_2026-10-15/README.md) | 15.10 | held-out set (G3) | registered held-out set; this lane did not read it (see its own README) |
+| [`column_hardening_2026-10-15/`](column_hardening_2026-10-15/README.md) | 15.10 | H1 / columns | H1: free-top hardening, continuation of 15.10 |
+| [`caution_policy_2026-10-15/`](caution_policy_2026-10-15/README.md) | 15.10 | decision policy | C1 caution policy: contract, saved-output rescore, packaging fixes (15.10) |
+| [`silent_misses_2026-10-14/`](silent_misses_2026-10-14/README.md) | 14.10 | other | Silent misses of 13.10, fixed and integrated: the free-top column test and the structure cut (14.10) |
+| [`judgement_2026-10-13/`](judgement_2026-10-13/README.md) | 13.10 | independent judgement | Independent judgement, 13.10.2026 — ReSense detection system: 66 / 100 |
+
+### D. 26–29.09: judgement, reviews and cycles of the experimental line, VM run of 28.09
+
+| folder | date | topic | what it is |
+|---|---|---|---|
+| [`safety_review_2026-09-29/`](safety_review_2026-09-29/README.md) | 29.09 | safety review | Safety review of the three rules of 29.09 evening |
+| [`node_startup_2026-09-29/`](node_startup_2026-09-29/README.md) | 29.09 | node start-up | Node start-up, 29.09: root causes, the change, A/B through the jury chain |
+| [`judgement_2026-09-29/`](judgement_2026-09-29/README.md) | 29.09 | independent judgement | Judgement of 29.09: scripts only, no completed re-run |
+| [`frame111_2026-09-29/`](frame111_2026-09-29/README.md) | 29.09 | frame 111 | The GO at `doubleT_obstacle` frame 111, re-checked on `main` — 29 September |
+| [`cycle_2026-09-29/`](cycle_2026-09-29/README.md) | 29.09 | experimental line | Evidence of the 29.09 cycle: gates of the day's detector changes |
+| [`current_review_2026-09-29/`](current_review_2026-09-29/README.md) | 29.09 | experimental line | Internal review score of 29.09 (`dcaa5db`): one score file |
+| [`vm_2026-09-28/`](vm_2026-09-28/README.md) | 28.09 | VM runs | Full VM run of VM_GUIDE on the team VM (28.09, code 464f5bc) |
+| [`p1_p2_cold_bags_2026-09-28/`](p1_p2_cold_bags_2026-09-28/README.md) | 28.09 | P1 | Original-bag cold-start and input-path evidence — 2026-09-28 |
+| [`offline_2026-09-28/`](offline_2026-09-28/README.md) | 28.09 | VM offline | Offline rehearsal on the team VM (28.09, code 464f5bc), two passes |
+| [`node_input_2026-09-28/`](node_input_2026-09-28/README.md) | 28.09 | node start-up | Node input path and end-to-end latency through ROS (28.09) |
+| [`judgement_2026-09-28/`](judgement_2026-09-28/README.md) | 28.09 | independent judgement | Independent judgement, 28.09 evening: raw material |
+| [`judge_outputs_2026-09-28/`](judge_outputs_2026-09-28/README.md) | 28.09 | independent judgement | Per-frame outputs of the sealed detector (independent judge A, 28.09) |
+| [`gate_2026-09-28/`](gate_2026-09-28/README.md) | 28.09 | VM gate runs | Regression gate with the ride on the team VM (28.09, code 464f5bc) |
+| [`export_2026-09-28/`](export_2026-09-28/README.md) | 28.09 | VM image export | Image export and load on the team VM (28.09, code 464f5bc) |
+| [`dry_run_2026-09-28/`](dry_run_2026-09-28/README.md) | 28.09 | VM dry runs | Dry runs, host consoles and end-to-end latency of `main` 464f5bc on a 4-core team VM, 28 September |
+| [`cycle_2026-09-28/`](cycle_2026-09-28/README.md) | 28.09 | experimental line | Evidence of the 28.09 improvement cycle (experimental line, checkpoints 0 to 4) |
+| [`current_review_2026-09-28/`](current_review_2026-09-28/README.md) | 28.09 | experimental line | Current review evidence — 28 September 2026 |
+| [`bench_2026-09-28/`](bench_2026-09-28/README.md) | 28.09 | VM bench | Bench of `main` 464f5bc on a 4-core team VM, 28 September |
+| [`p1_p2_supported_playback_2026-09-27/`](p1_p2_supported_playback_2026-09-27/README.md) | 27.09 | P1 | Supported cold playback — current branch, 27 September 2026 |
+| [`rejudge_2026-09-26/`](rejudge_2026-09-26/README.md) | 26.09 | independent judgement | Re-judgement of 26.09 evening: raw runs of judge A |
+| [`presentation_2026-09-26/`](presentation_2026-09-26/README.md) | 26.09 | presentation | Presentation refresh — 26 September 2026 |
+| [`p1_p2_completion_2026-09-26/`](p1_p2_completion_2026-09-26/README.md) | 26.09 | P1 | P1/P2 completion checks — updated 27 September 2026 |
+| [`freeze_2026-09-26/`](freeze_2026-09-26/README.md) | 26.09 | seals | Detector freeze and final node checks — 26 September 2026 |
+
+### E. 23–25.09: first VM runs, Docker chain, timing, mount check
+
+| folder | date | topic | what it is |
+|---|---|---|---|
+| [`vm_2026-09-25_3/`](vm_2026-09-25_3/README.md) | 25.09 | VM runs | Third team VM, 25.09 evening (code d4b396e): machine facts |
+| [`vm_2026-09-25_2/`](vm_2026-09-25_2/README.md) | 25.09 | VM runs | Second team VM, 25.09 afternoon (code 76bf24e): machine facts |
+| [`vm_2026-09-25/`](vm_2026-09-25/README.md) | 25.09 | VM runs | First team VM, 25.09 morning (code 7290873): setup, data inventory and the collected summary |
+| [`regression_gate_2026-09-25/`](regression_gate_2026-09-25/README.md) | 25.09 | VM gate runs | The regression gate demonstrated (25.09): same code on two paths, and a deliberate failure |
+| [`offline_2026-09-25_2/`](offline_2026-09-25_2/README.md) | 25.09 | VM offline | Offline rehearsal on the second team VM (25.09, code 76bf24e) |
+| [`offline_2026-09-25/`](offline_2026-09-25/README.md) | 25.09 | VM offline | Offline rehearsal on the first team VM (25.09, code 7290873) |
+| [`gate_2026-09-25_2/`](gate_2026-09-25_2/README.md) | 25.09 | VM gate runs | Regression gate with the ride on the second team VM (25.09, code 76bf24e) |
+| [`gate_2026-09-25/`](gate_2026-09-25/README.md) | 25.09 | VM gate runs | Regression gate on the first team VM (25.09, code 7290873) and four what-if variants |
+| [`export_2026-09-25_2/`](export_2026-09-25_2/README.md) | 25.09 | VM image export | Image archive record from the second team VM (25.09, code 76bf24e) |
+| [`export_2026-09-25/`](export_2026-09-25/README.md) | 25.09 | VM image export | Image export on the first team VM (25.09, code 7290873) |
+| [`dry_run_2026-09-25_3/`](dry_run_2026-09-25_3/README.md) | 25.09 | VM dry runs | Transport runs on a third team VM: Fast DDS and CycloneDDS, UDP and shared memory, 25 September evening |
+| [`dry_run_2026-09-25_2/`](dry_run_2026-09-25_2/README.md) | 25.09 | VM dry runs | Dry run confirmation on a second team VM, 25 September afternoon |
+| [`dry_run_2026-09-25/`](dry_run_2026-09-25/README.md) | 25.09 | VM dry runs | Dry run with the original bags on the first team VM, 25 September morning |
+| [`bench_2026-09-25_2/`](bench_2026-09-25_2/README.md) | 25.09 | VM bench | Confirmation bench run on a second team VM, 25 September afternoon |
+| [`bench_2026-09-25/`](bench_2026-09-25/README.md) | 25.09 | VM bench | First bench run on a team VM (8 vCPU = 4 physical cores), 25 September morning |
+| [`timing_2026-09-23/`](timing_2026-09-23/README.md) | 23.09 | timing | Per-stage timing of v0.6.3 on every recording, 23 September |
+| [`mount_check_2026-09-23/`](mount_check_2026-09-23/README.md) | 23.09 | mount calibration | Mount calibration on re-mounted recordings, v0.6.2 against v0.6.3, 23 September |
+| [`docker_2026-09-23/`](docker_2026-09-23/README.md) | 23.09 | Docker | The ROS 2 node in Docker on real recordings, 23 September |
+
+### F. Folders without a date in the name
+
+| folder | date | topic | what it is |
+|---|---|---|---|
+| [`bag_metadata/`](bag_metadata/README.md) | — | recordings | Original `metadata.yaml` of the six organizer recordings |
+| [`competitors_2026-10/`](competitors_2026-10/README.md) | 10.2026 | other teams | Competitor repositories, read-only survey (16.10.2026) |
+| [`low_return_support/`](low_return_support/README.md) | 28–29.09 | experimental line | Low-ray support candidate: pilot screen and full gate (rejected) |
+| [`results/`](results/README.md) | 21.09–22.10 | results | `results/`: orientation to the result summaries (21.09 to 29.09) |

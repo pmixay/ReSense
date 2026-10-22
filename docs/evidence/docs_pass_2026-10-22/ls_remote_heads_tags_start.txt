@@ -1,0 +1,9 @@
+6cc74459cd95f4e5900bbfef4fea1c21ae04da11	refs/heads/claude/f1a-bounded-1.3
+3a3eabc4d01517a2ebbaf3e09e81f0f0351d9571	refs/heads/claude/integration-1.3
+75991364fd0fc0ad19bc06f8164f8d0cbf8e53ac	refs/heads/claude/ml-far-axis-1.3
+f24d939f2f61e4398d3ecb112bd0343165d1278b	refs/heads/claude/p1-work-list-verification-o1hdlh
+3a2fc82f882ad80b4cd98d44cac249b4c7119267	refs/heads/claude/review-1.3.0
+3b73bbe07e1c83cc706e2bca7ab6361c2f2c3862	refs/heads/main
+5d6e9b5a5f7118821ada9b59f5f6a4fcf5620b98	refs/tags/v1.0.0
+3b73bbe07e1c83cc706e2bca7ab6361c2f2c3862	refs/tags/v1.2.0
+3b73bbe07e1c83cc706e2bca7ab6361c2f2c3862	refs/tags/v1.2.0-rc1

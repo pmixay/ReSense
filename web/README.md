@@ -3,7 +3,7 @@
 > **Purpose:** the dashboard, the RViz and Foxglove layouts, the label tool, their headless checks
 > and the video recipes.
 > **Audience:** team, jury (demo) · **Owner:** P2 · **Language:** EN
-> **Last verified:** 2026-09-29: ownership (demo, video and pitch with P2), links, the CI remote-viewer
+> **Last verified:** 2026-10-22: file names, scripts and flags, the Foxglove layout topics (11), roslibjs version, RViz layout and node marker text, CI jobs, section citations and the video numbers' source re-checked against 1.3.0 (`f24d939`); the live preview host not re-verified (see the Web prototype note); earlier: 2026-09-29: ownership (demo, video and pitch with P2), links, the CI remote-viewer
 > probe on `main` and the video's number sources checked; dashboard behaviour as reviewed on the sealed
 > 27.09 detector ([`P2_REVIEW.md`](P2_REVIEW.md)); 2026-09-29: the web prototype note against
 > [`webapp/README.md`](../webapp/README.md) and `scripts/run_webapp.sh` · **Status:** current
@@ -250,18 +250,17 @@ Known limits:
 
 ## Video
 
-The committed real-data clips (v0.6.2; the Docker chain v0.6.3) cover every presentation surface;
+The committed real-data clips (v0.6.2, the Docker chain included) cover every presentation surface;
 all five are silent:
 
 The 3:00 overview (180 s measured with `ffprobe`, 16.10) uses these clips as **archival visualization** and labels them as such in its
-source line. Its numerical cards come from the deck's numbers (`N` in `scripts/build_deck.py`: the
-27.09 regression baseline and the 28.09 node captures), not from measurements made in the earlier
-video clips; their sources and where they differ from the independent judgement of 28.09 are in
-[`docs/PRESENTATION.md`](../docs/PRESENTATION.md) «Числа на слайдах и их источники». The current dashboard clip replays an archived
+source line. Its numerical cards come from the `GATE` block of `scripts/make_overview_video.py` (the 29.09
+regression baseline), not from measurements made in the earlier video clips; their sources are in
+[`docs/video/README.md`](../docs/video/README.md) «Числа: откуда каждое». The current dashboard clip replays an archived
 node-status capture; neither clip is a fresh run of the final detector on the jury stand.
 
 * [`docker_chain_rviz.mp4`](../docs/video/docker_chain_rviz.mp4) — the full jury chain on screen:
-  node and RViz in Docker, `ros2 bag play` as a normal user, and `/resense/decision` (v0.6.3);
+  node and RViz in Docker, `ros2 bag play` as a normal user, and `/resense/decision` (v0.6.2);
 * [`doubleT_obstacle_cab.mp4`](../docs/video/doubleT_obstacle_cab.mp4) — the real bag from the
   driver's seat with the envelope, STOP decision, distance and close-up;
 * [`doubleT_obstacle_offline.mp4`](../docs/video/doubleT_obstacle_offline.mp4) — top and side

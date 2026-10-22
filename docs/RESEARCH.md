@@ -3,7 +3,9 @@
 > **Purpose:** the literature and implementation survey behind the approach (spec §8.7): the
 > approaches considered, why the chosen one, and what became of the alternatives.
 > **Audience:** team, jury · **Owner:** P3 · **Language:** EN
-> **Last verified:** 2026-09-29: §0 against the sealed detector and [`DECISIONS.md`](DECISIONS.md);
+> **Last verified:** 2026-10-22: §0 re-checked against 1.3.0 (`f24d939`: `configs/default.yaml`, `resense/config.py`,
+> `DECISIONS.md` rows 1–5 and 19, `SENSOR.md` §2, `DATASET.md` numbers, section citations from other documents); earlier:
+> 2026-09-29: §0 against the sealed detector and [`DECISIONS.md`](DECISIONS.md);
 > the survey (§1–§6) is of 15.09 · **Status:** current (§0), reference (§1–§6)
 
 §0 is our reading of the task and the choice we made, kept current; §1–§6 are the day-1 survey
