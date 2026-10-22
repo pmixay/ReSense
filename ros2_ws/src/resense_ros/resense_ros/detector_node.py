@@ -75,13 +75,14 @@ Decision policy is shared with offline consumers (``resense_ros.decision_policy`
 retains v2 with ``caution_distance_m`` 80 m and ``caution_compact_max_size_m`` 3 m. Status adds
 ``decision_policy`` and a sorted, deduplicated ``caution_reason`` array, empty off CAUTION.
 
-C2 range candidates are opt-in via ``clear_range_policy`` (``legacy`` by default).
+C2 range candidates are selected via ``clear_range_policy`` (``conservative`` by default since 1.3).
 ``advisory_candidate`` caps active CAUTION advisories; ``small_candidate`` also
 caps the reported range by the explicit ``range_sensor_model`` density prior.
 ``monitored_small`` is null when that model is unavailable; a requested small-target
 range is then zero. These candidates have not passed the original C2 coverage gate.
 The explicit ``conservative`` profile uses that qualified cap under the approved
-17.10 coverage tradeoff; ``legacy`` remains default pending release integration.
+17.10 coverage tradeoff and is the default since 1.3 (user decision 22.10); ``legacy`` restores the
+old reported range.
 Raw flags and health are validated before latch release or health projection. Policy is evaluated
 after freshness health projection and the STOP latch; raw detector warnings remain available.
 
@@ -247,7 +248,7 @@ class DetectorNode(Node):
         self.declare_parameter("caution_distance_m", 80.0)
         self.declare_parameter("caution_compact_max_size_m", 3.0)
         # Approved conservative reporting remains an explicit opt-in until release integration.
-        self.declare_parameter("clear_range_policy", "legacy")
+        self.declare_parameter("clear_range_policy", "conservative")
         self.declare_parameter("range_sensor_model", "unknown")
         # --- v0.6.1: several recordings / topic names through one running node
         self.declare_parameter("input_switch_timeout", 1.0)   # s the active topic must be silent before another one is taken

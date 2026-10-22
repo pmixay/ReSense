@@ -6,7 +6,7 @@
 # Optional --archive IMAGE.tar.gz loads an offline image; IMAGE defaults to resense:latest.
 set -euo pipefail
 usage() { sed -n '2,6p' "$0" | sed 's/^# \{0,1\}//'; }
-BAGS=(); PROFILES=(); ARCHIVE=""; RATE=1.0; INTERACTIVE=0; RVIZ=0; SOFTWARE=0; PROFILE=manual; RANGE_POLICY=legacy
+BAGS=(); PROFILES=(); ARCHIVE=""; RATE=1.0; INTERACTIVE=0; RVIZ=0; SOFTWARE=0; PROFILE=manual; RANGE_POLICY=conservative
 while [ $# -gt 0 ]; do
   case "$1" in
     --archive|--rate|--sensor-profile|--clear-range-policy)
