@@ -1,12 +1,12 @@
 # Backlog: remaining criteria work
 
-> **Purpose:** what is left to gain on the eight criteria of ТЗ §8 after the independent judgement of 13.10 (66/100): the
+> **Purpose:** what is left to gain on the eight criteria of ТЗ §8 after the independent judgement of 13.10 (66/100 by our own AI judge, v1.0.0 only): the
 > work per role (priorities, code stop 20.10 23:59 MSK), one status table and one short entry per open card, with links to
 > the evidence. Closed and superseded cards, the dated plans of 15–19.10 and the ledgers of 16–18.10 are in
 > [`archive/BACKLOG_history_2026-10-19.md`](archive/BACKLOG_history_2026-10-19.md): this file as it stood before the
 > clean-up of 19.10, word for word, with the full text (cause, tasks, acceptance check) of every card.
 > **Audience:** P1 (to distribute the work), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-10-20 (evening): the **F1a completion (decision 46) is withdrawn.** Its independent review (P1's agent) says
+> **Last verified:** 2026-10-23, version-state pass: only the statements about which version is published, current or judged were checked, against the git tags `v1.0.0`, `v1.2.0` (`git ls-remote --tags origin`; no `v1.3.0`) and the version fact sheet; the dated 20.10 plan below was not re-run. State on 23.10: `v1.2.0` is the current published release (20.10); the team reports that the jury reviewed it, no jury score or report is in the repository; 1.3.0 is a sealed candidate (review ACCEPT WITH CONDITIONS, 22.10), not released, not tagged, not run on G3. 2026-10-20 (evening): the **F1a completion (decision 46) is withdrawn.** Its independent review (P1's agent) says
 > REJECT as sealed: an object 5–20 cm above the rail head can be hidden when the 'head surface' is supplied by the object itself
 > ([review](evidence/f1a_completion_review_2026-10-20/README.md)). The captain decided to **revert it** (20.10 evening): `resense/lowobj.py` and
 > `scripts/detector_freeze.py` are back at `f56ad5e`, `tests/test_f1a_continuation.py` is removed, and `python3 scripts/detector_freeze.py verify`
@@ -38,7 +38,7 @@
 
 ## After v1.2.0 (21.10): the 1.3 lanes and what is queued
 
-v1.2.0 is tagged at `3b73bbe`. The user's terms for 1.3 ([`DECISIONS.md`](DECISIONS.md) row 50): range and accuracy first,
+v1.2.0 is tagged at `3b73bbe` and published (20.10). The 1.3 lanes below make up **1.3.0, a candidate**: integrated and sealed 22.10, independent AI-session review ACCEPT WITH CONDITIONS, **not released, no tag `v1.3.0`, not run on G3, not jury-reviewed**. Its gains are measured in-sample and cost +3 false STOP episodes on the ride (26 → 29), Falcon frame time +40–54 % at p50 (Pandar +25–38 %); with the node's default `clear_range_policy:=auto` and a known sensor model the published clear distance is capped, so the Falcon 130–150 m STOP gain is not visible in it. The user's terms for 1.3 ([`DECISIONS.md`](DECISIONS.md) row 50): range and accuracy first,
 a bounded false-alarm rise (+11 STOP episodes over Falcon + ride + the five empty Pandar recordings), no new ML components,
 false-alarm work later.
 
@@ -68,6 +68,8 @@ false-alarm work later.
 They stay a stated limit and are not claimed ([`DECISIONS.md`](DECISIONS.md) row 55).
 
 ## Current plan (checked 20.10): priorities, code stop 20.10 23:59 MSK
+
+*Dated 20.10. Version state since then: `v1.2.0` was published 20.10 (the E1 card below, done) and is the current published release; 1.3.0 is a candidate (the section above), not released. Rows below that say "final 1.2.0 seal" or "1.2.0 status" describe the 20.10 plan, and no J1 score exists in the repository.*
 
 This section replaces every dated target below. **P0** must be in before the code stop (code, configuration, seal);
 **P1** before the pitch on 23.10 (evaluation, documents, deck, rehearsals; no code); **P2** after 23.10 unless time
@@ -315,7 +317,7 @@ Specification registered ([`heldout_2026-10-15`](evidence/heldout_2026-10-15)); 
 `range_test.py` and `probe.py` once on the final 1.2.0 seal (after the final source exists); nobody tunes on it. P1 priority.
 
 #### J1 · Re-judge the shipped seal with the judge's tools; one table against 13.10
-Dry run reproduces 13.10, range jobs and six bags were pre-built on 1.1.0 ([runbook](evidence/rejudge_2026-10-16/RELEASE_DAY.md));
+*(23.10: no J1 run is recorded; there is no J1 score for v1.2.0 or 1.3.0 in the repository. The 66/100 of 13.10 is v1.0.0's.)* Dry run reproduces 13.10, range jobs and six bags were pre-built on 1.1.0 ([runbook](evidence/rejudge_2026-10-16/RELEASE_DAY.md));
 the pin to 1.1.0 is dropped. The runbook has a 1.2.0 note, but its commands/expectations still need retargeting to the
 final 1.2.0 seal (old 1.1.0 identities are not current); it and the Docker steps wait for the final source and the image. P4, P1.
 
@@ -552,7 +554,7 @@ Owner P1. Reconciled on 20.10 against decisions 35–45, current source/configur
 ### 9a. Decisions (19–20.10; [`DECISIONS.md`](DECISIONS.md) rows 35–45)
 
 * **1.1.0 will not be released.** Development continues on **1.2.0**; the next release, J1 and the G3 run use the **final
-  1.2.0 seal**, the J1 pin to 1.1.0 is dropped (row 35). GitHub still publishes only **v1.0.0**; main's CI was blocked
+  1.2.0 seal**, the J1 pin to 1.1.0 is dropped (row 35). GitHub still published only **v1.0.0** on 19.10 (`v1.2.0` was published 20.10); main's CI was blocked
   before steps by a billing/spending limit on `cefd4c4`, which no longer reproduces (runs #667 and #669 green, 20.10 ~18:00 MSK).
 * **The questions to the organizers were sent and were partly answered on 19.10** ([`answers.md`](organizers/answers.md)
   §12, §9f below); open: the filter (Q3), bag playback (Q5), O1.
@@ -585,7 +587,7 @@ Owner P1. Reconciled on 20.10 against decisions 35–45, current source/configur
 |---|---|---|---|
 | **Gauge stability** (box blinks, vanishes, leaves the track) | **partly done**: N1 draws a stable box (visible-edge jitter p90 at 40/80/120 m within 0.05/0.08/0.15 m) by drawing less (on the curve a median 52 m of 142 m supported); the detector's own axis still jitters; on the Falcon the trusted range changes by ≥ 20 m between frames in 34 % of frames | [N1/N4](evidence/n1_n4_2026-10-18/README.md), [B6](evidence/gauge_stability_2026-10-18/README.md), [check](evidence/falcon_head_check_2026-10-19/README.md) | K1/K2 **off**; candidate measurements/review pending |
 | **Gauge synchronised with turns** | **K2 held off**, not solved; historical `roundT_doubleT` (R ≈ 400 m): axis curvature 3.6× too small, 1.6 m off driven path at 60 m | [B6](evidence/gauge_stability_2026-10-18/README.md), [v5c][p4-k2] | P2 candidate (from P4's v5c); independent review and captain decision |
-| detection range (first detect) | Pandar (judge method): person-size box 218 m straight, 52–83 m on curves, 1 m cube 151 m, 0.3 m ~45 m; Falcon real person: first STOP ~125 m (visible in the raw cloud from ~249 m) | [RELEASE_DAY prebuild](evidence/rejudge_2026-10-16/RELEASE_DAY.md), [check](evidence/falcon_head_check_2026-10-19/README.md) | K2, N7, R1/R2 |
+| detection range (first detect) | Pandar (judge method, v1.0.0 of 13.10; the 1.1.0 pre-build equals it on straight track; v1.2.0 not re-scored by our judge): person-size box 218 m straight, 52–83 m on curves, 1 m cube 151 m, 0.3 m ~45 m; Falcon real person: first STOP ~125 m (visible in the raw cloud from ~249 m) | [RELEASE_DAY prebuild](evidence/rejudge_2026-10-16/RELEASE_DAY.md), [check](evidence/falcon_head_check_2026-10-19/README.md) | K2, N7, R1/R2 |
 | gauge range | trusted axis median 120–175 m on Pandar recordings, reported 80–157 m; Falcon 123 m (no bed return beyond ~150 m) | B6, check | K1/K2, N7 |
 | no false positives | judge 13.10 (v1.0.0): ~91 false STOP episodes per hour of empty tunnel, ~2.5 per km on the ride, CAUTION on 43 % of empty frames; Falcon: 12 false STOP frames in 444 s (8 under 10 m removed by H′), CAUTION 69 % | [SCORECARD](SCORECARD.md), check | F1 (on); C1 in P2 |
 | no false negatives | H1 partially improved **82 →114/177**, inherited High OPEN; small far objects and curves unresolved; the P4 F1a capped-top miss is repaired (the B1 repair; its ride cost is accepted; the completion that removed it was reverted after review); P4's T4 found no real object among F1a's weak clusters as far as the pictures show (no ride ground truth) | [H1](evidence/h1_partial_integration_2026-10-20/README.md), [range screen](evidence/range_screen_2026-10-15/README.md), [F1a completion (reverted)](evidence/f1a_completion_2026-10-20/README.md), [P4][p4-shipping] | K2 **off**; H1 reference/review; F1a bounded-surface variant after the pitch (P3); R1/R2 P2 |

@@ -3,7 +3,7 @@
 > **Purpose:** the dashboard, the RViz and Foxglove layouts, the label tool, their headless checks
 > and the video recipes.
 > **Audience:** team, jury (demo) · **Owner:** P2 · **Language:** EN
-> **Last verified:** 2026-10-22: file names, scripts and flags, the Foxglove layout topics (11), roslibjs version, RViz layout and node marker text, CI jobs, section citations and the video numbers' source re-checked against 1.3.0 (`f24d939`); the live preview host not re-verified (see the Web prototype note); earlier: 2026-09-29: ownership (demo, video and pitch with P2), links, the CI remote-viewer
+> **Last verified:** 2026-10-23: version statements only (version-state pass: v1.2.0 is the published release, 1.3.0 an unreleased candidate); 2026-10-22: file names, scripts and flags, the Foxglove layout topics (11), roslibjs version, RViz layout and node marker text, CI jobs, section citations and the video numbers' source re-checked against 1.3.0 (`f24d939`); the live preview host not re-verified (see the Web prototype note); earlier: 2026-09-29: ownership (demo, video and pitch with P2), links, the CI remote-viewer
 > probe on `main` and the video's number sources checked; dashboard behaviour as reviewed on the sealed
 > 27.09 detector ([`P2_REVIEW.md`](P2_REVIEW.md)); 2026-09-29: the web prototype note against
 > [`webapp/README.md`](../webapp/README.md) and `scripts/run_webapp.sh` · **Status:** current
@@ -14,7 +14,7 @@ the scripts that verify the dashboard headlessly (CI job `pytest`), and the
 video recipes.
 
 **Web prototype.** The multi-page web site for the jury lives in [`webapp/`](../webapp/README.md)
-([PR #31](https://github.com/pmixay/ReSense/pull/31); outside the Docker image and the `v1.0.0` release):
+([PR #31](https://github.com/pmixay/ReSense/pull/31); outside the Docker image and the release archives):
 live at **[resense.arbuz.lol](https://resense.arbuz.lol/)**, or locally `scripts/run_webapp.sh` → http://localhost:8080. Unlike this dashboard it processes recordings itself
 (a bag or a synthetic demo recording, through the same sealed detector on its backend), keeps runs,
 and adds the score against labels, a fullscreen 3D player from the cab, run comparison and detector

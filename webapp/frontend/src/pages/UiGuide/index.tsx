@@ -222,7 +222,7 @@ export default function UiGuide() {
         <Section title="Метки">
           <Row label="chip">
             <Chip>2 готово</Chip>
-            <Chip variant="outline">детектор v1.0.0</Chip>
+            <Chip variant="outline">детектор v1.2.0</Chip>
             <Chip variant="ink">1 в работе</Chip>
             <Chip variant="red">пресет</Chip>
             <Chip dot="var(--fault)">1 ошибка</Chip>

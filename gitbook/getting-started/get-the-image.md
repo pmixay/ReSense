@@ -8,7 +8,7 @@ flowchart LR
         BUILD["docker build<br/>scripts/build.sh"]
         EXP["scripts/export_image.sh"]
         CI["артефакт CI<br/>зелёный push в main"]
-        REL["релиз GitHub v1.0.0<br/>после пуша тега<br/>scripts/verify_release.sh"]
+        REL["релиз GitHub v1.2.0<br/>(текущий; создаётся пушем тега)<br/>scripts/verify_release.sh"]
     end
     ARCH[("архив образа<br/>resense-image-*.tar.gz + .sha256")]
     IMG["образ resense:latest"]
@@ -47,14 +47,15 @@ docker load -i resense-image-<version>.tar.gz        # теги resense:<version
   ```
 
   `SKIP_BUILD=1 SOURCE_IMAGE=resense:latest scripts/export_image.sh` вместо сборки сохраняет уже
-  имеющийся образ.
+  имеющийся образ. Образ из текущего исходного дерева содержит кандидата 1.3.0 (не выпущен, без тега и архива): его возможности есть только в таком собственном образе.
 
-* **[Релиз GitHub `v1.0.0`](https://github.com/pmixay/ReSense/releases/tag/v1.0.0)** опубликован
-  29.09, фактический тег — `5d6e9b5`: архив 477 449 541 байт, его `.sha256` и `SHA256SUMS` в *Assets*.
+* **[Релиз GitHub `v1.2.0`](https://github.com/pmixay/ReSense/releases/tag/v1.2.0)** — текущий
+  опубликованный (20.10, тег `3b73bbe`): архив `resense-image-v1.2.0.tar.gz` 472 124 881 байт, его `.sha256` в *Assets*.
   Сборку и публикацию выполняет
   заданием [`release.yml`](https://github.com/pmixay/ReSense/blob/main/.github/workflows/release.yml),
-  при пуше тега; `scripts/verify_release.sh v1.0.0` скачивает архив в `dist/` и проверяет его.
-  Судья проверил sha256 и офлайн-запуск 13.10; D1 15.10 проверил наличие ассетов по API.
+  при пуше тега; `scripts/verify_release.sh v1.2.0` скачивает архив в `dist/` и проверяет его.
+  Прежний [релиз `v1.0.0`](https://github.com/pmixay/ReSense/releases/tag/v1.0.0) (29.09, тег `5d6e9b5`, архив 477 449 541 байт)
+  остаётся доступным: `scripts/verify_release.sh v1.0.0`. Судья проверил sha256 и офлайн-запуск архива v1.0.0 13.10; D1 15.10 проверил наличие его ассетов по API.
 
 ## 2. Собрать (нужен интернет)
 

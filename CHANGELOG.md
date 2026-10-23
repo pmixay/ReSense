@@ -4,7 +4,7 @@
 > 19.10, with every measurement, are in [`docs/archive/CHANGELOG_history_2026-10-19.md`](docs/archive/CHANGELOG_history_2026-10-19.md);
 > the full dated history of 15–29.09 in [`docs/archive/CHANGELOG_2026-09.md`](docs/archive/CHANGELOG_2026-09.md).
 > **Audience:** jury (spec §5 "как менялось качество"), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-10-20, ~19:00 MSK: [1.2.0] state and the 20.10 entries against git (`main` `8453458`), GitHub (PRs #43–#47,
+> **Last verified:** 2026-10-23: version state (published v1.0.0 and v1.2.0, 1.3.0 an unreleased candidate, no tag `v1.3.0`) against git tags and the 22.10 review; the jury review of v1.2.0 is the team's statement, no score in the repository. Earlier, 2026-10-20, ~19:00 MSK: [1.2.0] state and the 20.10 entries against git (`main` `8453458`), GitHub (PRs #43–#47,
 > CI runs, releases) and `python3 scripts/detector_freeze.py verify` (PASS); the 19.10 entries against `DECISIONS.md` rows 35–44;
 > the older sections against the archived text they were cut from (checked 19.10).
 
@@ -14,7 +14,7 @@ dates from 25.09. **Published releases: v1.0.0 and v1.2.0** (v1.2.0: tag `v1.2.0
 [`README.md`](README.md), [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
 20-minute, 13 km recording `new_data`.
 
-## [1.3.0] — sealed and accepted with conditions 22.10, not yet tagged: the integration of 21–22.10
+## [1.3.0] — CANDIDATE, not released: sealed and accepted with conditions 22.10, no tag, no GitHub release, no image archive; the integration of 21–22.10
 
 **State (22.10).** All four version declarations are 1.3.0. Seal `docs/evidence/detector_freeze_2026-10-22_1.3.0.json`
 (42 files, source `853a05b7…162d7d`); measured detector tree `671ac9e`, release commit `ed67d25` (differs only by version
@@ -23,7 +23,7 @@ strings and two YAML comments). Independent final-bundle review: **ACCEPT WITH C
 [`DECISIONS.md`](docs/DECISIONS.md) row 58). Integration evidence:
 [`docs/evidence/integration_1.3_2026-10-21/README.md`](docs/evidence/integration_1.3_2026-10-21/README.md). Merged into the
 P1 line at `f24d939`: CI run 39778805197 green on all nine jobs; full suite 2,552 passed, 0 failed. Every row below is
-against a fresh v1.2.0 (`3b73bbe`) run on the same data. Not a G3 run. The tag `v1.3.0` follows the user's approval.
+against a fresh v1.2.0 (`3b73bbe`) run on the same data. Not a G3 run. The tag `v1.3.0` follows the user's approval; until then the **current published release is v1.2.0** (`3b73bbe`). The review was done by an AI session, not the jury; the figures below are in-sample (our own recordings, injected objects, one real Falcon recording with one person) and have not been re-measured by an independent judge (no J1). On 23.10 a re-run of v1.0.0, v1.2.0 and this tree on `doubleT_obstacle` and `roundT_doubleT` gave identical STOP/CAUTION decisions in all three (193 of 201 STOP; none on the empty tunnel): [`docs/evidence/version_check_2026-10-23/`](docs/evidence/version_check_2026-10-23/README.md).
 
 ### Detector
 
@@ -39,7 +39,7 @@ against a fresh v1.2.0 (`3b73bbe`) run on the same data. Not a G3 run. The tag `
   model's bed leaves the calibrated mount plane, and a bounded clear distance is rounded down. Clear distance only
   goes down (Falcon 1,006 rows lowered, 0 raised; STOP rows with clear beyond the nearest STOP detection 575 → 0);
   decisions, detections and warnings unchanged. With a lost bed, clear is 0 without a health message (accepted).
-- **Falcon far range (revision 2), on under the Falcon profiles only.** `falcon_ros` first person STOP 127.1 →
+- **Falcon far range (revision 2), on under the Falcon profiles only.** `falcon_ros` first person STOP 127.3 →
   **150.5 m**, held STOP 114.4–123.0 → **129.4–135.6 m** over six start frames, false STOP episodes 3 → 0 on the whole
   recording; 0 GO frames with the person inside the reported clear range. Pandar rows unchanged.
 - **Track opinion 1.3:** `tracking.doubt_falcon` (default true = v1.2.0 behaviour) and an off-by-default model file;
@@ -74,7 +74,7 @@ against a fresh v1.2.0 (`3b73bbe`) run on the same data. Not a G3 run. The tag `
 | set O STOP frames | 450 | 450 |
 | marked bags STOP frames | 126 / 185 / 142 | identical, every marked object identical |
 | Falcon manual: person STOP lost, first STOP, episodes (false) | —, 124.8 m, 7 (2) | 0, 126.4 m, 12 (2) |
-| Falcon `falcon_ros`: person STOP lost, first STOP, episodes (false) | —, 127.1 m, 8 (3) | 0, 150.5 m, 13 (0) |
+| Falcon `falcon_ros`: person STOP lost, first STOP, episodes (false) | —, 127.3 m, 8 (3) | 0, 150.5 m, 13 (0) |
 | full test suite | — | 2,551 passed; 1 fails identically on v1.2.0 (`test_rail_start`, needs the ride) |
 
 False-alarm budget (user's terms, +11 STOP episodes over Falcon + ride + five empty): ride +3 (attributed, K2); Falcon

@@ -6,12 +6,12 @@
 > the results come back as evidence in a PR. Instructions only: plain commands of the repository's
 > own tools, parameterised by shell variables you set.
 > **Audience:** team (a person or an agent on the VM) · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-10-22: scripts, flags, env vars, paths, evidence references, counts and the node's
+> **Last verified:** 2026-10-23, version-state pass: version statements only, checked against the git tags `v1.0.0`, `v1.2.0` (`git ls-remote --tags origin`; no `v1.3.0`) and the version fact sheet; the procedure itself was not re-run. 2026-10-22: scripts, flags, env vars, paths, evidence references, counts and the node's
 > parameters re-checked against 1.3.0 `f24d939`; earlier: 2026-09-29: the procedure against the full VM run of 28.09
 > ([`evidence/vm_2026-09-28/summary.md`](evidence/vm_2026-09-28/summary.md)), the node's start-up,
 > warm-up and shutdown against the launch file and the node, the image's default command against
 > `docker/Dockerfile`; D1 15.10: current baseline selection is
-> `regression_baseline_2026-09-29_shell_off.json` (v1.0.0); latest independent judgement is 13.10
+> `regression_baseline_2026-09-29_shell_off.json` (v1.0.0); the latest run of our independent AI judge is 13.10, on v1.0.0 only (66/100, internal weights; v1.2.0 and the 1.3.0 candidate were not judged)
 > ([`SCORECARD.md`](SCORECARD.md)), not a new team-VM run · **Status:** current
 
 ## 0. What the VM is for
@@ -312,7 +312,7 @@ echo "exit ${PIPESTATUS[0]}"
 
 Every frame of the six recordings, set O, the ride (8 pieces) and set F straight against the
 baseline; `--jobs` about the physical core count (about 7 min at 4); no Docker. **Done:** exit 0,
-every gated metric identical or better (the 1.3.0 seal: 8 gated better, none worse,
+every gated metric identical or better (the 1.3.0 candidate seal, unreleased: 8 gated better, none worse,
 [`integration_1.3_2026-10-21/`](evidence/integration_1.3_2026-10-21/gate_release_ed67d25.txt)). Exit 1: a gated metric is worse (report the rows) or missing (the ride and set F
 need `$CACHE/new_data`; a run without them passes only with `--allow 'ride.*' --allow
 'set_F_straight.*'`, said in the report); 2: a cache is missing or incomplete (§2.4). A candidate

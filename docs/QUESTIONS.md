@@ -2,7 +2,7 @@
 
 > **Purpose:** the questions to the organizers that are still unanswered, as messages ready to send, and why each matters.
 > **Audience:** P1, team (the message: the organizers) · **Owner:** P1 · **Language:** RU message, EN rationale
-> **Last verified:** 2026-10-19 (evening): against [`organizers/answers.md`](organizers/answers.md) §12; the messages below were
+> **Last verified:** 2026-10-23, version-state pass: the version statements below checked against the git tags `v1.0.0`, `v1.2.0` (`git ls-remote --tags origin`; no `v1.3.0`) and the version fact sheet; the open/answered status of the questions was not re-checked after 19.10. 2026-10-19 (evening): against [`organizers/answers.md`](organizers/answers.md) §12; the messages below were
 > sent by the captain (reported 19.10, send date not recorded) · **Status:** current
 
 **Status (19.10, evening): partly answered.** The organizers answered on 19.10 ([`organizers/answers.md`](organizers/answers.md)
@@ -49,7 +49,7 @@ The captain records the actual dispatch date and the reply verbatim in
 [`organizers/answers.md`](organizers/answers.md) §11, then updates
 [`PRESENTATION.md`](PRESENTATION.md). Preparing this text does not close O1 or authorize
 a new submission. Until a reply, the five-minute talk remains a planning assumption. The message was written when 1.1.x was the plan; 1.1.0 will not
-be released (19.10), so "the updated version" now means 1.2.0.
+be released (19.10), so "the updated version" now means 1.2.0 (published 20.10; the team reports on 23.10 that the jury reviewed it, no jury score or report is in the repository; 1.3.0 is an unreleased, untagged candidate). No organizer reply to O1 is recorded in this repository.
 
 ## Answered
 
