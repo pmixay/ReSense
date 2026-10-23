@@ -1,0 +1,92 @@
+{
+ "id_off_vs_control_differing_rows": [],
+ "M1": {
+  "objects": {
+   "0": {
+    "frames": 102,
+    "stop": [
+     35,
+     35
+    ],
+    "first_m": [
+     51.382,
+     51.382
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "1": {
+    "frames": 139,
+    "stop": [
+     42,
+     42
+    ],
+    "first_m": [
+     69.094,
+     69.094
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "12": {
+    "frames": 255,
+    "stop": [
+     11,
+     11
+    ],
+    "first_m": [
+     110.58,
+     110.58
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "13": {
+    "frames": 51,
+    "stop": [
+     4,
+     4
+    ],
+    "first_m": [
+     23.497,
+     23.497
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "14": {
+    "frames": 140,
+    "stop": [
+     41,
+     41
+    ],
+    "first_m": [
+     104.003,
+     104.003
+    ],
+    "lost": [],
+    "gained": []
+   }
+  },
+  "failing_objects": [],
+  "new_stop_frames": [],
+  "new_unmatched": [],
+  "stop_frames": [
+   142,
+   142
+  ]
+ },
+ "controls": {
+  "self_failing": [],
+  "planted": [
+   0,
+   318
+  ],
+  "planted_found": true
+ },
+ "verdict": {
+  "ID": true,
+  "M1_no_loss": true,
+  "M1_new_matched": true
+ }
+}

@@ -91,7 +91,8 @@ def test_train_doors_cover_navigation_before_revealing_destination(app, width, h
     assert '20px' in glass.evaluate('el => getComputedStyle(el).backdropFilter')
     expect(page.locator('[data-outgoing-snapshot="ready"]')).to_have_count(1)
     if width == 1440:
-        copied_pixel = page.locator('[data-outgoing-snapshot] canvas').first.evaluate('c=>Array.from(c.getContext("2d").getImageData(Math.floor(c.width/2),Math.floor(c.height/3),1,1).data)')
+        # a point on the cab's light-grey A-pillar (the windshield itself is dark glass)
+        copied_pixel = page.locator('[data-outgoing-snapshot] canvas').first.evaluate('c=>Array.from(c.getContext("2d").getImageData(Math.floor(c.width*.08),Math.floor(c.height/2),1,1).data)')
         assert copied_pixel[3] == 255 and max(copied_pixel[:3]) > 40, copied_pixel
     prepare_travel(page)
     # During the slide, cached glass optics replace live backdrop passes; door motion is unchanged.
@@ -105,13 +106,18 @@ def test_train_doors_cover_navigation_before_revealing_destination(app, width, h
     expect(page.locator('[data-transit-viewport]')).to_have_count(0)
     expect(page.locator('main')).not_to_have_attribute('inert', '')
     assert page.locator('main').evaluate('el => document.activeElement === el')
-    # History navigation gets the same close/swap/open sequence.
+    # History navigation back into the Player boards the cab: no doors close over the page.
     page.evaluate('history.back()')
-    expect(doors).to_have_attribute('data-phase', 'closing')
-    # Let lazy Player/GPU initialization use real time rather than freezing its effects.
+    expect(page.locator('[data-app-shell]')).to_have_attribute('data-section-motion', 'boarding')
+    expect(doors).to_be_hidden()
+    # Let lazy Player/GPU initialization use real time rather than freezing its effects. A resumed
+    # mocked clock lets the walk's animation time crawl under software WebGL: skip it once it runs.
     page.clock.resume()
     expect(page).to_have_url(app.base + '/player')
-    expect(doors).to_be_hidden(timeout=30000)
+    expect(page.locator('[data-cab-entry]')).to_have_attribute('data-entry-ready', 'true', timeout=60000)
+    page.keyboard.press('Escape')
+    expect(page.locator('[data-cab-entry]')).to_have_count(0, timeout=60000)
+    expect(page.locator('[data-app-shell]')).to_have_attribute('data-section-motion', 'idle')
 
 
 def test_train_doors_reduced_motion_uses_fade(app):
@@ -275,28 +281,95 @@ def test_failed_raster_preparation_reveals_page_and_recovers_next_navigation(app
     assert app.errors == []
 
 
+def wait_boarding_ready(page):
+    """The walk-in's 3D chunk and first frame are real browser work, outside the mocked clock."""
+    entry = page.locator('[data-cab-entry]')
+    for i in range(1200):
+        if entry.get_attribute('data-entry-ready') == 'true':
+            return entry
+        page.wait_for_timeout(50)
+        if i % 10 == 9:
+            page.clock.run_for(16)
+    raise AssertionError('the boarding walk never became ready')
+
+
+def run_clock_until(page, phase: str, step: int = 50, limit: int = 200):
+    shell = page.locator('[data-app-shell]')
+    for _ in range(limit):
+        if shell.get_attribute('data-section-motion') == phase:
+            return
+        page.clock.run_for(step)
+    expect(shell).to_have_attribute('data-section-motion', phase)
+
+
 @pytest.mark.full_motion
-def test_hidden_player_suspends_only_its_renderer_during_frozen_travel(app):
+@pytest.mark.parametrize('width,height', [(1440, 900), (1280, 720)])
+def test_entering_the_player_walks_into_the_cab(app, width, height):
+    page = app.page
+    page.set_viewport_size({'width': width, 'height': height})
+    app.goto('/runs')
+    expect(page.get_by_role('heading', name='Прогоны', exact=True)).to_be_visible()
+    page.evaluate('document.fonts.ready')
+    page.clock.install()
+    page.clock.pause_at(page.evaluate('Date.now()'))
+    shell = page.locator('[data-app-shell]')
+    page.get_by_role('navigation', name='Линия: путь работы с записью').get_by_role('link', name='Плеер', exact=True).click()
+    expect(shell).to_have_attribute('data-section-motion', 'boarding')
+    # No doors: the page is captured as it is, and the Player commits at once, hidden underneath.
+    expect(page.locator('[data-train-doors]')).to_be_hidden()
+    expect(page).to_have_url(app.base + '/player')
+    expect(page.locator('main')).to_have_attribute('inert', '')
+    entry = wait_boarding_ready(page)
+    # The first frame is the leaving page exactly filling the viewport, already in its 3D plane.
+    leaving = page.locator('[data-leaving-page]')
+    rect = leaving.evaluate('el => el.getBoundingClientRect().toJSON()')
+    assert abs(rect['left']) < 1.5 and abs(rect['top']) < 1.5, rect
+    assert abs(rect['width'] - width) < 2 and abs(rect['height'] - height) < 2, rect
+    assert leaving.evaluate('el => getComputedStyle(el).transform').startswith('matrix3d')
+    expect(leaving.locator('[data-outgoing-snapshot] h1, [data-outgoing-snapshot] h2').filter(has_text='Прогоны').first).to_be_visible()
+    # Turning right: the page swings away to the left in perspective.
+    for _ in range(25):
+        page.clock.run_for(16)
+    turned = leaving.evaluate('el => el.getBoundingClientRect().toJSON()')
+    assert turned['right'] < width * 0.8 and turned['left'] < rect['left'] - 20, turned
+    assert 0.05 < float(entry.get_attribute('data-entry-progress')) < 0.25
+    # The canvas of the hidden Player does not render under the walk.
+    expect(page.locator('main [data-train-backdrop] canvas')).to_have_attribute('data-navigation-paused', 'true')
+    # A click skips the rest of the walk to the seat; the overlay lifts and the cab is the page.
+    entry.click(position={'x': 40, 'y': height - 40})
+    run_clock_until(page, 'arriving', step=16, limit=20)
+    expect(page.locator('main [data-train-backdrop] canvas')).to_have_attribute('data-navigation-paused', 'false')
+    page.clock.run_for(330)
+    expect(shell).to_have_attribute('data-section-motion', 'idle')
+    expect(entry).to_have_count(0)
+    expect(page.locator('main')).not_to_have_attribute('inert', '')
+    assert page.locator('main').evaluate('el => document.activeElement === el')
+    assert app.errors == []
+
+
+@pytest.mark.full_motion
+def test_any_key_skips_the_walk_without_reaching_the_player(app):
     page = app.page
     app.goto('/queue')
     expect(page.get_by_role('heading', name='Очередь', exact=True)).to_be_visible()
-    hold_travel(page)
+    page.clock.install()
+    page.clock.pause_at(page.evaluate('Date.now()'))
     page.get_by_role('navigation', name='Линия: путь работы с записью').get_by_role('link', name='Плеер', exact=True).click()
-    page.clock.run_for(270)
-    prepare_travel(page)
-    canvas = page.locator('main [data-train-backdrop] canvas')
-    expect(canvas).to_have_attribute('data-navigation-paused', 'true')
-    finish_travel(page)
-    expect(canvas).to_have_attribute('data-navigation-paused', 'false')
+    entry = wait_boarding_ready(page)
+    # Esc would make the Player go back; here it only skips to the seat.
+    page.keyboard.press('Escape')
+    run_clock_until(page, 'arriving', step=16, limit=20)
     page.clock.run_for(330)
-    expect(page.locator('[data-train-doors]')).to_be_hidden()
+    expect(page.locator('[data-app-shell]')).to_have_attribute('data-section-motion', 'idle')
+    expect(entry).to_have_count(0)
+    expect(page).to_have_url(app.base + '/player')
     expect(page.get_by_text('Прогонов пока нет', exact=True)).to_be_visible()
     assert app.errors == []
 
 
 @pytest.mark.full_motion
 @pytest.mark.parametrize('source,target,label,expected', [
-    ('/upload', '/player', 'Плеер', ['upload', 'queue', 'runs', 'player']),
+    ('/upload', '/runs', 'Прогоны', ['upload', 'queue', 'runs']),
     ('/player', '/upload', 'Загрузка', ['player', 'runs', 'queue', 'upload']),
     ('/queue', '/compare', 'Сравнение', ['queue', 'runs', 'player', 'compare']),
     ('/compare', '/queue', 'Очередь', ['compare', 'player', 'runs', 'queue']),

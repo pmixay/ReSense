@@ -1,5 +1,10 @@
 # Integrated Player workspace
 
+> **Superseded (22.10):** this gallery shows the saloon-wall display of the earlier Player. The Player is now the cab
+> (driver's seat with the cockpit, built in [`cockpit.ts`](../../../webapp/frontend/src/player/cockpit.ts) and
+> [`cabEntry.ts`](../../../webapp/frontend/src/player/cabEntry.ts)); `trainInterior.ts`, which these captures were
+> made with, was deleted. The captures stay as a dated record of the earlier workspace.
+
 Latest material/seating and section-door review:
 [`../metro-2020/`](../metro-2020/), based on the newly uploaded photographs in
 `7e38c01`. That gallery supersedes these earlier captures for interior material
@@ -25,7 +30,7 @@ scan. No reference-image pixels are used as the player UI.
 
 ## Moscow-2020-inspired train installation
 
-The current display is mounted in a modeled metro interior. [`trainInterior.ts`](../../../webapp/frontend/src/player/trainInterior.ts)
+The current display is mounted in a modeled metro interior. `trainInterior.ts` (deleted from the repository; the file no longer exists)
 builds a formed laminate wall with an actual opening, recessed rubber mounting gasket,
 vertical/service-panel joints, flush fasteners and a curved warm-metal foreground handrail.
 The door has beveled aluminium reveals, rubber seals, black glass with ceiling reflections,

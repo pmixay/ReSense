@@ -4,10 +4,13 @@ import styles from './TrainDoors.module.css';
 import { navigationJourney } from '../../lib/navigationJourney';
 import { preloadSections } from '../../sectionPages';
 
-type Phase = 'idle' | 'closing' | 'covered' | 'travelling' | 'opening';
+export type Phase = 'idle' | 'closing' | 'covered' | 'travelling' | 'opening' | 'boarding' | 'arriving';
 const section = (pathname: string) => pathname.split('/')[1] || 'overview';
+/** Entering the Player from another section walks into the driver's cab instead of the doors. */
+export const boardsCab = (from: string, to: string) => section(to) === 'player' && section(from) !== 'player';
 
-/** One continuous directional journey, with intermediate views behind closed glass. */
+/** One continuous directional journey, with intermediate views behind closed glass; into the
+ * Player, a walk to the driver's cab (no doors) that ends seated in the Player's view. */
 export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () => boolean; onFinishRequested?: () => void } = {}) {
   const location = useLocation();
   const blocker = useBlocker(({ currentLocation, nextLocation }) => section(currentLocation.pathname) !== section(nextLocation.pathname));
@@ -33,10 +36,21 @@ export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () =
       setJourney(next);
       if (phase === 'idle') {
         origin.current = location.key;
-        setPhase('closing');
+        if (!reduced && boardsCab(location.pathname, blocker.location.pathname)) {
+          // No doors close over the page: it is captured as it is and swings away in 3D.
+          latest.current.onCover?.();
+          setPhase('boarding');
+        } else setPhase('closing');
       }
     }
-  }, [blocker.state, blocker.location?.pathname, location.key, location.pathname, phase]);
+  }, [blocker.state, blocker.location?.pathname, location.key, location.pathname, phase, reduced]);
+
+  useEffect(() => {
+    if (phase !== 'boarding') return;
+    preloadSections(['player']);
+    // the Player commits (hidden) at once, so its layout is measured for the last, seated frame
+    proceed.current?.();
+  }, [phase]);
 
   useEffect(() => {
     if (phase === 'closing' && !reduced) preloadSections([...journey.via, ...(journey.target ? [journey.target] : [])]);
@@ -81,6 +95,13 @@ export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () =
   }, [phase, reduced, journey.duration]);
 
   const finishTravel = useCallback(() => setPhase(current => current === 'travelling' ? 'opening' : current), []);
+  const finishBoarding = useCallback(() => setPhase(current => current === 'boarding' ? 'arriving' : current), []);
+
+  useEffect(() => {
+    if (phase !== 'arriving') return;
+    const timer = window.setTimeout(() => setPhase('idle'), 320);
+    return () => window.clearTimeout(timer);
+  }, [phase]);
 
   useEffect(() => {
     if (phase !== 'opening') return;
@@ -103,7 +124,7 @@ export function useTrainDoors(options: { onCover?: () => void; isPrepared?: () =
     return () => window.clearTimeout(timer);
   }, [active]);
 
-  return { phase, active, journey, reduced, finishTravel };
+  return { phase, active, journey, reduced, finishTravel, finishBoarding };
 }
 
 export function TrainDoors({ phase }: { phase: Phase }) {

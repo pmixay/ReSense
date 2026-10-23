@@ -1,0 +1,3 @@
+X3 raw probe rows control (v1.2.0) vs final (d85e265): 29765
+fields that differ (non-timing), rows: {'clear': 5303}
+clear changed 5303 lowered 5303 raised 0 old-new distribution {0.1: 5303}

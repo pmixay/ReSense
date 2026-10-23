@@ -36,7 +36,8 @@ src/
                           useSize.ts (ResizeObserver size of an element)
   player/                 the 3D engine shared by the Player and the previews: scene.ts (three.js),
                           engine / clock / motion / frameStore / cloudCache, CloudPreview.tsx (lazy),
-                          screenDisplay.ts (reference-based 3D housing and live render target)
+                          screenDisplay.ts (the driver's cab around the live windshield), cockpit.ts
+                          (cab geometry), cabEntry.ts (the walk into the cab, lazy), cabBoot.ts (boot timeline)
   pages/<Name>/index.tsx  one module per route; page-only components, hooks and tests next to it
   pages/UiGuide           /_ui: the living style guide (every component and state; not in the nav)
 screenshots/              local review screenshots (git-ignored)
@@ -75,36 +76,35 @@ Pages: `/` Overview · `/upload` · `/queue` · `/runs` · `/runs/:id` · `/play
 - **Pinned navigation.** The top bar and category rail stay above the independently scrolling
   page on every route, including loading/error states and the player. Fullscreen targets the
   shared shell so both bars remain accessible. Player uses normal page flow at the available
-  width: a fixed modeled display and a pinned bottom dock with demo settings and transport.
+  width: a fixed cab scene and a pinned bottom dock with demo settings and transport.
   Telemetry starts hidden; its button toggles independently scrollable left/right side
-  columns while keeping the image center clear. Its canvas,
-  offscreen render target, camera aspect, close-up and HUD resize together via ResizeObserver.
-  The display housing is a real Three.js mesh based on the supplied `images (1).jpg`; only the
-  Player enables this presentation, while existing CloudPreview views retain direct rendering.
-  There is no scaled stage, duplicate local header or separate page background.
-- **Display optics.** `screenDisplay.ts` tilts the housing and publishes the active-face affine
-  projection for HUD alignment. `screenEffects.ts` samples the live image for a fine RGB pixel
-  aperture, local bloom and GPU-diffused light emission. Two low-resolution filter targets are
-  disposed with the display; no readback or independent animation loop is used.
-- **Train installation.** `trainInterior.ts` builds a real wall aperture and recessed gasket,
-  laminate panels, stainless grab rail and door reveal around the device. Charging indicators
-  are centered on the pillar, trim ends before the door, and invented roof bands are omitted.
-  The housing and wall share their angle, antialiased analytic contact shading anchors the enclosure, and a clear-coated
-  physical cover glass sits above the live surface. Environment geometry, textures, materials and
-  render targets are disposed with the display; UI controls still belong to the shared page.
-- **Pressure parallax.** Player uses a fixed viewport train backdrop under the shared chrome,
-  with an exactly aligned physical screen and HUD; only the open telemetry side columns scroll.
-  The default pose is straight; bounded mouse pressure tilts the wall/display group and moves the
-  separate foreground railings at 24% strength. The HUD uses the updated affine surface transform.
-  Pointer-only renders reuse live image/emission textures, settle to rest, and respect reduced
-  motion and touch. A clear-to-dark dock tint and short blur feather preserve label sharpness.
-- **Player space/performance.** Player uses the shared metro-line destination rail, styled like Upload.
-  Its height toggle expands the live display without narrowing it. Foreground rails sit ahead
-  of the moving wall and render sharply in the physical scene without a defocus pass. The detailed
-  Moskva-2020 bay has off-camera neutral ceiling illumination, warm fill and formed door fittings;
-  a cached saloon reflection probe lights its metal. `screenLighting.ts` samples live emission on
-  wall, trim, housing and rail without CPU readback. Scene and HUD remain fixed; a measured
-  responsive dock keeps playback/settings visible while `TelemetryTray.tsx` reveals other data.
-  Physical rendering
-  is capped by `displayQuality.ts` (1.5×/2.6M pixels, 1× on constrained devices); DOM controls
-  stay native-size. Dynamic shadow maps are disabled in favor of analytic contact shading.
+  columns while keeping the image center clear. Its canvas, offscreen render target, camera
+  aspect, close-up and HUD resize together via ResizeObserver. Only the Player enables this
+  presentation; CloudPreview views keep direct rendering. There is no scaled stage, duplicate
+  local header or separate page background.
+- **Driver's cab.** `screenDisplay.ts` shows the live view as the windshield of a metro driver's
+  cab built by `cockpit.ts` around the measured display region (`cabLayout`): a perspective eye
+  1.6 m from the windshield plane with a 50° field, so the face projects affinely and the HUD
+  stays aligned. Realistic, in the app's style (Moskva-2020 cues): black-bonded frit glass,
+  light-grey moulding, A-pillars with camera monitors, vents and grab handles, side windows,
+  sun-visor housing, overhead switch panel, glare shield and a graphite desk with displays,
+  manometers, buttons, controller, emergency stop and radio. Instrument faces (`cabShaders.ts`)
+  are decorative and never show a readable value. Colours are linearised and encoded per
+  material (`encodePbr`); the LiDAR target keeps display values. No shadow maps.
+- **Display optics.** `screenEffects.ts` samples the live image for a fine RGB pixel aperture,
+  local bloom and GPU-diffused light emission; `screenLighting.ts` lights the cab from it
+  without CPU readback (nothing from black or a powered-down display).
+- **Head parallax.** Mouse pressure leans the seated eye (up to 6 cm × 3.5 cm), never rotating
+  it, so the HUD transform stays a translation; the canvas publishes `data-head-x/-y`. Pointer-only
+  renders reuse the live image/emission textures, settle to rest, and respect reduced motion
+  and touch. A clear-to-dark dock tint and short blur feather preserve label sharpness.
+- **Boarding and boot.** Entering the Player from another section plays no doors: `CabEntry.tsx`
+  (AppShell) captures the leaving page, commits the Player hidden, and lazily runs
+  `cabEntry.ts` — the page as a CSS3D plane in the saloon's open doors, a right turn, the aisle,
+  the sliding cab door, sitting down — ending on the Player's exact seated view; any key or click
+  skips. The Player then boots its cab once (`cabBoot.ts`, 2.1 s; `CabBoot.tsx` draws the
+  initialization over the windshield) and autoplay waits for it. Reduced motion keeps the fade
+  and skips the boot.
+- **Player performance.** Physical rendering is capped by `displayQuality.ts` (1.5×/2.6M pixels,
+  1× on constrained devices); DOM controls stay native-size. The hidden Player's renderer is
+  detached during door travel and the boarding walk.

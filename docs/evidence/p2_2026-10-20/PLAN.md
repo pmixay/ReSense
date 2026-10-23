@@ -2,7 +2,7 @@
 
 Execution receipt: [README.md](README.md). Today's scoped code checks are complete.
 After the user's publishing request and corrected domain, publication completed
-at [resense.amdm.life](https://resense.amdm.life/): [receipt](PUBLISH.md). Non-code
+at resense.amdm.life (22.10: that host now serves another app; the preview is https://resense.arbuz.lol): [receipt](PUBLISH.md). Non-code
 deliverables below are the stopping point requested by the user.
 
 ## Scope and stopping point

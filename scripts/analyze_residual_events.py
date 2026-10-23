@@ -11,10 +11,16 @@ from collections import Counter
 import gzip
 import hashlib
 import json
+import os
 from pathlib import Path
 
 import numpy as np
 import yaml
+
+# Recorded data lives under RESENSE_CACHE (default /data/cache), as in scripts/bench_8core.sh and
+# tests/conftest.py's ``realdata`` marker.
+CACHE = Path(os.environ.get("RESENSE_CACHE", "/data/cache"))
+MEASUREMENT = CACHE / "cross_ring_2026-09-28_measurement"
 
 
 # Reviewed hypotheses, not physical labels or a proposed detector decision rule.
@@ -532,7 +538,7 @@ def markdown_table(report):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--measurement", type=Path,
-                        default=Path("D:/Datasets/ReSense/cross_ring_2026-09-28_measurement"))
+                        default=MEASUREMENT)
     parser.add_argument("--out", type=Path)
     parser.add_argument("--markdown", type=Path, help="Update only the marked inventory table in an existing report")
     parser.add_argument("--inspect", action="store_true")

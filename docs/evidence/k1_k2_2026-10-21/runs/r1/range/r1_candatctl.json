@@ -1,0 +1,789 @@
+{
+ "control": "control",
+ "cand": "candatctl",
+ "jobs": {
+  "A_cube03": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    29,
+    29
+   ],
+   "first": [
+    44.86,
+    44.86
+   ],
+   "held": [
+    49.32,
+    49.32
+   ],
+   "visible": [
+    157,
+    157
+   ],
+   "first_later": false
+  },
+  "A_cube05": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    66,
+    66
+   ],
+   "first": [
+    135.06,
+    135.06
+   ],
+   "held": [
+    83.37,
+    83.37
+   ],
+   "visible": [
+    180,
+    180
+   ],
+   "first_later": false
+  },
+  "A_cube05_drop": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    63,
+    63
+   ],
+   "first": [
+    118.12,
+    118.12
+   ],
+   "held": [
+    83.37,
+    83.37
+   ],
+   "visible": [
+    157,
+    157
+   ],
+   "first_later": false
+  },
+  "A_cube1": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    104,
+    104
+   ],
+   "first": [
+    151.1,
+    151.1
+   ],
+   "held": [
+    161.73,
+    161.73
+   ],
+   "visible": [
+    185,
+    185
+   ],
+   "first_later": false
+  },
+  "A_cube1_drop": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    105,
+    105
+   ],
+   "first": [
+    151.1,
+    151.1
+   ],
+   "held": [
+    162.89,
+    162.89
+   ],
+   "visible": [
+    184,
+    184
+   ],
+   "first_later": false
+  },
+  "A_lowbox_rail": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    29,
+    29
+   ],
+   "first": [
+    44.86,
+    44.86
+   ],
+   "held": [
+    49.32,
+    49.32
+   ],
+   "visible": [
+    119,
+    119
+   ],
+   "first_later": false
+  },
+  "A_person": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    158,
+    158
+   ],
+   "first": [
+    218.38,
+    218.38
+   ],
+   "held": [
+    221.78,
+    221.78
+   ],
+   "visible": [
+    185,
+    185
+   ],
+   "first_later": false
+  },
+  "A_person_drop": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    141,
+    141
+   ],
+   "first": [
+    208.7,
+    208.7
+   ],
+   "held": [
+    203.99,
+    203.99
+   ],
+   "visible": [
+    179,
+    179
+   ],
+   "first_later": false
+  },
+  "A_person_latm05": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    158,
+    158
+   ],
+   "first": [
+    218.38,
+    218.38
+   ],
+   "held": [
+    221.78,
+    221.78
+   ],
+   "visible": [
+    185,
+    185
+   ],
+   "first_later": false
+  },
+  "A_person_latp05": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    159,
+    159
+   ],
+   "first": [
+    218.38,
+    218.38
+   ],
+   "held": [
+    222.61,
+    222.61
+   ],
+   "visible": [
+    185,
+    185
+   ],
+   "first_later": false
+  },
+  "B_cube03": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    22,
+    22
+   ],
+   "first": [
+    41.19,
+    41.19
+   ],
+   "held": [
+    44.72,
+    44.72
+   ],
+   "visible": [
+    68,
+    68
+   ],
+   "first_later": false
+  },
+  "B_cube05": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    27,
+    27
+   ],
+   "first": [
+    50.03,
+    50.03
+   ],
+   "held": [
+    55.34,
+    55.34
+   ],
+   "visible": [
+    86,
+    86
+   ],
+   "first_later": false
+  },
+  "B_cube1": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    27,
+    27
+   ],
+   "first": [
+    50.03,
+    50.03
+   ],
+   "held": [
+    55.34,
+    55.34
+   ],
+   "visible": [
+    113,
+    113
+   ],
+   "first_later": false
+  },
+  "B_person": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    28,
+    28
+   ],
+   "first": [
+    51.8,
+    51.8
+   ],
+   "held": [
+    57.11,
+    57.11
+   ],
+   "visible": [
+    119,
+    119
+   ],
+   "first_later": false
+  },
+  "C_cube03": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    27,
+    27
+   ],
+   "first": [
+    41.58,
+    41.58
+   ],
+   "held": [
+    46.0,
+    46.0
+   ],
+   "visible": [
+    129,
+    129
+   ],
+   "first_later": false
+  },
+  "C_cube05": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    50,
+    50
+   ],
+   "first": [
+    75.42,
+    75.42
+   ],
+   "held": [
+    82.77,
+    82.77
+   ],
+   "visible": [
+    151,
+    151
+   ],
+   "first_later": false
+  },
+  "C_cube1": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    57,
+    57
+   ],
+   "first": [
+    85.72,
+    85.72
+   ],
+   "held": [
+    94.58,
+    94.58
+   ],
+   "visible": [
+    153,
+    153
+   ],
+   "first_later": false
+  },
+  "C_person": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    55,
+    55
+   ],
+   "first": [
+    82.77,
+    82.77
+   ],
+   "held": [
+    91.63,
+    91.63
+   ],
+   "visible": [
+    153,
+    153
+   ],
+   "first_later": false
+  },
+  "D_cube03": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    83,
+    83
+   ],
+   "first": [
+    84.59,
+    84.59
+   ],
+   "held": [
+    null,
+    null
+   ],
+   "visible": [
+    292,
+    292
+   ],
+   "first_later": false
+  },
+  "D_cube05": {
+   "lost": [],
+   "gained": 24,
+   "stop": [
+    121,
+    145
+   ],
+   "first": [
+    104.78,
+    104.78
+   ],
+   "held": [
+    null,
+    85.48
+   ],
+   "visible": [
+    316,
+    316
+   ],
+   "first_later": false
+  },
+  "D_cube1": {
+   "lost": [],
+   "gained": 8,
+   "stop": [
+    186,
+    194
+   ],
+   "first": [
+    105.82,
+    105.82
+   ],
+   "held": [
+    112.68,
+    118.55
+   ],
+   "visible": [
+    318,
+    318
+   ],
+   "first_later": false
+  },
+  "D_person": {
+   "lost": [],
+   "gained": 28,
+   "stop": [
+    165,
+    193
+   ],
+   "first": [
+    105.82,
+    105.82
+   ],
+   "held": [
+    null,
+    117.87
+   ],
+   "visible": [
+    318,
+    318
+   ],
+   "first_later": false
+  },
+  "E1_cross150": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    20,
+    20
+   ],
+   "first": [
+    129.63,
+    129.63
+   ],
+   "held": [
+    null,
+    null
+   ],
+   "visible": [
+    96,
+    96
+   ],
+   "first_later": false
+  },
+  "E2_cross80": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    26,
+    26
+   ],
+   "first": [
+    53.33,
+    53.33
+   ],
+   "held": [
+    null,
+    null
+   ],
+   "visible": [
+    60,
+    60
+   ],
+   "first_later": false
+  },
+  "E3_recede5": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    101,
+    101
+   ],
+   "first": [
+    97.14,
+    97.14
+   ],
+   "held": [
+    100.0,
+    100.0
+   ],
+   "visible": [
+    108,
+    108
+   ],
+   "first_later": false
+  },
+  "E3_recede8": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    101,
+    101
+   ],
+   "first": [
+    96.15,
+    96.15
+   ],
+   "held": [
+    100.0,
+    100.0
+   ],
+   "visible": [
+    110,
+    110
+   ],
+   "first_later": false
+  },
+  "E4_appear100": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    61,
+    61
+   ],
+   "first": [
+    91.98,
+    91.98
+   ],
+   "held": [
+    99.03,
+    99.03
+   ],
+   "visible": [
+    66,
+    66
+   ],
+   "first_later": false
+  },
+  "E4_appear60": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    35,
+    35
+   ],
+   "first": [
+    53.8,
+    53.8
+   ],
+   "held": [
+    58.29,
+    58.29
+   ],
+   "visible": [
+    39,
+    39
+   ],
+   "first_later": false
+  },
+  "E5_pole_c": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    117,
+    117
+   ],
+   "first": [
+    218.38,
+    218.38
+   ],
+   "held": [
+    19.75,
+    19.75
+   ],
+   "visible": [
+    177,
+    177
+   ],
+   "first_later": false
+  },
+  "E5_pole_side": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    0,
+    0
+   ],
+   "first": [
+    null,
+    null
+   ],
+   "held": [
+    null,
+    null
+   ],
+   "visible": [
+    176,
+    176
+   ],
+   "first_later": false
+  },
+  "E6_cable_low_c": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    37,
+    37
+   ],
+   "first": [
+    86.25,
+    86.25
+   ],
+   "held": [
+    61.28,
+    61.28
+   ],
+   "visible": [
+    59,
+    59
+   ],
+   "first_later": false
+  },
+  "S_cube05_100": {
+   "lost": [],
+   "gained": 15,
+   "stop": [
+    94,
+    109
+   ],
+   "first": [
+    100.0,
+    100.0
+   ],
+   "held": [
+    99.99,
+    99.99
+   ],
+   "visible": [
+    260,
+    260
+   ],
+   "first_later": false
+  },
+  "S_cube05_150": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    0,
+    0
+   ],
+   "first": [
+    null,
+    null
+   ],
+   "held": [
+    null,
+    null
+   ],
+   "visible": [
+    243,
+    243
+   ],
+   "first_later": false
+  },
+  "S_cube05_60": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    255,
+    255
+   ],
+   "first": [
+    60.0,
+    60.0
+   ],
+   "held": [
+    60.0,
+    60.0
+   ],
+   "visible": [
+    260,
+    260
+   ],
+   "first_later": false
+  },
+  "S_person_100": {
+   "lost": [],
+   "gained": 166,
+   "stop": [
+    82,
+    248
+   ],
+   "first": [
+    100.0,
+    100.0
+   ],
+   "held": [
+    99.99,
+    100.0
+   ],
+   "visible": [
+    260,
+    260
+   ],
+   "first_later": false
+  },
+  "S_person_150": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    90,
+    90
+   ],
+   "first": [
+    150.0,
+    150.0
+   ],
+   "held": [
+    null,
+    null
+   ],
+   "visible": [
+    259,
+    259
+   ],
+   "first_later": false
+  },
+  "S_person_60": {
+   "lost": [],
+   "gained": 0,
+   "stop": [
+    255,
+    255
+   ],
+   "first": [
+    60.0,
+    60.0
+   ],
+   "held": [
+    60.0,
+    60.0
+   ],
+   "visible": [
+    260,
+    260
+   ],
+   "first_later": false
+  }
+ },
+ "failing": [],
+ "planted_control": {
+  "job": "A_cube03",
+  "frame": 306,
+  "found": true
+ }
+}

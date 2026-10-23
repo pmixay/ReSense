@@ -1,0 +1,3 @@
+note: set F trolley: paired sustained comparison unavailable: per-sequence evidence missing (legacy summary)
+GATE PASS: no gated metric worse (15 gated better, 0 worse but allowed, 31 information rows changed)
+wrote /data/gate/gate_on.json

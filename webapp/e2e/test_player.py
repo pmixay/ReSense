@@ -215,7 +215,15 @@ def test_autoplay_keyboard_and_url(app, seeded):
     page.keyboard.press("Escape")
     expect(page.get_by_role("tooltip")).to_have_count(0)
     expect(page).to_have_url(re.compile(rf"/player/{rid}"))
-    page.keyboard.press("Escape")
+    # a tooltip that opens again meanwhile (a delayed hover / focus timer on a slow runner, CI run 712) takes this
+    # Esc for itself: press again until the player is left; at most three presses
+    for _ in range(3):
+        page.keyboard.press("Escape")
+        try:
+            expect(page).to_have_url(re.compile(r"/runs$"), timeout=15_000)
+            break
+        except AssertionError:
+            pass
     expect(page).to_have_url(re.compile(r"/runs$"))
     assert real_errors(app.errors) == []
 
@@ -672,28 +680,49 @@ def test_pointer_pressure_parallax_and_reduced_motion(app, seeded):
     open_player(app, f'/player/{rid}?pos=30')
     canvas = page.get_by_role('img', name='3D-вид из кабины')
     box = box_of(page.locator('main'), scroll=False)
+    head = 'el => ({x: +el.dataset.headX, y: +el.dataset.headY})'
     page.mouse.move(0, 0)
     page.wait_for_function('''() => {
         const cv = document.querySelector('canvas[aria-label="3D-вид из кабины"]');
-        return Math.abs(+cv.dataset.sceneTiltX) + Math.abs(+cv.dataset.sceneTiltY) < .00002;
+        return Math.abs(+cv.dataset.headX) + Math.abs(+cv.dataset.headY) < .00002;
     }''')
+    # pressing towards the top right leans the seated eye right and up (head parallax, never a rotation)
     page.mouse.move(box['x'] + box['width'] * .96, box['y'] + box['height'] * .18, steps=10)
     page.wait_for_function('''() => {
         const d = document.querySelector('canvas[aria-label="3D-вид из кабины"]').dataset;
-        return +d.sceneTiltY > .025 && +d.sceneTiltX < -.005 && Math.abs(+d.railTiltY) < Math.abs(+d.sceneTiltY) * .5;
+        return +d.headX > .045 && +d.headY > .008;
     }''')
-    values = canvas.evaluate('el => ({wall:+el.dataset.sceneTiltY, rail:+el.dataset.railTiltY})')
-    assert abs(values['rail'] / values['wall'] - .24) < .001, values
+    values = canvas.evaluate(head)
+    assert values['x'] <= .06 + 1e-9 and values['y'] <= .035 + 1e-9, values
     page.mouse.move(box['x'] + box['width'] / 2, box['y'] + box['height'] / 2, steps=8)
     page.wait_for_function('''() => {
         const d = document.querySelector('canvas[aria-label="3D-вид из кабины"]').dataset;
-        return Math.abs(+d.sceneTiltX) + Math.abs(+d.sceneTiltY) < .00002;
+        return Math.abs(+d.headX) + Math.abs(+d.headY) < .00002;
     }''')
     page.emulate_media(reduced_motion='reduce')
     page.mouse.move(box['x'] + box['width'] * .96, box['y'] + box['height'] * .18)
     page.wait_for_timeout(350)
-    assert canvas.evaluate('el => Math.abs(+el.dataset.sceneTiltX) + Math.abs(+el.dataset.sceneTiltY)') < .00002
+    assert canvas.evaluate('el => Math.abs(+el.dataset.headX) + Math.abs(+el.dataset.headY)') < .00002
     dock = page.locator('[data-player-controls]')
     assert dock.evaluate('el => ["::before", "::after"].some(p => getComputedStyle(el, p).backdropFilter.includes("blur"))')
     assert 'gradient' in dock.evaluate('el => getComputedStyle(el,"::before").backgroundImage')
+    assert real_errors(app.errors) == []
+
+
+@pytest.mark.full_motion  # the boot is the motion the reduced-motion default skips
+def test_cab_boots_before_the_run_plays(app, seeded):
+    page, rid = app.page, seeded['ids']['approach']
+    name = seeded['details']['approach']['name']
+    app.goto(f'/player/{rid}')
+    workspace = page.locator('[data-player-workspace]')
+    boot = page.locator('[data-cab-boot]')
+    expect(workspace).to_have_attribute('data-boot', 'running')
+    # the initialization log states the run's facts while the instruments power up
+    expect(boot).to_contain_text('Инициализация кабины')
+    expect(boot).to_contain_text(f'прогон · {name}')
+    expect(boot).to_contain_text('габарит · 2,1 × 3,0 м')
+    assert playhead(page) == 0  # autoplay waits for the cab
+    expect(workspace).to_have_attribute('data-boot', 'done')
+    expect(boot).to_have_count(0)
+    expect(slider(page)).not_to_have_attribute('aria-valuenow', '0')
     assert real_errors(app.errors) == []

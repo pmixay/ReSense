@@ -39,9 +39,9 @@ scripts/play_bag.sh <bag directory> --archive resense-image-<version>.tar.gz
 [Результаты и ограничения](../reference/results.md)). Код выхода 2 — неверный аргумент, 3 — нет
 Docker, нет образа или нода не запустилась.
 
-## Интерактивный запуск и Falcon (кандидат 1.2.0, не выпущен)
+## Интерактивный запуск и Falcon (1.2.0)
 
-Нужен образ из исходного кода кандидата 1.2.0; опубликованный архив v1.0.0 новых профилей не содержит.
+Нужен образ 1.2.0 (релиз `v1.2.0` или сборка из исходного кода); архив v1.0.0 новых профилей не содержит.
 
 ```bash
 docker build -t resense:lidar-work -f docker/Dockerfile .
@@ -195,6 +195,6 @@ RESENSE_DATA=/mnt/bags RESENSE_BAG=doubleT_obstacle docker compose --profile too
 интернета не передавайте `--build`.
 
 Без Docker и ROS бэг обрабатывает тем же детектором [веб-прототип](../visualisation/web-prototype.md) (онлайн —
-[resense.arbuz.lol](https://resense.arbuz.lol/), свой экземпляр — `scripts/run_webapp.sh` → http://localhost:8080; вне релиза `v1.0.0`
-и образа Docker). Обёртки `scripts/run_demo.sh` (нода + RViz, X11) и `scripts/run_headless.sh` (без X11, печатает `OBSTACLE 55.7 m`)
+[resense.arbuz.lol](https://resense.arbuz.lol/), свой экземпляр — `scripts/run_webapp.sh` → http://localhost:8080; вне образа Docker
+и релизов). Обёртки `scripts/run_demo.sh` (нода + RViz, X11) и `scripts/run_headless.sh` (без X11, печатает `OBSTACLE 55.7 m`)
 запускаются так же: `./scripts/run_demo.sh /data/for_hackathon/roundT_doubleT`.

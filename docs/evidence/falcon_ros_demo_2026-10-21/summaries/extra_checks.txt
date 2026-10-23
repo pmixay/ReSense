@@ -1,0 +1,8 @@
+positive control: cold replay vs whole-recording record differ on 32 frames (README: 32)
+r10_cons frames 432 | differ from whole-recording record: 38 | STOP 153 (record on same frames 135 ) | STOP frames <=3033: 57 max |distance - person line| m: 2.58 | decision+distance sequence identical to first trial: base
+r10_cons_b frames 432 | differ from whole-recording record: 38 | STOP 153 (record on same frames 135 ) | STOP frames <=3033: 57 max |distance - person line| m: 2.58 | decision+distance sequence identical to first trial: True
+r10_cons_nosub frames 432 | differ from whole-recording record: 38 | STOP 153 (record on same frames 135 ) | STOP frames <=3033: 57 max |distance - person line| m: 2.58 | decision+distance sequence identical to first trial: True
+r10_legacy frames 432 | differ from whole-recording record: 38 | STOP 153 (record on same frames 135 ) | STOP frames <=3033: 57 max |distance - person line| m: 2.58 | decision+distance sequence identical to first trial: True
+r05_cons frames 432 | differ from whole-recording record: 38 | STOP 153 (record on same frames 135 ) | STOP frames <=3033: 57 max |distance - person line| m: 2.58 | decision+distance sequence identical to first trial: True
+r05_cons_b frames 432 | differ from whole-recording record: 38 | STOP 153 (record on same frames 135 ) | STOP frames <=3033: 57 max |distance - person line| m: 2.58 | decision+distance sequence identical to first trial: True
+r05_legacy frames 432 | differ from whole-recording record: 38 | STOP 153 (record on same frames 135 ) | STOP frames <=3033: 57 max |distance - person line| m: 2.58 | decision+distance sequence identical to first trial: True

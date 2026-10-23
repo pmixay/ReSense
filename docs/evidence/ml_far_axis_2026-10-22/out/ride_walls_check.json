@@ -1,0 +1,105 @@
+{
+ "rows_both_sides": 81645,
+ "bands": {
+  "40-60": {
+   "label_minus_walls": {
+    "n": 9912,
+    "median": -0.013,
+    "abs_p50": 0.085,
+    "abs_p90": 0.261
+   },
+   "base_minus_walls (positive control: the base model's own error)": {
+    "n": 9912,
+    "median": 0.0,
+    "abs_p50": 0.075,
+    "abs_p90": 0.25
+   },
+   "label_minus_walls_all_widths": {
+    "n": 17850,
+    "median": -0.015,
+    "abs_p50": 0.126,
+    "abs_p90": 0.958
+   }
+  },
+  "60-100": {
+   "label_minus_walls": {
+    "n": 7730,
+    "median": 0.036,
+    "abs_p50": 0.128,
+    "abs_p90": 0.412
+   },
+   "base_minus_walls (positive control: the base model's own error)": {
+    "n": 7730,
+    "median": 0.025,
+    "abs_p50": 0.125,
+    "abs_p90": 0.375
+   },
+   "label_minus_walls_all_widths": {
+    "n": 22652,
+    "median": 0.045,
+    "abs_p50": 0.198,
+    "abs_p90": 1.848
+   }
+  },
+  "100-150": {
+   "label_minus_walls": {
+    "n": 2166,
+    "median": 0.052,
+    "abs_p50": 0.275,
+    "abs_p90": 1.265
+   },
+   "base_minus_walls (positive control: the base model's own error)": {
+    "n": 2166,
+    "median": 0.0,
+    "abs_p50": 0.2,
+    "abs_p90": 0.65
+   },
+   "label_minus_walls_all_widths": {
+    "n": 9498,
+    "median": 0.176,
+    "abs_p50": 0.406,
+    "abs_p90": 2.218
+   }
+  },
+  "150-200": {
+   "label_minus_walls": {
+    "n": 464,
+    "median": 0.122,
+    "abs_p50": 0.521,
+    "abs_p90": 1.501
+   },
+   "base_minus_walls (positive control: the base model's own error)": {
+    "n": 464,
+    "median": -0.05,
+    "abs_p50": 0.3,
+    "abs_p90": 0.725
+   },
+   "label_minus_walls_all_widths": {
+    "n": 3040,
+    "median": 0.281,
+    "abs_p50": 0.868,
+    "abs_p90": 2.351
+   }
+  },
+  "200-250": {
+   "label_minus_walls": {
+    "n": 25,
+    "median": 0.015,
+    "abs_p50": 0.487,
+    "abs_p90": 2.268
+   },
+   "base_minus_walls (positive control: the base model's own error)": {
+    "n": 25,
+    "median": -0.05,
+    "abs_p50": 0.25,
+    "abs_p90": 0.835
+   },
+   "label_minus_walls_all_widths": {
+    "n": 176,
+    "median": 0.532,
+    "abs_p50": 0.805,
+    "abs_p90": 2.878
+   }
+  }
+ }
+}

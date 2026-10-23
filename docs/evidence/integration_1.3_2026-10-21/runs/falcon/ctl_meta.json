@@ -1,0 +1,55 @@
+{
+ "src": "/dev/stdin",
+ "bytes": 20281548800,
+ "found": 4443,
+ "kept": 4443,
+ "lost": 0,
+ "order_violations": 0,
+ "duplicates": 0,
+ "frames": 4443,
+ "configs": [
+  {
+   "name": "manual",
+   "doubt_model": "track_opinion.json",
+   "doubt_threshold": 0.015,
+   "doubt_extra_hits": 10,
+   "max_range": 250.0,
+   "forward": "-y"
+  },
+  {
+   "name": "ros",
+   "doubt_model": "track_opinion.json",
+   "doubt_threshold": 0.015,
+   "doubt_extra_hits": 10,
+   "max_range": 250.0,
+   "forward": "+x"
+  }
+ ],
+ "specs": [
+  {
+   "name": "manual",
+   "profile": "manual",
+   "pre": [],
+   "set": [],
+   "rows": false
+  },
+  {
+   "name": "ros",
+   "profile": "falcon_ros",
+   "pre": [],
+   "set": [],
+   "rows": false
+  }
+ ],
+ "repo": "/home/user/wt/base",
+ "resets": [
+  [],
+  []
+ ],
+ "cpu_s": [
+  120.0,
+  118.9
+ ],
+ "wall_s": 656.7,
+ "rss_peak_mb": 1377.4
+}

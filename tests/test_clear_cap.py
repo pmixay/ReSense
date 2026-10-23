@@ -56,7 +56,9 @@ def test_unconfirmed_object_in_the_envelope_caps_clear_distance(box_at_45):
     assert not off.obstacle and not on.obstacle
     assert off.clear_distance > 100.0                           # the overclaim of v0.6
     assert on.clear_distance == pytest.approx(45.0, abs=1.0)
-    assert on.health["candidate_distance"] == pytest.approx(on.clear_distance, abs=0.1)
+    # health.candidate_distance is rounded to nearest, clear_distance (health.clear_round_down, on since 21.10) down:
+    # 44.96 reports 45.0 and 44.9, a difference of exactly 0.1 m
+    assert on.health["candidate_distance"] == pytest.approx(on.clear_distance, abs=0.1 + 1e-6)
     # nothing but clear_distance moves: same detections, same health level, same monitored range
     assert (on.obstacle, on.warning, on.health["level"]) == (off.obstacle, off.warning, off.health["level"])
     assert on.health["monitored_range"] == off.health["monitored_range"]

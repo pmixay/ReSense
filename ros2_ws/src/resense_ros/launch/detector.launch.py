@@ -60,7 +60,7 @@ PARAMS = {
     "max_consecutive_errors": ("5", int, "processing exceptions in a row before the detector is reset"),
     "decision_policy": ("v1", str, "shared decision policy: runtime accepts v1 only; v2 is offline-only pending acceptance"),
     "caution_distance_m": ("80.0", float, "reserved for future accepted policy: margin-advisory distance, inclusive"),
-    "clear_range_policy": ("legacy", str, "legacy | conservative (approved 17.10) | advisory_candidate | small_candidate"),
+    "clear_range_policy": ("auto", str, "auto (default since 1.3: conservative when the sensor profile is named or detected from the point fields, else legacy) | conservative | legacy | advisory_candidate | small_candidate"),
     "range_sensor_model": ("unknown", str, "explicit sensor prior: unknown | pandar128 | falcon_prime"),
     "caution_compact_max_size_m": ("3.0", float, "reserved for future accepted policy: compact box extent, inclusive"),
     # v0.6.1: several recordings / topic names through one running node

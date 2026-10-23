@@ -34,6 +34,8 @@ def back_to(page, pattern: str) -> None:
     expect(page).to_have_url(re.compile(pattern))
     # React transitions can retain the outgoing DOM after history already changed.
     expect(page.get_by_role("slider", name="Кадр прогона")).to_have_count(0)
+    # The section change's overlay takes the pointer until it has lifted (hover checks follow).
+    expect(page.locator("[data-train-doors]")).to_be_hidden()
 
 
 def test_player_link_waits_for_rendered_destination(app, backend):

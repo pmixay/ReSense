@@ -95,3 +95,24 @@ destination frames before reveal. Recovery finishes the journey instead of dropp
 its strip. Close/open are 260/320ms; travel is 280 + 130ms per interval. Native
 dropdowns and form affordances match the shared tokens. Evidence:
 `docs/images/d1-controls-journey/`.
+
+DRIVER CAB (latest, 21.10): Replace the screen installed in a saloon wall with the
+driver's cab of a metro train seen from the seat; the live LiDAR view is the
+windshield. User correction of the same day: a realistic cab close to a real train
+in the application's general style, not a spaceship, and more detailed. Use
+Moskva-2020 cues: black-bonded windshield with frit band, light-grey moulded trim
+with screws, A-pillars with camera monitors, vent grilles and bronze grab handles,
+side windows, sun-visor housing, overhead switch panel, matte glare shield with
+defroster slots, graphite desk with displays, manometers, backlit push buttons,
+toggles, controller, emergency stop and radio. Instrument faces are decorative and
+show no readable values. Perspective eye, windshield parallel to the screen so the
+HUD stays affine; mouse pressure leans the eye (translation only). No cab part may
+cover the live picture at any head position. Keep the shared shell, dock,
+telemetry, height toggle and every playback/recovery path.
+
+BOOT: When the driver has sat down (the walk-in has lifted) and the run is there,
+the screens turn on Iron Man-style with a short initialization: backlights and
+instrument faces strike and draw in, a scan line reveals the live picture, brackets,
+reticle and a log of the run's facts over the windshield, then HUD annotations.
+About two seconds; controls stay usable; autoplay waits; reduced motion skips it.
+

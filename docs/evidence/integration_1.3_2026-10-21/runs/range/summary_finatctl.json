@@ -1,0 +1,1707 @@
+{
+ "tag": "finatctl",
+ "commit": "671ac9e6daf3e29ce4b7db2f734be2117146b2e0",
+ "runtime": "linux-cloud-4vcpu (OPENBLAS_CORETYPE=Haswell)",
+ "range_test_sha256": "3449d98bed34e4ab7333a7faedd38548ad84bd9a74c6917c61e614b2d8521787",
+ "harness_sha256": "3f59eb61c22c9186341d7142b897bf0afba57166a1b917deed2f81d910ad6334",
+ "icp": {
+  "roundT_squareT_pressureGate_squareT": "fa0255e62ed48e451d84f0993595ebb4935ad03d441367ab33a22075a754a72e",
+  "roundT_doubleT": "b533582f5fecaea1c842aa432110d77739d62c093e106e33e947d3ca0c9bf025",
+  "roundT_pressureGate_roundT": "990b6fa90db1999e4e1a6613abd7e7ba4aff7441a4019428566c867886d6c5b2",
+  "squareT_platform_squareT_switch": "583ab12b31549b9862b6d36e3a77df147296078ac32095549a5fc81ea4b2afd6"
+ },
+ "wall_s": 579.0,
+ "jobs": [
+  {
+   "job": "A_person",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.5,0.5,1.75 --start 150 --d0 230 --end 340",
+   "exit": 0,
+   "wall_s": 27.5,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 218.38,
+    "held_from_X": 221.78,
+    "visible_frames": 185,
+    "stop_frames": 158,
+    "bins": {
+     "3-30": "18/18",
+     "30-60": "21/21",
+     "60-100": "27/27",
+     "100-150": "39/39",
+     "150-200": "44/45",
+     "200-260": "9/35"
+    },
+    "decisions_while_visible": {
+     "GO": 5,
+     "CAUTION": 22,
+     "STOP": 158,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 4,
+     "150": 10,
+     "100": 24,
+     "60": 65,
+     "30": 280
+    }
+   },
+   "output_sha256": "c7628df87f5a6804d57434de203c42b620b9c3022ba2aed99dd0885cb24a6341"
+  },
+  {
+   "job": "B_person",
+   "recording": "roundT_doubleT",
+   "args": "--obj 0.5,0.5,1.75 --start 50 --d0 230",
+   "exit": 0,
+   "wall_s": 24.7,
+   "summary": {
+    "cache": "roundT_doubleT",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 50,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 51.8,
+    "held_from_X": 57.11,
+    "visible_frames": 119,
+    "stop_frames": 28,
+    "bins": {
+     "3-30": "15/15",
+     "30-60": "13/17",
+     "60-100": "0/23",
+     "100-150": "0/27",
+     "150-200": "0/19",
+     "200-260": "0/18"
+    },
+    "decisions_while_visible": {
+     "GO": 11,
+     "CAUTION": 80,
+     "STOP": 28,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 1,
+     "150": 2,
+     "100": 7,
+     "60": 65,
+     "30": 270
+    }
+   },
+   "output_sha256": "b30b2587deea3d7ec3cd044ebb3787c29eaa85a7c18c278186f334be9247980c"
+  },
+  {
+   "job": "C_person",
+   "recording": "roundT_pressureGate_roundT",
+   "args": "--obj 0.5,0.5,1.75 --start 0 --d0 230",
+   "exit": 0,
+   "wall_s": 23.8,
+   "summary": {
+    "cache": "roundT_pressureGate_roundT",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 0,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 82.77,
+    "held_from_X": 91.63,
+    "visible_frames": 153,
+    "stop_frames": 55,
+    "bins": {
+     "3-30": "19/19",
+     "30-60": "20/20",
+     "60-100": "16/27",
+     "100-150": "0/34",
+     "150-200": "0/33",
+     "200-260": "0/20"
+    },
+    "decisions_while_visible": {
+     "GO": 42,
+     "CAUTION": 56,
+     "STOP": 55,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 4,
+     "150": 5,
+     "100": 24,
+     "60": 70,
+     "30": 260
+    }
+   },
+   "output_sha256": "66767bfe52f504f8f684a93440c6ba2f47417a206a0a3065a092fb6a9c5c7ada"
+  },
+  {
+   "job": "D_person",
+   "recording": "squareT_platform_squareT_switch",
+   "args": "--obj 0.5,0.5,1.75 --start 100 --d0 230 --end 420",
+   "exit": 0,
+   "wall_s": 36.0,
+   "summary": {
+    "cache": "squareT_platform_squareT_switch",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 100,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 105.82,
+    "held_from_X": null,
+    "visible_frames": 318,
+    "stop_frames": 165,
+    "bins": {
+     "60-100": "152/181",
+     "100-150": "13/72",
+     "150-200": "0/43",
+     "200-260": "0/22"
+    },
+    "decisions_while_visible": {
+     "GO": 14,
+     "CAUTION": 130,
+     "STOP": 174,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 10,
+     "150": 10,
+     "100": 24,
+     "60": null,
+     "30": null
+    }
+   },
+   "output_sha256": "e4b4ef45f9e23d892a51140ed8090d9ce427a8f073abe57ca05efaa202f0dcb2"
+  },
+  {
+   "job": "A_cube1",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 1.0,1.0,1.0 --start 150 --d0 230 --end 340",
+   "exit": 0,
+   "wall_s": 26.3,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 151.1,
+    "held_from_X": 161.73,
+    "visible_frames": 185,
+    "stop_frames": 104,
+    "bins": {
+     "3-30": "17/18",
+     "30-60": "21/21",
+     "60-100": "27/27",
+     "100-150": "38/39",
+     "150-200": "1/45",
+     "200-260": "0/35"
+    },
+    "decisions_while_visible": {
+     "GO": 8,
+     "CAUTION": 72,
+     "STOP": 105,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 6,
+     "150": 12,
+     "100": 30,
+     "60": 63,
+     "30": 320
+    }
+   },
+   "output_sha256": "9c53d4ae9c9f88eb4bf39caa1e400f1fb52d29a6fa3fbcc20d134ab336c0a543"
+  },
+  {
+   "job": "B_cube1",
+   "recording": "roundT_doubleT",
+   "args": "--obj 1.0,1.0,1.0 --start 50 --d0 230",
+   "exit": 0,
+   "wall_s": 22.9,
+   "summary": {
+    "cache": "roundT_doubleT",
+    "obj": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 50,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 50.03,
+    "held_from_X": 55.34,
+    "visible_frames": 113,
+    "stop_frames": 27,
+    "bins": {
+     "3-30": "15/15",
+     "30-60": "12/17",
+     "60-100": "0/23",
+     "100-150": "0/25",
+     "150-200": "0/15",
+     "200-260": "0/18"
+    },
+    "decisions_while_visible": {
+     "GO": 11,
+     "CAUTION": 75,
+     "STOP": 27,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 1,
+     "150": 1,
+     "100": 9,
+     "60": 77,
+     "30": 336
+    }
+   },
+   "output_sha256": "01d5882b1f10335021d9ef1325d046be99ad865194d81ace99535f85f1f2c659"
+  },
+  {
+   "job": "C_cube1",
+   "recording": "roundT_pressureGate_roundT",
+   "args": "--obj 1.0,1.0,1.0 --start 0 --d0 230",
+   "exit": 0,
+   "wall_s": 22.1,
+   "summary": {
+    "cache": "roundT_pressureGate_roundT",
+    "obj": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 0,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 85.72,
+    "held_from_X": 94.58,
+    "visible_frames": 153,
+    "stop_frames": 57,
+    "bins": {
+     "3-30": "19/19",
+     "30-60": "20/20",
+     "60-100": "18/27",
+     "100-150": "0/34",
+     "150-200": "0/33",
+     "200-260": "0/20"
+    },
+    "decisions_while_visible": {
+     "GO": 46,
+     "CAUTION": 50,
+     "STOP": 57,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 9,
+     "150": 7,
+     "100": 24,
+     "60": 80,
+     "30": 285
+    }
+   },
+   "output_sha256": "0f9b0ff77ccee9f95951115fdff66eddc8c1e37614fc6172b396733f5b5c79f3"
+  },
+  {
+   "job": "D_cube1",
+   "recording": "squareT_platform_squareT_switch",
+   "args": "--obj 1.0,1.0,1.0 --start 100 --d0 230 --end 420",
+   "exit": 0,
+   "wall_s": 32.0,
+   "summary": {
+    "cache": "squareT_platform_squareT_switch",
+    "obj": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 100,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 105.82,
+    "held_from_X": 112.68,
+    "visible_frames": 318,
+    "stop_frames": 186,
+    "bins": {
+     "60-100": "173/181",
+     "100-150": "13/72",
+     "150-200": "0/43",
+     "200-260": "0/22"
+    },
+    "decisions_while_visible": {
+     "GO": 5,
+     "CAUTION": 127,
+     "STOP": 186,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 9,
+     "150": 12,
+     "100": 30,
+     "60": null,
+     "30": null
+    }
+   },
+   "output_sha256": "7135a694f117ca2f014e5a9d23543a25535059dfb078d267295db5cf4b51aa5c"
+  },
+  {
+   "job": "A_cube05",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.5,0.5,0.5 --start 150 --d0 230 --end 340",
+   "exit": 0,
+   "wall_s": 25.7,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 135.06,
+    "held_from_X": 83.37,
+    "visible_frames": 180,
+    "stop_frames": 66,
+    "bins": {
+     "3-30": "18/18",
+     "30-60": "21/21",
+     "60-100": "12/27",
+     "100-150": "15/38",
+     "150-200": "0/42",
+     "200-260": "0/34"
+    },
+    "decisions_while_visible": {
+     "GO": 97,
+     "CAUTION": 17,
+     "STOP": 66,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 1,
+     "150": 4,
+     "100": 6,
+     "60": 20,
+     "30": 80
+    }
+   },
+   "output_sha256": "14518cd476523ee7987bd1e8dfe59c9c5ec62c9998e5d536cca5b1844d4fe3aa"
+  },
+  {
+   "job": "B_cube05",
+   "recording": "roundT_doubleT",
+   "args": "--obj 0.5,0.5,0.5 --start 50 --d0 230",
+   "exit": 0,
+   "wall_s": 24.0,
+   "summary": {
+    "cache": "roundT_doubleT",
+    "obj": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 50,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 50.03,
+    "held_from_X": 55.34,
+    "visible_frames": 86,
+    "stop_frames": 27,
+    "bins": {
+     "3-30": "15/15",
+     "30-60": "12/17",
+     "60-100": "0/22",
+     "100-150": "0/14",
+     "150-200": "0/8",
+     "200-260": "0/10"
+    },
+    "decisions_while_visible": {
+     "GO": 4,
+     "CAUTION": 55,
+     "STOP": 27,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 2,
+     "150": 1,
+     "100": 2,
+     "60": 20,
+     "30": 80
+    }
+   },
+   "output_sha256": "0c0f688ef39a3fa7a62239346acbc398fd6b47aa88694aa5a809def013dc32f5"
+  },
+  {
+   "job": "C_cube05",
+   "recording": "roundT_pressureGate_roundT",
+   "args": "--obj 0.5,0.5,0.5 --start 0 --d0 230",
+   "exit": 0,
+   "wall_s": 23.1,
+   "summary": {
+    "cache": "roundT_pressureGate_roundT",
+    "obj": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 0,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 75.42,
+    "held_from_X": 82.77,
+    "visible_frames": 151,
+    "stop_frames": 50,
+    "bins": {
+     "3-30": "19/19",
+     "30-60": "20/20",
+     "60-100": "11/27",
+     "100-150": "0/34",
+     "150-200": "0/33",
+     "200-260": "0/18"
+    },
+    "decisions_while_visible": {
+     "GO": 55,
+     "CAUTION": 46,
+     "STOP": 50,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 2,
+     "150": 1,
+     "100": 6,
+     "60": 25,
+     "30": 70
+    }
+   },
+   "output_sha256": "bf479e0c406046f21816c94f497c15e51d77a50fb33f51494dc5e7cf8d4850cd"
+  },
+  {
+   "job": "D_cube05",
+   "recording": "squareT_platform_squareT_switch",
+   "args": "--obj 0.5,0.5,0.5 --start 100 --d0 230 --end 420",
+   "exit": 0,
+   "wall_s": 31.8,
+   "summary": {
+    "cache": "squareT_platform_squareT_switch",
+    "obj": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 100,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 104.78,
+    "held_from_X": null,
+    "visible_frames": 316,
+    "stop_frames": 120,
+    "bins": {
+     "60-100": "113/181",
+     "100-150": "7/72",
+     "150-200": "0/42",
+     "200-260": "0/21"
+    },
+    "decisions_while_visible": {
+     "GO": 120,
+     "CAUTION": 75,
+     "STOP": 121,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 4,
+     "150": 4,
+     "100": 9,
+     "60": null,
+     "30": null
+    }
+   },
+   "output_sha256": "2b0c2f6c198a93ba0355545c17270f6866e16d055c172143232d9410c4c131f7"
+  },
+  {
+   "job": "A_cube03",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.3,0.3,0.3 --start 150 --d0 230 --end 340",
+   "exit": 0,
+   "wall_s": 23.6,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.3,
+     0.3,
+     0.3
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 228.36,
+    "first_stop_X": 44.86,
+    "held_from_X": 49.32,
+    "visible_frames": 157,
+    "stop_frames": 29,
+    "bins": {
+     "3-30": "18/18",
+     "30-60": "11/21",
+     "60-100": "0/27",
+     "100-150": "0/35",
+     "150-200": "0/36",
+     "200-260": "0/20"
+    },
+    "decisions_while_visible": {
+     "GO": 113,
+     "CAUTION": 15,
+     "STOP": 29,
+     "FAULT": 0
+    },
+    "go_within_60m": 6,
+    "n_obj_at": {
+     "200": 1,
+     "150": 2,
+     "100": 4,
+     "60": 6,
+     "30": 30
+    }
+   },
+   "output_sha256": "e25f420bce440507b374d9de7a0a19406c25d112b7e1981a6acf53799c830e3b"
+  },
+  {
+   "job": "B_cube03",
+   "recording": "roundT_doubleT",
+   "args": "--obj 0.3,0.3,0.3 --start 50 --d0 230",
+   "exit": 0,
+   "wall_s": 22.3,
+   "summary": {
+    "cache": "roundT_doubleT",
+    "obj": [
+     0.3,
+     0.3,
+     0.3
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 50,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 41.19,
+    "held_from_X": 44.72,
+    "visible_frames": 68,
+    "stop_frames": 22,
+    "bins": {
+     "3-30": "15/15",
+     "30-60": "7/17",
+     "60-100": "0/22",
+     "100-150": "0/6",
+     "150-200": "0/5",
+     "200-260": "0/3"
+    },
+    "decisions_while_visible": {
+     "GO": 2,
+     "CAUTION": 44,
+     "STOP": 22,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 1,
+     "150": 1,
+     "100": 1,
+     "60": 6,
+     "30": 30
+    }
+   },
+   "output_sha256": "de17bdd3f9ac2ce25a37f928af66ed2be836db452ae9fb5d1ef9272625993f0f"
+  },
+  {
+   "job": "C_cube03",
+   "recording": "roundT_pressureGate_roundT",
+   "args": "--obj 0.3,0.3,0.3 --start 0 --d0 230",
+   "exit": 0,
+   "wall_s": 20.7,
+   "summary": {
+    "cache": "roundT_pressureGate_roundT",
+    "obj": [
+     0.3,
+     0.3,
+     0.3
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 0,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 41.58,
+    "held_from_X": 46.0,
+    "visible_frames": 129,
+    "stop_frames": 27,
+    "bins": {
+     "3-30": "19/19",
+     "30-60": "8/20",
+     "60-100": "0/27",
+     "100-150": "0/27",
+     "150-200": "0/28",
+     "200-260": "0/8"
+    },
+    "decisions_while_visible": {
+     "GO": 61,
+     "CAUTION": 41,
+     "STOP": 27,
+     "FAULT": 0
+    },
+    "go_within_60m": 12,
+    "n_obj_at": {
+     "200": 1,
+     "150": 1,
+     "100": 2,
+     "60": 9,
+     "30": 24
+    }
+   },
+   "output_sha256": "b0b31f0bbde38872876116205de36b0b118e043e0a61aa517ef67f64d4b8f5a4"
+  },
+  {
+   "job": "D_cube03",
+   "recording": "squareT_platform_squareT_switch",
+   "args": "--obj 0.3,0.3,0.3 --start 100 --d0 230 --end 420",
+   "exit": 0,
+   "wall_s": 31.1,
+   "summary": {
+    "cache": "squareT_platform_squareT_switch",
+    "obj": [
+     0.3,
+     0.3,
+     0.3
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 100,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 84.59,
+    "held_from_X": null,
+    "visible_frames": 292,
+    "stop_frames": 83,
+    "bins": {
+     "60-100": "83/181",
+     "100-150": "0/70",
+     "150-200": "0/26",
+     "200-260": "0/15"
+    },
+    "decisions_while_visible": {
+     "GO": 151,
+     "CAUTION": 58,
+     "STOP": 83,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 1,
+     "150": 1,
+     "100": 4,
+     "60": null,
+     "30": null
+    }
+   },
+   "output_sha256": "c72d9096fdbe4707c72f2cd19b22d3577b8bba6b673ccc0dd6b01afae16584d5"
+  },
+  {
+   "job": "A_person_latp05",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.5,0.5,1.75 --start 150 --d0 230 --end 340 --lat 0.5",
+   "exit": 0,
+   "wall_s": 27.5,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.5,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 218.38,
+    "held_from_X": 222.61,
+    "visible_frames": 185,
+    "stop_frames": 159,
+    "bins": {
+     "3-30": "18/18",
+     "30-60": "21/21",
+     "60-100": "27/27",
+     "100-150": "39/39",
+     "150-200": "45/45",
+     "200-260": "9/35"
+    },
+    "decisions_while_visible": {
+     "GO": 4,
+     "CAUTION": 22,
+     "STOP": 159,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 8,
+     "150": 10,
+     "100": 24,
+     "60": 65,
+     "30": 279
+    }
+   },
+   "output_sha256": "ed321687ce50add89eb53f5170d68a0b9ce18f1836ffbf4ead9231b117cb4ad8"
+  },
+  {
+   "job": "A_person_latm05",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.5,0.5,1.75 --start 150 --d0 230 --end 340 --lat -0.5",
+   "exit": 0,
+   "wall_s": 28.8,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": -0.5,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 218.38,
+    "held_from_X": 221.78,
+    "visible_frames": 185,
+    "stop_frames": 158,
+    "bins": {
+     "3-30": "18/18",
+     "30-60": "21/21",
+     "60-100": "27/27",
+     "100-150": "39/39",
+     "150-200": "44/45",
+     "200-260": "9/35"
+    },
+    "decisions_while_visible": {
+     "GO": 5,
+     "CAUTION": 22,
+     "STOP": 158,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 4,
+     "150": 10,
+     "100": 24,
+     "60": 65,
+     "30": 280
+    }
+   },
+   "output_sha256": "07b65a04c0300dd7af0c6423d6b7e0a7fe63d52a4954578bd64061531dbf80bd"
+  },
+  {
+   "job": "A_person_drop",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.5,0.5,1.75 --start 150 --d0 230 --end 340 --dropout",
+   "exit": 0,
+   "wall_s": 27.9,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 208.7,
+    "held_from_X": 203.99,
+    "visible_frames": 179,
+    "stop_frames": 141,
+    "bins": {
+     "3-30": "18/18",
+     "30-60": "21/21",
+     "60-100": "27/27",
+     "100-150": "39/39",
+     "150-200": "34/45",
+     "200-260": "2/29"
+    },
+    "decisions_while_visible": {
+     "GO": 29,
+     "CAUTION": 9,
+     "STOP": 141,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 1,
+     "150": 8,
+     "100": 24,
+     "60": 65,
+     "30": 280
+    }
+   },
+   "output_sha256": "2c9a1830ea16dd8ef16a32e1161a28be87cbda189e12079a4a5c770c7f5c5780"
+  },
+  {
+   "job": "A_cube05_drop",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.5,0.5,0.5 --start 150 --d0 230 --end 340 --dropout",
+   "exit": 0,
+   "wall_s": 27.5,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 118.12,
+    "held_from_X": 83.37,
+    "visible_frames": 157,
+    "stop_frames": 63,
+    "bins": {
+     "3-30": "18/18",
+     "30-60": "21/21",
+     "60-100": "12/27",
+     "100-150": "12/38",
+     "150-200": "0/36",
+     "200-260": "0/17"
+    },
+    "decisions_while_visible": {
+     "GO": 87,
+     "CAUTION": 7,
+     "STOP": 63,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 1,
+     "150": 3,
+     "100": 6,
+     "60": 20,
+     "30": 80
+    }
+   },
+   "output_sha256": "9429679b60a1fcee0bd3f0c57e30f914ee69416e3e50916295f0dbeebaab4d75"
+  },
+  {
+   "job": "A_cube1_drop",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 1.0,1.0,1.0 --start 150 --d0 230 --end 340 --dropout",
+   "exit": 0,
+   "wall_s": 26.9,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": 151.1,
+    "held_from_X": 162.89,
+    "visible_frames": 184,
+    "stop_frames": 105,
+    "bins": {
+     "3-30": "17/18",
+     "30-60": "21/21",
+     "60-100": "27/27",
+     "100-150": "39/39",
+     "150-200": "1/45",
+     "200-260": "0/34"
+    },
+    "decisions_while_visible": {
+     "GO": 26,
+     "CAUTION": 52,
+     "STOP": 106,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 3,
+     "150": 10,
+     "100": 30,
+     "60": 63,
+     "30": 320
+    }
+   },
+   "output_sha256": "a207a75b4b3bd281317be83407309899fd980738208875ecbfecc3e6cae00d07"
+  },
+  {
+   "job": "A_lowbox_rail",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.3,0.3,0.15 --start 150 --d0 230 --end 340",
+   "exit": 0,
+   "wall_s": 25.4,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.3,
+     0.3,
+     0.15
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 228.36,
+    "first_stop_X": 44.86,
+    "held_from_X": 49.32,
+    "visible_frames": 119,
+    "stop_frames": 29,
+    "bins": {
+     "3-30": "18/18",
+     "30-60": "11/21",
+     "60-100": "0/25",
+     "100-150": "0/21",
+     "150-200": "0/23",
+     "200-260": "0/11"
+    },
+    "decisions_while_visible": {
+     "GO": 76,
+     "CAUTION": 14,
+     "STOP": 29,
+     "FAULT": 0
+    },
+    "go_within_60m": 6,
+    "n_obj_at": {
+     "200": 1,
+     "150": 1,
+     "100": 2,
+     "60": 3,
+     "30": 18
+    }
+   },
+   "output_sha256": "5e53a3ed04ca3b3fc5c39a604cb9d1646420003237e30a1efe9658989a0c72d3"
+  },
+  {
+   "job": "S_person_60",
+   "recording": "squareT_platform_squareT_switch",
+   "args": "--obj 0.5,0.5,1.75 --start 360 --d0 60 --end 620",
+   "exit": 0,
+   "wall_s": 56.5,
+   "summary": {
+    "cache": "squareT_platform_squareT_switch",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 360,
+    "d0": 60.0,
+    "first_visible_X": 60.0,
+    "first_stop_X": 60.0,
+    "held_from_X": 60.0,
+    "visible_frames": 260,
+    "stop_frames": 255,
+    "bins": {
+     "30-60": "97/97",
+     "60-100": "158/163"
+    },
+    "decisions_while_visible": {
+     "GO": 0,
+     "CAUTION": 5,
+     "STOP": 255,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 52,
+     "150": 52,
+     "100": 52,
+     "60": 52,
+     "30": null
+    }
+   },
+   "output_sha256": "2d0834797d3b3bca235dac70b87b0bdab6f1f343e2407b4554e0c174ead1c1b0"
+  },
+  {
+   "job": "S_cube05_60",
+   "recording": "squareT_platform_squareT_switch",
+   "args": "--obj 0.5,0.5,0.5 --start 360 --d0 60 --end 620",
+   "exit": 0,
+   "wall_s": 54.1,
+   "summary": {
+    "cache": "squareT_platform_squareT_switch",
+    "obj": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 360,
+    "d0": 60.0,
+    "first_visible_X": 60.0,
+    "first_stop_X": 60.0,
+    "held_from_X": 60.0,
+    "visible_frames": 260,
+    "stop_frames": 255,
+    "bins": {
+     "30-60": "97/97",
+     "60-100": "158/163"
+    },
+    "decisions_while_visible": {
+     "GO": 0,
+     "CAUTION": 5,
+     "STOP": 255,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 16,
+     "150": 16,
+     "100": 16,
+     "60": 16,
+     "30": null
+    }
+   },
+   "output_sha256": "5557153055c2217872463561e8785c8a8b8b68585713858ad343047919e5525a"
+  },
+  {
+   "job": "S_person_100",
+   "recording": "squareT_platform_squareT_switch",
+   "args": "--obj 0.5,0.5,1.75 --start 360 --d0 100 --end 620",
+   "exit": 0,
+   "wall_s": 57.5,
+   "summary": {
+    "cache": "squareT_platform_squareT_switch",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 360,
+    "d0": 100.0,
+    "first_visible_X": 100.0,
+    "first_stop_X": 100.0,
+    "held_from_X": 99.99,
+    "visible_frames": 260,
+    "stop_frames": 82,
+    "bins": {
+     "60-100": "32/97",
+     "100-150": "50/163"
+    },
+    "decisions_while_visible": {
+     "GO": 11,
+     "CAUTION": 166,
+     "STOP": 83,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 24,
+     "150": 24,
+     "100": 24,
+     "60": null,
+     "30": null
+    }
+   },
+   "output_sha256": "3108e5fd949474e5a2e2755259a3e0f234be34c56389570bcf7b05feb3df8dc4"
+  },
+  {
+   "job": "S_cube05_100",
+   "recording": "squareT_platform_squareT_switch",
+   "args": "--obj 0.5,0.5,0.5 --start 360 --d0 100 --end 620",
+   "exit": 0,
+   "wall_s": 61.2,
+   "summary": {
+    "cache": "squareT_platform_squareT_switch",
+    "obj": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 360,
+    "d0": 100.0,
+    "first_visible_X": 100.0,
+    "first_stop_X": 100.0,
+    "held_from_X": 99.99,
+    "visible_frames": 260,
+    "stop_frames": 94,
+    "bins": {
+     "60-100": "23/97",
+     "100-150": "71/163"
+    },
+    "decisions_while_visible": {
+     "GO": 1,
+     "CAUTION": 153,
+     "STOP": 106,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 6,
+     "150": 6,
+     "100": 6,
+     "60": null,
+     "30": null
+    }
+   },
+   "output_sha256": "73d6fd6a78968d4715d9665e65d57c4814754a796fa7db1a83e02dc02d438321"
+  },
+  {
+   "job": "S_person_150",
+   "recording": "squareT_platform_squareT_switch",
+   "args": "--obj 0.5,0.5,1.75 --start 360 --d0 150 --end 620",
+   "exit": 0,
+   "wall_s": 52.6,
+   "summary": {
+    "cache": "squareT_platform_squareT_switch",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 360,
+    "d0": 150.0,
+    "first_visible_X": 150.0,
+    "first_stop_X": 150.0,
+    "held_from_X": null,
+    "visible_frames": 259,
+    "stop_frames": 90,
+    "bins": {
+     "100-150": "45/97",
+     "150-200": "45/162"
+    },
+    "decisions_while_visible": {
+     "GO": 5,
+     "CAUTION": 162,
+     "STOP": 92,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 8,
+     "150": 8,
+     "100": null,
+     "60": null,
+     "30": null
+    }
+   },
+   "output_sha256": "8cd6863fe735d9258f60c32b58ed891a6ebd26009530f1d0d7bdd36b8648c2a0"
+  },
+  {
+   "job": "S_cube05_150",
+   "recording": "squareT_platform_squareT_switch",
+   "args": "--obj 0.5,0.5,0.5 --start 360 --d0 150 --end 620",
+   "exit": 0,
+   "wall_s": 46.3,
+   "summary": {
+    "cache": "squareT_platform_squareT_switch",
+    "obj": [
+     0.5,
+     0.5,
+     0.5
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 360,
+    "d0": 150.0,
+    "first_visible_X": 150.0,
+    "first_stop_X": null,
+    "held_from_X": null,
+    "visible_frames": 243,
+    "stop_frames": 0,
+    "bins": {
+     "100-150": "0/93",
+     "150-200": "0/150"
+    },
+    "decisions_while_visible": {
+     "GO": 0,
+     "CAUTION": 241,
+     "STOP": 2,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 1,
+     "150": 1,
+     "100": null,
+     "60": null,
+     "30": null
+    }
+   },
+   "output_sha256": "09ba7c03138087b898ca51007bedd0e7e06c5e6a601d85569d424200be83dfa9"
+  },
+  {
+   "job": "E1_cross150",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.5,0.5,1.75 --start 150 --d0 150 --end 340 --lat -4 --vy 1.0",
+   "exit": 0,
+   "wall_s": 23.8,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": -4.0,
+    "base": 0.0,
+    "start": 150,
+    "d0": 150.0,
+    "first_visible_X": 150.0,
+    "first_stop_X": 129.63,
+    "held_from_X": null,
+    "visible_frames": 96,
+    "stop_frames": 20,
+    "bins": {
+     "3-30": "0/6",
+     "30-60": "0/12",
+     "60-100": "0/25",
+     "100-150": "20/52",
+     "150-200": "0/1"
+    },
+    "decisions_while_visible": {
+     "GO": 64,
+     "CAUTION": 12,
+     "STOP": 20,
+     "FAULT": 0
+    },
+    "go_within_60m": 18,
+    "n_obj_at": {
+     "200": 2,
+     "150": 2,
+     "100": 1,
+     "60": 2,
+     "30": 74
+    }
+   },
+   "output_sha256": "7b1da3b4e8cb9a0778524444425a4307e8c266720b77b937f126f67920aff0da"
+  },
+  {
+   "job": "E2_cross80",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.5,0.5,1.75 --start 220 --d0 80 --end 340 --lat -3 --vy 1.0",
+   "exit": 0,
+   "wall_s": 30.3,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": -3.0,
+    "base": 0.0,
+    "start": 220,
+    "d0": 80.0,
+    "first_visible_X": 80.0,
+    "first_stop_X": 53.33,
+    "held_from_X": null,
+    "visible_frames": 60,
+    "stop_frames": 26,
+    "bins": {
+     "3-30": "8/20",
+     "30-60": "18/23",
+     "60-100": "0/17"
+    },
+    "decisions_while_visible": {
+     "GO": 29,
+     "CAUTION": 5,
+     "STOP": 26,
+     "FAULT": 0
+    },
+    "go_within_60m": 14,
+    "n_obj_at": {
+     "200": 8,
+     "150": 8,
+     "100": 8,
+     "60": 65,
+     "30": 260
+    }
+   },
+   "output_sha256": "209314ef7e15a2c0c7f920d9edf9e8d5c0e9dbc05a8f1b8f898d7310fb2dee53"
+  },
+  {
+   "job": "E3_recede8",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.6,0.6,1.0 --start 230 --d0 100 --end 340 --vx 8",
+   "exit": 0,
+   "wall_s": 36.4,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 230,
+    "d0": 100.0,
+    "first_visible_X": 100.0,
+    "first_stop_X": 96.15,
+    "held_from_X": 100.0,
+    "visible_frames": 110,
+    "stop_frames": 101,
+    "bins": {
+     "30-60": "40/40",
+     "60-100": "61/69",
+     "100-150": "0/1"
+    },
+    "decisions_while_visible": {
+     "GO": 2,
+     "CAUTION": 7,
+     "STOP": 101,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 20,
+     "150": 20,
+     "100": 20,
+     "60": 48,
+     "30": null
+    }
+   },
+   "output_sha256": "faff8dd49de9c3e47d11e90782a4ad27a8325663eb7a7a4bbefe06640ad453f9"
+  },
+  {
+   "job": "E3_recede5",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.6,0.6,1.0 --start 230 --d0 100 --end 340 --vx 5",
+   "exit": 0,
+   "wall_s": 28.4,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.6,
+     0.6,
+     1.0
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 230,
+    "d0": 100.0,
+    "first_visible_X": 100.0,
+    "first_stop_X": 97.14,
+    "held_from_X": 100.0,
+    "visible_frames": 108,
+    "stop_frames": 101,
+    "bins": {
+     "3-30": "25/28",
+     "30-60": "31/31",
+     "60-100": "45/48",
+     "100-150": "0/1"
+    },
+    "decisions_while_visible": {
+     "GO": 5,
+     "CAUTION": 2,
+     "STOP": 101,
+     "FAULT": 0
+    },
+    "go_within_60m": 3,
+    "n_obj_at": {
+     "200": 20,
+     "150": 20,
+     "100": 20,
+     "60": 48,
+     "30": 180
+    }
+   },
+   "output_sha256": "eba35c888105e9010b2c9ce8be2adc3cc13c8b1b477faf865191c2b12964b108"
+  },
+  {
+   "job": "E4_appear60",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.5,0.5,1.75 --start 150 --d0 230 --end 340 --appear 60",
+   "exit": 0,
+   "wall_s": 21.8,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 59.78,
+    "first_stop_X": 53.8,
+    "held_from_X": 58.29,
+    "visible_frames": 39,
+    "stop_frames": 35,
+    "bins": {
+     "3-30": "18/18",
+     "30-60": "17/21"
+    },
+    "decisions_while_visible": {
+     "GO": 4,
+     "CAUTION": 0,
+     "STOP": 35,
+     "FAULT": 0
+    },
+    "go_within_60m": 4,
+    "n_obj_at": {
+     "200": 65,
+     "150": 65,
+     "100": 65,
+     "60": 65,
+     "30": 280
+    }
+   },
+   "output_sha256": "53fd1461fedae0350f968ac34befc26da97fb21a6a54fb480c46de3a08ececfa"
+  },
+  {
+   "job": "E4_appear100",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.5,0.5,1.75 --start 150 --d0 230 --end 340 --appear 100",
+   "exit": 0,
+   "wall_s": 22.9,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.5,
+     0.5,
+     1.75
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 99.03,
+    "first_stop_X": 91.98,
+    "held_from_X": 99.03,
+    "visible_frames": 66,
+    "stop_frames": 61,
+    "bins": {
+     "3-30": "18/18",
+     "30-60": "21/21",
+     "60-100": "22/27"
+    },
+    "decisions_while_visible": {
+     "GO": 5,
+     "CAUTION": 0,
+     "STOP": 61,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 24,
+     "150": 24,
+     "100": 24,
+     "60": 65,
+     "30": 280
+    }
+   },
+   "output_sha256": "8dea38ca30078b69be30c2ae1248698f9c71150cb074d03f61010c7112f4708f"
+  },
+  {
+   "job": "E5_pole_side",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.3,0.3,2.8 --start 150 --d0 230 --end 340 --lat 0.7",
+   "exit": 0,
+   "wall_s": 28.4,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.3,
+     0.3,
+     2.8
+    ],
+    "lat": 0.7,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 230.0,
+    "first_stop_X": null,
+    "held_from_X": null,
+    "visible_frames": 176,
+    "stop_frames": 0,
+    "bins": {
+     "3-30": "0/18",
+     "30-60": "0/21",
+     "60-100": "0/27",
+     "100-150": "0/39",
+     "150-200": "0/44",
+     "200-260": "0/27"
+    },
+    "decisions_while_visible": {
+     "GO": 6,
+     "CAUTION": 170,
+     "STOP": 0,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 6,
+     "150": 8,
+     "100": 26,
+     "60": 63,
+     "30": 225
+    }
+   },
+   "output_sha256": "d5dabaa58ec9dcbeb5ee222048af474c7a311bb3e4dd2b0b3085be54eae185a1"
+  },
+  {
+   "job": "E5_pole_c",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.3,0.3,2.8 --start 150 --d0 230 --end 340",
+   "exit": 0,
+   "wall_s": 29.3,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.3,
+     0.3,
+     2.8
+    ],
+    "lat": 0.0,
+    "base": 0.0,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 228.36,
+    "first_stop_X": 218.38,
+    "held_from_X": 19.75,
+    "visible_frames": 177,
+    "stop_frames": 114,
+    "bins": {
+     "3-30": "11/18",
+     "30-60": "10/21",
+     "60-100": "27/27",
+     "100-150": "20/39",
+     "150-200": "35/42",
+     "200-260": "11/30"
+    },
+    "decisions_while_visible": {
+     "GO": 5,
+     "CAUTION": 58,
+     "STOP": 114,
+     "FAULT": 0
+    },
+    "go_within_60m": 0,
+    "n_obj_at": {
+     "200": 6,
+     "150": 16,
+     "100": 26,
+     "60": 63,
+     "30": 228
+    }
+   },
+   "output_sha256": "7b71b7ffb929dabb2595d51dccbea3b3f164cae2338d1d5d0604ae7a06ede6bc"
+  },
+  {
+   "job": "E6_cable_low_c",
+   "recording": "roundT_squareT_pressureGate_squareT",
+   "args": "--obj 0.05,0.05,2.6 --start 150 --d0 230 --end 340 --base 0.2",
+   "exit": 0,
+   "wall_s": 23.8,
+   "summary": {
+    "cache": "roundT_squareT_pressureGate_squareT",
+    "obj": [
+     0.05,
+     0.05,
+     2.6
+    ],
+    "lat": 0.0,
+    "base": 0.2,
+    "start": 150,
+    "d0": 230.0,
+    "first_visible_X": 222.61,
+    "first_stop_X": 86.25,
+    "held_from_X": 61.28,
+    "visible_frames": 59,
+    "stop_frames": 34,
+    "bins": {
+     "3-30": "18/18",
+     "30-60": "13/15",
+     "60-100": "3/10",
+     "100-150": "0/6",
+     "150-200": "0/4",
+     "200-260": "0/6"
+    },
+    "decisions_while_visible": {
+     "GO": 22,
+     "CAUTION": 3,
+     "STOP": 34,
+     "FAULT": 0
+    },
+    "go_within_60m": 1,
+    "n_obj_at": {
+     "200": 6,
+     "150": 9,
+     "100": 13,
+     "60": 20,
+     "30": 35
+    }
+   },
+   "output_sha256": "f075b18f612024e5b9b3012464db3b409edcb78db259cfc92cdfed361176eb77"
+  }
+ ]
+}

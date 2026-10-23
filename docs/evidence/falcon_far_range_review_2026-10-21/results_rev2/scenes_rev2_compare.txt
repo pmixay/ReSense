@@ -1,0 +1,4 @@
+scenes 82 false eps v120/rev2 141 81 GO-inside v120/rev2 92 43 GO frames rev2-only 0
+lost/delayed: []
+added false: [('curve_all_xc150_R300_d+1', 0, 1, [[2723, 2725]]), ('row_offset_+0.8', 10, 12, [[2456, 2456], [2460, 2462], [2481, 2487], [2495, 2495]])]
+rev2-only GO frames: []

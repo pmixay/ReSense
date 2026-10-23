@@ -122,7 +122,7 @@ class TrackConfig:
     floor_verify_min_points: int = 5                 # side points per bin for the bin to count
     floor_verify_max_range: float = 250.0            # m, how far the verification is attempted
     # --- 19.10 (K2, off): joint axis fit of the rail midpoints and the tunnel boundaries (track.joint_axis_fit) ---
-    axis_joint_fit: bool = False                     # (K2 held off for P4, captain 19.10; variant B = fit true, range false, min_curvature 1e-4, reach_cap true) off = the axis as before (rail tangent with the prior curvature held, then the boundary curvature); on: tangent, curvature and the far curvature step from one least-squares fit of the near rail-pair midpoints and every boundary segment (each its own offset), grown outward from the rail range
+    axis_joint_fit: bool = True                      # (K2 held off for P4, captain 19.10; variant B = fit true, range false, min_curvature 1e-4, reach_cap true) off = the axis as before (rail tangent with the prior curvature held, then the boundary curvature); on: tangent, curvature and the far curvature step from one least-squares fit of the near rail-pair midpoints and every boundary segment (each its own offset), grown outward from the rail range
     axis_joint_knot: float = 60.0                    # m, X from which the curvature may change (C1 piecewise axis: centre_y + curv_step (X - knot)^2 / 2 beyond it); 0 = a single quadratic
     axis_joint_step_sigma: float = 1.0e-3            # 1/m, prior SD of the curvature step at the knot (ridge towards no step)
     axis_joint_min_far_bins: int = 4                 # boundary bins beyond the knot needed to fit a curvature step (else none)
@@ -132,10 +132,11 @@ class TrackConfig:
     axis_joint_grow_start: float = 40.0              # m
     axis_joint_grow_step: float = 16.0               # m
     axis_joint_min_segment: int = 3                  # boundary bins a segment (between structure edges / gaps) needs to take part
-    axis_joint_range: bool = True                    # 20.10: with axis_joint_fit, the trusted range / sides / disagreement also from the joint fit (v3); false: the joint fit sets the axis shape only and the range policy stays the per-side fits' (v4)
-    axis_joint_min_curvature: float = 0.0            # 19.10 (v5, off; 1/m; needs axis_joint_fit and axis_joint_range false): > 0: the estimator without the joint fit runs on its own state every frame and is the output; the joint fit's shape (its own EMA / rate limits) replaces its axis shape only on frames whose curvature is |k| >= this (a curve as that estimator sees it; 1e-4 = its straight test). 0 = off (v4)
+    axis_joint_range: bool = False                   # 20.10: with axis_joint_fit, the trusted range / sides / disagreement also from the joint fit (v3); false: the joint fit sets the axis shape only and the range policy stays the per-side fits' (v4)
+    axis_joint_min_curvature: float = 1.0e-4         # 19.10 (v5, off; 1/m; needs axis_joint_fit and axis_joint_range false): > 0: the estimator without the joint fit runs on its own state every frame and is the output; the joint fit's shape (its own EMA / rate limits) replaces its axis shape only on frames whose curvature is |k| >= this (a curve as that estimator sees it; 1e-4 = its straight test). 0 = off (v4)
     axis_joint_reach_cap: bool = False               # 19.10 (v5b, off; needs axis_joint_min_curvature > 0): on the frames with the joint shape, the trusted range is also capped at the boundaries' reach along that output axis (track._followed_reach) + axis_valid_margin
     axis_joint_reach_dual: float = 0.0               # 20.10 (v5c, off; m; needs axis_joint_reach_cap): the capped range is extended by this much (never beyond the base range); an obstacle starting between the cap (track.joint_reach) and that end must also reach into the strict gauge measured from the base axis, else it is advisory beyond_axis as in v5b (Detector._dual_zone). 0 = off (v5b)
+    axis_joint_union: bool = True                    # 21.10 (K2 union, off; needs axis_joint_fit true, axis_joint_range false, axis_joint_min_curvature > 0): the track model is the estimate without the joint fit on every frame (every stage as without K2); on a curve frame the joint shape, trusted as far as a tunnel boundary follows it (+ axis_valid_margin), is a second gauge: an obstacle in it that the base gauge does not report is added (Detector._curve_clusters); nothing the base gauge reports is changed. axis_joint_reach_cap / _dual are not read
     # --- 19.10 (K1, off): yaw / curvature EMA per distance travelled instead of per frame period ---
     walls_smoothing_distance: float = 0.0            # m; > 0: the EMA weight is walls_smoothing ** max(walls_smoothing_min_k, min(k, travel / this)) with travel = the previous frame's speed x the time since it (unknown speed: as before); the axis rate limits scale the same way. 0 = off
     walls_smoothing_min_k: float = 0.05              # lower bound of that exponent (a standing train still follows a real change, slowly)
@@ -474,6 +475,7 @@ class TrackingConfig:
     doubt_sticky: bool = True     # the opinion at the onset decides (a withheld track is released by the extra frames or doubt_near only)
     doubt_body_height: float = 1.0  # m (0 = off): a track whose cluster stands at least this tall ...
     doubt_body_range: float = 40.0  # m, ... and is this near is never delayed either: a standing body reaching into the envelope, not a flat floor / bed return (every ride track the opinion withheld within 40 m was at most 0.5 m tall; set O #6, 1.9 m tall, was withheld at 28.7 m)
+    doubt_falcon: bool = True       # 21.10 (G2): false = the Falcon sensor profiles turn the opinion off (ros2_ws/.../sensor_profiles.py); true = applied whatever the sensor (v1.2.0)
     # 27.09 (P5 range, on; 0 = off): far scan lines as track evidence, gated by a consistent
     # approach. Far away an object inside the envelope is often one scan line there (the plank across
     # the rails, the lower edge of the box at the envelope top): flatter than cluster.min_height, it
@@ -653,6 +655,25 @@ class HealthConfig:
     # /resense/decision - on a loaded machine it did on most frames (set O 690 of 1 510). STOP,
     # FAULT and every other warning are unchanged. true = the v0.6 behaviour
     latency_affects_decision: bool = False
+    # 21.10 (P4 review 20.10 on the Falcon, docs/evidence/falcon_clear_distance_2026-10-21). The three only lower
+    # clear_distance; detections, warnings, level,
+    # messages, monitored_range and the decision are untouched.
+    # clear_lost_model: while the track model is on its prior (the rail pair found in fewer than min_lock_rate
+    # of the last lock_window frames, at least 5 frames of history: the "track model on its prior" warning)
+    # the bed under the corridor is not verified and clear_distance is 0 (ALGORITHM §4b: a lost track model
+    # makes it 0; the Falcon frames 4373-4414 reported 3-40 m beyond a person-like object 2.5-7 m ahead). OFF:
+    # its pre-registered cost limit failed (doubleT_platform: 6.7 % of the frames, limit 3 %; the bed there is right)
+    clear_lost_model: bool = False
+    # clear_lost_bed (amendment 1 of the lane's protocol): the bed is lost when the track model's rail head is
+    # more than cluster.mount_cross_tol + mount_cross_grade * X away from the calibrated mount plane at some X =
+    # 5, 10 .. mount_cross_range m (the H' criterion applied to the bed; needs cluster.mount_cross_tol > 0 and a
+    # final mount calibration): clear_distance is 0, whatever the rail lock. ON: 0 of 15,269 Pandar frames qualify;
+    # on the Falcon 52 frames (4359-4410; falcon_ros profile 50 frames, 4361-4410), 35 of the 39 overstating
+    # frames of 4373-4414
+    clear_lost_bed: bool = True
+    # clear_round_down: a clear distance bounded by a confirmed obstacle or a candidate is rounded down to
+    # 0.1 m, not to nearest (it exceeded a STOP detection by up to 0.05 m: 48.0 against 47.97). ON
+    clear_round_down: bool = True
     # 25.09 (SCORECARD §6 row 6, docs/evidence/results/p3_clear_distance_2026-09-25.json): cap the
     # monitored-range estimate at the nearest candidate of this frame that touches the envelope
     # although it is not a confirmed obstacle (unconfirmed, advisory); never changes a detection
@@ -693,7 +714,7 @@ class FarRangeConfig:
     profiles (``resense_ros.sensor_profiles``) switch it on when ``with_falcon_profile``. Pandar
     runs never read it. ``resense/farline.py`` has the far axis; the keys below the crop are its."""
     enabled: bool = False
-    with_falcon_profile: bool = False  # True: the falcon_ros / falcon_native profiles enable this block (off: report 19.10)
+    with_falcon_profile: bool = True   # True: the falcon_ros / falcon_native profiles enable this block (19.10 off; 21.10 on with axis_stable)
     max_range: float = 400.0           # m: sensor crop, gauge.range_max and track.floor_verify_max_range under the profile
     axis_enabled: bool = True          # the far straight axis beyond axis_join (resense/farline.py)
     axis_join: float = 50.0            # m: the near track model is used up to here, the far line from here on
@@ -726,6 +747,31 @@ class FarRangeConfig:
     far_min_height: float = 0.3        # cluster.far_min_height under the profile: beyond the height reference a far
                                        # obstacle's visible part is short (the rays to its foot return from the track first)
     far_max_length: float = 4.0        # cluster.far_max_length under the profile (a 2 m deep box measures 3.1-3.2 m)
+    # 21.10 (farrange.axis_stable, docs/evidence/falcon_far_range_2026-10-21): off = the far axis of 19.10 (89e0f3b)
+    axis_stable: bool = True           # C7-C9: a sparse second side as a parallel tube, an aged two-sided support history, two sides only
+    axis_second_tube: float = 0.5      # m, T: a sparse second side must stay within T of a line parallel to the primary (A2); its support
+                                       # ends at the last bin before the first one outside (a contradiction); two fitted walls diverge by T
+                                       # at join + T / |slope difference| (the divergence cap, this frame only)
+    axis_second_max_rms: float = 0.25  # m, residual of the second side (a column row with two lateral families: 0.17-0.25 m on the Falcon)
+    axis_history_frames: int = 10      # frames of two-sided supports and contradictions kept (aged); the used support is the farthest aged
+                                       # level that at least axis_history_min frames reach and more frames reach than contradict (A5)
+    axis_history_min: int = 2          # frames that must reach a level
+    axis_history_speed: float = 25.0   # m/s: supports and contradictions age by this times the elapsed time (metro maximum speed)
+    axis_frame_dt: float = 0.1         # s, elapsed time per frame when the caller gives none
+    axis_union_beyond: bool = True     # 21.10 (A6, review F1): beyond the far line's trusted end, up to the near model's trusted range, the
+                                       # corridor is the union of the near model's and the continued far line's laterals (axis_stable only)
+    axis_union_separate: bool = False  # 21.10 (A8, measured, off: no held-STOP gain, +1 false episode at 4 of 6 starts): beyond far.valid the candidates that kept the near model's lateral are clustered on their
+                                       # own (a person on the far line is not merged with a wall the near hypothesis puts in the corridor)
+    axis_report_tolerance: float = 1.05  # m (A7, review F1): beyond far.valid the reported monitored / clear range ends where the near
+                                       # model's corridor centre is farther than this from the continued far line (0 = off)
+    axis_report_lag_frames: int = 3    # 21.10 (A9 / A10): the reported monitored / clear range grows only as far as the trusted range reached
+                                       # in each of the last this many frames (an object entering a newly trusted stretch gets the frames to
+                                       # be seen before it is reported clear); 0 = off
+    axis_max_boundary_lateral: float = 2.5  # m (A6, C3): a side whose boundary stands farther from the axis confirms nothing (two-track box,
+                                       # cavern: a turnout or crossover can curve away between wide boundaries); 0 = off
+    axis_turnout_radius: float = 200.0  # m (A6, C3): a gap of sqrt(2 R (d + axis_vehicle_half)) in a confirming side ends it there (a
+                                       # diverging track can leave through it); metro 1/9 turnout; 0 = off
+    axis_vehicle_half: float = 1.6     # m, half the train's envelope for that test
     confirm_enabled: bool = False      # far confirmation (resense/farline.py FarConfirm); measured 19.10: no false alarm removed, held fraction lower, so off
     confirm_from: float = 150.0        # m: a strict-gauge track beyond this needs range-consistent evidence to STOP
     confirm_window: int = 10           # frames looked back

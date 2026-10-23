@@ -1,0 +1,32 @@
+{
+ "rows": 4443,
+ "F1_record_other_fields_differ_rows": 2,
+ "F1_node_decision_differ_rows": 1,
+ "F1_x_terms_differ_rows": 0,
+ "changed_rows": 1037,
+ "F2_raised_rows": 1,
+ "changed_by_rule": {
+  "round_down_candidate": 303,
+  "": 1,
+  "round_down_obstacle": 626,
+  "lost_model": 107
+ },
+ "F2_lost_model_not_zero": 0,
+ "F2_round_down_delta_not_0.1": 0,
+ "F5_changed_without_rule": 1,
+ "F5_rule_without_change": 0,
+ "control_has_rule_key": false,
+ "F3_person_rows": 39,
+ "F3_person_rows_clear_not_zero": [],
+ "F3_node_not_zero": [],
+ "F4_detector_violations_control": 575,
+ "F4_detector_violations_candidate": 0,
+ "F4_node_conservative_violations_control": 145,
+ "F4_node_conservative_violations_candidate": 0,
+ "F4_node_small_candidate_violations_control": 145,
+ "F4_node_small_candidate_violations_candidate": 0,
+ "node_conservative_raised_rows": 0,
+ "node_conservative_changed_rows": 256,
+ "node_small_candidate_raised_rows": 0,
+ "node_small_candidate_changed_rows": 256
+}

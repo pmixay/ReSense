@@ -1,0 +1,83 @@
+{
+ "case": "baseline",
+ "base": {
+  "stop_frames": 1364,
+  "stop_episodes": 7,
+  "false_stop_episodes": 2,
+  "false_episode_frames": [
+   [
+    159,
+    159
+   ],
+   [
+    2312,
+    2314
+   ]
+  ],
+  "person_stop_frames": 1350,
+  "main_first_stop_frame": 2972,
+  "main_first_stop_raw_forward_m": 124.67281311035156,
+  "early_first_stop_frame": null,
+  "caution_frames": 3070
+ },
+ "cand": {
+  "manual": {
+   "stop_frames": 1397,
+   "stop_episodes": 12,
+   "false_stop_episodes": 2,
+   "false_episode_frames": [
+    [
+     159,
+     159
+    ],
+    [
+     2312,
+     2314
+    ]
+   ],
+   "person_stop_frames": 1383,
+   "main_first_stop_frame": 2958,
+   "main_first_stop_raw_forward_m": 126.19939758300781,
+   "early_first_stop_frame": null,
+   "caution_frames": 3037,
+   "lost_person_stop_frames": [],
+   "new_person_stop_frames": [
+    2958,
+    2971,
+    2977,
+    2979,
+    2980,
+    2981,
+    2982,
+    2983,
+    2984,
+    2985,
+    2986,
+    2988,
+    2993,
+    3003,
+    3007,
+    3008,
+    3041,
+    3042,
+    3044,
+    3045,
+    3046,
+    3047,
+    3048,
+    3049,
+    3050,
+    3051,
+    3052,
+    3053,
+    3054,
+    3055,
+    3056,
+    3057,
+    3058
+   ],
+   "H3_pass": true,
+   "G3_pass": true
+  }
+ }
+}

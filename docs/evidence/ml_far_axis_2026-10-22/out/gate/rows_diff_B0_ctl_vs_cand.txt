@@ -1,0 +1,16 @@
+cloud_with_fake_obj.jsonl: 1510 rows, 0 differ
+doubleT_obstacle.jsonl: 201 rows, 0 differ
+doubleT_platform.jsonl: 345 rows, 0 differ
+new_data_0.jsonl: 1409 rows, 0 differ
+new_data_1.jsonl: 1409 rows, 0 differ
+new_data_2.jsonl: 1409 rows, 0 differ
+new_data_3.jsonl: 1409 rows, 0 differ
+new_data_4.jsonl: 1409 rows, 0 differ
+new_data_5.jsonl: 1409 rows, 0 differ
+new_data_6.jsonl: 1409 rows, 0 differ
+new_data_7.jsonl: 1408 rows, 0 differ
+roundT_doubleT.jsonl: 252 rows, 0 differ
+roundT_pressureGate_roundT.jsonl: 268 rows, 0 differ
+roundT_squareT_pressureGate_squareT.jsonl: 545 rows, 0 differ
+squareT_platform_squareT_switch.jsonl: 877 rows, 0 differ
+TOTAL 15269 rows, 0 differ; by key {} (level not compared on 710 rows with a latency message)

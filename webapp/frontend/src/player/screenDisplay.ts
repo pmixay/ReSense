@@ -1,30 +1,77 @@
-// Parametric display modeled from the supplied images (1).jpg: shallow silver housing,
-// rounded black cover glass, and the live LiDAR render target on the active display surface.
+// The Player's physical presentation: the driver's cab of a future metro train, seen from the seat.
+// The live LiDAR render target is the windshield's active display; the cab (cockpit.ts) is built
+// around the measured display region. The camera is a perspective eye looking straight down -z
+// at the windshield plane, so the active face projects affinely and the DOM HUD stays aligned.
+// Mouse pressure moves the eye (head parallax, never a rotation); the boot powers the cab up.
 import * as THREE from 'three';
-import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
-import { CONTACT_SHADOW_FRAGMENT, DISPLAY_FRAGMENT, DISPLAY_VERTEX, FILTER_FRAGMENT, FILTER_VERTEX, GLOW_FRAGMENT } from './screenEffects';
+import { DISPLAY_FRAGMENT, DISPLAY_VERTEX, FILTER_FRAGMENT, FILTER_VERTEX } from './screenEffects';
 import { roundedRect } from './screenGeometry';
-import { TrainInterior } from './trainInterior';
 import { ScreenLighting } from './screenLighting';
-
-let areaLightTablesReady = false;
+import { CabCockpit, CAB_EYE, CAB_FOV, cabLayout } from './cockpit';
+import { CAB_VERTEX, GLASS_FRAGMENT } from './cabShaders';
+import { BOOT_ACCENTS, BOOT_IMAGE, CAB_BOOT_MS, bootProgress, type BootState } from './cabBoot';
 
 export interface DisplayTransform { a: number; b: number; c: number; d: number; x: number; y: number }
-export interface DisplayMotion { sceneX: number; sceneY: number; sceneZ: number; railX: number; railY: number; railZ: number }
+/** Current eye offset from the seated position (m). */
+export interface DisplayMotion { headX: number; headY: number }
 export interface DisplayViewport { x: number; y: number; width: number; height: number; transform?: DisplayTransform; motion?: DisplayMotion }
 export interface DisplayRegion { height: number; top: number; width?: number; left?: number }
 
+/** Largest eye offsets of the pressure parallax (m). */
+export const HEAD_RANGE = { x: 0.06, y: 0.035 };
+
+/** Cab lights shared by the Player and the boarding animation: neutral ceiling LEDs, a soft
+ * windshield fill, a warm fill from the saloon side and a dim floor bounce. */
+export function cabLights(): THREE.Object3D[] {
+  const ambient = new THREE.HemisphereLight(0xeef3ff, 0x3a3f46, 1.35);
+  ambient.name = 'cab-soft-ambient';
+  const roof = new THREE.DirectionalLight(0xf4f8ff, 1.7);
+  roof.name = 'cab-ceiling-led-light';
+  roof.position.set(0.4, 3, 2.4);
+  const windshield = new THREE.DirectionalLight(0xb8dcff, 0.45);
+  windshield.name = 'cab-windshield-fill';
+  windshield.position.set(0, 0.3, -3);
+  const rear = new THREE.DirectionalLight(0xffe2c2, 0.6);
+  rear.name = 'cab-rear-warm-fill';
+  rear.position.set(-1.5, 1, 4);
+  return [ambient, roof, windshield, rear];
+}
+
+/** A small, cached cab reflection probe: the glowing windshield ahead, roof strips above. */
+export function cabEnvironment(renderer: THREE.WebGLRenderer): THREE.WebGLRenderTarget {
+  const width = 256;
+  const height = 128;
+  const data = new Uint8Array(width * height * 4);
+  for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+    const v = (y + 0.5) / height;
+    const u = (x + 0.5) / width;
+    const ahead = Math.exp(-Math.pow((u - 0.25) / 0.11, 4)) * Math.exp(-Math.pow((v - 0.53) / 0.1, 4));
+    const strips = Math.exp(-Math.pow((v - 0.88) / 0.02, 2)) + Math.exp(-Math.pow((v - 0.8) / 0.015, 2)) * 0.6;
+    const base = 0.05 + 0.08 * v;
+    const i = (y * width + x) * 4;
+    data[i] = Math.min(255, (base + ahead * 0.22 + strips * 0.55) * 255);
+    data[i + 1] = Math.min(255, (base + ahead * 0.42 + strips * 0.6) * 255);
+    data[i + 2] = Math.min(255, (base * 1.2 + ahead * 0.55 + strips * 0.66) * 255);
+    data[i + 3] = 255;
+  }
+  const source = new THREE.DataTexture(data, width, height);
+  source.mapping = THREE.EquirectangularReflectionMapping;
+  source.needsUpdate = true;
+  const generator = new THREE.PMREMGenerator(renderer);
+  const target = generator.fromEquirectangular(source);
+  source.dispose();
+  generator.dispose();
+  return target;
+}
+
 export class ScreenDisplay {
   readonly scene = new THREE.Scene();
-  readonly camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 50);
+  readonly camera = new THREE.PerspectiveCamera(CAB_FOV, 1, 0.05, 40);
   readonly target = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: true });
   readonly emission = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: false });
   readonly viewport: DisplayViewport = { x: 0, y: 0, width: 1, height: 1 };
-  private readonly body = new THREE.Group();
-  private readonly background = new THREE.Group();
   private readonly lighting = new ScreenLighting(this.emission.texture);
-  private readonly interior = new TrainInterior(this.lighting);
-  private readonly roofLight = new THREE.RectAreaLight(0xf3f6ff, 3, 16, .8);
+  readonly cockpit = new CabCockpit({ lighting: this.lighting });
   private readonly filterTarget = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: false });
   private readonly filterScene = new THREE.Scene();
   private readonly filterCamera = new THREE.Camera();
@@ -34,64 +81,29 @@ export class ScreenDisplay {
     uniforms: { uImage: { value: this.target.texture }, uDirection: { value: new THREE.Vector2() }, uExtract: { value: 0 } },
     depthTest: false, depthWrite: false,
   });
-  private readonly contact = new THREE.ShaderMaterial({
-    vertexShader: DISPLAY_VERTEX, fragmentShader: CONTACT_SHADOW_FRAGMENT, transparent: true, depthWrite: false,
-    uniforms: { uSize: { value: new THREE.Vector2() }, uHalfSize: { value: new THREE.Vector2() }, uRadius: { value: .3 } },
-  });
-  private readonly mountShadow = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), this.contact);
-  private readonly metal = new THREE.MeshStandardMaterial({ color: 0xadb6bd, metalness: 0.7, roughness: 0.3 });
-  private readonly glass = new THREE.MeshStandardMaterial({ color: 0x080b10, metalness: 0.12, roughness: 0.18 });
-  private readonly cover = new THREE.MeshPhysicalMaterial({ color: 0xdfe9ed, transparent: true, opacity: 0.025, roughness: 0.14, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.1, depthWrite: false });
-  private readonly rear = new THREE.MeshStandardMaterial({ color: 0x323940, roughness: 0.6 });
   private readonly pixels = new THREE.ShaderMaterial({
     vertexShader: DISPLAY_VERTEX, fragmentShader: DISPLAY_FRAGMENT, toneMapped: false,
-    uniforms: { uImage: { value: this.target.texture }, uEmission: { value: this.emission.texture }, uSurfaceSize: { value: new THREE.Vector2() } },
+    uniforms: { uImage: { value: this.target.texture }, uEmission: { value: this.emission.texture }, uSurfaceSize: { value: new THREE.Vector2() }, uBoot: { value: 1 } },
   });
-  private readonly glow = new THREE.ShaderMaterial({
-    vertexShader: DISPLAY_VERTEX, fragmentShader: GLOW_FRAGMENT, transparent: true, depthWrite: false,
-    uniforms: { uEmission: { value: this.emission.texture }, uFaceScale: { value: new THREE.Vector2() } },
-  });
-  private readonly lightPool = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), this.glow);
+  private readonly glass = new THREE.ShaderMaterial({ vertexShader: CAB_VERTEX, fragmentShader: GLASS_FRAGMENT, toneMapped: false, uniforms: { uPower: { value: 1 }, uSize: { value: new THREE.Vector2(1, 1) }, uBand: { value: 0.03 } } });
+  private readonly windshield = new THREE.Group();
   private geometries: THREE.BufferGeometry[] = [];
   private size = { width: 0, height: 0, pixelRatio: 0, regionHeight: 0, regionTop: 0, regionWidth: 0, regionLeft: 0 };
-  private readonly motion = { sceneX: 0, sceneY: 0, sceneZ: 0, railX: 0, railY: 0, railZ: 0 };
-  private readonly pointerTarget = new THREE.Vector3();
+  private readonly motion: DisplayMotion = { headX: 0, headY: 0 };
+  private readonly headTarget = new THREE.Vector2();
   private surfaceWidth = 1;
   private surfaceHeight = 1;
+  private face: THREE.Mesh | null = null;
+  private boot: BootState = 'on';
+  private bootT = 0;
   private environment: THREE.WebGLRenderTarget | null = null;
 
   constructor(private readonly wallOnly = false) {
-    this.camera.position.set(0, 0, 20);
-    this.body.name = 'display-housing';
-    this.background.name = 'train-background-layer';
-    this.background.add(this.body, this.interior.group);
-    this.body.visible = !wallOnly;
-    this.mountShadow.name = 'antialiased-mount-contact';
-    this.mountShadow.position.z = -.442;
+    this.windshield.name = 'windshield-display';
     this.viewport.motion = this.motion;
-    this.lightPool.name = 'content-driven-light';
-    this.lightPool.position.set(0, 0, -0.415);
     this.filterScene.add(new THREE.Mesh(this.filterGeometry, this.filter));
-    this.glass.emissive.set(0xffffff);
-    this.glass.emissiveMap = this.emission.texture;
-    this.glass.emissiveIntensity = 0.06;
-    this.lighting.apply(this.metal, .8);
-    this.lighting.apply(this.rear, .5);
-    // Neutral broad overhead LEDs, warmer window-side cove, dimmer lower bounce.
-    if (!areaLightTablesReady) {
-      RectAreaLightUniformsLib.init();
-      areaLightTablesReady = true;
-    }
-    this.roofLight.name = 'broad-ceiling-area-light';
-    const key = new THREE.DirectionalLight(0xf0f5ff, 1.2);
-    key.name = 'neutral-ceiling-led-light';
-    key.position.set(-2, 12, 7);
-    const fill = new THREE.DirectionalLight(0xffdfba, .65);
-    fill.name = 'warm-side-cove-fill';
-    fill.position.set(7, 4, 6);
-    const ceiling = new THREE.HemisphereLight(0xeaf2ff, 0x444d56, 1.25);
-    ceiling.name = 'saloon-soft-ambient';
-    this.scene.add(this.background, this.interior.railings, ceiling, key, fill, this.roofLight);
+    this.scene.add(this.cockpit.group, this.windshield, ...cabLights());
+    this.applyPower();
   }
 
   setSize(width: number, height: number, pixelRatio: number, region: DisplayRegion = { height, top: 0 }): void {
@@ -99,125 +111,127 @@ export class ScreenDisplay {
     const viewLeft = region.left ?? (width - viewWidth) / 2;
     if (this.size.width === width && this.size.height === height && this.size.pixelRatio === pixelRatio && this.size.regionHeight === region.height && this.size.regionTop === region.top && this.size.regionWidth === viewWidth && this.size.regionLeft === viewLeft) return;
     Object.assign(this.size, { width, height, pixelRatio, regionHeight: region.height, regionTop: region.top, regionWidth: viewWidth, regionLeft: viewLeft });
+    const layout = cabLayout(width, height, { height: region.height, top: region.top, width: viewWidth, left: viewLeft });
+    this.cockpit.build(layout);
     for (const g of this.geometries) g.dispose();
     this.geometries = [];
-    this.body.clear();
-    const units = 16 / width;
-    const w = 16;
-    const h = height * units;
-    this.roofLight.position.set(0, h / 2 - .12, 2.6);
-    this.roofLight.lookAt(0, h / 2 - 2.2, -.45);
-    const side = Math.max(25, viewWidth * 0.065);
-    const top = Math.min(54, Math.max(38, region.height * 0.08));
-    const bottom = Math.min(30, Math.max(25, region.height * 0.05));
-    const bezel = Math.min(22, Math.max(10, region.height * 0.045));
-    Object.assign(this.viewport, { x: viewLeft + side + bezel, y: region.top + top + bezel, width: Math.max(1, viewWidth - (side + bezel) * 2), height: Math.max(1, region.height - top - bottom - bezel * 2) });
-    const vw = this.viewport.width * units;
-    const vh = this.viewport.height * units;
-    const bodyW = (viewWidth - side * 2) * units;
-    const bodyH = (region.height - top - bottom) * units;
-    this.body.position.y = (height / 2 - region.top - region.height / 2 + (bottom - top) / 2) * units;
-    this.body.position.x = (viewLeft + viewWidth / 2 - width / 2) * units;
-    this.interior.setSize(w, h, this.wallOnly ? null : { width: bodyW, height: bodyH, radius: Math.min(0.42, bodyH * 0.12), centerY: this.body.position.y });
-    const radius = Math.min(0.42, bodyH * 0.12);
-    const shell = (sw: number, sh: number, r: number, depth: number, z: number, material: THREE.Material) => {
-      const geometry = new THREE.ExtrudeGeometry(roundedRect(sw, sh, r), { depth, bevelEnabled: true, bevelSize: 0.035, bevelThickness: 0.035, bevelSegments: 3, steps: 1, curveSegments: 12 });
-      const position = geometry.getAttribute('position');
-      const uv = geometry.getAttribute('uv');
-      for (let i = 0; i < position.count; i += 1) uv.setXY(i, (position.getX(i) + sw / 2) / sw, (position.getY(i) + sh / 2) / sh);
-      this.geometries.push(geometry);
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.z = z;
-      mesh.castShadow = true;
-      this.body.add(mesh);
-    };
-    shell(bodyW - 0.1, bodyH - 0.1, radius, 0.36, -0.48, this.rear);
-    shell(bodyW, bodyH, radius, 0.11, -0.05, this.metal);
-    shell(bodyW - 0.095, bodyH - 0.095, Math.max(0.05, radius - 0.04), 0.035, 0.09, this.glass);
-    const face = new THREE.ShapeGeometry(roundedRect(vw, vh, Math.min(0.12, vh * 0.06)), 12);
-    const pos = face.getAttribute('position');
-    const uv = face.getAttribute('uv');
+    this.windshield.clear();
+    const A = layout.faceWorld;
+    const G = layout.glass;
+    const glass = new THREE.PlaneGeometry(G.x1 - G.x0 + 0.02, G.y1 - G.y0 + 0.02);
+    this.geometries.push(glass);
+    this.glass.uniforms.uSize.value.set(G.x1 - G.x0 + 0.02, G.y1 - G.y0 + 0.02);
+    this.glass.uniforms.uBand.value = G.x1 - A.x1 + 0.01;
+    const backing = new THREE.Mesh(glass, this.glass);
+    backing.name = 'windshield-glass';
+    backing.position.set((G.x0 + G.x1) / 2, (G.y0 + G.y1) / 2, -0.004);
+    this.windshield.add(backing);
+    const vw = A.x1 - A.x0;
+    const vh = A.y1 - A.y0;
+    const shape = new THREE.ShapeGeometry(roundedRect(vw, vh, Math.min(0.035, vh * 0.05)), 12);
+    const pos = shape.getAttribute('position');
+    const uv = shape.getAttribute('uv');
     for (let i = 0; i < pos.count; i += 1) uv.setXY(i, (pos.getX(i) + vw / 2) / vw, (pos.getY(i) + vh / 2) / vh);
-    this.geometries.push(face);
-    const screen = new THREE.Mesh(face, this.pixels);
-    screen.name = 'live-display-surface';
-    screen.position.z = 0.175;
-    screen.castShadow = true;
-    this.body.add(screen);
-    const coverGeometry = new THREE.ShapeGeometry(roundedRect(bodyW - 0.1, bodyH - 0.1, Math.max(0.05, radius - 0.04)), 18);
-    this.geometries.push(coverGeometry);
-    const cover = new THREE.Mesh(coverGeometry, this.cover);
-    cover.name = 'protective-cover-glass';
-    cover.position.z = 0.205;
-    cover.renderOrder = 2;
-    this.body.add(cover);
-    this.body.add(this.lightPool);
-    this.mountShadow.geometry.dispose();
-    this.mountShadow.geometry = new THREE.PlaneGeometry(bodyW + .6, bodyH + .6);
-    this.contact.uniforms.uSize.value.set(bodyW + .6, bodyH + .6);
-    this.contact.uniforms.uHalfSize.value.set(bodyW / 2, bodyH / 2);
-    this.contact.uniforms.uRadius.value = radius;
-    this.body.add(this.mountShadow);
-    this.camera.left = -w / 2;
-    this.camera.right = w / 2;
-    this.camera.top = h / 2;
-    this.camera.bottom = -h / 2;
-    this.camera.updateProjectionMatrix();
-    this.camera.updateMatrixWorld();
+    this.geometries.push(shape);
+    const face = new THREE.Mesh(shape, this.pixels);
+    face.name = 'live-display-surface';
+    face.position.set((A.x0 + A.x1) / 2, (A.y0 + A.y1) / 2, 0);
+    face.visible = !this.wallOnly;
+    this.windshield.add(face);
+    this.face = face;
     this.surfaceWidth = vw;
     this.surfaceHeight = vh;
-    this.updateProjection();
+    Object.assign(this.viewport, { x: layout.face.x, y: layout.face.y, width: layout.face.width, height: layout.face.height });
+    this.camera.fov = CAB_FOV;
+    this.camera.aspect = width / Math.max(1, height);
+    this.camera.updateProjectionMatrix();
     this.pixels.uniforms.uSurfaceSize.value.set(this.viewport.width, this.viewport.height);
-    this.lightPool.geometry.dispose();
-    const poolW = bodyW + 0.9;
-    const poolH = bodyH + 0.65;
-    this.lightPool.geometry = new THREE.PlaneGeometry(poolW, poolH);
-    this.glow.uniforms.uFaceScale.value.set(poolW / vw, poolH / vh);
     this.target.setSize(Math.max(1, Math.round(this.viewport.width * pixelRatio)), Math.max(1, Math.round(this.viewport.height * pixelRatio)));
     const lightW = Math.max(48, Math.min(256, Math.round(this.viewport.width / 8)));
     const lightH = Math.max(24, Math.min(96, Math.round(this.viewport.height / 8)));
     this.filterTarget.setSize(lightW, lightH);
     this.emission.setSize(lightW, lightH);
+    this.applyPower();
+    this.updateProjection();
   }
 
-  /** Mouse pressure is bounded and quadratic, with an exactly neutral center. */
+  /** Mouse pressure is bounded and quadratic, with an exactly neutral centre: the eye leans. */
   setPointer(x: number, y: number): void {
     const px = THREE.MathUtils.clamp(x, -1, 1);
     const py = THREE.MathUtils.clamp(y, -1, 1);
     if (px === 0 && py === 0) {
-      this.pointerTarget.set(0, 0, 0);
+      this.headTarget.set(0, 0);
       return;
     }
-    // A tiny coupled roll makes pressure perceptible without distorting the live view.
-    this.pointerTarget.set(py * Math.abs(py) * .035, px * Math.abs(px) * .055, -px * Math.abs(px) * .004);
+    this.headTarget.set(px * Math.abs(px) * HEAD_RANGE.x, -py * Math.abs(py) * HEAD_RANGE.y);
+  }
+
+  /** Instrument power: 'off' (dark, before the driver sits), 'on', or a boot started `elapsed` ms ago. */
+  setBoot(state: 'off' | 'on' | number): void {
+    if (state === 'off' || state === 'on') {
+      this.boot = state;
+      this.bootT = state === 'on' ? CAB_BOOT_MS : 0;
+    } else if (state >= CAB_BOOT_MS) {
+      this.boot = 'on';
+      this.bootT = CAB_BOOT_MS;
+    } else {
+      this.boot = 'running';
+      this.bootT = Math.max(0, state);
+    }
+    this.applyPower();
+  }
+
+  get bootState(): BootState {
+    return this.boot;
   }
 
   get animating(): boolean {
-    return Math.abs(this.background.rotation.x - this.pointerTarget.x) + Math.abs(this.background.rotation.y - this.pointerTarget.y) + Math.abs(this.background.rotation.z - this.pointerTarget.z) > 0.00001;
+    return this.boot === 'running' || Math.abs(this.motion.headX - this.headTarget.x) + Math.abs(this.motion.headY - this.headTarget.y) > 0.00001;
   }
 
   step(dt: number): void {
-    if (!this.animating) return;
+    const t = Math.min(0.5, Math.max(0, dt));
+    if (this.boot === 'running') {
+      this.bootT += t * 1000;
+      if (this.bootT >= CAB_BOOT_MS) {
+        this.boot = 'on';
+        this.bootT = CAB_BOOT_MS;
+      }
+      this.applyPower();
+    }
+    const moving = Math.abs(this.motion.headX - this.headTarget.x) + Math.abs(this.motion.headY - this.headTarget.y) > 0.00001;
+    if (!moving) return;
     // Exponential damping remains stable through slow GPU frames and settles in wall time.
-    const k = 1 - Math.exp(-Math.min(.5, Math.max(0, dt)) * 10);
-    this.background.rotation.x += (this.pointerTarget.x - this.background.rotation.x) * k;
-    this.background.rotation.y += (this.pointerTarget.y - this.background.rotation.y) * k;
-    this.background.rotation.z += (this.pointerTarget.z - this.background.rotation.z) * k;
-    if (!this.animating) this.background.rotation.set(this.pointerTarget.x, this.pointerTarget.y, this.pointerTarget.z);
-    this.interior.railings.rotation.set(this.background.rotation.x * .24, this.background.rotation.y * .24, this.background.rotation.z * .24);
-    Object.assign(this.motion, { sceneX: this.background.rotation.x, sceneY: this.background.rotation.y, sceneZ: this.background.rotation.z, railX: this.interior.railings.rotation.x, railY: this.interior.railings.rotation.y, railZ: this.interior.railings.rotation.z });
+    const k = 1 - Math.exp(-t * 10);
+    this.motion.headX += (this.headTarget.x - this.motion.headX) * k;
+    this.motion.headY += (this.headTarget.y - this.motion.headY) * k;
+    if (Math.abs(this.motion.headX - this.headTarget.x) + Math.abs(this.motion.headY - this.headTarget.y) <= 0.00001) {
+      this.motion.headX = this.headTarget.x;
+      this.motion.headY = this.headTarget.y;
+    }
     this.updateProjection();
   }
 
+  private applyPower(): void {
+    const t = this.boot === 'off' ? -1 : this.boot === 'on' ? CAB_BOOT_MS : this.bootT;
+    this.cockpit.setPower(this.boot === 'off' ? 'off' : this.boot === 'on' ? 'on' : this.bootT);
+    const image = t < 0 ? 0 : bootProgress(t, BOOT_IMAGE.start, BOOT_IMAGE.length);
+    this.pixels.uniforms.uBoot.value = this.boot === 'on' ? 1 : image;
+    this.lighting.setPower(this.boot === 'on' ? 1 : image);
+    this.glass.uniforms.uPower.value = t < 0 ? 0 : bootProgress(t, BOOT_ACCENTS.start, BOOT_ACCENTS.length);
+  }
+
   private updateProjection(): void {
-    this.background.updateMatrixWorld(true);
-    this.interior.railings.updateMatrixWorld(true);
-    this.lighting.update(this.body.matrixWorld, this.surfaceWidth, this.surfaceHeight);
+    this.camera.position.set(this.motion.headX, this.motion.headY, CAB_EYE);
+    this.camera.updateMatrixWorld(true);
+    this.scene.updateMatrixWorld(true);
+    if (!this.face) return;
+    this.lighting.update(this.face.matrixWorld, this.surfaceWidth, this.surfaceHeight);
     const { width, height } = this.size;
     const vw = this.surfaceWidth;
     const vh = this.surfaceHeight;
     const project = (x: number, y: number) => {
-      const p = new THREE.Vector3(x, y, 0.175).applyMatrix4(this.body.matrixWorld).project(this.camera);
+      const p = new THREE.Vector3(x, y, 0).applyMatrix4(this.face!.matrixWorld).project(this.camera);
       return { x: (p.x + 1) * width / 2, y: (1 - p.y) * height / 2 };
     };
     const tl = project(-vw / 2, vh / 2);
@@ -234,7 +248,11 @@ export class ScreenDisplay {
 
   render(renderer: THREE.WebGLRenderer, dt = 1 / 60, imageChanged = true): void {
     this.step(dt);
-    if (!this.environment) this.createEnvironment(renderer);
+    if (!this.environment) {
+      this.environment = cabEnvironment(renderer);
+      this.scene.environment = this.environment.texture;
+      this.scene.environmentIntensity = 0.9;
+    }
     // Two small GPU-only passes extract and diffuse the actual image's emitted colors.
     if (imageChanged && !this.wallOnly) {
       const lw = this.emission.width;
@@ -255,53 +273,21 @@ export class ScreenDisplay {
     }
     renderer.setRenderTarget(null);
     renderer.setViewport(0, 0, this.size.width, this.size.height);
-    renderer.setClearColor(0xb8c1bf, 1);
+    renderer.setClearColor(0x07090d, 1);
     renderer.clear();
     renderer.shadowMap.enabled = false;
     renderer.render(this.scene, this.camera);
   }
 
-  /** Small, cached saloon reflection probe: broad white roof panels and warm side coves.
-   * Metals need reflected luminaires as well as direct light to read as polished metal. */
-  private createEnvironment(renderer: THREE.WebGLRenderer): void {
-    const width = 256;
-    const height = 128;
-    const data = new Uint8Array(width * height * 4);
-    for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
-      const v = y / height;
-      const u = x / width;
-      const roof = Math.exp(-Math.pow((v - .23) / .095, 4));
-      const strip = Math.exp(-Math.pow((u - .18) / .025, 2)) + Math.exp(-Math.pow((u - .68) / .025, 2));
-      const cove = Math.exp(-Math.pow((v - .47) / .035, 2)) * .55;
-      const base = .12 + .20 * (1 - v);
-      const i = (y * width + x) * 4;
-      data[i] = Math.min(255, (base + roof * .72 + strip * .52 + cove * .5) * 255);
-      data[i + 1] = Math.min(255, (base + roof * .75 + strip * .50 + cove * .32) * 255);
-      data[i + 2] = Math.min(255, (base + roof * .78 + strip * .48 + cove * .19) * 255);
-      data[i + 3] = 255;
-    }
-    const source = new THREE.DataTexture(data, width, height);
-    source.mapping = THREE.EquirectangularReflectionMapping;
-    source.needsUpdate = true;
-    const generator = new THREE.PMREMGenerator(renderer);
-    this.environment = generator.fromEquirectangular(source);
-    this.scene.environment = this.environment.texture;
-    this.scene.environmentIntensity = .85;
-    source.dispose();
-    generator.dispose();
-  }
-
   dispose(): void {
     for (const g of this.geometries) g.dispose();
-    for (const m of [this.metal, this.glass, this.cover, this.rear, this.pixels, this.glow, this.filter, this.contact]) m.dispose();
-    this.lightPool.geometry.dispose();
-    this.mountShadow.geometry.dispose();
+    for (const m of [this.pixels, this.filter, this.glass]) m.dispose();
     this.filterGeometry.dispose();
     this.target.dispose();
     this.filterTarget.dispose();
     this.emission.dispose();
     this.environment?.dispose();
-    this.interior.dispose();
+    this.cockpit.dispose();
     this.scene.clear();
     this.filterScene.clear();
   }

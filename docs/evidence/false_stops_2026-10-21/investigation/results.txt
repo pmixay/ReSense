@@ -1,0 +1,48 @@
+Outputs of the investigation scripts of this directory (run on 21.10.2026 in the lane's container; paths /data/... are the
+lane's: runs = the gate's per-frame JSONL, cache = the frame cache). They were run on an earlier state of
+scripts/false_stop_ledger.py (same replay and transport code), before the final ledger.json; the final numbers are in ledger.json.
+
+== window_preroll_calibration.py: the 17 episodes that the 150-frame fresh window missed, replayed with a fresh detector
+== from onset-150 / -300 / -600 / the piece start, calibration off and on (OK = onset +-2 frames and distance +-2 m)
+squareT_platform_squareT_switch:437 150:no 150+cal:no 300:no 300+cal:no 600:OK 600+cal:OK full:OK full+cal:OK
+squareT_platform_squareT_switch:490 150:no 150+cal:no 300:OK 300+cal:OK 600:OK 600+cal:OK full:OK full+cal:OK
+squareT_platform_squareT_switch:522 150:no 150+cal:no 300:no 300+cal:no 600:OK 600+cal:OK full:OK full+cal:OK
+squareT_platform_squareT_switch:527 150:no 150+cal:no 300:no 300+cal:no 600:OK 600+cal:OK full:OK full+cal:OK
+squareT_platform_squareT_switch:580 150:no 150+cal:no 300:OK 300+cal:OK 600:OK 600+cal:OK full:OK full+cal:OK
+squareT_platform_squareT_switch:640 150:no 150+cal:no 300:no 300+cal:no 600:no 600+cal:no full:OK full+cal:OK
+new_data:1847 150:no 150+cal:no 300:OK 300+cal:OK 600:OK 600+cal:OK full:OK full+cal:OK
+new_data:5065 150:no 150+cal:no 300:no 300+cal:no 600:no 600+cal:no full:OK full+cal:OK
+new_data:5901 150:no 150+cal:no 300:OK 300+cal:OK 600:OK 600+cal:OK full:OK full+cal:OK
+new_data:6859 150:no 150+cal:no 300:OK 300+cal:OK 600:no 600+cal:no full:OK full+cal:OK
+new_data:7338 150:no 150+cal:no 300:OK 300+cal:OK 600:OK 600+cal:OK full:OK full+cal:OK
+new_data:7347 150:no 150+cal:no 300:no 300+cal:no 600:OK 600+cal:OK full:OK full+cal:OK
+new_data:7943 150:no 150+cal:no 300:no 300+cal:no 600:OK 600+cal:OK full:OK full+cal:OK
+new_data:9125 150:no 150+cal:no 300:no 300+cal:no 600:no 600+cal:no full:OK full+cal:OK
+new_data:9271 150:no 150+cal:no 300:no 300+cal:no 600:no 600+cal:no full:OK full+cal:OK
+new_data:9800 150:no 150+cal:no 300:no 300+cal:no 600:no 600+cal:no full:OK full+cal:OK
+new_data:10486 150:no 150+cal:no 300:OK 300+cal:OK 600:no 600+cal:no full:OK full+cal:OK
+-> calibration on/off changes nothing in any of the 136 replays; the result is not monotonic in the pre-roll (6859, 10486: OK at 300, no at 600);
+   only the replay from the piece start is always OK (the full run is deterministic).
+
+== window_vs_run_state.py: a 150-frame fresh window against the run, per frame, up to the onset + 3
+new_data:5065 onset 838 window start 688: track.center differs in 96 of 154 frames, floor_coef[2] in 136, curvature in 93, ego_speed_estimate in 20; the STOP flag only from window frame 150
+new_data:9800 onset 1346 window start 1196: track.center 120, floor_coef[2] 132, curvature 107, ego_speed_estimate 75 (from window frame 76); STOP flag from frame 150
+new_data:1847 onset 438 window start 288: track.center 121, floor_coef[2] 150, curvature 136, ego_speed_estimate 1; STOP flag from frame 150
+(track.age differs in every frame by construction: the window's age counts from its own start.)
+-> the fitted track (axis, bed) of a fresh detector has not converged to the run's after 150 frames; the differences are millimetres
+   (ledger.json, window.track_delta_at_onset: median |d centre| 0.5 mm when the window reproduces, 2 mm when it does not;
+   median |d bed height| 0.05 mm / 1.1 mm), and the far STOPs are decided at that level.
+
+== snapshot_resume_check.py: pickle the detector after frame 199 of ride piece 3, restore it, run frames 200..299 beside the original
+pickle size MB 5.05 t 0.007
+pickle resume identical for frames 200..299   (STOP flag, candidate count, track centre and bed height identical)
+
+== transport_variants_set_O.py: the ledger's ego transport of the organizers' set-O objects from ~110 m to 10-25 m, error against the labels
+(n = 78 frame pairs over 10 objects)                 |x| median/p90     |y| median/p90     |z| median/p90
+full (yaw + pitch integrated)                          2.69 / 5.14        0.34 / 0.51        0.75 / 3.96
+no pitch integration (the ledger's choice)             2.65 / 5.14        0.34 / 0.51        0.09 / 3.66
+no yaw integration                                     2.69 / 5.14        0.11 / 1.96        0.75 / 3.96
+(per object, no pitch: |z| error 0.06-0.3 m for 9 of 10 objects; small_on_rail 3.7 m: its labelled path leaves the tunnel, DATASET.md)
+
+== speed_estimate_vs_set_O_steps.py: the detector's per-frame speed estimate against the speed of the organizers' objects (from their labels)
+estimate frames 352: bias +0.18 m/s, MAE 1.23 m/s, p90 2.8; interpolated frames 269: bias -0.31, MAE 2.28, p90 4.25

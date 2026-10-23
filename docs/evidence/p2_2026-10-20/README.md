@@ -1,7 +1,7 @@
 # Role 2 — 20 October code handoff
 
 **Status:** today's Role 2 code work is verified and published at
-[resense.amdm.life](https://resense.amdm.life/). The user supplied the corrected
+resense.amdm.life (22.10: that host now serves another app; the preview is https://resense.arbuz.lol). The user supplied the corrected
 domain after the initial blocked attempt below; [PUBLISH.md](PUBLISH.md) records
 the successful push, deployment and public checks. Stop at the non-code handoff
 in [PLAN.md](PLAN.md); final release acceptance remains with the captain/P3/P4.

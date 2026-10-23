@@ -14,6 +14,7 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import tempfile
 
 if __name__ == "__main__":
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -23,6 +24,7 @@ import numpy as np
 from resense.clustering import _Blob, _corridor_cluster, dbscan_labels, voxelize
 from resense.config import ClusterConfig, GaugeConfig
 from resense.gauge import gauge_core_mask, point_in_polygon, widened_profile
+from scripts.analyze_residual_events import MEASUREMENT
 
 
 RADIUS_M = 0.45
@@ -30,7 +32,7 @@ MODES = ("corridor", "strict")
 NEGATIVE_KEYS = ("new_data_1.jsonl:74", "new_data_1.jsonl:298",
                  "new_data_6.jsonl:331", "new_data_5.jsonl:330")
 ROOT = Path(__file__).resolve().parents[1]
-TEMP = Path("C:/Users/alikh/AppData/Local/Temp/opencode")
+TEMP = Path(tempfile.gettempdir())
 
 
 @dataclass(frozen=True)
@@ -344,7 +346,7 @@ def main():
     parser.add_argument("--centre", type=Path, default=TEMP / "range-shape-centre-coordinator.json")
     parser.add_argument("--edge", type=Path, default=TEMP / "range-shape-edge-coordinator.json")
     parser.add_argument("--measurement", type=Path,
-                        default=Path("D:/Datasets/ReSense/cross_ring_2026-09-28_measurement"))
+                        default=MEASUREMENT)
     parser.add_argument("--out", type=Path, default=TEMP / "local-body-support.json")
     args = parser.parse_args()
     if not args.out.resolve().is_relative_to(TEMP.resolve()) or not args.out.parent.is_dir():

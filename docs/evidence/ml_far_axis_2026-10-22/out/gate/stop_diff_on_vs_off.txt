@@ -1,0 +1,8 @@
+cloud_with_fake_obj.jsonl STOP frames off/on 450 451 differ rows [461]
+   onsets only off [462] only on [461]
+      461 off False [] warn [(36.9, 1.2, '')]
+      461 on True [(36.9, 1.2, '', '')] warn []
+new_data_4.jsonl STOP frames off/on 17 16 differ rows [80]
+   onsets only off [80] only on []
+      80 off True [(21.8, 1.23, '', '')] warn [(36.9, 1.25, ''), (45.8, 1.31, '')]
+      80 on False [] warn [(31.6, 1.21, ''), (36.9, 1.25, ''), (43.3, 1.32, '')]

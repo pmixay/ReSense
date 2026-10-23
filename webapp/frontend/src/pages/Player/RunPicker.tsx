@@ -63,7 +63,7 @@ export function RunPickerGlass() {
   if (!list.length) {
     return (
       <div className={styles.glassCenter}>
-        <div className={styles.glassCard}>
+        <div className={`${styles.glassCard} ${styles.glassEmpty}`}>
           <EmptyState
             icon="cube"
             title="Прогонов пока нет"

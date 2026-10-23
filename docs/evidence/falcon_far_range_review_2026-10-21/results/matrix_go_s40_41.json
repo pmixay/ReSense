@@ -1,0 +1,3418 @@
+{
+ "wt_v120": {
+  "cases": {
+   "person_front_M1_approach_walk_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M2_recede_walk_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 121.3,
+    "held_stop_x": null,
+    "stop_frames": 20,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 280,
+     "STOP": 20,
+     "FAULT": 0
+    }
+   },
+   "person_front_M3_recede_trolley_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 101.0,
+    "held_stop_x": 101.0,
+    "stop_frames": 47,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 251,
+     "STOP": 49,
+     "FAULT": 0
+    }
+   },
+   "person_front_M4_lateral_walk_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M5_stop_and_go_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M6_cross_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M7_chaotic_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M1_approach_walk_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M2_recede_walk_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 121.0,
+    "held_stop_x": null,
+    "stop_frames": 23,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 277,
+     "STOP": 23,
+     "FAULT": 0
+    }
+   },
+   "person_front_M3_recede_trolley_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 101.0,
+    "held_stop_x": 101.0,
+    "stop_frames": 38,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 262,
+     "STOP": 38,
+     "FAULT": 0
+    }
+   },
+   "person_front_M4_lateral_walk_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M5_stop_and_go_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M6_cross_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M7_chaotic_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M1_approach_walk_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M2_recede_walk_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 297,
+     "STOP": 3,
+     "FAULT": 0
+    }
+   },
+   "cube20_M3_recede_trolley_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 101.0,
+    "held_stop_x": 101.0,
+    "stop_frames": 38,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 260,
+     "STOP": 40,
+     "FAULT": 0
+    }
+   },
+   "cube20_M4_lateral_walk_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M5_stop_and_go_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M6_cross_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M7_chaotic_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M1_approach_walk_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M2_recede_walk_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 297,
+     "STOP": 3,
+     "FAULT": 0
+    }
+   },
+   "cube20_M3_recede_trolley_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 101.0,
+    "held_stop_x": 101.0,
+    "stop_frames": 37,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 263,
+     "STOP": 37,
+     "FAULT": 0
+    }
+   },
+   "cube20_M4_lateral_walk_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M5_stop_and_go_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M6_cross_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M7_chaotic_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 300,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static150_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 143,
+     "STOP": 7,
+     "FAULT": 0
+    }
+   },
+   "person_front_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 116.0,
+    "held_stop_x": null,
+    "stop_frames": 26,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 284,
+     "STOP": 26,
+     "FAULT": 0
+    }
+   },
+   "person_front_static150_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 117.0,
+    "held_stop_x": 117.0,
+    "stop_frames": 27,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 283,
+     "STOP": 27,
+     "FAULT": 0
+    }
+   },
+   "person_back_static150_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 117.0,
+    "held_stop_x": 117.0,
+    "stop_frames": 27,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 283,
+     "STOP": 27,
+     "FAULT": 0
+    }
+   },
+   "person_back_static150_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 117.0,
+    "held_stop_x": 117.0,
+    "stop_frames": 27,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 283,
+     "STOP": 27,
+     "FAULT": 0
+    }
+   },
+   "cube10_static150_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 115.0,
+    "held_stop_x": null,
+    "stop_frames": 25,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 285,
+     "STOP": 25,
+     "FAULT": 0
+    }
+   },
+   "cube10_static150_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 115.0,
+    "held_stop_x": null,
+    "stop_frames": 25,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 285,
+     "STOP": 25,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static150_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 149,
+     "STOP": 1,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 109.0,
+    "held_stop_x": null,
+    "stop_frames": 19,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 291,
+     "STOP": 19,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static150_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 110.0,
+    "held_stop_x": null,
+    "stop_frames": 20,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 290,
+     "STOP": 20,
+     "FAULT": 0
+    }
+   },
+   "cube20_static150_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 115.0,
+    "held_stop_x": null,
+    "stop_frames": 25,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 285,
+     "STOP": 25,
+     "FAULT": 0
+    }
+   },
+   "cube20_static150_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 115.0,
+    "held_stop_x": null,
+    "stop_frames": 25,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 285,
+     "STOP": 25,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static150_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 110.0,
+    "held_stop_x": null,
+    "stop_frames": 20,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 290,
+     "STOP": 20,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static150_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 109.0,
+    "held_stop_x": null,
+    "stop_frames": 19,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 291,
+     "STOP": 19,
+     "FAULT": 0
+    }
+   },
+   "cube50_static150_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 115.0,
+    "held_stop_x": null,
+    "stop_frames": 25,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 285,
+     "STOP": 25,
+     "FAULT": 0
+    }
+   },
+   "cube50_static150_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 115.0,
+    "held_stop_x": null,
+    "stop_frames": 25,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 285,
+     "STOP": 25,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static150_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 149,
+     "STOP": 1,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 111.0,
+    "held_stop_x": null,
+    "stop_frames": 21,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 289,
+     "STOP": 21,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static150_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 111.0,
+    "held_stop_x": null,
+    "stop_frames": 21,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 289,
+     "STOP": 21,
+     "FAULT": 0
+    }
+   },
+   "outside_static150_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 310,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static150_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 150,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 0,
+     "CAUTION": 310,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   }
+  },
+  "by_mode": {
+   "M1_approach_walk": {
+    "cases": 4,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "M2_recede_walk": {
+    "cases": 4,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "M3_recede_trolley": {
+    "cases": 4,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "M4_lateral_walk": {
+    "cases": 4,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "M5_stop_and_go": {
+    "cases": 4,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "M6_cross": {
+    "cases": 4,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "M7_chaotic": {
+    "cases": 4,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "static150": {
+    "cases": 18,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "static200": {
+    "cases": 18,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "static250": {
+    "cases": 18,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "static300": {
+    "cases": 18,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "static350": {
+    "cases": 18,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "approach": {
+    "cases": 18,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   }
+  },
+  "prefix_check": {
+   "case": "person_front_approach_s40",
+   "rows": 310,
+   "mismatches": 0
+  }
+ },
+ "wt_cand": {
+  "cases": {
+   "person_front_M1_approach_walk_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 186,
+     "CAUTION": 114,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M2_recede_walk_s40": {
+    "go_inside_clear": 12,
+    "first_stop_x": 120.6,
+    "held_stop_x": 120.6,
+    "stop_frames": 100,
+    "decisions": {
+     "GO": 90,
+     "CAUTION": 110,
+     "STOP": 100,
+     "FAULT": 0
+    }
+   },
+   "person_front_M3_recede_trolley_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 102.0,
+    "held_stop_x": 102.0,
+    "stop_frames": 61,
+    "decisions": {
+     "GO": 123,
+     "CAUTION": 116,
+     "STOP": 61,
+     "FAULT": 0
+    }
+   },
+   "person_front_M4_lateral_walk_s40": {
+    "go_inside_clear": 7,
+    "first_stop_x": 160.0,
+    "held_stop_x": null,
+    "stop_frames": 1,
+    "decisions": {
+     "GO": 185,
+     "CAUTION": 114,
+     "STOP": 1,
+     "FAULT": 0
+    }
+   },
+   "person_front_M5_stop_and_go_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 186,
+     "CAUTION": 114,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M6_cross_s40": {
+    "go_inside_clear": 12,
+    "first_stop_x": 150.0,
+    "held_stop_x": null,
+    "stop_frames": 8,
+    "decisions": {
+     "GO": 214,
+     "CAUTION": 78,
+     "STOP": 8,
+     "FAULT": 0
+    }
+   },
+   "person_front_M7_chaotic_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 189,
+     "CAUTION": 111,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M1_approach_walk_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 186,
+     "CAUTION": 114,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M2_recede_walk_s41": {
+    "go_inside_clear": 10,
+    "first_stop_x": 120.6,
+    "held_stop_x": 120.6,
+    "stop_frames": 101,
+    "decisions": {
+     "GO": 91,
+     "CAUTION": 108,
+     "STOP": 101,
+     "FAULT": 0
+    }
+   },
+   "person_front_M3_recede_trolley_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 102.0,
+    "held_stop_x": 102.0,
+    "stop_frames": 69,
+    "decisions": {
+     "GO": 130,
+     "CAUTION": 101,
+     "STOP": 69,
+     "FAULT": 0
+    }
+   },
+   "person_front_M4_lateral_walk_s41": {
+    "go_inside_clear": 10,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 189,
+     "CAUTION": 111,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M5_stop_and_go_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 186,
+     "CAUTION": 114,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_M6_cross_s41": {
+    "go_inside_clear": 9,
+    "first_stop_x": 150.0,
+    "held_stop_x": null,
+    "stop_frames": 8,
+    "decisions": {
+     "GO": 210,
+     "CAUTION": 82,
+     "STOP": 8,
+     "FAULT": 0
+    }
+   },
+   "person_front_M7_chaotic_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 186,
+     "CAUTION": 114,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M1_approach_walk_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 186,
+     "CAUTION": 114,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M2_recede_walk_s40": {
+    "go_inside_clear": 6,
+    "first_stop_x": 120.8,
+    "held_stop_x": 120.8,
+    "stop_frames": 103,
+    "decisions": {
+     "GO": 82,
+     "CAUTION": 115,
+     "STOP": 103,
+     "FAULT": 0
+    }
+   },
+   "cube20_M3_recede_trolley_s40": {
+    "go_inside_clear": 2,
+    "first_stop_x": 102.0,
+    "held_stop_x": 102.0,
+    "stop_frames": 72,
+    "decisions": {
+     "GO": 132,
+     "CAUTION": 96,
+     "STOP": 72,
+     "FAULT": 0
+    }
+   },
+   "cube20_M4_lateral_walk_s40": {
+    "go_inside_clear": 1,
+    "first_stop_x": 160.0,
+    "held_stop_x": null,
+    "stop_frames": 2,
+    "decisions": {
+     "GO": 181,
+     "CAUTION": 117,
+     "STOP": 2,
+     "FAULT": 0
+    }
+   },
+   "cube20_M5_stop_and_go_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 186,
+     "CAUTION": 114,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M6_cross_s40": {
+    "go_inside_clear": 9,
+    "first_stop_x": 150.0,
+    "held_stop_x": null,
+    "stop_frames": 8,
+    "decisions": {
+     "GO": 208,
+     "CAUTION": 82,
+     "STOP": 10,
+     "FAULT": 0
+    }
+   },
+   "cube20_M7_chaotic_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 186,
+     "CAUTION": 114,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M1_approach_walk_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 186,
+     "CAUTION": 114,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M2_recede_walk_s41": {
+    "go_inside_clear": 4,
+    "first_stop_x": 120.8,
+    "held_stop_x": 120.8,
+    "stop_frames": 104,
+    "decisions": {
+     "GO": 77,
+     "CAUTION": 119,
+     "STOP": 104,
+     "FAULT": 0
+    }
+   },
+   "cube20_M3_recede_trolley_s41": {
+    "go_inside_clear": 1,
+    "first_stop_x": 102.0,
+    "held_stop_x": 102.0,
+    "stop_frames": 73,
+    "decisions": {
+     "GO": 132,
+     "CAUTION": 95,
+     "STOP": 73,
+     "FAULT": 0
+    }
+   },
+   "cube20_M4_lateral_walk_s41": {
+    "go_inside_clear": 1,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 187,
+     "CAUTION": 113,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M5_stop_and_go_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 186,
+     "CAUTION": 114,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_M6_cross_s41": {
+    "go_inside_clear": 9,
+    "first_stop_x": 150.0,
+    "held_stop_x": null,
+    "stop_frames": 8,
+    "decisions": {
+     "GO": 210,
+     "CAUTION": 82,
+     "STOP": 8,
+     "FAULT": 0
+    }
+   },
+   "cube20_M7_chaotic_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 186,
+     "CAUTION": 114,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static150_s40": {
+    "go_inside_clear": 8,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 90,
+     "CAUTION": 60,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 98,
+     "CAUTION": 52,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 141.0,
+    "held_stop_x": 141.0,
+    "stop_frames": 51,
+    "decisions": {
+     "GO": 152,
+     "CAUTION": 107,
+     "STOP": 51,
+     "FAULT": 0
+    }
+   },
+   "person_front_static150_s41": {
+    "go_inside_clear": 17,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 104,
+     "CAUTION": 46,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 98,
+     "CAUTION": 52,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_front_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 141.0,
+    "held_stop_x": 141.0,
+    "stop_frames": 51,
+    "decisions": {
+     "GO": 152,
+     "CAUTION": 107,
+     "STOP": 51,
+     "FAULT": 0
+    }
+   },
+   "person_back_static150_s40": {
+    "go_inside_clear": 15,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 95,
+     "CAUTION": 55,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 139.0,
+    "held_stop_x": 139.0,
+    "stop_frames": 49,
+    "decisions": {
+     "GO": 157,
+     "CAUTION": 104,
+     "STOP": 49,
+     "FAULT": 0
+    }
+   },
+   "person_back_static150_s41": {
+    "go_inside_clear": 15,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 95,
+     "CAUTION": 55,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "person_back_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 139.0,
+    "held_stop_x": 139.0,
+    "stop_frames": 49,
+    "decisions": {
+     "GO": 157,
+     "CAUTION": 104,
+     "STOP": 49,
+     "FAULT": 0
+    }
+   },
+   "cube10_static150_s40": {
+    "go_inside_clear": 14,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 93,
+     "CAUTION": 57,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 139.0,
+    "held_stop_x": 139.0,
+    "stop_frames": 49,
+    "decisions": {
+     "GO": 157,
+     "CAUTION": 104,
+     "STOP": 49,
+     "FAULT": 0
+    }
+   },
+   "cube10_static150_s41": {
+    "go_inside_clear": 15,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 95,
+     "CAUTION": 55,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube10_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 139.0,
+    "held_stop_x": 139.0,
+    "stop_frames": 49,
+    "decisions": {
+     "GO": 157,
+     "CAUTION": 104,
+     "STOP": 49,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static150_s40": {
+    "go_inside_clear": 24,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 137,
+     "CAUTION": 13,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 95,
+     "CAUTION": 55,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 96,
+     "CAUTION": 54,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 138.0,
+    "held_stop_x": 138.0,
+    "stop_frames": 48,
+    "decisions": {
+     "GO": 163,
+     "CAUTION": 99,
+     "STOP": 48,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static150_s41": {
+    "go_inside_clear": 16,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 141,
+     "CAUTION": 9,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 95,
+     "CAUTION": 55,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 100,
+     "CAUTION": 50,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 100,
+     "CAUTION": 50,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_10_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 138.0,
+    "held_stop_x": 138.0,
+    "stop_frames": 48,
+    "decisions": {
+     "GO": 169,
+     "CAUTION": 93,
+     "STOP": 48,
+     "FAULT": 0
+    }
+   },
+   "cube20_static150_s40": {
+    "go_inside_clear": 15,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 105,
+     "CAUTION": 45,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 139.0,
+    "held_stop_x": 139.0,
+    "stop_frames": 49,
+    "decisions": {
+     "GO": 157,
+     "CAUTION": 104,
+     "STOP": 49,
+     "FAULT": 0
+    }
+   },
+   "cube20_static150_s41": {
+    "go_inside_clear": 16,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 102,
+     "CAUTION": 48,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube20_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 139.0,
+    "held_stop_x": 139.0,
+    "stop_frames": 49,
+    "decisions": {
+     "GO": 157,
+     "CAUTION": 104,
+     "STOP": 49,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static150_s40": {
+    "go_inside_clear": 11,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 142,
+     "CAUTION": 8,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 95,
+     "CAUTION": 55,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 87,
+     "CAUTION": 63,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 94,
+     "CAUTION": 56,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 133.0,
+    "held_stop_x": 133.0,
+    "stop_frames": 43,
+    "decisions": {
+     "GO": 156,
+     "CAUTION": 111,
+     "STOP": 43,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static150_s41": {
+    "go_inside_clear": 11,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 144,
+     "CAUTION": 6,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 95,
+     "CAUTION": 55,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 89,
+     "CAUTION": 61,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 92,
+     "CAUTION": 58,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_20_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 136.0,
+    "held_stop_x": 136.0,
+    "stop_frames": 46,
+    "decisions": {
+     "GO": 154,
+     "CAUTION": 110,
+     "STOP": 46,
+     "FAULT": 0
+    }
+   },
+   "cube50_static150_s40": {
+    "go_inside_clear": 15,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 106,
+     "CAUTION": 44,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 139.0,
+    "held_stop_x": 139.0,
+    "stop_frames": 49,
+    "decisions": {
+     "GO": 157,
+     "CAUTION": 104,
+     "STOP": 49,
+     "FAULT": 0
+    }
+   },
+   "cube50_static150_s41": {
+    "go_inside_clear": 14,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 100,
+     "CAUTION": 50,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "cube50_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 139.0,
+    "held_stop_x": 139.0,
+    "stop_frames": 49,
+    "decisions": {
+     "GO": 157,
+     "CAUTION": 104,
+     "STOP": 49,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static150_s40": {
+    "go_inside_clear": 11,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 142,
+     "CAUTION": 8,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 87,
+     "CAUTION": 63,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 84,
+     "CAUTION": 66,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": 134.0,
+    "held_stop_x": 134.0,
+    "stop_frames": 44,
+    "decisions": {
+     "GO": 163,
+     "CAUTION": 103,
+     "STOP": 44,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static150_s41": {
+    "go_inside_clear": 14,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 141,
+     "CAUTION": 9,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 87,
+     "CAUTION": 63,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 84,
+     "CAUTION": 66,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "box2_50_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": 134.0,
+    "held_stop_x": 134.0,
+    "stop_frames": 44,
+    "decisions": {
+     "GO": 156,
+     "CAUTION": 110,
+     "STOP": 44,
+     "FAULT": 0
+    }
+   },
+   "outside_static150_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 149,
+     "CAUTION": 1,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static200_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static250_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static300_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static350_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_approach_s40": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 202,
+     "CAUTION": 108,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static150_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 149,
+     "CAUTION": 1,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static200_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static250_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static300_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_static350_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 97,
+     "CAUTION": 53,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   },
+   "outside_approach_s41": {
+    "go_inside_clear": 0,
+    "first_stop_x": null,
+    "held_stop_x": null,
+    "stop_frames": 0,
+    "decisions": {
+     "GO": 202,
+     "CAUTION": 108,
+     "STOP": 0,
+     "FAULT": 0
+    }
+   }
+  },
+  "by_mode": {
+   "M1_approach_walk": {
+    "cases": 4,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "M2_recede_walk": {
+    "cases": 4,
+    "go_inside_clear": 32,
+    "cases_with_go_inside_clear": 4
+   },
+   "M3_recede_trolley": {
+    "cases": 4,
+    "go_inside_clear": 3,
+    "cases_with_go_inside_clear": 2
+   },
+   "M4_lateral_walk": {
+    "cases": 4,
+    "go_inside_clear": 19,
+    "cases_with_go_inside_clear": 4
+   },
+   "M5_stop_and_go": {
+    "cases": 4,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "M6_cross": {
+    "cases": 4,
+    "go_inside_clear": 39,
+    "cases_with_go_inside_clear": 4
+   },
+   "M7_chaotic": {
+    "cases": 4,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "static150": {
+    "cases": 18,
+    "go_inside_clear": 231,
+    "cases_with_go_inside_clear": 16
+   },
+   "static200": {
+    "cases": 18,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "static250": {
+    "cases": 18,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "static300": {
+    "cases": 18,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "static350": {
+    "cases": 18,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   },
+   "approach": {
+    "cases": 18,
+    "go_inside_clear": 0,
+    "cases_with_go_inside_clear": 0
+   }
+  },
+  "prefix_check": {
+   "case": "person_front_approach_s40",
+   "rows": 310,
+   "mismatches": 0
+  }
+ }
+}

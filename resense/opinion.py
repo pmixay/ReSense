@@ -21,14 +21,22 @@ import numpy as np
 
 # the fields of one observation (a matched cluster of a track), in order
 OBS_FIELDS = ("distance", "lateral", "cz", "length", "width", "height", "height_min", "height_max",
-              "n", "n_gauge", "vis", "low", "demoted", "column", "beyond")
+              "n", "n_gauge", "vis", "low", "demoted", "column", "beyond",
+              # 21.10 (G2, opinion 1.3): appended; the features above read the first 15 only
+              "n_raw", "rings", "core", "cut", "weak", "thin", "spared")
 OBS_KEEP = 15          # observations kept per track (the features use the last OBS_WINDOW)
 OBS_WINDOW = 10
 
 FEATURES = ["distance", "abs_lateral", "is_low", "frac_low", "hits", "lat_std", "lat_jump", "cz_std",
             "hmax_mean", "hmin_mean", "len_mean", "width_mean", "height_mean", "log_n_mean",
             "gauge_frac", "vis_mean", "frac_demoted", "frac_column", "frac_beyond", "dist_rough",
-            "dist_step", "hit_fraction", "log_gauge"]
+            "dist_step", "hit_fraction", "log_gauge",
+            # 21.10 (G2, opinion 1.3): appended, so the 27.09 model reads the same columns by name
+            "frac_core", "frac_cut", "frac_weak", "frac_thin", "frac_spared", "raw_per_vox", "ring_fill",
+            "dist_span", "hmax_last", "top_rel"]
+
+# 21.10: the Pandar ring spacing inside its ROI (resense/sensor.py), for the ring fill of a cluster
+_RING_STEP_RAD = math.radians(0.125)
 
 _BEYOND = ("beyond_axis", "beyond_height_ref")
 
@@ -39,7 +47,9 @@ def observation(cl) -> tuple:
     return (float(cl.distance), float(cl.lateral), float(cl.centroid[2]), float(s[0]), float(s[1]), float(s[2]),
             float(cl.height_min), float(cl.height_max), float(cl.n), float(cl.n_gauge),
             float(min(cl.n / max(cl.n_expected, 1.0), 5.0)), float(cl.kind == "low"), float(bool(cl.reason)),
-            float(cl.reason == "column"), float(cl.reason in _BEYOND))
+            float(cl.reason == "column"), float(cl.reason in _BEYOND),
+            float(cl.n_raw), float(cl.ring_count), float(cl.collision_core), float(cl.cut), float(cl.weak),
+            float(cl.thin), float(cl.spared))
 
 
 def track_features(obs: Sequence[tuple], hits: int, hit_fraction: float) -> np.ndarray:
@@ -57,7 +67,22 @@ def track_features(obs: Sequence[tuple], hits: int, hit_fraction: float) -> np.n
         float(np.log1p(o[:, 8]).mean()), float((o[:, 9] / np.maximum(o[:, 8], 1.0)).mean()), o[:, 10].mean(),
         o[:, 12].mean(), o[:, 13].mean(), o[:, 14].mean(), rough, step, float(hit_fraction),
         float(np.log1p(o[-1, 9])),
-    ], dtype=np.float64)
+    ] + _features_13(o), dtype=np.float64)
+
+
+def _features_13(o: np.ndarray) -> list:
+    """21.10 (G2, opinion 1.3): the appended features; an observation record of the 27.09 layout (15
+    fields) gives zeros for the fields it lacks. ``ring_fill``: distinct strict-gauge channels of the
+    current cluster over the channels a body of its height spans at its range on the Pandar ROI raster
+    (0 where the sensor has no ring field, as the Falcon); ``raw_per_vox``: raw returns per occupied voxel;
+    ``dist_span``: metres approached over the window; ``top_rel``: the last top above the window's mean."""
+    if o.shape[1] < len(OBS_FIELDS):
+        o = np.hstack([o, np.zeros((o.shape[0], len(OBS_FIELDS) - o.shape[1]))])
+    d, h, top = o[:, 0], o[:, 5], o[:, 7]
+    exp_rings = 1.0 + h[-1] / max(d[-1] * _RING_STEP_RAD, 1e-3)
+    return [o[:, 17].mean(), o[:, 18].mean(), o[:, 19].mean(), o[:, 20].mean(), o[:, 21].mean(),
+            float((o[:, 15] / np.maximum(o[:, 8], 1.0)).mean()), float(min(o[-1, 16] / exp_rings, 3.0)),
+            float(d[0] - d[-1]), float(top[-1]), float(top[-1] - top.mean())]
 
 
 class TrackOpinion:

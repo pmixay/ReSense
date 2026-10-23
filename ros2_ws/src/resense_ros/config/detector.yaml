@@ -93,7 +93,7 @@ resense:
     floor_verify_tolerance: 0.5    # m, allowed deviation of the far side base from its near-range height
     floor_verify_min_points: 5     # side points per bin for the bin to count
     floor_verify_max_range: 250.0  # m, how far the verification is attempted
-    axis_joint_fit: false          # (K2 held off for P4, captain 19.10; variant B: true / range false / min_curvature 0.0001 / reach_cap true) 19.10 (K2, off): joint least-squares axis of the near rail-pair midpoints and every tunnel-boundary segment (track.joint_axis_fit): tangent, curvature and a curvature step at axis_joint_knot from one fit, grown outward; off = as before
+    axis_joint_fit: true          # 1.3 (user 21.10): on, with axis_joint_range false / min_curvature 0.0001 / union true (K2 union r3); 19.10 (K2): joint least-squares axis of the near rail-pair midpoints and every tunnel-boundary segment (track.joint_axis_fit): tangent, curvature and a curvature step at axis_joint_knot from one fit, grown outward; off = as before
     axis_joint_knot: 60.0          # 19.10: m, X from which the curvature may change (C1 piecewise axis); 0 = a single quadratic
     axis_joint_step_sigma: 0.001   # 19.10: 1/m, prior SD of that curvature step
     axis_joint_min_far_bins: 4     # 19.10: boundary bins beyond the knot needed to fit a step
@@ -103,10 +103,11 @@ resense:
     axis_joint_grow_start: 40.0    # 19.10: m, first range of the outward growth
     axis_joint_grow_step: 16.0     # 19.10: m, growth step
     axis_joint_min_segment: 3      # 19.10: bins a boundary segment needs to take part
-    axis_joint_range: true         # 20.10: with axis_joint_fit, the trusted range from the joint fit too (v3); false = axis shape only, range policy as before (v4)
-    axis_joint_min_curvature: 0.0  # 19.10 (v5, off; 1/m; with axis_joint_fit and axis_joint_range false): > 0 = the estimator without the joint fit runs on its own state and is the output; the joint fit's shape replaces its axis shape only on frames with |curvature| >= this (a curve as it sees it); 0 = off (v4)
+    axis_joint_range: false         # 20.10: with axis_joint_fit, the trusted range from the joint fit too (v3); false = axis shape only, range policy as before (v4)
+    axis_joint_min_curvature: 0.0001  # 19.10 (v5, off; 1/m; with axis_joint_fit and axis_joint_range false): > 0 = the estimator without the joint fit runs on its own state and is the output; the joint fit's shape replaces its axis shape only on frames with |curvature| >= this (a curve as it sees it); 0 = off (v4)
     axis_joint_reach_cap: false    # 19.10 (v5b, off; needs axis_joint_min_curvature > 0): on the frames with the joint shape, the trusted range also capped at the boundaries' reach along that axis + axis_valid_margin
     axis_joint_reach_dual: 0.0     # 20.10 (v5c, off; m; needs axis_joint_reach_cap): extends the capped range by this much (not beyond the base range); an obstacle starting between the cap and that end must also reach into the gauge from the base axis, else advisory as in v5b; 0 = off (v5b)
+    axis_joint_union: true        # 21.10 (K2 union, on since 1.3; with axis_joint_fit true / axis_joint_range false / axis_joint_min_curvature > 0): the track model stays the estimate without the joint fit; on a curve frame the joint shape, trusted as far as a boundary follows it, is a second gauge that only adds obstacles (Detector._curve_clusters)
     walls_smoothing_distance: 0.0  # 19.10 (K1, off): m; > 0: the axis EMA exponent and rate limits per distance travelled (travel / this, at least walls_smoothing_min_k, at most the frame periods); unknown speed as before
     walls_smoothing_min_k: 0.05    # 19.10 (K1): lower bound of that exponent
     walls_smoothing_standstill_speed: 1.0  # 19.10 (K1): m/s; no speed estimate and a texture profile without any change count as standing while the last confident estimate is at most this
@@ -277,6 +278,7 @@ resense:
     doubt_sticky: true            # 27.09: true = the opinion at the onset decides; a withheld track is released only by doubt_extra_hits or doubt_near
     doubt_body_height: 1.0         # 27.09 (judges' review; 0 = off): m, a track whose cluster stands at least this tall ...
     doubt_body_range: 40.0         # 27.09: m, ... and is this near is never delayed (a standing body, not a flat floor / bed return: every ride track the opinion withheld within 40 m was at most 0.5 m tall; set O #6, 1.9 m tall, was withheld at 28.7 m)
+    doubt_falcon: true             # 21.10 (G2, track opinion 1.3; true = v1.2.0): false = the Falcon profiles (falcon_ros / falcon_native, range model falcon_prime) turn the opinion off; the model is trained on Pandar tracks only (docs/evidence/track_opinion_2026-10-21)
     thin_far_min_distance: 60.0     # 27.09 (P5 range, on; 0 = off): m; a scan line (corridor cluster flatter than cluster.min_height) at least this far, inside the strict envelope (zone gauge) with >= thin_far_min_voxels strict voxels and overlapping no other cluster of the frame, may start and continue a track; while the gauge vote of a track needs such hits, the track becomes a STOP only while its distance approaches on a line (approach_*) and is reported as advisory otherwise, never hidden; a track whose clean hits alone vote gauge, and a STOP in the previous frame, keep the usual rules: a bed / vault scan line is fixed in the sensor frame or jumps with the pitch, an object approaches at the train's speed
     thin_far_min_voxels: 3         # 29.09: synthetic Set F 0.5 m box improved 1/6 -> 2/6
     far_min_ring_count: 0         # experimental: distinct current-frame strict-gauge channels for far sparse evidence; 0 = off
@@ -417,6 +419,19 @@ resense:
     # 26.09 (judgements of 24.09 and 26.09): latency over the budget stays a health warning
     # (/resense/health, status JSON) but no longer turns GO into CAUTION; true = v0.6 behaviour
     latency_affects_decision: false
+    # 21.10 (P4 review 20.10 on the Falcon, docs/evidence/falcon_clear_distance_2026-10-21): the three only lower
+    # clear_distance (no detection, warning, level, monitored_range or decision changes).
+    # clear_lost_model (OFF: its pre-registered cost limit failed, doubleT_platform 6.7 % of the frames against 3 %,
+    # where the bed is right): while the track model is on its prior (rail pair found in < min_lock_rate of the last
+    # lock_window frames) clear_distance is 0 (ALGORITHM 4b: a lost track model makes it 0)
+    clear_lost_model: false
+    # clear_lost_bed (ON): the bed is lost when the track model's rail head is more than cluster.mount_cross_tol +
+    # mount_cross_grade * X away from the calibrated mount plane at some X = 5, 10 .. mount_cross_range m (the H'
+    # criterion applied to the bed; needs mount_cross_tol > 0 and a final mount calibration): clear_distance is 0
+    clear_lost_bed: true
+    # clear_round_down (ON): a clear distance bounded by a confirmed obstacle or a candidate is rounded down to
+    # 0.1 m, not to nearest (it exceeded a STOP detection by up to 0.05 m)
+    clear_round_down: true
     # 25.09 (SCORECARD §6 row 6; docs/evidence/results/p3_clear_distance_2026-09-25.json): cap
     # clear_distance at the nearest unconfirmed / advisory candidate touching the envelope;
     # never changes a detection or the decision; false = confirmed obstacles only (v0.6).
@@ -477,3 +492,6 @@ resense:
     roi_half_width: 3.0
     roi_height: [-0.8, 4.5]
   voxel: 0.0
+  farrange:                        # 21.10 (Falcon long range, docs/evidence/falcon_far_range_2026-10-21): only the falcon_ros /
+    with_falcon_profile: true      #   falcon_native profiles read it (far straight axis, 400 m crop); Pandar never does
+    axis_stable: true              # 21.10: tube second side, aged two-sided support vote, two sides only (false = the 19.10 axis)

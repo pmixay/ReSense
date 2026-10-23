@@ -1,0 +1,95 @@
+{
+  "source": "31154690",
+  "profile": "falcon_ros",
+  "rate": 1.0,
+  "input_cdr_count": 499,
+  "all_input_cdr_identical": true,
+  "all_frame_status_stamps_match_input": true,
+  "frame_status_count": 499,
+  "first_stop_after_player_command_s": 3.7906808853149414,
+  "first_stop_after_first_input_s": 0.22434663772583008,
+  "first_stop_distance_m": 144.0,
+  "decisions_in_status_stream": {
+    "FAULT": 1,
+    "CAUTION": 204,
+    "GO": 5,
+    "STOP": 289
+  },
+  "frame_freshness_reasons": {
+    "epoch_unconfirmed": 1,
+    "catchup": 2,
+    "current": 496
+  },
+  "counter_note": "node.frames is published before increment (detector_node.py:1053–1057); last index is N-1",
+  "final_node_stats": {
+    "latency_ms": 34.06,
+    "fps": 10.03,
+    "frames": 498,
+    "dropped_frames": 0,
+    "catchup_skipped": 0,
+    "catchup": false,
+    "input_period_ms": 100.0,
+    "ego_speed_mps": null,
+    "ego_speed_source": null,
+    "input_topic": "/iv_points",
+    "recording": 1,
+    "input_generation": 0,
+    "decode_ms": 4.33,
+    "detect_ms": 29.73,
+    "cpu_cores": 0.49,
+    "rss_peak_mb": 155.9
+  },
+  "sqlite_integrity": "ok",
+  "person_check": {
+    "source_frame": 2805,
+    "reviewed_anchor_frames": [
+      2800,
+      2825
+    ],
+    "interpolated_raw_center": [
+      144.15440368652344,
+      -0.2571966916322708,
+      -7.031231307983399
+    ],
+    "detection": {
+      "id": 2,
+      "zone": "gauge",
+      "distance": 144.0,
+      "lateral": -1.15,
+      "center": [
+        144.22,
+        -0.01,
+        -7.03
+      ],
+      "size": [
+        0.47,
+        0.35,
+        0.88
+      ],
+      "n_points": 7,
+      "confidence": 1.0,
+      "age": 5,
+      "height_min": 0.39,
+      "intensity": 20.5,
+      "reason": "",
+      "kind": ""
+    },
+    "tolerance_xyz_m": [
+      1.5,
+      0.8,
+      1.0
+    ],
+    "displaced_structure_rejected": true,
+    "scope": "first STOP identity; not a new full-window accuracy score"
+  },
+  "video": {
+    "duration_s": 57.266667,
+    "size_bytes": 54624456,
+    "sha256": "09758532ad14557ea7a3ce6a7fa800d017030c891b18f187cd5af473128cb6fa",
+    "full_decode": "PASS",
+    "size": [
+      1920,
+      1080
+    ]
+  }
+}

@@ -4,13 +4,13 @@ The user requested synchronization of code and communication with P3.
 
 ## Sources and communication
 
-- P3: `experiment/cross-ring-sparse-evidence`, `6385ff9`, including the fresh
+- P3: `experiment/cross-ring-sparse-evidence` (branch deleted; raw outputs not retained), `6385ff9`, including the fresh
   STOP-onset candidate and measurements at `290c337`.
-- Score checkpoint: `gpt-score-push-20260928`, `8547009`; its bounded low-height
+- Score checkpoint: `gpt-score-push-20260928` (branch deleted; raw outputs not retained), `8547009`; its bounded low-height
   continuation was measured at `ef1d8f5` and integrated at `84763cf`.
-- Combined work: `integration/p3-score-sync-20260928`, based on P3's branch with
+- Combined work: `integration/p3-score-sync-20260928` (branch deleted; raw outputs not retained), based on P3's branch with
   the complete score-branch history merged in. [PR #24](https://github.com/pmixay/ReSense/pull/24)
-  was merged as `f41d20a`; ongoing work is on `experiment/cross-ring-sparse-evidence`.
+  was merged as `f41d20a`; ongoing work was on `experiment/cross-ring-sparse-evidence` (branch deleted; raw outputs not retained).
 - [Handoff to P3's commit author](https://github.com/pmixay/ReSense/commit/290c33737662c91095a8d33de19f20122fe38ec5#commitcomment-202461504).
   A reply has not yet been received. The integration PR is the shared
   review channel; the separate P3 agent process is not visible on this app server.
@@ -50,9 +50,9 @@ Per-frame negative alarms and monitoring coverage are unchanged. This accepts
 the merged defaults for development; the experimental onset rule stays opt-in.
 
 The user explicitly requested merging PR #24 and continuing work directly on
-`experiment/cross-ring-sparse-evidence`. That branch is the ongoing work branch.
+`experiment/cross-ring-sparse-evidence` (branch deleted; raw outputs not retained). That branch was the ongoing work branch.
 CI now runs the original-bag and offline-image checks on it. The earlier
-`gpt-score-push-20260928` branch is a preserved checkpoint. CI on the score source
+`gpt-score-push-20260928` branch (branch deleted; raw outputs not retained) was a preserved checkpoint. CI on the score source
 passed full-rate positive and clear bags; local positive runtime failures remain
 recorded, and merged-source CI is tracked separately.
 

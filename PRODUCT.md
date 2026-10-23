@@ -35,35 +35,40 @@ controls, system metrics and timeline/transport. Keep scenario switching, camera
 presets and orbit/reset, seeking, speed, event stepping, looping, fullscreen,
 keyboard operation and recovery from data/GPU failures.
 
-The user-supplied `images (1).jpg` is the physical display reference: rounded black
-glass, silver housing and shallow depth. The modeled display belongs to the primary
-visualization, while surrounding controls inherit the application's shared design.
-The display is installed into a believable modeled train wall, with restrained
-internal illumination, cover-glass reflections and physical mounting details; the
-environment fills the Player workspace beneath the existing navigation without becoming a
-second app shell. Its neutral pose is straight; mouse pressure adds restrained parallax
-with a slower railing layer, while a feathered dark control dock preserves readability.
-The page must feel like another ReSense stage, with a continuous background and no
-duplicate local logo, title, stage rail or standalone player header.
-On Player the existing metro-line stage rail matches Upload and is the only pinned navigation; grouped
-Data/Analysis/System chrome is omitted to recover display height. A height control
-expands the live view at the same width. The interior follows inspected Moscow-2020
-saloon material cues, with a sharp curved near-field rail, detailed formed panels and door fittings,
-broad neutral ceiling LEDs, warm side coves and content-driven light on nearby surfaces.
-The display and interior remain fixed in the viewport. Playback and demo-affecting controls
-stay visible at the bottom. Tapping «Телеметрия» toggles compact left/right side panels;
-the central image stays clear and most of the display remains visible. Scrolling affects only
-open side-panel contents. Charging fittings align to the door pillar and wall
-trim stops before the door; artificial roof bands are omitted from the close wall crop.
-Raleway remains in use; the requested Esh/Struve comparison was deferred by the user.
+The Player is the driver's cab of a metro train, seen from the seat (user brief of
+21.10, replacing the earlier screen installed in a saloon wall). The live LiDAR view
+is the windshield; around it a realistic cab in the application's general style,
+not a spaceship: a black-bonded windshield with its frit band and light-grey
+moulded trim, A-pillars with platform-camera monitors, vent grilles and grab
+handles, side windows, a sun-visor housing, an overhead switch panel, and a
+graphite desk with displays, manometers, push buttons, the driver's controller,
+emergency stop and radio (Moskva-2020 cues). Instrument faces are decorative and
+never show values that could be read as measurements. The cab fills the Player
+workspace beneath the existing navigation without becoming a second app shell. Its
+neutral pose is straight; mouse pressure leans the seated eye (head parallax),
+while a feathered dark control dock preserves readability. The page must feel like
+another ReSense stage, with no duplicate local logo, title, stage rail or
+standalone player header. On Player the existing metro-line stage rail matches
+Upload and is the only pinned navigation; grouped Data/Analysis/System chrome is
+omitted to recover display height. A height control expands the live view at the
+same width. Light from the windshield display falls on nearby cab surfaces.
+Playback and demo-affecting controls stay visible at the bottom. Tapping
+«Телеметрия» toggles compact left/right side panels; the central image stays clear.
+Raleway remains in use.
+
+Entering the Player from another section plays no doors: you turn right from the
+page (it swings away like the view through the open side doors), walk the saloon
+aisle to the cab, its door slides open, you step in and sit down (the view lowers),
+landing exactly on the Player. Then the cab's screens power up Iron Man-style and a
+short initialization lists the run's facts before playback starts. Any key or click
+skips the walk; reduced motion keeps the short fade and skips the boot.
 
 The latest user-supplied photographs (`IMG_8349.jpeg`, `IMG_8350.jpeg`, and
-`1591221.jpeg`, main commit `7e38c01`) guide the next material pass. Keep the existing
-screen, door and foreground handrail anchors locked. Use warm bronze metalwork,
-off-white molded paneling, layered black glazing surrounds and gray-taupe woven
-cantilevered seating below the screen. Photos remain reference-only.
+`1591221.jpeg`, main commit `7e38c01`) guide the saloon of that walk: warm bronze
+metalwork, off-white molded paneling, layered black glazing surrounds and gray-taupe
+woven cantilevered seating. Photos remain reference-only.
 
-Changing application sections closes a paired, dimensional metro-door overlay,
+Changing application sections (except entering the Player, above) closes a paired, dimensional metro-door overlay,
 then glides through the station order toward the selected tab. Targets to the left
 enter from the left; targets to the right enter from the right. Every intervening
 tab passes behind the glass in order, with stronger motion blur and one continuous
@@ -85,10 +90,8 @@ must remain reliable by mouse, touch, keyboard and browser history. Player frame
 camera and run URL changes remain immediate. Reduced motion uses a brief non-spatial
 fade. The decorative doors contain no controls and release keyboard focus to the page.
 
-The current user correction restores the Player interior from before the glossy
-material pass: the original wall, copper-toned rails, door, seats, screen housing
-and saloon lighting/reflections. Button highlights and shadows are restrained,
-with their light/edge opacity reduced by roughly two thirds.
+Button highlights and shadows are restrained, with their light/edge opacity reduced by
+roughly two thirds.
 The outside-camera train is a rounded, detailed metro carriage. Navigation shows
 only two full-height sliding leaves; the user's screen is the doorway frame, with
 no added jambs, overhead header or threshold around the transition.

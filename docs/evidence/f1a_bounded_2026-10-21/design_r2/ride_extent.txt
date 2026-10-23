@@ -1,0 +1,42 @@
+doubleT_platform_r0031_001.npz   H 0.164 own-other -0.017 ext-H E1 +0.030 E2 +0.030 E3 +0.030 E5 +0.046 | widened E2 +0.030
+doubleT_platform_r0032_002.npz   H 0.152 own-other -0.002 ext-H E1 +0.009 E2 +0.031 E3 +0.039 E5 +0.048 | widened E2 +0.031
+doubleT_platform_r0032_003.npz   H 0.168 own-other +0.015 ext-H E1 +0.024 E2 +0.033 E3 +0.033 E5 +0.041 | widened E2 +0.033
+doubleT_platform_r0032_004.npz   H 0.168 own-other -0.015 ext-H E1 +0.017 E2 +0.025 E3 +0.025 E5 +0.034 | widened E2 +0.025
+doubleT_platform_r0034_005.npz   H 0.144 own-other -0.025 ext-H E1 +0.017 E2 +0.017 E3 +0.024 E5 +0.031 | widened E2 +0.017
+doubleT_platform_r0035_006.npz   H 0.142 own-other +0.017 ext-H E1 +0.023 E2 +0.023 E3 +0.028 E5 +0.028 | widened E2 +0.023
+doubleT_platform_r0035_007.npz   H 0.149 own-other -0.019 ext-H E1 +0.006 E2 +0.021 E3 +0.021 E5 +0.021 | widened E2 +0.021
+new_data_1_r1259_001.npz         H 0.147 own-other +0.001 ext-H E1 +0.016 E2 +0.016 E3 +0.016 E5 +0.040 | widened E2 +0.016
+new_data_1_r1259_002.npz         H 0.152 own-other -0.010 ext-H E1 +0.035 E2 +0.047 E3 +0.047 E5 +0.047 | widened E2 +0.047
+new_data_1_r1260_003.npz         H 0.169 own-other +0.005 ext-H E1 +0.025 E2 +0.039 E3 +0.039 E5 +0.057 | widened E2 +0.039
+new_data_1_r1260_004.npz         H 0.208 own-other -0.000 ext-H E1 -0.017 E2 +0.012 E3 +0.029 E5 +0.029 | widened E2 +0.012
+new_data_1_r1260_005.npz         H 0.208 own-other -0.018 ext-H E1 +0.012 E2 +0.029 E3 +0.029 E5 +0.029 | widened E2 +0.029
+new_data_1_r1261_006.npz         H 0.133 own-other -0.018 ext-H E1 +0.018 E2 +0.035 E3 +0.035 E5 +0.047 | widened E2 +0.035
+new_data_1_r1261_007.npz         H 0.226 own-other +0.000 ext-H E1 +0.020 E2 +0.020 E3 +0.020 E5 +0.055 | widened E2 +0.020
+new_data_1_r1263_008.npz         H 0.150 own-other -0.004 ext-H E1 +0.033 E2 +0.052 E3 +0.052 E5 +0.074 | widened E2 +0.052
+new_data_1_r1264_009.npz         H 0.129 own-other +0.008 ext-H E1 +0.020 E2 +0.020 E3 +0.034 E5 +0.051 | widened E2 +0.020
+new_data_1_r1264_010.npz         H 0.163 own-other -0.000 ext-H E1 +0.017 E2 +0.020 E3 +0.020 E5 +0.026 | widened E2 +0.020
+new_data_1_r1264_011.npz         H 0.183 own-other -0.027 ext-H E1 +0.006 E2 +0.006 E3 +0.006 E5 +0.070 | widened E2 +0.006
+new_data_1_r1266_012.npz         H 0.138 own-other -0.019 ext-H E1 +0.013 E2 +0.032 E3 +0.051 E5 +0.069 | widened E2 +0.032
+new_data_1_r1266_013.npz         H 0.170 own-other +0.007 ext-H E1 +0.019 E2 +0.019 E3 +0.044 E5 +0.054 | widened E2 +0.019
+new_data_1_r1266_014.npz         H 0.151 own-other -0.026 ext-H E1 +0.037 E2 +0.037 E3 +0.056 E5 +0.065 | widened E2 +0.037
+new_data_1_r1267_015.npz         H 0.148 own-other +0.004 ext-H E1 +0.004 E2 +0.004 E3 +0.004 E5 +0.004 | widened E2 +0.004
+new_data_2_r1327_001.npz         H 0.145 own-other -0.023 ext-H E1 +0.022 E2 +0.022 E3 +0.022 E5 +0.022 | widened E2 +0.022
+new_data_2_r1334_002.npz         H 0.134 own-other -0.006 ext-H E1 +0.020 E2 +0.020 E3 +0.040 E5 +0.040 | widened E2 +0.020
+new_data_2_r1334_003.npz         H 0.148 own-other +0.007 ext-H E1 +0.027 E2 +0.027 E3 +0.037 E5 +0.037 | widened E2 +0.027
+new_data_2_r1335_004.npz         H 0.153 own-other +0.016 ext-H E1 +0.019 E2 +0.019 E3 +0.030 E5 +0.050 | widened E2 +0.019
+new_data_2_r1335_005.npz         H 0.153 own-other -0.016 ext-H E1 +0.011 E2 +0.011 E3 +0.023 E5 +0.044 | widened E2 +0.011
+new_data_2_r1336_006.npz         H 0.149 own-other +0.012 ext-H E1 +0.022 E2 +0.041 E3 +0.041 E5 +0.044 | widened E2 +0.041
+new_data_2_r1336_007.npz         H 0.164 own-other -0.001 ext-H E1 +0.025 E2 +0.025 E3 +0.028 E5 +0.039 | widened E2 +0.025
+new_data_2_r1336_008.npz         H 0.164 own-other -0.001 ext-H E1 +0.028 E2 +0.039 E3 +0.039 E5 +0.039 | widened E2 +0.039
+new_data_2_r1337_009.npz         H 0.154 own-other +0.000 ext-H E1 +0.019 E2 +0.019 E3 +0.039 E5 +0.039 | widened E2 +0.019
+new_data_2_r1340_010.npz         H 0.148 own-other -0.006 ext-H E1 +0.013 E2 +0.028 E3 +0.028 E5 +0.030 | widened E2 +0.028
+new_data_2_r1340_011.npz         H 0.148 own-other +0.006 ext-H E1 +0.019 E2 +0.036 E3 +0.036 E5 +0.046 | widened E2 +0.036
+new_data_2_r1340_012.npz         H 0.176 own-other +0.008 ext-H E1 +0.018 E2 +0.022 E3 +0.022 E5 +0.031 | widened E2 +0.022
+new_data_4_r0074_001.npz         H 0.149 own-other +0.007 ext-H E1 +0.017 E2 +0.017 E3 +0.026 E5 +0.045 | widened E2 +0.017
+new_data_4_r0074_002.npz         H 0.160 own-other -0.015 ext-H E1 +0.018 E2 +0.018 E3 +0.018 E5 +0.043 | widened E2 +0.018
+new_data_4_r0096_003.npz         H 0.100 own-other -0.024 ext-H E1 +0.006 E2 +0.006 E3 +0.006 E5 +0.006 | widened E2 +0.006
+|own-other| p50 0.008 p90 0.023 max 0.027
+E1: ext-H p50 +0.019 p90 +0.029 max +0.037; <= 0.03: 34/37  <= 0.04: 37
+E2: ext-H p50 +0.022 p90 +0.039 max +0.052; <= 0.03: 26/37  <= 0.04: 34
+E3: ext-H p50 +0.029 p90 +0.045 max +0.056; <= 0.03: 20/37  <= 0.04: 30
+E5: ext-H p50 +0.041 p90 +0.060 max +0.074; <= 0.03: 9/37  <= 0.04: 16

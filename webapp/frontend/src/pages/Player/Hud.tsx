@@ -12,6 +12,7 @@ import { RULER_MARKS, type SceneOverlay } from '../../player/scene';
 import { TICK_LABELS, type CamMode } from '../../player/geometry';
 import type { Motion } from '../../player/motion';
 import styles from './Player.module.css';
+import { CabBoot } from './CabBoot';
 
 export type OverlaySink = (ov: SceneOverlay) => void;
 
@@ -57,9 +58,12 @@ export interface HudProps {
   register: (sink: OverlaySink | null) => void;
   /** no 3D view (WebGL missing or lost): the labels anchored in it are hidden */
   noView?: boolean;
+  /** the cab's boot: annotations wait for the picture; the initialization log runs over it */
+  boot?: 'pending' | 'running' | 'done';
+  bootLines?: readonly string[];
 }
 
-export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, cloudError, buffering, framesFailed, onRetryCloud, motion, register, noView = false }: HudProps) {
+export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, cloudError, buffering, framesFailed, onRetryCloud, motion, register, noView = false, boot = 'done', bootLines = [] }: HudProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const detRefs = useRef<(HTMLDivElement | null)[]>([]);
   const warnRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -157,7 +161,8 @@ export function Hud({ frame, mode, free, onResetView, hasClouds, cloudLoading, c
   // the speed the job or the detector reported; the glide's fallback (objects' shift) is not shown as one
   const speedShown = motion.v > 0.05 && (motion.source === 'given' || motion.source === 'estimated');
   return (
-    <div ref={rootRef} className={`${styles.hud} ${noView ? styles.hudNoView : ''}`}>
+    <div ref={rootRef} className={`${styles.hud} ${noView ? styles.hudNoView : ''}`} data-boot={boot}>
+      {boot === 'running' && <CabBoot lines={bootLines} />}
       <div className={styles.hudc}>
         <div className={styles.g}>
           <Icon name="camera" size={16} />

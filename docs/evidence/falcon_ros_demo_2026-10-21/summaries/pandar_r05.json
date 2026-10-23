@@ -1,0 +1,59 @@
+{
+ "trial": "pandar_r05",
+ "expected_frames": 201,
+ "frames_with_status": 200,
+ "inputs_seen_by_recorder": 116,
+ "decisions": {
+  "FAULT": 1,
+  "GO": 7,
+  "STOP": 192
+ },
+ "freshness_valid": 198,
+ "freshness_reasons": {
+  "epoch_unconfirmed": 2,
+  "current": 198
+ },
+ "result_age_status_minus_input_arrival": {
+  "n": 115,
+  "median_s": 0.0324,
+  "p95_s": 0.0441,
+  "max_s": 0.079
+ },
+ "node_source_age_s": {
+  "n": 200,
+  "median_s": 0.0919,
+  "p95_s": 0.1054,
+  "max_s": 0.134
+ },
+ "node_last_frame_stats": {
+  "frames": 199,
+  "dropped_frames": 4,
+  "catchup_skipped": 0,
+  "rss_peak_mb": 239.1,
+  "fps": 5.0,
+  "cpu_cores": 0.45
+ },
+ "container_mem_MiB_max": 221.1,
+ "first_status_since_player_cmd_s": 3.83,
+ "last_status_since_player_cmd_s": 44.16,
+ "decision_changes_[index_in_processed,decision,nearest_m,since_player_cmd_s]": [
+  [
+   0,
+   "FAULT",
+   null,
+   3.83
+  ],
+  [
+   1,
+   "GO",
+   null,
+   3.86
+  ],
+  [
+   8,
+   "STOP",
+   55.53,
+   5.14
+  ]
+ ]
+}

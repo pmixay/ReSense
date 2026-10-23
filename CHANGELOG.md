@@ -4,25 +4,96 @@
 > 19.10, with every measurement, are in [`docs/archive/CHANGELOG_history_2026-10-19.md`](docs/archive/CHANGELOG_history_2026-10-19.md);
 > the full dated history of 15–29.09 in [`docs/archive/CHANGELOG_2026-09.md`](docs/archive/CHANGELOG_2026-09.md).
 > **Audience:** jury (spec §5 "как менялось качество"), team · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-10-20, ~19:00 MSK: [1.2.0] state and the 20.10 entries against git (`main` `8453458`), GitHub (PRs #43–#47,
+> **Last verified:** 2026-10-23: version state (published v1.0.0 and v1.2.0, 1.3.0 an unreleased candidate, no tag `v1.3.0`) against git tags and the 22.10 review; the jury review of v1.2.0 is the team's statement, no score in the repository. Earlier, 2026-10-20, ~19:00 MSK: [1.2.0] state and the 20.10 entries against git (`main` `8453458`), GitHub (PRs #43–#47,
 > CI runs, releases) and `python3 scripts/detector_freeze.py verify` (PASS); the 19.10 entries against `DECISIONS.md` rows 35–44;
 > the older sections against the archived text they were cut from (checked 19.10).
 
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), loosely; versions up to v0.6.4 are team labels; package 1.0.0
-dates from 25.09. **The published release is v1.0.0 only.** 1.1.0 (sealed 16.10) was not released and will not be (captain,
-19.10); **1.2.0 is the next release and is not released**: the detector seal passes `verify` since the R3 reseal of 20.10. Figures are the team's, measured when a change landed (detector figures on the 1 cm frame cache). Current results:
+dates from 25.09. **Published releases: v1.0.0 and v1.2.0** (v1.2.0: tag `v1.2.0` = `3b73bbe`, published on GitHub 2026-10-20 20:58 UTC, image archive with `.sha256` and `SHA256SUMS`, built and checked by release workflow run 39496692666; `scripts/verify_release.sh v1.2.0` exits 0, checked 22.10). 1.1.0 (sealed 16.10) was not released and will not be (captain,
+19.10); its content is part of 1.2.0. The detector seal passes `verify` since the R3 reseal of 20.10. Figures are the team's, measured when a change landed (detector figures on the 1 cm frame cache). Current results:
 [`README.md`](README.md), [`docs/SCORECARD.md`](docs/SCORECARD.md). "Set O" = the organizers' synthetic objects; "ride" = the
 20-minute, 13 km recording `new_data`.
 
-## [1.2.0] — unreleased: LiDAR integration candidate of 18.10, the integration of 19.10 and the work of 20.10
+## [1.3.0] — CANDIDATE, not released: sealed and accepted with conditions 22.10, no tag, no GitHub release, no image archive; the integration of 21–22.10
+
+**State (22.10).** All four version declarations are 1.3.0. Seal `docs/evidence/detector_freeze_2026-10-22_1.3.0.json`
+(42 files, source `853a05b7…162d7d`); measured detector tree `671ac9e`, release commit `ed67d25` (differs only by version
+strings and two YAML comments). Independent final-bundle review: **ACCEPT WITH CONDITIONS**
+([`docs/evidence/review_1.3.0_2026-10-22/README.md`](docs/evidence/review_1.3.0_2026-10-22/README.md); accepted,
+[`DECISIONS.md`](docs/DECISIONS.md) row 58). Integration evidence:
+[`docs/evidence/integration_1.3_2026-10-21/README.md`](docs/evidence/integration_1.3_2026-10-21/README.md). Merged into the
+P1 line at `f24d939`: CI run 39778805197 green on all nine jobs; full suite 2,552 passed, 0 failed. Every row below is
+against a fresh v1.2.0 (`3b73bbe`) run on the same data. Not a G3 run. The tag `v1.3.0` follows the user's approval; until then the **current published release is v1.2.0** (`3b73bbe`). The review was done by an AI session, not the jury; the figures below are in-sample (our own recordings, injected objects, one real Falcon recording with one person) and have not been re-measured by an independent judge (no J1). On 23.10 a re-run of v1.0.0, v1.2.0 and this tree on `doubleT_obstacle` and `roundT_doubleT` gave identical STOP/CAUTION decisions in all three (193 of 201 STOP; none on the empty tunnel): [`docs/evidence/version_check_2026-10-23/`](docs/evidence/version_check_2026-10-23/README.md).
+
+### Detector
+
+- **K2 union (curve gauge as a second gauge that only adds obstacles), on.** `track.axis_joint_fit` true,
+  `axis_joint_range` false, `axis_joint_min_curvature` 1e-4, `axis_joint_union` true. On a curve frame the joint
+  rail + boundary shape adds obstacles the base gauge does not report; nothing the base gauge reports is changed.
+  Range at the same object placement: curve person first STOP 46.49 → **71.19 m** (`roundT_doubleT`) and
+  76.89 / 84.25 → **94.58 / 104.98 m** (`roundT_pressureGate_roundT`); Falcon manual path first person STOP
+  124.84 → **126.36 m**, 0 of 1,360 person STOP frames lost. Cost: ride +3 STOP episodes (26 → 29), traced; one STOP
+  onset one frame later with the train standing (range job D_cube05 frame 330), accepted by the user; per-frame time
+  +25–38 % at p50 (K2 review, shared machine).
+- **Falcon clear distance.** `health.clear_lost_bed` and `clear_round_down` on: clear distance is 0 when the track
+  model's bed leaves the calibrated mount plane, and a bounded clear distance is rounded down. Clear distance only
+  goes down (Falcon 1,006 rows lowered, 0 raised; STOP rows with clear beyond the nearest STOP detection 575 → 0);
+  decisions, detections and warnings unchanged. With a lost bed, clear is 0 without a health message (accepted).
+- **Falcon far range (revision 2), on under the Falcon profiles only.** `falcon_ros` first person STOP 127.3 →
+  **150.5 m**, held STOP 114.4–123.0 → **129.4–135.6 m** over six start frames, false STOP episodes 3 → 0 on the whole
+  recording; 0 GO frames with the person inside the reported clear range. Pandar rows unchanged.
+- **Track opinion 1.3:** `tracking.doubt_falcon` (default true = v1.2.0 behaviour) and an off-by-default model file;
+  identical to v1.2.0 at its defaults (0 differing rows on the gate, the ride, Falcon and the marked bags).
+- **Integration fix:** the K2 curve pass now saves and restores the far-range state of the frame; without it the
+  far line's report cap was lost on curve frames under the Falcon profiles (728 rows with a larger clear / monitored
+  range, 4 GO frames with the person inside the monitored range).
+
+### Node
+
+- **Range policy `clear_range_policy:=auto` by default (user decision 22.10, DECISIONS row 59):** `conservative` when
+  the sensor's range-density model is known, `legacy` otherwise. The model comes from a named `sensor_profile`, an
+  explicit `range_sensor_model`, or the cloud's own point fields (`sensor_profiles.detect_range_model`): Falcon Prime
+  by `scan_id` / `scan_idx` / `elongation` without `ring`, Pandar128 by `ring` with 64–128 channels in view; the
+  detection is retried on the first 10 frames of each input and forgotten at every input reset. Only the range model
+  is detected; axes, calibration and the detector's profile stay explicit. Status reports `range_model_source`
+  (`profile` / `parameter` / `detected` / `none`). Decisions, detections and warnings are identical under every
+  policy (Falcon 2 × 4,443 frames, 15,269 Pandar gate frames); only the reported clear range changes and never upward.
+  Under `conservative` the range is capped by the small-target density limit (`pandar128`: at most 88.7 m;
+  `falcon_prime`: Falcon 4,050 of 4,443 rows lowered); without a known model `auto` reports the legacy range, so the
+  default `manual` launch no longer reports 0 on every frame. `clear_range_policy:=conservative` / `legacy` force a
+  policy.
+
+### Release rows (final tree, against fresh v1.2.0)
+
+| row | v1.2.0 | 1.3.0 |
+|---|---|---|
+| full regression gate, no `--allow` | PASS | **PASS** |
+| X3 (40 cases, 260 comparisons) | reference | **PASS**, 0 changed (0 STOP frames lost or gained per frame) |
+| ride events / STOP episodes / STOP frames | 23 / 26 / 111 | 25 / 29 / 119 |
+| five empty recordings, STOP episodes | 11 | 11 |
+| set O STOP frames | 450 | 450 |
+| marked bags STOP frames | 126 / 185 / 142 | identical, every marked object identical |
+| Falcon manual: person STOP lost, first STOP, episodes (false) | —, 124.8 m, 7 (2) | 0, 126.4 m, 12 (2) |
+| Falcon `falcon_ros`: person STOP lost, first STOP, episodes (false) | —, 127.3 m, 8 (3) | 0, 150.5 m, 13 (0) |
+| full test suite | — | 2,551 passed; 1 fails identically on v1.2.0 (`test_rail_start`, needs the ride) |
+
+False-alarm budget (user's terms, +11 STOP episodes over Falcon + ride + five empty): ride +3 (attributed, K2); Falcon
++5 on each path, all inside the person's own STOP sequence; false episodes on Falcon 2 → 2 (manual) and 3 → 0
+(`falcon_ros`); five empty +0.
+The budget counts false STOP episodes (no object in the gauge); splits of a real STOP are reported separately as hold
+quality and do not use it ([`DECISIONS.md`](docs/DECISIONS.md) row 58): **+3 of +11 used**.
+
+**Known limits.** The Falcon far-range turnout guard misses passable openings (far-range re-review R2-1; no STOP lost or
+added on our data); H1 tall narrow objects stays open; per-frame time on Falcon is up 40–54 % at the median.
+
+## [1.2.0] — released 2026-10-20 (tag `v1.2.0`, `3b73bbe`): LiDAR integration candidate of 18.10, the integration of 19.10 and the work of 20.10
 
 **State, 20.10 evening (`main` `8453458`).** All four version declarations are 1.2.0. `python3 scripts/detector_freeze.py verify`
 **PASSES** (40 files, R3 integrity reseal on the measured `0a472d6`; it is an integrity seal, not an acceptance; the F1a completion merged at `769d075` was reverted the same evening after its independent review, so the frozen bytes are those of `f56ad5e` again). CI on `main` was
 green at `5d83c5b` (run #667) and `f56ad5e` (#669), all five jobs; run #680 on `8453458` (PR #47) failed in the web job's browser
-suite (22 of 75 end-to-end tests; four jobs green), so `main` is red since the UI merge.
-PRs #43–#49 are merged (#46, #48, #49 are P4's reviews of H′ and the Falcon clear-distance model, of R3 and H1, and the dust and marked-bag run). **Not released:**
-release, tag and demo image wait for a final source, the last commit before the code stop 20.10 23:59 MSK (captain, 20.10); then
-the reseal, P4's independent acceptance of the final bundle, the image and the tag. Not a J1 score, not a G3 run
+suite (22 of 75 end-to-end tests; four jobs green). *(Note 22.10: main's browser suite stayed red in runs #702, #704, #709 and #711 (the other jobs, checks, docker, pytest and offline-build, passed); the v1.2.0 commit itself has no CI run, its squash message contains "[skip ci]". The e2e fixes (patient timeouts, reduced motion, four parallel shards) are on the `claude/p1-work-list-verification-o1hdlh` branch, branch run #718 on `6ee469c` passed all jobs; main's browser suite was red, the fix is in the pending pull request.)*
+PRs #43–#49 are merged (#46, #48, #49 are P4's reviews of H′ and the Falcon clear-distance model, of R3 and H1, and the dust and marked-bag run). **Released 20.10:**
+v1.2.0 was cut from the final source (tag `v1.2.0` = `3b73bbe`, published 20:58 UTC; asset sha256 `89bd6b54…eba67c`, 472,124,881 bytes). Not a J1 score, not a G3 run
 ([`docs/BACKLOG.md`](docs/BACKLOG.md) "Current plan"). (State of 19.10 evening, kept for the record: `verify` failed with 2 added
 and 11 changed files until the reseal; CI was red.)
 
@@ -102,6 +173,10 @@ and 11 changed files until the reseal; CI was red.)
   (`WEBAPP_E2E_SHARD=k/4`, `webapp/e2e/conftest.py`: whole modules, `test_player.py` split by test, weights from a measured run);
   assertions wait up to 45 s and actions 120 s (were 20 and 60) so that a slow frame does not fail a test that would pass. The
   `changes` job is a step of `checks` (its outputs are `checks`' outputs), one job fewer to wait for.
+  First run on GitHub (#712): `checks`, `pytest`, `webapp`, `docker`, `offline-build` and three of four shards green (shards of 4.5–8 min;
+  the whole run 14 min instead of 38); shard 2 failed in `test_autoplay_keyboard_and_url`, where the second Esc did not leave the player
+  within 45 s (cause not established: a tooltip or the view reset taking the key; the test now presses Esc again, up to three times), and
+  the player's tests weigh twice as much on the runner as on 4 cores, which the shard weights now say.
 - **CI made lighter, web tests kept (20.10 evening, the captain's instruction; pushes only, no pull-request CI).** A new `changes` job
   (`scripts/ci_changes.py`, `tests/test_ci_changes.py`) lets a push skip what it cannot affect: `docker` and `offline-build` unless it
   touches something the Dockerfile copies, and the `webapp` job unless it touches `web/`, `webapp/`, the detector package, `configs/`,
@@ -261,13 +336,19 @@ released: no tag or archive, no J1 score.
   runs, run (KPIs, decisions against labels), 3D player from the cab, comparison, live mode through rosbridge, parameters/presets.
   The same sealed `resense.Detector` runs in a worker; the image does not contain `webapp/`. Known limits: 60 fps not measured, live
   mode tested against a stand-in, no authentication.
+- **Changed (21.10):** the Player is now the driver's cab of a metro train seen from the seat (the 3D view is the windshield;
+  realistic Moskva-2020-style trim, pillars with camera monitors, sun visor, overhead panel and a desk with decorative displays,
+  manometers, buttons and controller) instead of a screen in a saloon wall. Entering the Player from another section is a walk
+  from the saloon into the cab (turn right, aisle, cab door, sitting down) instead of the doors, then the cab's screens boot with a
+  short initialization; any key or click skips; reduced motion keeps the fade. Web-only: no file under `resense/`, `native/`,
+  `configs/` or `ros2_ws/` changes.
 - **Changed (20.10, PR #47, merged):** a reworked Player workspace (a modeled train-interior display, reference-based 3D view,
-  pinned transport and telemetry) and a persistent live preview at https://resense.amdm.life/. Web-only: no file under
+  pinned transport and telemetry) and a persistent live preview at https://resense.arbuz.lol/. Web-only: no file under
   `resense/`, `native/`, `configs/` or `ros2_ws/` differs from `f56ad5e`, the seal still passes, the release image does not contain
   `webapp/`. P2 reports 362 frontend, 179 backend and 81 dashboard tests and 75 browser cases in split batches (not one clean
   suite) on its host, and public checks of the preview ([README](docs/evidence/p2_2026-10-20/README.md),
   [PUBLISH](docs/evidence/p2_2026-10-20/PUBLISH.md)); `/deployment.json` at ~18:50 MSK named commit `432494f` of branch
-  `ui-improvement` (deployed 18:23 MSK), a pre-merge build.
+  `ui-improvement` (deployed 18:23 MSK), a pre-merge build. *(Note 22.10: the preview host was changed to https://resense.arbuz.lol/; the branch `ui-improvement` was merged by PR #47 and no longer exists.)*
 - **Changed (09.10):** resumable, checksummed uploads in 8 MiB chunks with adaptive gzip, retries and a second-tab guard; background
   finalize; a background read-ahead thread in processing; the 502 behind the reverse proxy fixed (idle keep-alive 130 s).
 - Tests at 29.09: 149 backend, 278 frontend, 44 browser end-to-end; CI job `webapp` after `checks`.

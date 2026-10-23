@@ -75,13 +75,16 @@ Decision policy is shared with offline consumers (``resense_ros.decision_policy`
 retains v2 with ``caution_distance_m`` 80 m and ``caution_compact_max_size_m`` 3 m. Status adds
 ``decision_policy`` and a sorted, deduplicated ``caution_reason`` array, empty off CAUTION.
 
-C2 range candidates are opt-in via ``clear_range_policy`` (``legacy`` by default).
+C2 range candidates are selected via ``clear_range_policy`` (``auto`` by default since 1.3: ``conservative``
+when a range-density model is known, from a named ``sensor_profile``, an explicit ``range_sensor_model`` or the
+cloud's own point fields (``sensor_profiles.detect_range_model``), and ``legacy`` otherwise; user decision 22.10).
 ``advisory_candidate`` caps active CAUTION advisories; ``small_candidate`` also
 caps the reported range by the explicit ``range_sensor_model`` density prior.
 ``monitored_small`` is null when that model is unavailable; a requested small-target
 range is then zero. These candidates have not passed the original C2 coverage gate.
 The explicit ``conservative`` profile uses that qualified cap under the approved
-17.10 coverage tradeoff; ``legacy`` remains default pending release integration.
+17.10 coverage tradeoff and is what ``auto`` selects when the model is known; ``legacy`` restores the
+old reported range.
 Raw flags and health are validated before latch release or health projection. Policy is evaluated
 after freshness health projection and the STOP latch; raw detector warnings remain available.
 
@@ -178,7 +181,7 @@ from resense.frame import Frame, axis_matrix
 
 from resense_ros import fastcloud
 from resense_ros.gauge_display import GaugeDisplay
-from resense_ros.sensor_profiles import apply_sensor_profile, PROFILE_NAMES
+from resense_ros.sensor_profiles import apply_sensor_profile, detect_range_model, PROFILE_NAMES
 from resense_ros.decision_policy import (DecisionPolicy, decision as policy_decision,
                                          evaluate_decision, candidate_ranges)
 
@@ -247,7 +250,7 @@ class DetectorNode(Node):
         self.declare_parameter("caution_distance_m", 80.0)
         self.declare_parameter("caution_compact_max_size_m", 3.0)
         # Approved conservative reporting remains an explicit opt-in until release integration.
-        self.declare_parameter("clear_range_policy", "legacy")
+        self.declare_parameter("clear_range_policy", "auto")
         self.declare_parameter("range_sensor_model", "unknown")
         # --- v0.6.1: several recordings / topic names through one running node
         self.declare_parameter("input_switch_timeout", 1.0)   # s the active topic must be silent before another one is taken
@@ -293,8 +296,8 @@ class DetectorNode(Node):
             raise ValueError("runtime decision_policy must be v1; v2 has not passed acceptance (offline only)")
         self.clear_range_policy = self.get_parameter("clear_range_policy").get_parameter_value().string_value
         self.range_sensor_model = self.get_parameter("range_sensor_model").get_parameter_value().string_value
-        if self.clear_range_policy not in ("legacy", "advisory_candidate", "small_candidate", "conservative"):
-            raise ValueError("clear_range_policy must be legacy, advisory_candidate, small_candidate or conservative")
+        if self.clear_range_policy not in ("auto", "legacy", "advisory_candidate", "small_candidate", "conservative"):
+            raise ValueError("clear_range_policy must be auto, legacy, advisory_candidate, small_candidate or conservative")
         if self.range_sensor_model not in ("unknown", "pandar128", "falcon_prime"):
             raise ValueError("range_sensor_model must be unknown, pandar128 or falcon_prime")
         cfg_file = self.get_parameter("config_file").get_parameter_value().string_value
@@ -326,6 +329,9 @@ class DetectorNode(Node):
             raise ValueError("range_sensor_model conflicts with named sensor_profile")
         if model is not None:
             self.range_sensor_model = model
+        self.range_model_source = ("profile" if model is not None else
+                                   "parameter" if self.range_sensor_model != "unknown" else "none")
+        self.range_model_tries = 0
         self.cfg.calibration.keep_up_axis = self.get_parameter("keep_up_axis").get_parameter_value().bool_value
         self.manual_cfg.calibration.keep_up_axis = self.cfg.calibration.keep_up_axis
         self.detector = Detector(self.cfg)
@@ -752,6 +758,9 @@ class DetectorNode(Node):
             f"{msg.width * msg.height} points){'' if first else ' - ' + why + ': detector restarted'}")
 
     def reset_input(self, why="explicit recording boundary"):
+        if self.range_model_source == "detected":         # the next recording may be another sensor
+            self.range_sensor_model, self.range_model_source = self.manual_range_model, "none"
+        self.range_model_tries = 0
         """Called between publishers: drop DDS/Python queues and all prior-recording state."""
         self.input_generation += 1
         topics = list(self.sub_rel.items())
@@ -808,6 +817,8 @@ class DetectorNode(Node):
         self.cfg.calibration.keep_up_axis = self.get_parameter("keep_up_axis").get_parameter_value().bool_value
         self.sensor_profile = profiles[0]
         self.range_sensor_model = model if model is not None else self.manual_range_model
+        self.range_model_source = ("profile" if model is not None else
+                                   "parameter" if self.range_sensor_model != "unknown" else "none")
         self.reset_input("sensor profile selected")
         return SetParametersResult(successful=True)
 
@@ -1017,6 +1028,21 @@ class DetectorNode(Node):
         else:
             self.frame_in_catchup = True
 
+    def range_policy(self) -> str:
+        """The effective ``clear_range_policy``: ``auto`` is ``conservative`` with a known model, else ``legacy``."""
+        if self.clear_range_policy != "auto":
+            return self.clear_range_policy
+        return "conservative" if self.range_sensor_model != "unknown" else "legacy"
+
+    def detect_range_model(self, msg, ring) -> None:
+        """Try the cloud's point layout for a range-density model (first 10 frames of each input)."""
+        self.range_model_tries += 1
+        names = [getattr(f, "name", "") for f in (getattr(msg, "fields", None) or ())]
+        model = detect_range_model(names, ring if fastcloud.has_field(msg, "ring") else None)
+        if model is not None:
+            self.range_sensor_model, self.range_model_source = model, "detected"
+            self.get_logger().info(f"range model {model} detected from the point fields; clear_range_policy auto -> conservative")
+
     def process_cloud(self, msg: PointCloud2, topic: str = "") -> None:
         if not self.check_continuity(topic, msg):
             return
@@ -1030,6 +1056,8 @@ class DetectorNode(Node):
             xyz_v = xyz_s @ self.R_vs.T.astype(np.float32)
             stamp = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
             # a cloud without a ring field has unknown channels, not channel 0 for every point
+            if self.range_model_source == "none" and self.clear_range_policy == "auto" and self.range_model_tries < 10:
+                self.detect_range_model(msg, ring)
             frame = Frame(xyz=xyz_v, intensity=inten, ring=ring if fastcloud.has_field(msg, "ring") else None,
                           stamp=stamp, frame_id=msg.header.frame_id, meta={"n_raw": n_raw, "n_near": n_near})
             self._account_frame(stamp, (topic, msg.header.frame_id))
@@ -1219,10 +1247,11 @@ class DetectorNode(Node):
         }
         fault_status.update(gauge=self.display_status(self.gauge_display.invalidate(level_name.lower())),
                             sensor_profile=self.sensor_profile, range_sensor_model=self.range_sensor_model)
-        if self.clear_range_policy != "legacy":
+        policy = self.range_policy()
+        if policy != "legacy":
             fault_status.update(
-                range_policy=("c2_conservative_2026_10_17" if self.clear_range_policy == "conservative" else
-                              "c2_small_candidate_not_accepted" if self.clear_range_policy == "small_candidate"
+                range_policy=("c2_conservative_2026_10_17" if policy == "conservative" else
+                              "c2_small_candidate_not_accepted" if policy == "small_candidate"
                               else "c2_advisory_candidate_not_accepted"),
                 monitored_small=0.0 if self.range_sensor_model == "pandar128" else None,
                 advisory_clear_cap=None,
@@ -1342,19 +1371,21 @@ class DetectorNode(Node):
         answer = evaluate_decision(res, self.decision_policy)
         decision = answer.decision
         freshness["go_allowed"] = freshness["valid"] and decision == "GO"
-        if self.clear_range_policy != "legacy":
+        policy = self.range_policy()
+        if policy != "legacy":
             projected = candidate_ranges(
                 {**status, "obstacle": bool(res.obstacle), "warning": bool(res.warning),
                  "health": res.health, "clear_distance": float(res.clear_distance), "freshness": freshness},
                 self.decision_policy, sensor_model=self.range_sensor_model,
                 min_points_far=self.cfg.cluster.min_points_far,
                 max_range=self.cfg.sensor.max_range,
-                cap_small_target=self.clear_range_policy in ("small_candidate", "conservative"),
-                profile="conservative_2026_10_17" if self.clear_range_policy == "conservative" else "candidate")
+                cap_small_target=policy in ("small_candidate", "conservative"),
+                profile="conservative_2026_10_17" if policy == "conservative" else "candidate")
             res.clear_distance, res.health = projected["clear_distance"], projected["health"]
             for key in ("range_policy", "advisory_clear_cap", "monitored_small", "monitored_small_model"):
                 status[key] = projected[key]
             status["range_sensor_model"] = self.range_sensor_model
+        status["range_model_source"] = self.range_model_source
         # the answer first (28.09): flag, distance and decision before the JSON and the visualisation
         self.pub_flag.publish(Bool(data=bool(res.obstacle)))
         self.pub_dist.publish(Float32(data=float(res.nearest_distance) if res.nearest_distance is not None else -1.0))

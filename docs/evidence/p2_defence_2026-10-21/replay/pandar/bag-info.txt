@@ -1,0 +1,9 @@
+
+Files:             doubleT_obstacle_0.db3
+Bag size:          4.5 GiB
+Storage id:        sqlite3
+Duration:          20.392030296s
+Start:             Sep  2 2026 13:10:23.110040384 (1788354623.110040384)
+End:               Sep  2 2026 13:10:43.502070680 (1788354643.502070680)
+Messages:          201
+Topic information: Topic: /sensing/lidar/hesai128/pointcloud | Type: sensor_msgs/msg/PointCloud2 | Count: 201 | Serialization Format: cdr

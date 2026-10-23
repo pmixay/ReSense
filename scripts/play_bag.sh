@@ -6,7 +6,7 @@
 # Optional --archive IMAGE.tar.gz loads an offline image; IMAGE defaults to resense:latest.
 set -euo pipefail
 usage() { sed -n '2,6p' "$0" | sed 's/^# \{0,1\}//'; }
-BAGS=(); PROFILES=(); ARCHIVE=""; RATE=1.0; INTERACTIVE=0; RVIZ=0; SOFTWARE=0; PROFILE=manual; RANGE_POLICY=legacy
+BAGS=(); PROFILES=(); ARCHIVE=""; RATE=1.0; INTERACTIVE=0; RVIZ=0; SOFTWARE=0; PROFILE=manual; RANGE_POLICY=auto
 while [ $# -gt 0 ]; do
   case "$1" in
     --archive|--rate|--sensor-profile|--clear-range-policy)
@@ -23,7 +23,7 @@ while [ $# -gt 0 ]; do
 done
 [ "${#BAGS[@]}" -gt 0 ] || { usage >&2; exit 2; }
 [[ "$RATE" =~ ^[0-9]+([.][0-9]+)?$ ]] && awk "BEGIN {exit !($RATE > 0)}" || { echo 'play_bag: --rate must be positive' >&2; exit 2; }
-case "$RANGE_POLICY" in legacy|conservative) ;; *) echo 'play_bag: --clear-range-policy must be legacy or conservative' >&2; exit 2;; esac
+case "$RANGE_POLICY" in auto|legacy|conservative) ;; *) echo 'play_bag: --clear-range-policy must be auto, legacy or conservative' >&2; exit 2;; esac
 for i in "${!BAGS[@]}"; do
   [ -f "${BAGS[$i]}/metadata.yaml" ] || { echo "play_bag: not a ROS bag directory: ${BAGS[$i]}" >&2; exit 2; }
   case "${PROFILES[$i]}" in manual|pandar128|falcon_ros|falcon_native) ;; *) echo "play_bag: unknown sensor profile ${PROFILES[$i]}" >&2; exit 2;; esac

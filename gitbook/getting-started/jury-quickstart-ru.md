@@ -85,7 +85,7 @@ xhost +local:docker && docker run --rm -it --net=host --ipc=host -e DISPLAY -e Q
 
 Сайт поверх того же детектора: загрузка бэга или демо-записи, решения по кадрам, оценка по
 разметке, 3D-плеер из кабины, сравнение прогонов. Нужны Python ≥ 3.10 и Node.js 20.19+ или 22.12+ (для
-сборки сайта), ROS и Docker — нет. В релиз `v1.0.0` и образ Docker он не входит.
+сборки сайта), ROS и Docker — нет. В образ Docker и архивы релизов он не входит.
 
 Открыть онлайн: **[resense.arbuz.lol](https://resense.arbuz.lol/)** — ничего устанавливать не нужно. Свой экземпляр:
 
@@ -98,10 +98,11 @@ scripts/run_webapp.sh              # http://localhost:8080
 
 ## Где взять архив образа
 
-* Релиз GitHub `v1.0.0`: архив и его `.sha256` публикуются в Assets релиза
-  (`.github/workflows/release.yml`, когда запушен тег); `scripts/verify_release.sh v1.0.0` скачает
-  и проверит. Есть ли релиз — на странице
-  [Releases](https://github.com/pmixay/ReSense/releases). До его публикации — один из двух
+* Релиз GitHub `v1.2.0` (текущий опубликованный, 20.10): архив и его `.sha256` лежат в Assets релиза
+  (`.github/workflows/release.yml`, создаётся пушем тега); `scripts/verify_release.sh v1.2.0` скачает
+  и проверит. Прежний релиз `v1.0.0` остаётся (`scripts/verify_release.sh v1.0.0`). Список —
+  на странице [Releases](https://github.com/pmixay/ReSense/releases). Кандидата 1.3.0 в релизах нет
+  (без тега и архива); он есть только в исходном дереве. Если интернета нет — один из двух
   способов ниже.
 * Артефакт CI: Actions → прогон `ci` нужного коммита `main` (задание `offline-build` зелёное) →
   Artifacts → `resense-image-<версия>-<коммит>` (zip с `.tar.gz` и `.sha256`, хранится 30 дней,
