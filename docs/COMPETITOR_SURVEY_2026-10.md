@@ -9,6 +9,9 @@
 > "verified in our code" facts below were checked by the lead in the source; the rest is the agents' reading of
 > the other repositories, grepped against `resense/` but not run. **Status:** current; analysis only, nothing in
 > this document is measured on ReSense yet, and no detector file is changed.
+> **Update 29.10:** §7 adds the finalists (pitch schedule 23.10), their repositories and a comparison table.
+> **It supersedes the first bullet of §1 on false alarms:** for the finalists the "nobody beats ReSense" claim does
+> not hold on the claims that could be read (§7.4). §1–§6 are the 16.10 text, unchanged.
 
 ## 1. Headline
 
@@ -107,3 +110,129 @@ cluster; only multi-frame accumulation, which needs a known speed, can use it).
 3. Idea 3 (range) last: it has the largest upside and the largest false-alarm risk.
 
 No estimate of the final gain is defensible: all source numbers are in-sample and we have one real positive.
+
+## 7. Finalists (update 29.10)
+
+> **Status:** analysis of public repositories, read-only; no competitor code was run (see §7.5), no detector file
+> changed. Competitor figures are **their own claims on recordings they tuned on** unless marked ✓.
+> ✓ = recomputed by us from raw rows; "claimed" = from the team's README or report; n/a = no data in the repository.
+> The ranking in §7.6 is a judgement with the weights stated there, not a measurement.
+
+### 7.1 Who the finalists are
+
+The pitch schedule of 23.10 lists ten teams: МичГАУ, **Молоток (us)**, ITL-RailGuard, xixi-square, Attention Please,
+СахалИИн, Криперы, Дальнобои, =УСПЕШНЫЕ РОСТОВЧАНЕ=, IRS-MIREA. Five of the nine rivals were matched to a repository.
+The code stop is 20.10 23:59 MSK = 20:59 UTC ([`BACKLOG.md`](BACKLOG.md)).
+
+| Team | Repository | How identified | Last commit (UTC, all branches) |
+|---|---|---|---|
+| СахалИИн | `EhimenNathan/tunnelguard-lct2026` | the finals presentation is titled with the team name | 20.10 01:02 |
+| Attention Please (Perm) | `BelousovArts/fod` | the README names the team | 20.10 16:58 |
+| IRS-MIREA | `garabot11/I.MOSCOW` | team contact in the README and in the launch file | 20.10 20:37 (22 min before the stop) |
+| Дальнобои | `ValeraYakovlev/LIDAR` | **medium confidence**: the author is on the team roster and is active in the final window; the team name is not in the repository | 20.10 19:53 |
+| (name unknown) | `EnglishMan47/Gabarit_metro` | a finalist: the repository holds notes of the 16.10 finalists' meeting and a "Final release" commit; the team name is a placeholder in the deck script; the organizers' SourceCraft path is `…-team-56` | 19.10 15:42 |
+
+**Not found:** МичГАУ, ITL-RailGuard, xixi-square, Криперы, Ростовчане. They are not among the 34 repositories of §1–§6.
+Web searches on GitHub (unique bag names, task wording) returned only known repositories; GitVerse and SourceCraft
+hosts are blocked in our environment, so nothing could be read there. Do not infer a team from a repository name.
+
+Method and its controls (34 repositories fetched with all branches: 32 of the 16.10 survey that are still readable, plus
+`valuncilh/metro_obstacle_detection` and `BelousovArts/fod`; `CatherineLensis/NanoMetro1550` and `templeJJs/test_lidar`
+are no longer reachable):
+
+* The date of the last commit on any branch, against the code stop. 26 of the 34 have no commit after 29.09; several
+  end 29.09 20:41–20:59 UTC, which is 23:59 MSK, the qualification stop. Control: all four known finalists and Gabarit
+  are active 19–20.10. Other late activity: `zuykovmikhail1305-boop/3D-lidar_ml` 04.10 (a visualisation app),
+  `Matymij/MetroLiDAR_Sentinel_Humble` 01.10, `KoTeHok22/Argus` (a side branch to 09.10, team name removed from the
+  docs), `krisikas/MetroLidar2026` (team MOPSY, not on the list, one commit on 29.10 after the stop).
+* A keyword search for finals terms (finalist, "in the final", 16 October, meeting with experts, …) in all text files:
+  no further finalist. The matches in other repositories are the public Q&A transcript and generic text.
+* Limit: a finalist can keep a repository private or on another host; the heuristic only finds public GitHub ones.
+
+### 7.2 Comparison on the Falcon recording and on the criteria
+
+All teams use the same recording `falcon_test_second_dark` (4 443 clouds): a real person appears at about 250–310 m and
+walks to the train (a reference path exists for 4 411 frames).
+
+| Criterion | ReSense | СахалИИн | Attention Please | IRS-MIREA | Дальнобои | Gabarit |
+|---|---|---|---|---|---|---|
+| 1. Person on Falcon, first detect | **124.8 m** ✓ | **257.2 m** ✓ | 256–270 m claimed (timeline ✓) | 154 m claimed (timeline ✓) | 188 m claimed | n/a; synthetic person 138 m mean, 157 m max, claimed |
+| 2. Gauge range on Falcon | median 115 m ✓ | median **387.6 m**, measured part 202 m ✓ | median 263 m claimed | Falcon not stated; Hesai 83–175 m claimed | ≤150 m geometry, up to 300 m hybrid, claimed | limit 350 m stated, "not a proven range" |
+| 3. Gauge stability | reported range jumps 102–159 m between frames ✓; STOP does not flicker ✓; display box not measured on Falcon | 0 geometry dropouts in 4 413 frames ✓ | track breaks at 246–270 m (own report) | n/a | n/a | n/a |
+| 4. False alarms | ride: 26 STOP episodes (gate); Falcon: 13 STOP frames not on the person ✓ | ~1.8 events/km claimed; Falcon: 10 frames at the end of the recording ✓ | 1 per 6.3 min; 4 of 11 435 frames, claimed | **0** on the 11 271-frame ride, claimed (the detector reported nothing at all there) | 10 episodes on 40 recordings, claimed | ride: 27 events, 209 frames; switch: 3 known false, claimed |
+| 5. Misses (Falcon, share of frames) | STOP on 95 % of frames with the person ≤125 m, 83 % ≤150 m, 66 % ≤200 m, 40 % ≤260 m ✓ | 72 % of frames with a reference ✓ | person 0 of 7 missed, flat object 7 of 7 missed, claimed | 49 % of object-frames in the gauge, claimed | 58.9 % of frames, claimed | 582 alarm frames of 4 443: at most 13 % of the person's frames (upper bound) |
+| 6. 10 Hz | Falcon decode+detect p95 **25 ms** ✓; Pandar 360° p95 106–119 ms (v1.0.0, not recomputed) | Falcon p95 **29 ms** ✓; 57–63 ms on 4 vCPU claimed | 50–85 ms on an RTX 5080, claimed | 39–75 ms on GPU, claimed | 78–170 ms on a cloud VM, misses 10 Hz, claimed | **not met**: ~5.9 frames/s in ROS (own report) |
+| 9. Launch | CPU, offline, 472 MB | Docker, ML on numpy | NVIDIA GPU required | GPU, 13.3 GB image, emergency CPU mode | Docker, CPU | CPU, 4 packages, Docker, offline |
+
+### 7.3 What was recomputed (and how)
+
+* **Our Falcon stream** (`docs/evidence/falcon_full_2026-10-18/`, 4 443 rows, v1.1.0, not 1.2.0): decode+detect
+  p50 17.9 ms, p95 24.8 ms, one frame over 100 ms (frame 0, 218 ms, warm-up); decisions STOP 1 372 / CAUTION 3 062
+  (68.9 %) / GO 8 / FAULT 1. Control: a synthetic series with 3 planted slow frames, 1 planted range blink and 1 planted
+  STOP gap — all found, none extra.
+* **Reported range on Falcon:** median 115 m; it changes by more than 20 m between neighbouring frames on 35 % of
+  frames (values 102, 107, 111, 115, 123, 154, 159 m), 19 range "blinks" in 444 s. This is the detector field
+  `monitored`; the node publishes null/zero range on Falcon by design, and the smoothing of the displayed box was
+  measured on Pandar recordings only.
+* **Join with the person's reference path** (the path in СахалИИн's `docs/finals/rows.json`, an automatic trajectory,
+  not a human label): our first STOP on the person is frame 2972 at 124.8 m; 1 359 of our 1 372 STOP frames are within
+  3 m of the person; the 13 others are frames 159, 2312–2314, 3135 and 4394–4401 (the 4 known structure frames at ~115 m,
+  one new frame, and the tunnel-ceiling frames that H′ removes in 1.2.0, per the P4 bundle). Control: shifting the
+  frame index by 1 000 gives 0 matches; **a shift of ±137 still gives ~360 matches (the person stands still), so that
+  control does not discriminate**.
+* **СахалИИн, `rows.json`** (4 443 rows): first level-2 frame with an obstacle is frame 53 at 257.2 m (their text:
+  257.36 m); gauge median 387.6 m, measured part 202 m; 0 geometry dropouts after frame 60; 3 159 STOP frames matched
+  to the reference; 10 unmatched STOP frames (4411–4420, ~2.9 m, no reference at the end); per-frame time p95 29 ms.
+* **Timeline of three teams agrees:** the reference path is 154.5 m at frame 2723, 99.1 m at 3181, 92.7 m at 3690,
+  3.8 m at 4400, 255.4 m at 3 s. IRS-MIREA states 154 m at frame 2723, standing at 100 m in 3181–3690, walking to 4 m
+  by 4400; Attention Please states confirmation at 256 m on the third second. The person is real and present from
+  frame 0 at about 253 m.
+* **Gauge table of B6** (`gauge_stability_2026-10-18/monitored.json`): the 20 medians of the reported range
+  (10 recordings × 2 versions) equal the published table.
+* **IRS-MIREA "0 false frames":** their own protocol defines a false frame as a reported detection with no labelled
+  object; on the 11 271-frame ride their table shows 0 reported frames, i.e. the detector never fired there. Their
+  "false-alarm phase" on Falcon is the first 2 723 frames, in which the reference path puts the person at 154–309 m;
+  nothing is reported there by design (two detectors must agree), which is counted as correct.
+
+### 7.4 Corrections to §1
+
+* "Nobody beats ReSense on what can be compared" does not hold for the finalists on false alarms. Claimed: IRS-MIREA 0
+  reported frames on the ride (but 49 % of in-gauge object-frames on the organizers' marker set), Attention Please 1 per
+  6.3 min, СахалИИн ~1.8 events/km. Ours: 23 events on 13 km (~1.8/km, gate definition) and 26 STOP episodes. The
+  definitions differ and none of the claims is held-out, so this is "at best equal", not "ahead".
+* On the real Falcon person the ranges **are** comparable (same recording, same person), unlike the synthetic-axis tests
+  of §1: 125 m (us), 154 m (IRS-MIREA), 188 m (Дальнобои), 256–270 m (Attention Please), 257 m (СахалИИн).
+* The 16.10 remark that Gabarit's 138 m is measured on its own axis stands: that is a synthetic figure, and its Falcon
+  coverage is the weakest of the six.
+
+### 7.5 What could not be done
+
+* No competitor project was deployed. The recordings (Yandex Disk, Google Drive) and GitVerse/SourceCraft are blocked
+  by the environment's network policy, there is no Docker daemon and no GPU, and 26 GB of disk is less than the 20 GB
+  Falcon bag plus the 17 GB ride. Nothing was mocked.
+* Not verified at all: all GPU and cloud-VM timings, every claim about the ride, Attention Please and Дальнобои as a
+  whole, СахалИИн's "1.8 events/km", our own 26 ride episodes (no per-frame ride rows in the repository), Pandar 360°
+  timing of 1.2.0, and the 1.2.0 Falcon timing (the stream above is v1.1.0).
+* The scripts of §7.3 were written in a session scratchpad and are not committed.
+
+### 7.6 Ranking (judgement)
+
+Weights: detection range 15, gauge range 10, stability 10, false alarms 15, misses 20, 10 Hz 10, launch 10 (filter and
+extra features are not in the table). Share of the maximum per criterion, our judgement:
+
+| Criterion (weight) | СахалИИн | Attention Please | IRS-MIREA | ReSense | Дальнобои | Gabarit |
+|---|---:|---:|---:|---:|---:|---:|
+| 1. Range (15) | 1.0 | 0.95 | 0.6 | 0.5 | 0.7 | 0.45 |
+| 2. Gauge range (10) | 1.0 | 0.7 | 0.35 | 0.3 | 0.45 | 0.3 |
+| 3. Stability (10) | 0.9 | 0.5 | 0.4 | 0.4 | 0.4 | 0.4 |
+| 4. False alarms (15) | 0.75 | 0.8 | 0.9 | 0.7 | 0.6 | 0.65 |
+| 5. Misses (20) | 0.8 | 0.75 | 0.5 | 0.45 | 0.55 | 0.35 |
+| 6. 10 Hz (10) | 0.95 | 0.9 | 0.9 | 0.8 | 0.3 | 0.35 |
+| 9. Launch (10) | 0.7 | 0.2 | 0.5 | 1.0 | 0.7 | 0.9 |
+| **Total / 90, in %** | **86** | **71** | **60** | **58** | **54** | **48** |
+
+Where the data are missing the share is a neutral 0.4. Ranks 1–2 hold under other weights; ranks 3–5 are within the
+error of the judgement. Of the five found rivals we are fourth; four finalists are unknown, so the place among ten can
+be worse. A rough model (СахалИИн ahead, Attention Please ahead with 75 %, IRS-MIREA ahead with 60 %, each unknown team
+ahead with 40 %) gives about 10 % for a top-3 place; hidden-data variance raises the upper bound to about 15 %. This is
+not a forecast of the jury's weights. Hidden-set behaviour is untested: the registered G3 set has not been run.
