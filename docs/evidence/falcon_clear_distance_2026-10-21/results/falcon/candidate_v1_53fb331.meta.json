@@ -1,0 +1,12 @@
+{
+ "raw": "/data/falcon/raw.bin.zst",
+ "frames": 4443,
+ "repo": "/home/user/ReSense",
+ "resense_file": "/home/user/ReSense/resense/__init__.py",
+ "set": [
+  "health.clear_lost_model=true",
+  "health.clear_round_down=true"
+ ],
+ "resets": [],
+ "wall_s": 145.7
+}

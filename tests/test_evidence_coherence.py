@@ -5,7 +5,8 @@ interval between adjacent hits.  These tests keep the measurement reproducible, 
 not turn that comparison into a tracking rule: the fields are model-relative whole-cluster
 descriptors, and the saved trace has no object-identity labels for a matched return.
 
-The ride and positive-stress paths are optional local inputs.  The small tracker tests below remain
+The measurement and positive-stress folders are optional local inputs under $RESENSE_CACHE
+(default /data/cache); their tests are deselected by the ``realdata`` marker where absent.  The small tracker tests below remain
 useful when those captures are unavailable.
 """
 from __future__ import annotations
@@ -28,11 +29,10 @@ from resense.clustering import Cluster
 from resense.config import TrackingConfig
 from resense.track import TrackModel
 from resense.tracking import Tracker
-from scripts.analyze_residual_events import inventory, read_rows, support_class, validate_join
+from scripts.analyze_residual_events import CACHE, MEASUREMENT, inventory, read_rows, support_class, validate_join
 
 
-MEASUREMENT = Path("D:/Datasets/ReSense/cross_ring_2026-09-28_measurement")
-POSITIVE_STRESS = Path("C:/Users/alikh/AppData/Local/Temp/opencode/fresh-stop-positive-stress")
+POSITIVE_STRESS = CACHE / "fresh-stop-positive-stress"
 
 
 def _cluster(x: float, *, lateral: float = 0.0, width: float = 0.8,

@@ -2,7 +2,7 @@
 
 Small snapshot diagnostic (no detector replay)::
 
-    python tests/test_far_structure.py --measurement D:/Datasets/ReSense/cross_ring_2026-09-28_measurement
+    python tests/test_far_structure.py --measurement "${RESENSE_CACHE:-/data/cache}/cross_ring_2026-09-28_measurement"
 
 The committed fixtures are unique centimetre-quantized XYZ support from
 new_data_6.jsonl:331 at new_data_9263 and new_data_1.jsonl:298 at new_data_2671.
@@ -27,6 +27,7 @@ if __name__ == "__main__":
 from resense.clustering import cluster_labels, find_clusters, voxelize
 from resense.config import ClusterConfig, GaugeConfig
 from resense.gauge import gauge_core_mask
+from scripts.analyze_residual_events import MEASUREMENT
 
 
 FAR_BODY = np.array([
@@ -263,6 +264,6 @@ def _snapshot_report(measurement: Path):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--measurement", type=Path, required=True)
+    parser.add_argument("--measurement", type=Path, default=MEASUREMENT)
     args = parser.parse_args()
     print(json.dumps(_snapshot_report(args.measurement), indent=2))

@@ -8,6 +8,7 @@ import { displayPixelRatio } from '../../player/displayQuality';
 import type { OverlaySink } from './Hud';
 import styles from './Player.module.css';
 import { useNavigationPreview } from '../../lib/navigationPreview';
+import { bootPower, type CabBootInfo } from '../../player/cabBoot';
 
 export interface WorldProps {
   engine: PlayerEngine | null;
@@ -19,13 +20,15 @@ export interface WorldProps {
   sink: { current: OverlaySink | null };
   sceneRef: { current: PlayerScene | null };
   onError: (message: string) => void;
+  /** the page's instrument boot (the cab powers up when the driver sits down) */
+  boot: CabBootInfo;
 }
 
-export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFreeChange, sink, sceneRef, onError }: WorldProps) {
+export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFreeChange, sink, sceneRef, onError, boot }: WorldProps) {
   const preview = useNavigationPreview();
   const wrapRef = useRef<HTMLDivElement>(null);
-  const live = useRef({ mode, pixelRatio, cloudBudget, onFreeChange, onError });
-  live.current = { mode, pixelRatio, cloudBudget, onFreeChange, onError };
+  const live = useRef({ mode, pixelRatio, cloudBudget, onFreeChange, onError, boot });
+  live.current = { mode, pixelRatio, cloudBudget, onFreeChange, onError, boot };
   const [ok, setOk] = useState(true);
 
   useEffect(() => {
@@ -62,12 +65,8 @@ export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFre
         onOverlay: ov => {
           const m = ov.viewport.motion;
           if (m) {
-            canvas.dataset.sceneTiltX = String(m.sceneX);
-            canvas.dataset.sceneTiltY = String(m.sceneY);
-            canvas.dataset.sceneTiltZ = String(m.sceneZ);
-            canvas.dataset.railTiltX = String(m.railX);
-            canvas.dataset.railTiltY = String(m.railY);
-            canvas.dataset.railTiltZ = String(m.railZ);
+            canvas.dataset.headX = String(m.headX);
+            canvas.dataset.headY = String(m.headY);
           }
           sink.current?.(ov);
         },
@@ -120,12 +119,14 @@ export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFre
     reduce.addEventListener('change', reset);
     if (live.current.cloudBudget) scene.reserve(live.current.cloudBudget);
     scene.setMode(live.current.mode, false);
+    scene.setBoot(bootPower(live.current.boot));
     sceneRef.current = scene;
     engine?.attach(scene);
-    // The frozen journey already contains our pixels; a hidden live GPU pass only steals frames.
+    // The frozen journey (or the boarding walk) covers us; a hidden live GPU pass only steals frames.
     const shell = wrap.closest('[data-app-shell]');
     const syncTransit = () => {
-      const paused = shell?.getAttribute('data-section-motion') === 'travelling';
+      const motion = shell?.getAttribute('data-section-motion');
+      const paused = motion === 'travelling' || motion === 'boarding';
       if (paused === transitPaused) return;
       transitPaused = paused;
       canvas.dataset.navigationPaused = String(paused);
@@ -168,6 +169,7 @@ export function World({ engine, mode, pixelRatio, cloudBudget, displayRef, onFre
   }, [engine, sink, sceneRef, displayRef, preview]);
 
   useEffect(() => { sceneRef.current?.setMode(mode); }, [mode, sceneRef]);
+  useEffect(() => { sceneRef.current?.setBoot(bootPower(boot)); }, [boot, sceneRef]);
   useEffect(() => { if (cloudBudget) sceneRef.current?.reserve(cloudBudget); }, [cloudBudget, sceneRef]);
   return <div ref={wrapRef} className={styles.world} data-webgl={ok ? 'ok' : 'off'} />;
 }

@@ -52,12 +52,14 @@ ACTIVE = ("queued", "running")
 EXPECT_MS = int(os.environ.get("WEBAPP_E2E_EXPECT_MS", "45000"))
 ACTION_MS = int(os.environ.get("WEBAPP_E2E_TIMEOUT_MS", "120000"))
 # CI runs the suite as WEBAPP_E2E_SHARD=k/n parallel jobs (see pytest_collection_modifyitems). Seconds per
-# unit on a 4-core machine (setup + call, pytest --durations=0, 75 tests in 995 s, 20.10); a unit not listed weighs DEFAULT_WEIGHT. Only a module's tests that depend on
+# unit on a 4-core machine (setup + call, pytest --durations=0, 75 tests in 995 s, 20.10); a unit not listed weighs DEFAULT_WEIGHT.
+# test_navigation.py and test_player.py::test_cab_boots_before_the_run_plays are estimates of 21.10 (the boarding walk and the cab
+# boot tests), scaled from a slower machine, not re-measured on that one. Only a module's tests that depend on
 # nothing but its own fixtures may be split: test_player.py (every test takes the module's `seeded` stand
 # and none changes it), so its tests are units of their own; every other module is one unit, because its
 # tests run in order and build on each other.
 SHARD_WEIGHTS: dict[str, float] = {
-    "test_navigation.py": 127, "test_analysis.py": 116, "test_data.py": 76, "test_system.py": 45,
+    "test_navigation.py": 150, "test_analysis.py": 116, "test_data.py": 76, "test_system.py": 45,
     "test_upload_resume.py": 18, "test_track_shader.py": 1,
     "test_player.py::test_workspace_resizes_without_clipping": 125,
     "test_player.py::test_loading_and_backend_errors": 64,
@@ -74,9 +76,13 @@ SHARD_WEIGHTS: dict[str, float] = {
     "test_player.py::test_lost_3d_view_keeps_the_console": 16,
     "test_player.py::test_paused_steps_bring_their_clouds": 15,
     "test_player.py::test_empty_picker_and_unknown_run": 11,
+    "test_player.py::test_cab_boots_before_the_run_plays": 15,
 }
 DEFAULT_WEIGHT = 5.0
 SPLIT_MODULES = ("test_player.py",)
+# The 3D player's tests take about twice as long on the 2-vCPU runner as on 4 cores (CI run 712: shard 2, estimated
+# 241 s, took 611 s; the shard without a player test took as long as locally); the other modules take the same.
+RUNNER_FACTOR = {"test_player.py": 2.0}
 # what a build depends on: a dist/ older than any of these is stale
 BUILD_INPUTS = ("src", "public", "index.html", "vite.config.ts", "package.json", "package-lock.json", "tsconfig.json")
 
@@ -360,7 +366,7 @@ def pytest_collection_modifyitems(config, items):
         units.setdefault(f"{module}::{item.name}" if module in SPLIT_MODULES else module, []).append(item)
 
     def weight(key: str) -> float:
-        return SHARD_WEIGHTS.get(key, DEFAULT_WEIGHT * len(units[key]))
+        return SHARD_WEIGHTS.get(key, DEFAULT_WEIGHT * len(units[key])) * RUNNER_FACTOR.get(key.split("::")[0], 1.0)
 
     loads = [0.0] * n
     groups: list[set[str]] = [set() for _ in range(n)]

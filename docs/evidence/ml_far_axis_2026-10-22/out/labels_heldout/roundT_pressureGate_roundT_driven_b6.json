@@ -1,0 +1,37 @@
+{
+ "poses": "/data/b6/poses_roundT_pressureGate_roundT.json",
+ "mount_offset": -0.01,
+ "b6_defective_motions": 0,
+ "bands": {
+  "40-60": {
+   "n": 476,
+   "median": 0.001,
+   "abs_p50": 0.023,
+   "abs_p90": 0.062
+  },
+  "60-100": {
+   "n": 872,
+   "median": 0.024,
+   "abs_p50": 0.045,
+   "abs_p90": 0.108
+  },
+  "100-150": {
+   "n": 943,
+   "median": 0.07,
+   "abs_p50": 0.085,
+   "abs_p90": 0.163
+  },
+  "150-200": {
+   "n": 774,
+   "median": 0.15,
+   "abs_p50": 0.15,
+   "abs_p90": 0.205
+  },
+  "200-250": {
+   "n": 700,
+   "median": 0.183,
+   "abs_p50": 0.183,
+   "abs_p90": 0.249
+  }
+ }
+}

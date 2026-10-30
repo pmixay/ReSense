@@ -1,29 +1,36 @@
 import { describe, expect, it, vi } from 'vitest';
 import * as THREE from 'three';
-import { ScreenDisplay } from './screenDisplay';
+import { HEAD_RANGE, ScreenDisplay } from './screenDisplay';
+import { CAB_EYE, CAB_FOV, cabLayout } from './cockpit';
+import { BOOT_IMAGE, CAB_BOOT_MS } from './cabBoot';
 
-describe('modeled display projection', () => {
-  it.each([[1366, 320, 1], [1840, 616, 2]])('keeps the live surface and HUD pixel bounds aligned at %s×%s', (width, height, pr) => {
+const settle = (display: ScreenDisplay, frames = 120) => { for (let i = 0; i < frames; i += 1) display.step(1 / 60); };
+
+describe('driver cab display', () => {
+  it.each([[1366, 320, 1], [1840, 616, 2], [1440, 816, 1.5]])('keeps the live surface and HUD pixel bounds aligned at %s×%s, also with the head moved', (width, height, pr) => {
     const display = new ScreenDisplay();
     display.setSize(width, height, pr);
-    expect(display.viewport.transform!.a).toBeCloseTo(1, 8);
-    expect(display.viewport.transform!.d).toBeCloseTo(1, 8);
-    expect(display.viewport.transform!.b).toBe(0);
-    expect(display.viewport.transform!.c).toBe(0);
+    const rest = { ...display.viewport.transform! };
+    expect(rest.a).toBeCloseTo(1, 8);
+    expect(rest.d).toBeCloseTo(1, 8);
+    expect(rest.b).toBeCloseTo(0, 10);
+    expect(rest.c).toBeCloseTo(0, 10);
+    expect(rest.x).toBeCloseTo(display.viewport.x, 8);
     display.setPointer(1, -1);
-    for (let i = 0; i < 100; i += 1) display.step(1 / 60);
-    display.camera.updateMatrixWorld();
+    settle(display);
     const active = display.scene.getObjectByName('live-display-surface') as THREE.Mesh;
-    expect(active).toBeDefined();
     display.scene.updateMatrixWorld(true);
-    const positions = active!.geometry.getAttribute('position');
-    const uv = active!.geometry.getAttribute('uv');
+    const positions = active.geometry.getAttribute('position');
+    const uv = active.geometry.getAttribute('uv');
     const rect = display.viewport;
     const m = rect.transform!;
-    expect(Math.abs(m.b)).toBeGreaterThan(0.001);
-    expect(m.a).toBeLessThan(1);
+    // leaning right and up: the picture shifts left and down, and stays parallel to the screen
+    expect(m.x).toBeLessThan(rest.x - 5);
+    expect(m.y).toBeGreaterThan(rest.y + 2);
+    expect(m.b).toBeCloseTo(0, 8);
+    expect(m.c).toBeCloseTo(0, 8);
     for (let i = 0; i < positions.count; i += 1) {
-      const p = new THREE.Vector3().fromBufferAttribute(positions, i).applyMatrix4(active!.matrixWorld).project(display.camera);
+      const p = new THREE.Vector3().fromBufferAttribute(positions, i).applyMatrix4(active.matrixWorld).project(display.camera);
       const x = uv.getX(i) * rect.width;
       const y = (1 - uv.getY(i)) * rect.height;
       expect((p.x + 1) * width / 2).toBeCloseTo(m.x + m.a * x + m.c * y, 3);
@@ -31,215 +38,170 @@ describe('modeled display projection', () => {
     }
     expect(display.target.width).toBe(Math.round(rect.width * pr));
     expect(display.target.height).toBe(Math.round(rect.height * pr));
-    expect(rect.x).toBeGreaterThan(0);
-    expect(rect.y).toBeGreaterThan(0);
     display.dispose();
   });
 
-  it('releases the old mesh geometry on resize and the live texture on disposal', () => {
+  it('places the windshield inside the measured region with the seated eye and field of view', () => {
+    const region = { width: 1368, left: 36, height: 648, top: 8 };
+    const layout = cabLayout(1440, 816, region);
+    expect(layout.face.x).toBeGreaterThan(region.left);
+    expect(layout.face.y).toBeGreaterThan(region.top);
+    expect(layout.face.x + layout.face.width).toBeLessThan(region.left + region.width);
+    expect(layout.face.y + layout.face.height).toBeLessThan(region.top + region.height);
+    expect(layout.unit * 816).toBeCloseTo(2 * CAB_EYE * Math.tan(THREE.MathUtils.degToRad(CAB_FOV / 2)), 10);
+    expect(layout.glass.x0).toBeLessThan(layout.faceWorld.x0);
+    expect(layout.frame.x0).toBeLessThan(layout.glass.x0);
+    const display = new ScreenDisplay();
+    display.setSize(1440, 816, 1, region);
+    for (const key of ['x', 'y', 'width', 'height'] as const) expect(display.viewport[key]).toBeCloseTo(layout.face[key], 6);
+    expect(display.camera.fov).toBe(CAB_FOV);
+    expect(display.camera.position.toArray()).toEqual([0, 0, CAB_EYE]);
+    display.dispose();
+  });
+
+  it('releases the old cab geometry on resize and the live textures on disposal', () => {
     const display = new ScreenDisplay();
     display.setSize(1280, 400, 1);
     const disposed = vi.fn();
-    let geometryCount = 0;
+    const geometries = new Set<THREE.BufferGeometry>();
     display.scene.traverse((object) => {
-      if (object instanceof THREE.Mesh) {
-        object.geometry.addEventListener('dispose', disposed);
-        geometryCount += 1;
-      }
+      if (object instanceof THREE.Mesh) geometries.add(object.geometry);
     });
+    for (const g of geometries) g.addEventListener('dispose', disposed);
     display.setSize(1400, 500, 2);
-    expect(disposed).toHaveBeenCalledTimes(geometryCount);
+    expect(disposed).toHaveBeenCalledTimes(geometries.size);
     const targetDisposed = vi.fn();
     display.target.addEventListener('dispose', targetDisposed);
+    display.emission.addEventListener('dispose', targetDisposed);
     display.dispose();
-    expect(targetDisposed).toHaveBeenCalledOnce();
+    expect(targetDisposed).toHaveBeenCalledTimes(2);
   });
 
-  it('keeps the tilted hardware visible and derives both optics passes from the live image', () => {
+  it('feeds the live image to the windshield and its light to the cab', () => {
     const display = new ScreenDisplay();
-    display.setSize(1298, 280, 2);
-    display.setPointer(1, -1);
-    for (let i = 0; i < 100; i += 1) display.step(1 / 60);
-    display.scene.updateMatrixWorld(true);
-    const housing = display.scene.getObjectByName('display-housing')!;
-    const bounds = new THREE.Box3().setFromObject(housing);
-    expect(bounds.getSize(new THREE.Vector3()).z).toBeGreaterThan(1);
-    housing.traverse((object) => {
-      if (!(object instanceof THREE.Mesh) || object.name === 'content-driven-light' || object.name === 'antialiased-mount-contact') return;
-      const p = object.geometry.getAttribute('position');
-      for (let i = 0; i < p.count; i += 1) {
-        const v = new THREE.Vector3().fromBufferAttribute(p, i).applyMatrix4(object.matrixWorld).project(display.camera);
-        expect(Math.abs(v.x)).toBeLessThanOrEqual(1);
-        expect(Math.abs(v.y)).toBeLessThanOrEqual(1);
-      }
-    });
+    display.setSize(1298, 640, 2);
     const face = display.scene.getObjectByName('live-display-surface') as THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>;
-    const light = display.scene.getObjectByName('content-driven-light') as THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>;
     expect(face.material.uniforms.uImage.value).toBe(display.target.texture);
     expect(face.material.uniforms.uEmission.value).toBe(display.emission.texture);
-    expect(light.material.uniforms.uEmission.value).toBe(display.emission.texture);
-    const released = vi.fn();
-    display.emission.addEventListener('dispose', released);
-    display.dispose();
-    expect(released).toHaveBeenCalledOnce();
-  });
-
-  it('installs the display through a real wall opening and releases the train material textures', () => {
-    const display = new ScreenDisplay();
-    display.setSize(1366, 320, 1);
-    display.scene.updateMatrixWorld(true);
-    const wall = display.scene.getObjectByName('laminate-wall-with-display-aperture') as THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>;
-    const housing = display.scene.getObjectByName('display-housing')!;
-    const interior = display.scene.getObjectByName('train-wall-installation')!;
-    expect(wall).toBeDefined();
-    const localCenter = new THREE.Vector3(0, housing.position.y, 2);
-    const origin = localCenter.applyMatrix4(interior.matrixWorld);
-    const direction = new THREE.Vector3(0, 0, -1).transformDirection(interior.matrixWorld);
-    expect(new THREE.Raycaster(origin, direction).intersectObject(wall)).toHaveLength(0);
-    const disposal = vi.fn();
-    wall.material.bumpMap!.addEventListener('dispose', disposal);
-    display.dispose();
-    expect(disposal).toHaveBeenCalledOnce();
-  });
-
-  it('separates the railings, dampens pressure, and settles exactly back to neutral', () => {
-    const display = new ScreenDisplay();
-    display.setSize(1440, 752, 1, { width: 1368, left: 36, height: 410, top: 16 });
-    const background = display.scene.getObjectByName('train-background-layer')!;
-    const railings = display.scene.getObjectByName('train-railings-layer')!;
-    expect(railings.parent).toBe(display.scene);
-    expect(railings.parent).not.toBe(background);
-    const matrix = display.viewport.transform;
-    display.setPointer(1, -.8);
-    expect(display.animating).toBe(true);
-    display.step(1 / 60);
-    expect(background.rotation.y).toBeGreaterThan(0);
-    expect(background.rotation.y).toBeLessThan(.055);
-    for (let i = 0; i < 100; i += 1) display.step(1 / 60);
-    expect(display.viewport.transform).toBe(matrix);
-    expect(railings.rotation.y / background.rotation.y).toBeCloseTo(.24, 8);
-    expect(railings.rotation.x / background.rotation.x).toBeCloseTo(.24, 8);
-    expect(railings.rotation.z / background.rotation.z).toBeCloseTo(.24, 8);
-    display.setPointer(0, 0);
-    // Slow devices still settle in elapsed time, rather than needing 120 costly frames.
-    for (let i = 0; i < 3; i += 1) display.step(.5);
-    expect(display.animating).toBe(false);
-    expect(background.rotation.x).toBe(0);
-    expect(background.rotation.y).toBe(0);
-    expect(background.rotation.z).toBe(0);
-    expect(railings.rotation.y).toBe(0);
-    display.dispose();
-  });
-
-  it('keeps the original display region within a full-height wall backdrop', () => {
-    const display = new ScreenDisplay();
-    display.setSize(1440, 752, 1, { width: 1368, left: 36, height: 410, top: 16 });
-    expect(display.viewport.y).toBeGreaterThan(16);
-    expect(display.viewport.y + display.viewport.height).toBeLessThan(426);
-    expect(display.camera.top - display.camera.bottom).toBeCloseTo(752 * 16 / 1440);
-    const empty = new ScreenDisplay(true);
-    empty.setSize(1440, 752, 1);
-    expect(empty.scene.getObjectByName('display-housing')!.visible).toBe(false);
-    expect(empty.scene.getObjectByName('recessed-mounting-gasket')).toBeUndefined();
-    display.dispose();
-    empty.dispose();
-  });
-
-  it('adds reference-style seating below the housing while preserving the fixed door and rail anchors', () => {
-    const display = new ScreenDisplay();
-    display.setSize(1440, 816, 1, { width: 1368, left: 36, height: 611, top: 8 });
-    const door = display.scene.getObjectByName('metro-door-aluminium-stile')!;
-    expect(door.position.toArray()).toEqual([7.78, 0, -.4]);
-    const rail = display.scene.getObjectByName('stainless-grab-rail') as THREE.Mesh<THREE.TubeGeometry>;
-    expect(rail.geometry.parameters.path.getPoint(0).toArray()).toEqual([-7.5, -(816 * 16 / 1440 + 2) / 2, 1.8]);
-    const housing = display.scene.getObjectByName('display-housing')!;
-    const bench = display.scene.getObjectByName('cantilever-bench-shell')!;
-    display.scene.updateMatrixWorld(true);
-    const housingBounds = new THREE.Box3().setFromObject(housing.children[0]);
-    const benchBounds = new THREE.Box3().setFromObject(bench);
-    expect(benchBounds.max.y).toBeLessThan(housingBounds.min.y);
-    let seats = 0;
-    display.scene.traverse(object => { if (object.name === 'contoured-seat-cushion') seats++; });
-    expect(seats).toBeGreaterThanOrEqual(2);
-    const back = display.scene.getObjectByName('woven-individual-seat-back') as THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>;
-    const textureDisposal = vi.fn();
-    back.material.map!.addEventListener('dispose', textureDisposal);
-    display.dispose();
-    expect(textureDisposal).toHaveBeenCalledOnce();
-  });
-
-  it('keeps the foreground post entirely in front of the train wall at every pressure extreme', () => {
-    const display = new ScreenDisplay();
-    display.setSize(1440, 844, 1, { width: 1368, left: 36, height: 502, top: 16 });
-    const background = display.scene.getObjectByName('train-background-layer')!;
-    const railings = display.scene.getObjectByName('train-railings-layer')!;
-    for (const x of [-1, 0, 1]) for (const y of [-1, 0, 1]) {
-      display.setPointer(x, y);
-      for (let i = 0; i < 100; i += 1) display.step(1 / 60);
-      display.scene.updateMatrixWorld(true);
-      const wall = new THREE.Box3().setFromObject(background);
-      const near = new THREE.Box3().setFromObject(railings);
-      expect(near.min.z - wall.max.z).toBeGreaterThan(.5);
+    for (const name of ['windshield-moulded-trim', 'left-pillar', 'sun-visor-housing', 'glare-shield', 'left-camera-monitor', 'desk-traction-display', 'controller-grip', 'emergency-stop']) {
+      expect(display.scene.getObjectByName(name), name).toBeDefined();
     }
-    expect(display.scene.getObjectByName('antialiased-mount-contact')).toBeDefined();
     display.dispose();
   });
 
   it.each([
-    [1366, 907, 1298, 556], [1440, 1039, 1368, 688], [1920, 1219, 1840, 868],
-    [1440, 1273, 1368, 922],
-  ])('keeps every interior part clear of the active screen at %s×%s', (width, height, regionWidth, regionHeight) => {
+    [1366, 907, 1298, 556], [1440, 816, 1368, 611], [1920, 996, 1840, 828], [1280, 636, 1216, 468], [1440, 1273, 1368, 922],
+  ])('keeps every cab part clear of the live picture at every head position (%s×%s)', (width, height, regionWidth, regionHeight) => {
     const display = new ScreenDisplay();
-    display.setSize(width, height, 1, { width: regionWidth, left: (width - regionWidth) / 2, height: regionHeight, top: 16 });
+    display.setSize(width, height, 1, { width: regionWidth, left: (width - regionWidth) / 2, height: regionHeight, top: 8 });
     const face = display.scene.getObjectByName('live-display-surface') as THREE.Mesh;
-    const interior = display.scene.getObjectByName('train-wall-installation')!;
-    const background = display.scene.getObjectByName('train-background-layer')!;
-    const rail = display.scene.getObjectByName('stainless-grab-rail') as THREE.Mesh;
     face.geometry.computeBoundingBox();
     const bounds = face.geometry.boundingBox!;
+    const blocked = (eye: THREE.Vector3, point: THREE.Vector3) => {
+      const direction = point.clone().sub(eye);
+      const ray = new THREE.Raycaster(eye, direction.clone().normalize(), 0, direction.length() - 1e-4);
+      return ray.intersectObject(display.cockpit.group, true).filter(hit => !(hit.object as THREE.Mesh<THREE.BufferGeometry, THREE.Material>).material.transparent).map(hit => hit.object.name);
+    };
+    // positive control: a part put in front of the picture is found by the same ray test
+    const probe = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.05, 0.05), new THREE.MeshBasicMaterial());
+    probe.name = 'probe';
+    const eye0 = display.camera.position.clone();
+    const target = new THREE.Vector3(bounds.max.x * 0.49, 0, 0).applyMatrix4(face.matrixWorld);
+    probe.position.copy(eye0).lerp(target, (CAB_EYE - 0.6) / CAB_EYE);
+    display.cockpit.group.add(probe);
+    display.scene.updateMatrixWorld(true);
+    expect(blocked(eye0, target)).toContain('probe');
+    display.cockpit.group.remove(probe);
+    probe.geometry.dispose();
     for (const px of [-1, 0, 1]) for (const py of [-1, 0, 1]) {
       display.setPointer(px, py);
-      for (let i = 0; i < 100; i++) display.step(1 / 60);
+      settle(display);
       display.scene.updateMatrixWorld(true);
-      const railPoints = rail.geometry.getAttribute('position');
-      for (let i = 0; i < railPoints.count; i += 32) {
-        const point = new THREE.Vector3().fromBufferAttribute(railPoints, i).applyMatrix4(rail.matrixWorld);
-        expect(new THREE.Raycaster(point, new THREE.Vector3(0, 0, -1), 0, .5).intersectObject(background, true)).toHaveLength(0);
-      }
-      for (const x of [-.45, 0, .45]) for (const y of [-.45, 0, .45]) {
+      const eye = display.camera.position.clone();
+      for (const x of [-0.49, -0.25, 0, 0.25, 0.49]) for (const y of [-0.49, 0, 0.49]) {
         const point = new THREE.Vector3(x * (bounds.max.x - bounds.min.x), y * (bounds.max.y - bounds.min.y), 0).applyMatrix4(face.matrixWorld);
-        const origin = point.clone().add(new THREE.Vector3(0, 0, 20));
-        const ray = new THREE.Raycaster(origin, new THREE.Vector3(0, 0, -1), 0, 19.99);
-        const opaqueHits = ray.intersectObject(interior, true).filter(hit => {
-          const material = (hit.object as THREE.Mesh).material as THREE.Material;
-          return !material.transparent;
-        });
-        expect(opaqueHits).toHaveLength(0);
+        expect(blocked(eye, point), `${px},${py} ${x},${y}`).toEqual([]);
       }
-    }
-    display.setPointer(0, 0);
-    for (let i = 0; i < 100; i++) display.step(1 / 60);
-    display.scene.updateMatrixWorld(true);
-    expect(display.scene.getObjectByName('formed-ceiling-valance')).toBeUndefined();
-    expect(display.scene.getObjectByName('ceiling-ventilation-louvers')).toBeUndefined();
-    const pillar = new THREE.Box3().setFromObject(display.scene.getObjectByName('formed-door-pillar')!);
-    const sockets = display.scene.getObjectByName('charging-socket-service-plate');
-    const door = new THREE.Box3().setFromObject(display.scene.getObjectByName('metro-door-aluminium-stile')!);
-    if (sockets) {
-      const socket = new THREE.Box3().setFromObject(sockets);
-      expect(socket.getCenter(new THREE.Vector3()).x).toBeCloseTo(pillar.getCenter(new THREE.Vector3()).x, 6);
-      expect(socket.max.x).toBeLessThan(door.min.x);
-      expect(socket.min.x).toBeGreaterThan(pillar.min.x);
-    }
-    for (const name of ['brushed-aluminium-wall-dado', 'lower-service-panel-joint']) {
-      const trim = new THREE.Box3().setFromObject(display.scene.getObjectByName(name)!);
-      expect(trim.max.x).toBeLessThan(door.min.x);
     }
     display.scene.traverse(object => {
       if (!(object instanceof THREE.Mesh)) return;
-      const position = object.geometry.getAttribute('position');
-      expect(Array.from(position.array).every(Number.isFinite)).toBe(true);
+      expect(Array.from(object.geometry.getAttribute('position').array).every(Number.isFinite)).toBe(true);
     });
     display.dispose();
+  });
+
+  it('leans the eye within its range, damps it, and settles exactly back to neutral', () => {
+    const display = new ScreenDisplay();
+    display.setSize(1440, 752, 1, { width: 1368, left: 36, height: 410, top: 16 });
+    const matrix = display.viewport.transform;
+    display.setPointer(1, -0.8);
+    expect(display.animating).toBe(true);
+    display.step(1 / 60);
+    expect(display.viewport.motion!.headX).toBeGreaterThan(0);
+    expect(display.viewport.motion!.headX).toBeLessThan(HEAD_RANGE.x);
+    settle(display);
+    expect(display.viewport.motion!.headX).toBeCloseTo(HEAD_RANGE.x, 6);
+    expect(display.viewport.motion!.headY).toBeCloseTo(0.64 * HEAD_RANGE.y, 6);
+    expect(display.viewport.transform).toBe(matrix);
+    display.setPointer(0, 0);
+    // Slow devices still settle in elapsed time, rather than needing 120 costly frames.
+    for (let i = 0; i < 3; i += 1) display.step(0.5);
+    expect(display.animating).toBe(false);
+    expect(display.camera.position.toArray()).toEqual([0, 0, CAB_EYE]);
+    display.dispose();
+  });
+
+  it('boots the cab: dark before the driver sits, the picture scanned in, then steady', () => {
+    const display = new ScreenDisplay();
+    display.setSize(1440, 816, 1, { width: 1368, left: 36, height: 611, top: 8 });
+    const face = display.scene.getObjectByName('live-display-surface') as THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>;
+    const monitor = display.scene.getObjectByName('left-camera-monitor') as THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>;
+    expect(face.material.uniforms.uBoot.value).toBe(1);
+    display.setBoot('off');
+    expect(display.bootState).toBe('off');
+    expect(face.material.uniforms.uBoot.value).toBe(0);
+    expect(monitor.material.uniforms.uPower.value).toBe(0);
+    expect(display.animating).toBe(false);
+    display.setBoot(0);
+    expect(display.animating).toBe(true);
+    for (let t = 0; t < BOOT_IMAGE.start - 20; t += 50) display.step(0.05);
+    expect(face.material.uniforms.uBoot.value).toBe(0);
+    expect(monitor.material.uniforms.uPower.value).toBeGreaterThan(0);
+    for (let t = 0; t < BOOT_IMAGE.length / 2; t += 50) display.step(0.05);
+    expect(face.material.uniforms.uBoot.value).toBeGreaterThan(0.2);
+    expect(face.material.uniforms.uBoot.value).toBeLessThan(0.8);
+    for (let t = 0; t < CAB_BOOT_MS; t += 50) display.step(0.05);
+    expect(display.bootState).toBe('on');
+    expect(display.animating).toBe(false);
+    expect(face.material.uniforms.uBoot.value).toBe(1);
+    expect(monitor.material.uniforms.uPower.value).toBe(1);
+    display.setBoot(CAB_BOOT_MS + 5);
+    expect(display.bootState).toBe('on');
+    display.dispose();
+  });
+
+  it('draws repeated parts instanced, keeping the cab to a bounded number of draw calls', () => {
+    const display = new ScreenDisplay();
+    display.setSize(1440, 816, 1, { width: 1368, left: 36, height: 648, top: 8 });
+    let meshes = 0;
+    let buttons = 0;
+    display.scene.traverse(object => {
+      if (!(object instanceof THREE.Mesh)) return;
+      meshes += 1;
+      if (object instanceof THREE.InstancedMesh && object.name === 'desk-button') buttons += object.count;
+    });
+    // 30 desk, 16 overhead and 15 wing push buttons; before instancing the cab was 235 meshes
+    expect(buttons).toBe(61);
+    expect(meshes).toBeLessThan(110);
+    display.dispose();
+  });
+
+  it('keeps the cab without an active picture for the picker and error states', () => {
+    const empty = new ScreenDisplay(true);
+    empty.setSize(1440, 752, 1);
+    expect(empty.scene.getObjectByName('live-display-surface')!.visible).toBe(false);
+    expect(empty.scene.getObjectByName('windshield-glass')!.visible).toBe(true);
+    expect(empty.scene.getObjectByName('windshield-moulded-trim')).toBeDefined();
+    empty.dispose();
   });
 });

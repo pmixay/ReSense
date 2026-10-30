@@ -1,0 +1,117 @@
+{
+  "draft": "docs/presentation/P2_defence_2026-10-21.pptx",
+  "p1_approved": false,
+  "final_j1": false,
+  "title_team_xml_identical": true,
+  "gate": {
+    "empty_events": 7,
+    "empty_episodes": 11,
+    "ride_events": 18,
+    "ride_episodes": 24,
+    "obstacle_stop": [
+      193,
+      201
+    ],
+    "obstacle_first_frame": 8,
+    "person": [
+      61,
+      61
+    ],
+    "rail_object": [
+      126,
+      126
+    ],
+    "set_o_inside": [
+      8,
+      8
+    ],
+    "set_o_outside": [
+      6,
+      142.3
+    ],
+    "set_o": {
+      "big_above": [
+        111.4,
+        56,
+        124,
+        true
+      ],
+      "big_center": [
+        98.0,
+        208,
+        213,
+        true
+      ],
+      "long_low_on_rails": [
+        87.2,
+        52,
+        86,
+        true
+      ],
+      "small_on_rail": [
+        42.7,
+        23,
+        49,
+        true
+      ],
+      "small_center": [
+        55.8,
+        32,
+        79,
+        true
+      ],
+      "small_edge_inside": [
+        35.0,
+        18,
+        83,
+        true
+      ],
+      "big_edge_inside": [
+        18.3,
+        7,
+        125,
+        false
+      ],
+      "thin_hanging": [
+        35.1,
+        18,
+        42,
+        true
+      ]
+    },
+    "set_f": {
+      "person": 151.0,
+      "box1.0": 123.9,
+      "trolley": 151.4,
+      "cable": 98.9
+    },
+    "bed_box_found": [
+      2,
+      6
+    ]
+  },
+  "word_counts": [
+    15,
+    75,
+    67,
+    79,
+    76,
+    47,
+    63,
+    51,
+    57,
+    66,
+    74,
+    80,
+    79,
+    77,
+    54,
+    60
+  ],
+  "sources": {
+    "docs/evidence/f1a_completion_2026-10-20/gate-c-candidate.json": "fbd0924b2da2191e22c76b4a6eb222fcb825196d85055aef822a30162f95cb10",
+    "docs/evidence/rejudge_2026-10-16/prebuild/summary_1.1.0.json": "47d62f53dab7c5a5045aea42bdc982bd053ea7e74539aefa3ae6c368f5a3adde",
+    "docs/evidence/f1a_completion_2026-10-20/README.md": "ebeb81a586878acb370af0c0f769cb0b715a58bbcf28fbb88254923541478425",
+    "docs/evidence/p4_review_final_bundle_2026-10-20/MOCK_JURY.md": "64d167f0595a8b4eac88b26ffcd96b7c5711d698443fa8c6c342417620ae8bb7"
+  }
+}

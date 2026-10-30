@@ -9,7 +9,7 @@ design «Линия» ([`design/mockup/`](design/mockup/README.md)).
 
 ## Run it
 
-**Live preview of `ui-improvement`: [resense.amdm.life](https://resense.amdm.life/).**
+**Live preview: [resense.arbuz.lol](https://resense.arbuz.lol/)** (merged by PR #47 on 20.10 as `8453458`).
 After changes on this server, run `scripts/deploy_webapp.sh` to update it. Deployment
 and service details are in [`../deploy/README.md`](../deploy/README.md); the live
 `/deployment.json` endpoint identifies the deployed commit.
@@ -41,7 +41,7 @@ Data lives in `webapp/data/` (`RESENSE_WEB_DATA`); «Папка на серве�
 | `/queue` | Очередь | the running job (stage, %, frames/s, ETA), waiting and finished jobs, logs, cancel / retry |
 | `/runs` | Прогоны | every run with its decision strip and verdict; search, filters, rename, delete, pick for compare |
 | `/runs/:id` | Прогон | one run: KPIs, decisions per frame against labels, distance chart, events, 3D preview, downloads |
-| `/player`, `/player/:id` | Плеер | full-width modeled 3D display under the shared navigation; camera/scenario controls, telemetry and timeline in responsive page flow |
+| `/player`, `/player/:id` | Плеер | the driver's cab: the 3D view is the windshield, under the shared navigation; entering it is a walk from the saloon into the cab, then the screens boot; camera/scenario controls, telemetry and timeline in responsive page flow |
 | `/compare?runs=a,b` | Сравнение | 2–4 runs side by side: KPI table with the best values, aligned strips, distances, preset diff |
 | `/live` | Прямой эфир | the ROS 2 node through rosbridge, or a replay of a run over the WebSocket, as the driver sees it |
 | `/presets` | Параметры | the sealed «Стандарт 1.0» and user presets of the detector's tunable parameters |

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
-/** GPU-only area-light approximation shared by wall, enclosure and foreground metal.
- * Positions are evaluated in display space, so independent parallax never detaches the light. */
+/** GPU-only area-light approximation shared by the cab surfaces around the windshield display.
+ * Positions are evaluated in display space, so head parallax never detaches the light. */
 export class ScreenLighting {
   readonly uniforms: Record<string, THREE.IUniform>;
 
@@ -10,10 +10,13 @@ export class ScreenLighting {
       uScreenEmission: { value: emission },
       uScreenInverse: { value: new THREE.Matrix4() },
       uScreenHalfSize: { value: new THREE.Vector2(1, 1) },
+      // A powered-down (booting) display emits nothing, whatever its render target holds.
+      uScreenPower: { value: 1 },
     };
   }
 
-  apply(material: THREE.MeshStandardMaterial, strength: number): void {
+  /** `encode` compresses and gamma-encodes the PBR result: the cab shares the display-valued pipeline. */
+  apply(material: THREE.MeshStandardMaterial, strength: number, encode = false): void {
     material.onBeforeCompile = shader => {
       Object.assign(shader.uniforms, this.uniforms);
       shader.vertexShader = `varying vec3 vScreenWorldPosition;\n${shader.vertexShader}`.replace(
@@ -29,13 +32,14 @@ export class ScreenLighting {
         uniform sampler2D uScreenEmission;
         uniform mat4 uScreenInverse;
         uniform vec2 uScreenHalfSize;
+        uniform float uScreenPower;
         varying vec3 vScreenWorldPosition;
         ${shader.fragmentShader}
       `.replace('#include <opaque_fragment>', `
         vec3 screenPoint = (uScreenInverse * vec4(vScreenWorldPosition, 1.0)).xyz;
         vec2 screenUv = screenPoint.xy / (uScreenHalfSize * 2.0) + .5;
         vec2 outsideScreen = max(abs(screenPoint.xy) - uScreenHalfSize, vec2(0.0));
-        float screenDistance = length(vec3(outsideScreen, screenPoint.z - .175));
+        float screenDistance = length(vec3(outsideScreen, screenPoint.z));
         vec3 screenRadiance = vec3(0.0);
         for (int sy = 0; sy < 2; sy++) {
           for (int sx = 0; sx < 2; sx++) {
@@ -45,16 +49,21 @@ export class ScreenLighting {
         vec3 edgeRadiance = texture2D(uScreenEmission, clamp(screenUv, .08, .92)).rgb;
         screenRadiance = mix(screenRadiance, edgeRadiance, .35);
         float screenFalloff = 1.0 / (1.0 + screenDistance * screenDistance * 1.8);
-        // Broad LCD output: nearby surfaces receive the image's actual hue and energy.
-        outgoingLight += screenRadiance * screenFalloff * ${strength.toFixed(3)} * (diffuseColor.rgb * .65 + .35);
+        // Broad display output: nearby surfaces receive the image's actual hue and energy.
+        outgoingLight += screenRadiance * screenFalloff * uScreenPower * ${strength.toFixed(3)} * (diffuseColor.rgb * .65 + .35);
+        ${encode ? 'outgoingLight = pow(outgoingLight / (vec3(1.0) + outgoingLight * .55), vec3(1.0 / 2.2));' : ''}
         #include <opaque_fragment>
       `);
     };
-    material.customProgramCacheKey = () => `screen-area-light-${strength}`;
+    material.customProgramCacheKey = () => `screen-area-light-${strength}-${encode ? 'encoded' : 'linear'}`;
   }
 
   update(displayMatrix: THREE.Matrix4, width: number, height: number): void {
     this.uniforms.uScreenInverse.value.copy(displayMatrix).invert();
     this.uniforms.uScreenHalfSize.value.set(width / 2, height / 2);
+  }
+
+  setPower(power: number): void {
+    this.uniforms.uScreenPower.value = power;
   }
 }

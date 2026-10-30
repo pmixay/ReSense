@@ -1,0 +1,167 @@
+{
+ "id_off_vs_control_differing_rows": [],
+ "M1": {
+  "objects": {
+   "15": {
+    "frames": 264,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.023,
+     44.023
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "16": {
+    "frames": 198,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.054,
+     44.054
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "17": {
+    "frames": 329,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.008,
+     44.008
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "18": {
+    "frames": 274,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.013,
+     44.013
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "19": {
+    "frames": 303,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.042,
+     44.042
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "20": {
+    "frames": 285,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.046,
+     44.046
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "21": {
+    "frames": 276,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.028,
+     44.028
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "22": {
+    "frames": 298,
+    "stop": [
+     147,
+     147
+    ],
+    "first_m": [
+     44.03,
+     44.03
+    ],
+    "lost": [],
+    "gained": []
+   },
+   "23": {
+    "frames": 175,
+    "stop": [
+     38,
+     31
+    ],
+    "first_m": [
+     86.755,
+     76.439
+    ],
+    "lost": [
+     106,
+     107,
+     108,
+     109,
+     110,
+     111,
+     112
+    ],
+    "gained": []
+   },
+   "24": {
+    "frames": 188,
+    "stop": [
+     0,
+     0
+    ],
+    "first_m": [
+     null,
+     null
+    ],
+    "lost": [],
+    "gained": []
+   }
+  },
+  "failing_objects": [
+   23
+  ],
+  "new_stop_frames": [],
+  "new_unmatched": [],
+  "stop_frames": [
+   185,
+   178
+  ]
+ },
+ "controls": {
+  "self_failing": [],
+  "planted": [
+   15,
+   239
+  ],
+  "planted_found": true
+ },
+ "verdict": {
+  "ID": true,
+  "M1_no_loss": false,
+  "M1_new_matched": true
+ }
+}

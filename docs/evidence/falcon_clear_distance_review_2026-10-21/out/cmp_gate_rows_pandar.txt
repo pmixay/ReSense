@@ -1,0 +1,18 @@
+{"rows": 15269, "rows_other_fields_differ": 143, "fields": {"health": 143}, "clear_raised": 0, "clear_lowered": 1553}
+  cloud_with_fake_obj                      rows= 1510 other_differ=   0 raised=0 lowered=283
+  doubleT_obstacle                         rows=  201 other_differ=   0 raised=0 lowered=52
+  doubleT_platform                         rows=  345 other_differ=   0 raised=0 lowered=25
+  new_data_0                               rows= 1409 other_differ=   0 raised=0 lowered=140
+  new_data_1                               rows= 1409 other_differ=  46 raised=0 lowered=126
+  new_data_2                               rows= 1409 other_differ=   0 raised=0 lowered=115
+  new_data_3                               rows= 1409 other_differ=   0 raised=0 lowered=121
+  new_data_4                               rows= 1409 other_differ=  97 raised=0 lowered=82
+  new_data_5                               rows= 1409 other_differ=   0 raised=0 lowered=94
+  new_data_6                               rows= 1409 other_differ=   0 raised=0 lowered=106
+  new_data_7                               rows= 1408 other_differ=   0 raised=0 lowered=143
+  roundT_doubleT                           rows=  252 other_differ=   0 raised=0 lowered=38
+  roundT_pressureGate_roundT               rows=  268 other_differ=   0 raised=0 lowered=12
+  roundT_squareT_pressureGate_squareT      rows=  545 other_differ=   0 raised=0 lowered=27
+  squareT_platform_squareT_switch          rows=  877 other_differ=   0 raised=0 lowered=189
+POSITIVE CONTROL
+{"rows": 15269, "rows_other_fields_differ": 144, "fields": {"n_points": 1, "health": 143}, "clear_raised": 0, "clear_lowered": 1553}

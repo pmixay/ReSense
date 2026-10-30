@@ -26,6 +26,7 @@ example "EXPERIMENTS §3b") in code comments and older records refer to the expe
 | [`P4_ASSOCIATION_A1_PROTOCOL.md`](P4_ASSOCIATION_A1_PROTOCOL.md) | pre-registration of the A1 association candidate (rejected) | 26.09 |
 | [`P4_FALSE_TARGET_DIAGNOSIS.md`](P4_FALSE_TARGET_DIAGNOSIS.md) | the trace of all 45 ride false-event identities of the P3d detector | 26.09 |
 | [`README_history_2026-10-19.md`](README_history_2026-10-19.md) | what was cut from the root README on 19.10: the old status bullets, the integration history of 15–16.10, the 29.09 history, five 28.09 table rows | 15–29.09 |
+| [`README_history_2026-10-23.md`](README_history_2026-10-23.md) | what was cut from the root README on 23.10: the 19.10 candidate-1.2.0 status, the L16/S3, R3 and H1 notes of 20.10, the organizers' answers of 19.10 | 19–20.10 |
 | [`BACKLOG_history_2026-10-19.md`](BACKLOG_history_2026-10-19.md) | the whole BACKLOG as it stood before the clean-up: cards in full, the 16.10 ledger, dated plans and per-role queues of 15–22.10, §7–§9e | 13–19.10 |
 | [`CAPTAIN_history_2026-10-19.md`](CAPTAIN_history_2026-10-19.md) | the captain board's work lists of 29.09, the branch and release text of 19.10 (morning), the decision-log rows of 22–29.09 | 22–29.09, 19.10 |
 | [`SCORECARD_history_2026-10-19.md`](SCORECARD_history_2026-10-19.md) | the independent judgement of 28–29.09 (61/100), the experimental line's scores, per-criterion text, the list of stale statements | 28–29.09 |

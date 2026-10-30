@@ -12,6 +12,7 @@ export const DISPLAY_FRAGMENT = /* glsl */ `
   uniform sampler2D uImage;
   uniform sampler2D uEmission;
   uniform vec2 uSurfaceSize;
+  uniform float uBoot;
   varying vec2 vUv;
   void main() {
     vec3 image = texture2D(uImage, vUv).rgb;
@@ -35,7 +36,21 @@ export const DISPLAY_FRAGMENT = /* glsl */ `
     reflection += 0.4 * exp(-pow((vUv.x + vUv.y * 0.14 - 0.28) / 0.018, 2.0));
     float edge = pow(abs(vUv.x - 0.5) * 2.0, 6.0);
     light += vec3(0.84, 0.91, 0.95) * (reflection * 0.018 + edge * 0.004);
-    gl_FragColor = vec4(min(light, vec3(1.0)), 1.0);
+    light = min(light, vec3(1.0));
+    if (uBoot < 1.0) {
+      // Power-up: a standby grid, then a scan line sweeps down and reveals the live picture.
+      float row = 1.0 - vUv.y;
+      float s = uBoot * 1.12 - 0.06;
+      float revealed = 1.0 - smoothstep(s - 0.02, s, row);
+      vec2 grid = abs(fract(vUv * uSurfaceSize / 48.0) - 0.5);
+      float gridLine = smoothstep(0.47, 0.5, max(grid.x, grid.y));
+      float on = step(0.001, uBoot);
+      vec3 standby = vec3(0.004, 0.008, 0.014) + vec3(0.10, 0.40, 0.55) * gridLine * 0.16 * on;
+      light = mix(standby, light, revealed);
+      light += vec3(0.35, 0.85, 1.0) * exp(-pow((row - s) / 0.008, 2.0)) * 0.9 * on;
+      light += vec3(0.20, 0.50, 0.65) * (1.0 - smoothstep(0.0, 0.08, uBoot)) * on * 0.5;
+    }
+    gl_FragColor = vec4(light, 1.0);
   }
 `;
 

@@ -1,0 +1,76 @@
+{
+ "pieces": {
+  "cloud_with_fake_obj": {
+   "rows": 1510,
+   "changed": 283
+  },
+  "doubleT_obstacle": {
+   "rows": 201,
+   "changed": 52
+  },
+  "doubleT_platform": {
+   "rows": 345,
+   "changed": 25
+  },
+  "new_data_0": {
+   "rows": 1409,
+   "changed": 140
+  },
+  "new_data_1": {
+   "rows": 1409,
+   "changed": 126
+  },
+  "new_data_2": {
+   "rows": 1409,
+   "changed": 115
+  },
+  "new_data_3": {
+   "rows": 1409,
+   "changed": 121
+  },
+  "new_data_4": {
+   "rows": 1409,
+   "changed": 82
+  },
+  "new_data_5": {
+   "rows": 1409,
+   "changed": 94
+  },
+  "new_data_6": {
+   "rows": 1409,
+   "changed": 106
+  },
+  "new_data_7": {
+   "rows": 1408,
+   "changed": 143
+  },
+  "roundT_doubleT": {
+   "rows": 252,
+   "changed": 38
+  },
+  "roundT_pressureGate_roundT": {
+   "rows": 268,
+   "changed": 12
+  },
+  "roundT_squareT_pressureGate_squareT": {
+   "rows": 545,
+   "changed": 27
+  },
+  "squareT_platform_squareT_switch": {
+   "rows": 877,
+   "changed": 189
+  }
+ },
+ "total_rows": 15269,
+ "other_field_diff_rows": 0,
+ "raised_rows": 0,
+ "changed_rows": 1553,
+ "changed_without_rule": 0,
+ "rule_without_change": 0,
+ "trace_vs_gate_clear_differ": 0,
+ "by_rule": {
+  "round_down_candidate": 1236,
+  "round_down_obstacle": 317
+ },
+ "rows_level_differs_latency_only": 1085
+}

@@ -1,5 +1,7 @@
 # Pinned navigation and dimensional 16:9 player
 
+> **Superseded (22.10):** its Player captures show the wall-mounted display, replaced by the driver's cab on 21.10; current captures: [`../player-cab/`](../player-cab/README.md). The pinned navigation and About/overview captures are unaffected.
+
 Captured on 2026-10-18 from the production build served by the real ReSense web
 backend, using Chromium with SwiftShader WebGL. These are rendered UI screenshots,
 not mockups. The API generated and processed six-second `approach` and `crossing`

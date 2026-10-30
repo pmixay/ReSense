@@ -1,5 +1,7 @@
 # Photo-led Moscow-2020 interior and door transitions
 
+> **Superseded (22.10):** the saloon-wall interior shown here was replaced by the driver's cab on 21.10; the current Player is documented in [`../player-cab/`](../player-cab/README.md). `trainInterior.ts`, named below, was removed in `7017a02`; this gallery is a dated record of that file's captures.
+
 ## References
 
 The user supplied these photographs in main commit `7e38c01`. The reference files
@@ -41,7 +43,7 @@ composites.
 
 ## Implementation and verification
 
-- `src/player/trainInterior.ts`: refined PBR materials, unchanged main anchors,
+- `src/player/trainInterior.ts` (removed in `7017a02`; historical): refined PBR materials, unchanged main anchors,
   two extra fixed-door trim details, individual piped backrests, contoured cushions,
   shells and end armrests. Shared procedural upholstery texture; explicit disposal.
 - `src/components/AppShell/TrainDoors.tsx` and its CSS: paired dimensional leaves,

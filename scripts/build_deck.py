@@ -50,8 +50,8 @@ out semantically identical (checked 19.10 on slides 1-4, 6 and 9):
 
     python scripts/build_deck.py --refresh docs/presentation/ReSense_LCT2026.pptx
 
-The deck of 20.10 shows the version 1.2.0 (``V12``), the second lidar (``FALCON``), the range by track
-shape (``RANGE``) and the gauge display (``GAUGE``); those blocks name their sources.
+The deck shows the version 1.3.0 (``V12``; 22.10), the second lidar (``FALCON``, 1.3.0 under the Falcon profile:
+``FALCON13``), the range by track shape (``RANGE``) and the gauge display (``GAUGE``); those blocks name their sources.
 
 Needs ``python-pptx`` (``pip install python-pptx``); not part of the runtime image.
 """
@@ -89,7 +89,12 @@ def metres(x):
 
 
 # ==== FINAL — the numbers the regression gate measures, ALL of them here and nowhere else.
-# The final gate of the shipped detector, 20.10: the R3 seal (frozen bytes of f56ad5e, docs/evidence/
+# 1.3.0 (22.10): the release gate of the 1.3.0 seal (docs/evidence/detector_freeze_2026-10-22_1.3.0.json, 42 files,
+# 853a05b7..., measured commit ed67d25), strict, without --allow: docs/evidence/integration_1.3_2026-10-21/
+# gate_release_ed67d25.json. Against the R3 gate below two values changed, both K2's cost: the ride 23 -> 25 events and
+# 26 -> 29 episodes (`build_deck.py --check-gate` on that file: 2 differences before, "GATE matches" after; the R3 file
+# was the positive control: "GATE matches" on the 1.2.0 values).
+# Before (1.2.0): the final gate of the shipped detector, 20.10: the R3 seal (frozen bytes of f56ad5e, docs/evidence/
 # detector_freeze_2026-10-20_1.2.0_r3.json, 40 files, digest 6d091081...), strict gate without --allow against the
 # 29.09 seal baseline, 1 cm frame cache: docs/evidence/r3_completion_2026-10-20/gate-a-candidate.json. Against the
 # 29.09 gate (7464d80, the deck of 19.10) five values changed: the ride 27 -> 23 events and 30 -> 26 episodes, the five
@@ -99,8 +104,8 @@ def metres(x):
 # into each line (the comment names the key), set GATE_RUN / GATE_SOURCE, rebuild; `build_deck.py
 # --check-gate <baseline.json>` lists every line that differs, with the value to write. Everything below GATE
 # derives from it (per km, "без пропусков", ranges, chart bars); the web/demo deck test pins the same keys.
-GATE_RUN = "f56ad5e (R3 seal)"
-GATE_SOURCE = "docs/evidence/r3_completion_2026-10-20/gate-a-candidate.json"
+GATE_RUN = "ed67d25 (1.3.0 seal)"
+GATE_SOURCE = "docs/evidence/integration_1.3_2026-10-21/gate_release_ed67d25.json"
 # D1/PT1 pass 1 context, not J1's still-pending measurement of the next released seal.
 # docs/evidence/judgement_2026-10-13/README.md §§3,5: node-faithful raw decode, whole ride in order;
 # Docker node latency is separate from offline decode+detect and from end-to-end result age.
@@ -111,8 +116,8 @@ JUDGE = {"date": "13.10", "ride_episodes": 32, "ride_km": 13, "node_360_p95_ms":
 GATE = {
     "empty_events": 7,               # five_empty.alarm_events
     "empty_episodes": 11,            # five_empty.stop_episodes
-    "ride_events": 23,               # ride.alarm_events            (per km = / 13, derived)
-    "ride_episodes": 26,             # ride.stop_episodes
+    "ride_events": 25,               # ride.alarm_events            (per km = / 13, derived)
+    "ride_episodes": 29,             # ride.stop_episodes
     "obstacle_stop": (193, 201),     # recordings.doubleT_obstacle.alarm_frames, .frames
     "obstacle_first_frame": 8,       # recordings.doubleT_obstacle.first_alarm_frame
     "person": (61, 61),              # recordings.doubleT_obstacle.labelled.per_label.person_crossing hits, frames
@@ -295,7 +300,7 @@ N = {
 
 # ==== 1.2.0 (19.10): the version shown at the defence and developed further; each number with its source.
 # The candidate is the sealed development build on main aec88d2 (measured source 0779db7; detector files
-# identical; `scripts/detector_freeze.py verify` PASS, 38 files), NOT released; 1.1.0 will not be released
+# identical; `scripts/detector_freeze.py verify` PASS, 38 files at that time), then a candidate; 1.1.0 will not be released
 # (the captain's decision, 19.10). Published: v1.0.0 (5d6e9b5), what the experts evaluated 30.09-14.10; 66/100 is
 # our independent agent judge's score of v1.0.0 (13.10), not an organizer score. On the Pandar recordings the
 # 1.2.0 gate equals GATE above (`build_deck.py --check-gate docs/evidence/b4_merge_reseal_2026-10-18/gate.json` ->
@@ -304,11 +309,15 @@ N = {
 # 20.10: the shipped detector bytes are those of f56ad5e (the R3 seal; the F1a completion of 20.10 was rejected by its
 # independent review and reverted), `detector_freeze.py verify` PASS, 40 files. tests: P4's independent run on the
 # f56ad5e bytes in the CI-like configuration, 20.10: 2,387 of 2,387 passed, 8 need recorded data
-# (docs/evidence/p4_review_final_bundle_2026-10-20/README.md; 1,969 on aec88d2 on 19.10). "release_tag": None until the
-# release is published; set to "v1.2.0" on 20.10 evening at the captain's request (before the tag existed: check the
-# release page before the deck is shown; None and --refresh put "релиз готовится" back).
-V12 = {"version": "1.2.0", "commit": "f56ad5e", "released": "v1.0.0", "judge_score": 66, "tests": "2 387",
-       "release_tag": "v1.2.0"}
+# (docs/evidence/p4_review_final_bundle_2026-10-20/README.md; 1,969 on aec88d2 on 19.10). "release_tag": the release
+# v1.2.0 is published (tag v1.2.0 = 3b73bbe, GitHub 2026-10-20 20:58 UTC; scripts/verify_release.sh v1.2.0 exits 0, 22.10);
+# None would put "релиз готовится" back.
+# 1.3.0 (22.10): the version shown at the defence. Seal 853a05b7... (42 files), detector bytes of ed67d25; independent
+# review ACCEPT WITH CONDITIONS (docs/evidence/review_1.3.0_2026-10-22/README.md, DECISIONS rows 58-59). tests: the full
+# suite on the 1.3.0 line (d04fbbd), 22.10: 2 585 passed, 0 failed, 8 need recorded data. "release_tag": None until the
+# tag v1.3.0 exists (the user's approval); then "v1.3.0". v1.2.0 stays published (tag 3b73bbe, 20.10).
+V12 = {"version": "1.3.0", "commit": "ed67d25", "released": "v1.0.0", "judge_score": 66, "tests": "2 585",
+       "release_tag": None}
 def release_state():
     """What the slides and notes say about the 1.2.0 release."""
     return f"релиз {V12['release_tag']}" if V12["release_tag"] else "релиз готовится"
@@ -355,14 +364,26 @@ N5_FRAMES = 1667
 # platform (squareT_platform_squareT_switch). 1.2.0 = 1.1.0 on the Pandar data (full gate and X3, 40 cases /
 # 29 765 rows, identical in every non-timing output: b4_merge_reseal_2026-10-18); the range jobs themselves were
 # not re-run on 1.2.0. v1.0.0 (707ea9c / judge 13.10) differs only on C: person 73.9 m, 1 m cube 73.9 m.
+# 1.3.0 (22.10): the same 37 jobs re-run on the 1.3.0 tree and on a fresh v1.2.0
+# (docs/evidence/integration_1.3_2026-10-21/runs/range/range_jobs.tar.xz, `first_stop_X`; the v1.2.0 own-placement run
+# reproduces every value below as it was, the positive control). K2 changes the two curves only.
 RANGE = [  # (chart name, job, first STOP m, shape: straight / platform / curve)
     ("прямая: человек", "A_person", 218.38, "straight"),
     ("прямая: куб 1 м", "A_cube1", 151.1, "straight"),
     ("прямая: куб 0,3 м", "A_cube03", 44.86, "straight"),
     ("платформа: человек", "D_person", 105.82, "platform"),
-    ("кривая, гермозатвор: человек", "C_person", 82.77, "curve"),
-    ("кривая → двухпутный: человек", "B_person", 51.8, "curve"),
+    ("кривая, гермозатвор: человек", "C_person", 94.58, "curve"),
+    ("кривая → двухпутный: человек", "B_person", 71.19, "curve"),
 ]
+RANGE_V12 = {"B_person": 51.8, "C_person": 82.77}            # v1.2.0, own placement (the run above, ctl)
+RANGE_SAME = {"B_person": (46.49, 71.19), "C_person": (76.89, 94.58)}   # v1.2.0 -> 1.3.0, the object at the same place
+# Falcon in 1.3.0 under the Falcon profile (falcon_ros): docs/evidence/review_1.3.0_2026-10-22/README.md (fresh runs
+# against a fresh v1.2.0): first person STOP, the held STOP from the main start and over six start frames, false STOP
+# episodes, STOP rows whose reported clear range lies beyond the stopping object. "ros_play": the real ros2 bag play of the
+# 432-frame demo bag at rate 1.0 on the 1.2.0 node (v1.2.0 detector bytes; docs/evidence/falcon_ros_demo_2026-10-21/
+# README.md), not repeated live on 1.3.0.
+FALCON13 = {"first": ("127,3", "150,5"), "held": ("123,0", "129,4"), "held_starts": (("114,4", "123,0"), ("129,4", "135,6")),
+            "false_episodes": (3, 0), "clear_past": (570, 0), "ros_play": ("130,5", "23,2"), "near_wrong": (38, 4)}
 RANGE_V100 = {"C_person": 73.9}
 # The gauge as a stable 3D box (N1): docs/evidence/n1_n4_2026-10-18/README.md "Final full-precision display replay"
 # (core f5ff15f, all 2 308 frames): visible-edge jitter p90 at 40 / 80 / 120 m on set O against the registered
@@ -1072,7 +1093,7 @@ def s11_short(sl):
     ], size=15, space_before=6)
     fill(shape(sl, 7), [
         "**Применение:** контроль габарита поезда",
-        "**В работе:** габарит на поворотах, пыль, 300 м, меньше ложных STOP",
+        "**В работе:** высокие узкие объекты, пыль, Falcon вблизи, меньше ложных STOP",
         "**Внедрение:** адаптер торможения — отдельный этап",
     ], size=15, space_before=6)
 
@@ -1182,7 +1203,7 @@ def s_hero(sl):             # template slide 13: big white card
               "удержания уже подтверждённого низкого STOP на 0,3 с — подобрано на этой же записи, и мы это говорим. "
               "Здесь поезд стоит; на едущем поезде — синтетика организаторов: ящик 2 × 2 м алгоритм увидел за "
               f"{metres(big[1])} метров, с первого появления (слайд «Объекты организаторов»). "
-              f"Версия {V12['version']} даёт на этой записи те же числа, что гейт 29.09 (гейт печати R3 отличается "
+              f"Версия {V12['version']} даёт на этой записи те же числа, что гейт 29.09 (гейт печати 1.3.0 отличается "
               "от него только поездкой, пятью пустыми записями и висящим предметом 5 см, не этой записью). "
               f"Источник чисел: {GATE_SOURCE}; независимая "
               "оценка 13.10 воспроизвела 193 из 201 и 61 из 61 (docs/evidence/judgement_2026-10-13/README.md §3).")
@@ -1194,7 +1215,7 @@ def s_demo(sl):             # template slide 27: two browser frames
     placeholder_picture(sl, 14, rviz_box_view())
     if not REFRESH:
         picture_in_placeholder(placeholder(sl, 18), os.path.join(ROOT, IMG["chain"]))
-    fill(shape(sl, 10), [f"rviz2 · {V12['version']}"])
+    fill(shape(sl, 10), ["rviz2 · 1.2.0"])            # the RViz capture of 18.10
     fill(shape(sl, 33), ["docker run resense"])
     fill(placeholder(sl, 15), ["RViz в контейнере: габарит — 3D-бокс по поддержанной геометрии; "
                                "на кривой короче."], size=14)
@@ -1213,17 +1234,18 @@ def s_results(sl):          # template slide 20: left card + five rows
     fill(placeholder(sl, 14), [
         (of(N["person"]), {"size": 36, "bold": True, "color": PINK}),
         ("кадр с человеком — STOP · Pandar, реальная запись", {"size": 13}),
-        (f"~{FALCON['stop_m']} м", {"size": 36, "bold": True, "color": PINK, "space_before": 14}),
-        ("первый STOP: человек идёт к поезду · Falcon", {"size": 13}),
+        (f"~{FALCON13['first'][1][:3]} м", {"size": 36, "bold": True, "color": PINK, "space_before": 14}),
+        (f"первый STOP · Falcon (было ~{FALCON13['first'][0][:3]})", {"size": 13}),
         (f"≈ {GAUGE['jitter_max']} м", {"size": 36, "bold": True, "color": PINK, "space_before": 14}),
         ("дрожание показанного габарита, p90 до 120 м", {"size": 13}),
     ], bullet=False, color="1C1D22")
     rows = [
-        f"**Дальность:** прямая {rng('A_person')} м, кривые {rng('B_person')}–{rng('C_person')} м",
+        f"**Дальность:** прямая {rng('A_person')} м, кривые {rng('B_person')}–{rng('C_person')} м "
+        f"(было {metres(RANGE_V12['B_person'])}–{metres(RANGE_V12['C_person'])})",
         f"**Пропуски:** STOP у {set_o_stopped()} объектов организаторов",
         f"**Ложные:** {per_km()} на км ({N['ride_events']} {events_word(N['ride_events'])} за {N['ride_km']} км, "
         "в выборке)",
-        f"**10 Гц:** Falcon — {FALCON['detect_ms']} мс/кадр; Pandar 360° — p95 {JUDGE['node_360_p95_ms']} мс",
+        f"**10 Гц:** Pandar 360° — p95 {JUDGE['node_360_p95_ms']} мс; {V12['version']} до +54 %",
         "**Запуск:** пауза, замедление, смена бэгов без перезапуска",
     ]
     for idx, text in zip(range(15, 20), rows):
@@ -1257,9 +1279,11 @@ def s_range(sl):            # template slide 22: horizontal bar chart + four not
     ch.value_axis.tick_labels.font.size = Pt(10)
     pairs = [
         (21, 18, "Метод судьи 13.10", "лучевая синтетика, реальные фоны"),
-        (22, 23, f"Кривые: {rng('B_person')}–{rng('C_person')} м", "ось отстаёт от поворота — в работе"),
+        (22, 23, f"Кривые: {rng('B_person')}–{rng('C_person')} м", "K2: габарит по кривой"),
         (24, 25, f"С {V12['released']}", f"гермозатвор {metres(RANGE_V100['C_person'])} → {rng('C_person')} м"),
-        (26, 27, "Измерено на 1.1.0", f"на {V12['version']} не перезапускали"),
+        (26, 27, f"Измерено на {V12['version']}",
+         "тот же объект: " + " и ".join(f"+{metres(b - a)}" for a, b in (RANGE_SAME['B_person'], RANGE_SAME['C_person']))
+         + " м"),
     ]
     for ti, di, t, d in pairs:
         fill(placeholder(sl, ti), [t], size=16)
@@ -1302,7 +1326,7 @@ def s_fake(sl):             # template slide 21: column chart (turned into bars)
     if not REFRESH:                             # made once, by the build
         gf.height = Emu(gf.height - 300000)
     textbox(sl, Emu(346075), Emu(gf.top + gf.height + 40000), Emu(5749925), Emu(560000),
-            [f"Синтетика; гейт {V12['version']} (печать R3). Сиреневый: неустойчиво."],
+            [f"Синтетика; гейт {V12['version']} (печать 1.3.0). Сиреневый: неустойчиво."],
             size=10, color="E6E1F5")
     top = set_o("big_above")
     cards = [
@@ -1319,18 +1343,19 @@ def s_fake(sl):             # template slide 21: column chart (turned into bars)
 
 
 def s_falcon(sl):           # template slide 16: four cards (until 19.10 «Надёжность», now in the notes of 27 and 17)
-    """The second lidar: the organizers' real Falcon Prime recording through 1.2.0 (FALCON)."""
+    """The second lidar: the organizers' real Falcon Prime recording; 1.3.0 under the Falcon profile (FALCON13)."""
     title_chip(sl, 10, shape(sl, 14), "ВТОРОЙ ЛИДАР: FALCON")
-    f = FALCON
+    f, g = FALCON, FALCON13
     cards = [
         (49, 37, 38, "Оси и калибровка", "Профили falcon_ros / falcon_native; ориентация — с 1-го кадра; "
                                          "без неё CAUTION, не GO"),
-        (50, 39, 40, "Человек", f"Предупреждение со {f['warn_m']} м, STOP с ~{f['stop_m']} м; "
-                                f"от {f['stop_band'][0]} до {f['stop_band'][1]} м — STOP в каждом кадре"),
-        (51, 41, 42, "Ложные", f"{f['false'][0]} кадров STOP за {f['seconds']} с; CAUTION {f['caution_pct']} %. "
-                               "Вблизи (2,5–7 м) 38 кадров: «чисто» дальше объекта"),
-        (52, 43, 44, "300 м", f"Человек виден с ~{f['seen_m']} м ({f['seen_pts']} точек), полотно — до "
-                              f"~{f['bed_m']} м; дальность — в работе"),
+        (50, 39, 40, "Человек", f"Первый STOP с {g['first'][1]} м (было {g['first'][0]}); держится с "
+                                f"{g['held_starts'][1][0]}–{g['held_starts'][1][1]} м (было {g['held_starts'][0][0]}–"
+                                f"{g['held_starts'][0][1]})"),
+        (51, 41, 42, "Ложные", f"Ложных эпизодов STOP: {g['false_episodes'][1]} (было {g['false_episodes'][0]}); "
+                               f"«чисто» за объектом: {g['clear_past'][1]} кадров (было {g['clear_past'][0]})"),
+        (52, 43, 44, "300 м", f"Человек виден с ~{f['seen_m']} м, полотно — до ~{f['bed_m']} м; "
+                              "дальний габарит продлевает прямую за полотно"),
     ]
     for k, (ni, ti, di, t, d) in enumerate(cards):
         fill(placeholder(sl, ni), [f"0{k + 1}"])
@@ -1342,7 +1367,8 @@ def s_hard(sl):             # template slide 15: five lined rows
     fill(placeholder(sl, 0), ["СЛОЖНЫЕ СЛУЧАИ"])
     rows = [
         "**Столбы:** высокий узкий объект чаще CAUTION, не STOP — улучшено частично (синтетика: 82 → 114 из 177)",
-        f"**Кривые:** ось отстаёт от поворота; первый STOP с {rng('B_person')}–{rng('C_person')} м — исправление (K1/K2) вне 1.2.0",
+        f"**Кривые:** K2 — первый STOP с {rng('B_person')}–{rng('C_person')} м (было {metres(RANGE_V12['B_person'])}–"
+        f"{metres(RANGE_V12['C_person'])}); ось ещё отстаёт от поворота",
         f"**Ложные STOP:** ≈{false_per_hour()} эпизод в час пустого тоннеля ({JUDGE['date']}) — снижаем",
         "**Пыль:** на своей синтетической пыли приёмку не проходим — в работе",
         f"**Мелкое:** кубы 0,3 м — с {cubes()} м; висящий 5 см — с {set_o_first('thin_hanging')} м",
@@ -1358,8 +1384,8 @@ def s_next(sl):             # template slide 17: three cards
     cards = [
         (49, 37, 38, "Что получилось", "ROS 2-модуль на CPU в Docker; два лидара; стабильный 3D-габарит; "
                                        f"пауза и смена бэгов без перезапуска; {V12['tests']} тестов"),
-        (50, 39, 40, "Что дальше", "Габарит по повороту (K1/K2 вне 1.2.0), пыль, дальность Falcon к 300 м, "
-                                   "меньше ложных STOP"),
+        (50, 39, 40, "Что дальше", "Высокие узкие объекты (H1), человек на платформе, Falcon вблизи, "
+                                   "меньше ложных STOP, скорость кадра"),
         (51, 41, 42, "Внедрение", "docker load → run → run_demo.sh. "
                                   "Адаптер торможения требует разработки и проверки."),
     ]
@@ -1513,7 +1539,7 @@ NOTES[17] += (" План после оценки: BACKLOG, H1–H6 перед в
               "Новая печать, проверка на нетронутых данных G3, дальность по геометриям, свежесть S1, "
               "стенд S5; подключение к торможению требует отдельной разработки и проверки.")
 
-# PT1 pass 2 (19.10): the deck for the defence of 23.10 shows 1.2.0 (V12) and the experts' criteria of 16.10.
+# PT1 pass 2 (19.10), updated 22.10: the deck for the defence of 23.10 shows 1.3.0 (V12) and the experts' criteria of 16.10.
 # The notes of every slide whose text changed are rewritten here; each number names its source. The 5-minute
 # speech, the Q&A drill and the numbers table: docs/PRESENTATION.md.
 _V = V12["version"]
@@ -1523,9 +1549,10 @@ SRC_FALCON = ("проверка 19.10, docs/evidence/falcon_head_check_2026-10-1
               "docs/evidence/p4_review_final_bundle_2026-10-20")
 NOTES[11] = (
     "Одной фразой: описываем нормальный тоннель и ищем препятствия в габарите поезда; ROS 2 и Docker, только CPU. "
-    f"Версия: показываем и развиваем {_V} — {release_state()}; печать детектора R3 (40 файлов, digest 6d091081…, "
-    f"detector_freeze verify PASS), байты детектора — коммит {V12['commit']}; завершение F1a отклонено независимым "
-    "ревью и откатено 20.10. 1.1.0 не выпускалась (решение капитана 19.10). Опубликован "
+    f"Версия: показываем {_V} — {release_state()}; печать детектора 1.3.0 (42 файла, digest 853a05b7…, "
+    f"detector_freeze verify PASS), байты детектора — коммит {V12['commit']}; независимое ревью итогового пакета — "
+    "ACCEPT WITH CONDITIONS, ни один истинный STOP не потерян и не задержан (docs/evidence/review_1.3.0_2026-10-22). "
+    "Опубликованы v1.2.0 (20.10) и "
     f"{V12['released']} — его эксперты оценивали 30.09–14.10; {V12['judge_score']}/100 от 13.10 — оценка нашего "
     "независимого агента-судьи, не организаторов. Лидары: Pandar128 (все записи организаторов) и Falcon Prime "
     "(реальная запись 16.10; профили осей falcon_ros / falcon_native). Решает геометрия; обученная часть одна — "
@@ -1534,8 +1561,8 @@ NOTES[11] = (
     f"p95 {JUDGE['node_360_p95_ms']} мс, 120° — {JUDGE['node_120_p95_ms']} мс ({V12['released']}); Falcon — "
     f"детектор {_F['detect_ms']} мс на кадр, медиана (docs/evidence/falcon_head_check_2026-10-19). Стенд организаторов мы не мерили. "
     "GPU оценили и не используем: выигрыш — десятки миллисекунд, а контейнер с запросом GPU не стартует без "
-    "nvidia-container-toolkit. Источники: CHANGELOG [1.2.0]; docs/evidence/b4_merge_reseal_2026-10-18/README.md; "
-    "docs/evidence/version_1.2.0_2026-10-18/README.md; docs/evidence/judgement_2026-10-13/README.md §5.")
+    "nvidia-container-toolkit. Источники: CHANGELOG [1.3.0]; docs/evidence/integration_1.3_2026-10-21/README.md; "
+    "docs/evidence/review_1.3.0_2026-10-22/README.md; docs/evidence/judgement_2026-10-13/README.md §5.")
 NOTES[12] = (
     f"Pandar128: {num(frames_total())} реальных кадров организаторов — шесть записей ({num(N['frames_six'])}) и "
     f"поездка ({num(N['frames_ride'])}, 20 минут, {N['ride_km']} км, 7 остановок, кривые R≈350 м). Каждая запись "
@@ -1555,7 +1582,7 @@ NOTES[25] += (" Габарит в RViz и веб-виде — 3D-бокс: ши�
               "для картинки, в решения не возвращается; при устаревшем входе бокс сереет и исчезает "
               "(docs/evidence/n1_n4_2026-10-18/HOWTO.md).")
 NOTES[27] = (
-    f"Живой показ — версия {_V} (образ релиза, детектор — печать R3). Один узел: сначала Pandar, запись "
+    f"Живой показ — версия {_V} (образ 1.3.0, детектор — печать 1.3.0). Один узел: сначала Pandar, запись "
     "doubleT_obstacle — STOP около 56 м в первые секунды; затем без перезапуска контейнера Falcon с профилем "
     "falcon_ros — ориентация с первого кадра, 3D-бокс габарита, CAUTION у конструкций, STOP по человеку. Пробел — "
     "пауза, стрелки вверх и вниз — скорость. Проверено 18.10 на образе разработки cecab1b: 40 из 40 кадров "
@@ -1565,12 +1592,16 @@ NOTES[27] = (
     f"docker_chain_rviz.mp4: архив 23.09 (v0.6.2), не {_V}. Надёжность: нет свежих данных — FAULT или удержание "
     "STOP; потребитель проверяет время действия /resense/status своим таймером; при смене бэга узел явно "
     "сбрасывает очередь, калибровку, треки и свежесть. Команды: docs/PRESENTATION.md «Демонстрация», "
-    "docs/evidence/n1_n4_2026-10-18/HOWTO.md.")
+    "docs/evidence/n1_n4_2026-10-18/HOWTO.md. Falcon-бэг (432 кадра) проверен с настоящим ROS 2 на сервере моста на узле 1.2.0 (на 1.3.0 живой прогон не повторялся): все кадры "
+    "обработаны, первый STOP через 23,2 с после play на 130,5 м при скорости 1,0 (при 0,5 — 42,9 с, дольше 30 с): играть со скоростью 1,0.")
 NOTES[20] = (
     f"По критериям экспертов 16.10. {of(N['person'])}: человек в габарите на реальной записи doubleT_obstacle — "
     f"STOP в каждом кадре, {person_alarm()}; вся запись — {obstacle_run()}; предмет на рельсе — "
-    f"{of(N['rail_object'])} (эти числа на записи в гейте {_V} те же, что в гейте 29.09; независимая оценка 13.10 воспроизвела). ~{_F['stop_m']} м: "
-    f"Falcon, первый STOP по идущему человеку — 124,8 м на 297 с ({SRC_FALCON}). ≈ {GAUGE['jitter_max']} м: "
+    f"{of(N['rail_object'])} (эти числа на записи в гейте {_V} те же, что в гейте 29.09; независимая оценка 13.10 воспроизвела). ~{FALCON13['first'][1][:3]} м: "
+    f"Falcon, профиль falcon_ros, {_V}: первый STOP по идущему человеку {FALCON13['first'][1]} м (v1.2.0: "
+    f"{FALCON13['first'][0]} м), удерживаемый с {FALCON13['held'][1]} м (было {FALCON13['held'][0]}); по шести "
+    f"стартам {FALCON13['held_starts'][1][0]}–{FALCON13['held_starts'][1][1]} м (было {FALCON13['held_starts'][0][0]}–"
+    f"{FALCON13['held_starts'][0][1]}); docs/evidence/review_1.3.0_2026-10-22/README.md. ≈ {GAUGE['jitter_max']} м: "
     "дрожание видимого (рисуемого) края габарита между кадрами, не оси детектора; p90 на 40 / 80 / 120 м — "
     f"{' / '.join(GAUGE['jitter_set_o'])} м на наборе O при пределах {' / '.join(GAUGE['limits'])} м "
     "(docs/evidence/n1_n4_2026-10-18/README.md); цена — на кривой бокс медианно "
@@ -1581,8 +1612,11 @@ NOTES[20] = (
     f"судьи {JUDGE['date']} ({V12['released']}): {JUDGE['ride_episodes']} эпизода, ≈2,5 эпизода/км; все пустые "
     f"данные — {JUDGE['empty_episodes']} эпизодов за {num(JUDGE['empty_s'])} с, ≈{false_per_hour()} в час; на "
     f"этих записях {_V} решения иные: в гейте {_V} пять пустых записей дают {N['empty_events']} событий "
-    f"(было 8 в гейте 29.09), поездка — {N['ride_events']} (было 27). Falcon: {_F['false'][0]} ложных кадров STOP за {_F['seconds']} с. "
-    f"10 Гц: Falcon — детектор {_F['detect_ms']} мс на кадр, медиана (docs/evidence/falcon_head_check_2026-10-19); Pandar 360° — нода "
+    f"(было 8 в гейте 29.09), поездка — {N['ride_events']} (было 27; в v1.2.0 — 23: +2 события и +3 эпизода STOP — цена K2, "
+    f"пять пустых записей +0). Falcon, профиль falcon_ros: ложных эпизодов STOP {FALCON13['false_episodes'][1]} "
+    f"(v1.2.0: {FALCON13['false_episodes'][0]}). "
+    f"10 Гц: Falcon — детектор {_F['detect_ms']} мс на кадр в 1.2.0, медиана (docs/evidence/falcon_head_check_2026-10-19); в {_V} "
+    "время кадра выросло: K2 +25–38 % на Pandar, Falcon +40–54 % по медиане (общая машина, не тихий замер); Pandar 360° — нода "
     f"p95 {JUDGE['node_360_p95_ms']} мс на {JUDGE['vcpus']} vCPU, 120° — {JUDGE['node_120_p95_ms']} мс "
     f"({JUDGE['date']}, {V12['released']}); стенд организаторов не мерили. Запуск: run_demo.sh / play_bag.sh "
     "--interactive — пауза, замедление, несколько бэгов в одном узле, RViz в контейнере, программный рендер "
@@ -1594,20 +1628,20 @@ NOTES[22] = (
     "реальные кадры 120°; возвраты идеальные — постановка благоприятная, это не реальные люди. Первый STOP: прямая "
     f"— человек (бокс 0,5 × 0,5 × 1,75 м) {rng('A_person')} м, куб 1 м — {rng('A_cube1')} м, куб 0,3 м — "
     f"{rng('A_cube03')} м; перед платформой — {rng('D_person')} м; кривые с гермозатвором — {rng('C_person')} м; "
-    f"кривая в двухпутный участок — {rng('B_person')} м. На кривых объект виден раньше, но ось пути отстаёт от "
-    "поворота (наша кривизна −0,0006…−0,0011 против −0,0025 1/м по трём независимым свидетелям, "
-    "docs/evidence/gauge_stability_2026-10-18/README.md); исправление оси (K1/K2) не прошло приёмку и выключено в "
-    f"{_V} (решение капитана 20.10, docs/evidence/k1_k2_review_2026-10-20); работа после питча. "
-    f"С {V12['released']} изменилась только кривая с гермозатвором: {metres(RANGE_V100['C_person'])} → "
-    f"{rng('C_person')} м. {_V} относительно 1.1.0: на печати B4 (18.10) полный гейт и X3 (40 случаев, 29 765 строк) "
-    "совпадали во всех не-временных выходах (docs/evidence/b4_merge_reseal_2026-10-18/README.md); с тех пор добавлены "
-    f"F1a, L16, R3 и H1 — поездка в гейте {N['ride_events']} событий вместо 27, висящий предмет 5 см — с "
-    f"{set_o_first('thin_hanging')} м; сами задания дальности на {_V} не перезапускались. Источник: docs/evidence/rejudge_2026-10-16/prebuild/summary_1.1.0.json, "
-    "range_table.md, RELEASE_DAY.md. Прежний график — наша синтетика в прямой поездке (набор F, гейт 29.09): "
+    f"кривая в двухпутный участок — {rng('B_person')} м. На кривых ось пути отстаёт от поворота (наша кривизна "
+    "−0,0006…−0,0011 против −0,0025 1/м по трём независимым свидетелям, docs/evidence/gauge_stability_2026-10-18/README.md); "
+    f"в {_V} включён K2 — второй габарит по совместной форме рельсов и стен на кривой, он только добавляет препятствия. "
+    f"Кривые: {metres(RANGE_V12['B_person'])} → {rng('B_person')} м и {metres(RANGE_V12['C_person'])} → "
+    f"{rng('C_person')} м; при том же положении объекта {RANGE_SAME['B_person'][0]} → {RANGE_SAME['B_person'][1]} м и "
+    f"{RANGE_SAME['C_person'][0]} → {RANGE_SAME['C_person'][1]} м; прямая и платформа не изменились. Все 37 заданий "
+    f"перезапущены на {_V} и на свежем v1.2.0; при одинаковом положении объекта потерянных кадров STOP нет "
+    "(docs/evidence/integration_1.3_2026-10-21/README.md). "
+    f"С {V12['released']} кривая с гермозатвором: {metres(RANGE_V100['C_person'])} → {rng('C_person')} м. Источник "
+    "метода: docs/evidence/rejudge_2026-10-16/prebuild/summary_1.1.0.json, range_table.md, RELEASE_DAY.md. Прежний график — наша синтетика в прямой поездке (набор F, гейт 29.09): "
     f"человек {set_f('person')} м, тележка {set_f('trolley')}, ящик 1 м {set_f('crate')}, кабель 3 см "
     f"{set_f('cable')}; со скоростью поезда — {N['speed_person']} м. Pandar в этих записях не даёт отражений "
     "дальше 209–210 м.")
-NOTES[21] += (f" Гейт {_V} (печать R3; build_deck.py --check-gate {GATE_SOURCE} → GATE matches, 20.10): от гейта "
+NOTES[21] += (f" Гейт {_V} (печать 1.3.0; build_deck.py --check-gate {GATE_SOURCE} → GATE matches, 22.10): от гейта "
               f"29.09 отличаются поездка ({N['ride_events']} событий вместо 27), пять пустых записей "
               f"({N['empty_events']} вместо 8) и висящий предмет 5 см (с {set_o_first('thin_hanging')} м вместо 30).")
 NOTES[16] = (
@@ -1622,9 +1656,16 @@ NOTES[16] = (
     f"{_F['stop_band'][1]} м — STOP в 100 % кадров. Ложные: {_F['false'][0]} кадров STOP за {_F['seconds']} с — "
     f"{_F['false'][1]} на неподвижной конструкции в {_F['false'][2]} м и {_F['false'][3]} на участке пола в "
     f"{_F['false'][4]} м; причина второго не установлена. CAUTION на {_F['caution_pct']} % кадров: две неподвижные "
-    f"конструкции у края габарита, {_F['caution_m'][0]} и {_F['caution_m'][1]} м. 300 м: человек виден лидару с "
-    f"~{_F['seen_m']} м ({_F['seen_pts']} точек), а первый STOP — с ~{_F['stop_m']} м; работа над дальностью "
-    f"Falcon идёт, результата пока нет. По паспорту — {_F['datasheet_m'][0]} м при отражательной способности 10 % "
+    f"конструкции у края габарита, {_F['caution_m'][0]} и {_F['caution_m'][1]} м (эти числа — 1.1.0 / 1.2.0, путь "
+    f"manual). {_V}, профиль falcon_ros: дальний габарит продлевает подтверждённую прямую за полотно — первый STOP "
+    f"{FALCON13['first'][1]} м (v1.2.0: {FALCON13['first'][0]}), удерживаемый с {FALCON13['held'][1]} м (было "
+    f"{FALCON13['held'][0]}), по шести стартам {FALCON13['held_starts'][1][0]}–{FALCON13['held_starts'][1][1]} м (было "
+    f"{FALCON13['held_starts'][0][0]}–{FALCON13['held_starts'][0][1]}); ложных эпизодов STOP {FALCON13['false_episodes'][1]} "
+    f"(было {FALCON13['false_episodes'][0]}); кадров STOP с «чистой дистанцией» дальше объекта {FALCON13['clear_past'][1]} "
+    f"(было {FALCON13['clear_past'][0]}) (docs/evidence/review_1.3.0_2026-10-22). Живой ros2 bag play демо-бэга при "
+    f"скорости 1,0 проверен на узле 1.2.0: первый STOP на {FALCON13['ros_play'][0]} м через {FALCON13['ros_play'][1]} с "
+    f"(docs/evidence/falcon_ros_demo_2026-10-21); на {_V} живой прогон не повторялся. "
+    f"Человек виден лидару с ~{_F['seen_m']} м ({_F['seen_pts']} точек). По паспорту — {_F['datasheet_m'][0]} м при отражательной способности 10 % "
     f"(максимум {_F['datasheet_m'][1]} м); в этом тоннеле полотно и рельсы не отражают дальше ~{_F['bed_m']} м, "
     f"поэтому габарит дальше можно только продлевать; код обрезает облако на {_F['crop_m']} м. Детектор — "
     f"{_F['detect_ms']} мс на кадр, медиана. Источники: {SRC_FALCON} (первый STOP 124,8 м; ложные 4 + 8 кадров; "
@@ -1636,8 +1677,9 @@ NOTES[15] = (
     "пропуск, найден независимой оценкой 13.10; исправление H1 отозвано 16.10, потому что теряло другие "
     f"положительные (CHANGELOG [1.1.0]); в {_V} улучшено частично (H1: на синтетике 82 → 114 из 177, 63 пропуска "
     "остаются; независимая приёмка заблокирована — при ложной паре рельсов бывают ложные core и STOP, "
-    "docs/evidence/h1_publication_2026-10-20). Кривые: ось пути отстаёт от поворота, первый STOP "
-    f"{rng('B_person')}–{rng('C_person')} м; исправление оси (K1/K2) не прошло приёмку и выключено в {_V}. Ложные STOP: судья "
+    "docs/evidence/h1_publication_2026-10-20). Кривые: ось пути отстаёт от поворота; K2 в {_V} "
+    f"поднял первый STOP до {rng('B_person')}–{rng('C_person')} м (было {metres(RANGE_V12['B_person'])}–"
+    f"{metres(RANGE_V12['C_person'])}). Ложные STOP: судья "
     f"{JUDGE['date']} — {JUDGE['empty_episodes']} эпизодов за {num(JUDGE['empty_s'])} с пустого тоннеля "
     f"(≈{false_per_hour()} в час), CAUTION на {JUDGE['caution_pct']} % пустых кадров ({V12['released']}; на этих "
     f"записях гейт {_V} даёт {N['empty_events']} событий на пустых записях и {N['ride_events']} на поездке); главные "
@@ -1646,9 +1688,11 @@ NOTES[15] = (
     "человек теряется; нашу приёмку детектор не проходит, работа идёт, исправления нет "
     "(docs/evidence/n3_dust_2026-10-18/README.md). Мелкое: кубы 0,3 м — STOP с "
     f"{cubes()} м, ящик 0,5 м на полотне — в {of(N['bed_box_found'])} подходов; висящий предмет 5 см — с "
-    f"{set_o_first('thin_hanging')} м. Известные ограничения {_V}: вблизи Falcon (кадры 4373–4414, объект 2,5–7 м) в 38 "
-    "кадрах «чистая дистанция» детектора 3–40 м лежит дальше объекта при решении CAUTION — это оценка, не подтверждение "
-    "отсутствия препятствия (docs/evidence/falcon_clear_limit_2026-10-20); ошибка высоты лидара +0,8 м на 5 м может "
+    f"{set_o_first('thin_hanging')} м. Известные ограничения {_V}: вблизи Falcon (кадры 4373–4414, объект 2,5–7 м) объект по-прежнему "
+    f"не STOP; «чистая дистанция» там теперь обнуляется, когда модель полотна уходит от плоскости крепления: кадров, "
+    f"где она лежала дальше объекта, {FALCON13['near_wrong'][1]} вместо {FALCON13['near_wrong'][0]} "
+    "(docs/evidence/falcon_clear_distance_2026-10-21); защита стрелочного перевода дальнего диапазона пропускает "
+    "проходимые проёмы — задокументировано; ошибка высоты лидара +0,8 м на 5 м может "
     "скрыть новое висящее тело (B4, docs/evidence/p3_review_response_2026-10-20). Как мы работаем со своими правками: "
     "завершение F1a (локальная опорная линия рельса) независимое ревью нашло небезопасным — оно скрывало объекты "
     "5–20 см над головкой рельса в синтетических сценах, — и мы его откатили (docs/evidence/f1a_completion_review_2026-10-20); "
@@ -1658,11 +1702,11 @@ NOTES[15] = (
 NOTES[17] = (
     "Итог: работающий ROS 2-модуль на CPU в Docker; два лидара с явными профилями осей; габарит — стабильный "
     "3D-бокс по поддержанной геометрии; запуск с паузой, замедлением и сменой бэгов без перезапуска. Тесты: "
-    f"{V12['tests']} из {V12['tests']} тестов полного набора в CI-подобной конфигурации на байтах {V12['commit']} "
-    "(8 тестов требуют записей), независимый прогон 20.10, docs/evidence/p4_review_final_bundle_2026-10-20/README.md; "
-    "1 969 на aec88d2 19.10, docs/evidence/falcon_head_check_2026-10-19/out/tests.txt. В работе, без результатов: "
-    "габарит синхронно с поворотом (K1/K2 выключены в 1.2.0), устойчивость к пыли, дальность Falcon к 300 м, "
-    f"меньше ложных STOP (F1). {_V}: {release_state()}; облачный CI (печать, тесты, образ, офлайн-сборка) зелёный. Подключение к "
+    f"полный набор {_V} — {V12['tests']} прошли, 0 упали, 8 требуют записей (22.10); облачный CI — все задачи "
+    "зелёные (печать, тесты, образ, ROS 2, офлайн-сборка, веб). В "
+    f"{_V}: дальность Falcon (первый STOP {FALCON13['first'][1]} м), кривые {rng('B_person')}–{rng('C_person')} м, "
+    "верная «чистая дистанция». В работе, без результатов: высокие узкие объекты (H1), человек на платформе, "
+    f"Falcon вблизи, устойчивость к пыли, меньше ложных STOP (F1), скорость кадра. {_V}: {release_state()}. Подключение к "
     "торможению требует отдельной разработки и проверки безопасности. Вопросы организаторам — формат питча, "
     "можно ли показать и перепрогнать обновлённую версию, как читать CAUTION, что в скрытом наборе, что такое "
     "«фильтр», новые данные, проигрывание бэгов — отправлены капитаном; ответов пока нет.")

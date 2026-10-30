@@ -8,7 +8,7 @@
   overflow: hidden;
   pointer-events: auto;
 }
-.portal[data-phase='idle'] { display: none; }
+.portal:is([data-phase='idle'], [data-phase='boarding'], [data-phase='arriving']) { display: none; }
 .leaf {
   --stile: clamp(30px, 3.1vw, 60px);
   --crown: clamp(26px, 3.8vh, 42px);

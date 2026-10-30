@@ -6,11 +6,12 @@
 > the results come back as evidence in a PR. Instructions only: plain commands of the repository's
 > own tools, parameterised by shell variables you set.
 > **Audience:** team (a person or an agent on the VM) · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-09-29: the procedure against the full VM run of 28.09
+> **Last verified:** 2026-10-23, version-state pass: version statements only, checked against the git tags `v1.0.0`, `v1.2.0` (`git ls-remote --tags origin`; no `v1.3.0`) and the version fact sheet; the procedure itself was not re-run. 2026-10-22: scripts, flags, env vars, paths, evidence references, counts and the node's
+> parameters re-checked against 1.3.0 `f24d939`; earlier: 2026-09-29: the procedure against the full VM run of 28.09
 > ([`evidence/vm_2026-09-28/summary.md`](evidence/vm_2026-09-28/summary.md)), the node's start-up,
 > warm-up and shutdown against the launch file and the node, the image's default command against
 > `docker/Dockerfile`; D1 15.10: current baseline selection is
-> `regression_baseline_2026-09-29_shell_off.json` (v1.0.0); latest independent judgement is 13.10
+> `regression_baseline_2026-09-29_shell_off.json` (v1.0.0); the latest run of our independent AI judge is 13.10, on v1.0.0 only (66/100, internal weights; v1.2.0 and the 1.3.0 candidate were not judged)
 > ([`SCORECARD.md`](SCORECARD.md)), not a new team-VM run · **Status:** current
 
 ## 0. What the VM is for
@@ -236,7 +237,7 @@ is worked through every observed input-period frame by default
 current (`node.catchup`): FAULT, CAUTION or a held STOP, never GO. A storage stall of a second or
 more mid-recording makes the catch-up skip frames after the settle point and fails the check.
 
-**Cold start** (a separate result; CI runs it on every push to `main`, `scripts/p1_cold_bag_test.sh`):
+**Cold start** (a separate result; CI runs it on a push to `main` that can affect the image, `scripts/p1_cold_bag_test.sh`):
 the two dry-run commands with `SKIP_BUILD=1`, `OUT=out/cold_*` and output into `cold_*.txt`, each
 right after `sudo sh -c 'sync; echo 3 > /proc/sys/vm/drop_caches'`; on a disk below ~250 MB/s it
 measures the disk. A latency or drop failure is a result to record with the core count.
@@ -302,7 +303,7 @@ fallback is not real time at 360° on 4 physical cores, so there the script exit
 
 ```bash
 BASELINE=$(python3 -c "import glob, json; print(max((json.load(open(p))['created'], p) for p in glob.glob('docs/evidence/results/regression_baseline_*.json') if json.load(open(p)).get('ride', {}).get('available'))[1])")
-echo "$BASELINE"      # the newest baseline with the ride: regression_baseline_2026-09-29_shell_off.json for the sealed detector (7464d80, shell off)
+echo "$BASELINE"      # the newest baseline with the ride: regression_baseline_2026-09-29_shell_off.json (code 7464d80, shell off; the baseline of every seal since 16.10, also of 1.3.0)
 mkdir -p "$EV/gate_$DAY"
 python scripts/regression_gate.py --cache "$CACHE" --jobs 4 --baseline "$BASELINE" \
   --out "$EV/gate_$DAY/gate_$(git rev-parse --short HEAD).json" 2>&1 | tee "$EV/gate_$DAY/gate_table.txt"
@@ -311,8 +312,8 @@ echo "exit ${PIPESTATUS[0]}"
 
 Every frame of the six recordings, set O, the ride (8 pieces) and set F straight against the
 baseline; `--jobs` about the physical core count (about 7 min at 4); no Docker. **Done:** exit 0,
-every gated metric identical or better (on the sealed detector identical but the informational
-latency rows). Exit 1: a gated metric is worse (report the rows) or missing (the ride and set F
+every gated metric identical or better (the 1.3.0 candidate seal, unreleased: 8 gated better, none worse,
+[`integration_1.3_2026-10-21/`](evidence/integration_1.3_2026-10-21/gate_release_ed67d25.txt)). Exit 1: a gated metric is worse (report the rows) or missing (the ride and set F
 need `$CACHE/new_data`; a run without them passes only with `--allow 'ride.*' --allow
 'set_F_straight.*'`, said in the report); 2: a cache is missing or incomplete (§2.4). A candidate
 branch runs in its own `git worktree add ../candidate <branch>` after `scripts/build_native.sh`.
@@ -331,13 +332,13 @@ mkdir -p "$EV/export_$DAY"
 
 15–20 min, needs the internet; `export_image.sh` refuses uncommitted changes to tracked files.
 **Done:** both exit 0 (about 0.48 GB). Commit `archive.txt`, **never** the archive (`dist/` is
-ignored by git). The public archive is published as the assets of the GitHub release `v1.0.0` by
-`.github/workflows/release.yml` when the tag is pushed; until then it is the CI artifact of a
-`main` run (job `offline-build`, GitHub login) or `scripts/export_image.sh` as here.
+ignored by git). The public archive is published as the assets of the GitHub release (`v1.2.0` since 20.10, earlier
+`v1.0.0`) by `.github/workflows/release.yml` when the tag is pushed; a version without a release is
+`scripts/export_image.sh` as here.
 
 ### 4.6 Shared-memory mode (opt-in `RESENSE_DDS=shm`)
 
-Optional (CI's `docker` job tests it on every push). `-e RESENSE_DDS=shm` puts the node on shared
+Optional (CI's `docker` job tests it on a push that can affect the image). `-e RESENSE_DDS=shm` puts the node on shared
 memory + UDP and opens its Fast DDS files in `/dev/shm` to other users (`docker/dds_transport.sh`),
 so a stock Fast DDS player hands the clouds over `/dev/shm`; the default stays UDP-only. Run the
 host console of §4.2 at `rmem_max` 212992 with `-e RESENSE_DDS=shm` in console 1 (its log shows

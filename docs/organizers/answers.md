@@ -3,7 +3,7 @@
 > **Purpose:** every answer the organizers gave to our questions (case 05), verbatim where it was
 > written, and what each answer changed in ReSense.
 > **Audience:** team, jury · **Owner:** P1 · **Language:** EN, the answers verbatim in RU
-> **Last verified:** 2026-10-19: §12 — the organizers' answers of 19.10 and the marked synthetic bags + `obstacles.md`;
+> **Last verified:** 2026-10-23, version-state pass: version statements in §8 (row of 25.09 on releases), §11 and §12 checked against the git tags `v1.0.0`, `v1.2.0` (`git ls-remote --tags origin`; no `v1.3.0`) and the version fact sheet; the organizers' wording and the answers themselves were not re-verified. 2026-10-19: §12 — the organizers' answers of 19.10 and the marked synthetic bags + `obstacles.md`;
 > §11 — the open questions and O1 were sent by the captain (reported 19.10);
 > 2026-10-16: §10 added (live Q&A and the experts' message of 16.10, as relayed by the team);
 > 2026-09-29: §9 against the sealed detector's `gauge.*` settings and the labels
@@ -155,7 +155,7 @@ facts 1–2, §1 #5), which the detector measures from the rail head.
 
 | date | reported by | organizers' statement | status | consequence in ReSense |
 |---|---|---|---|---|
-| 25.09 | the captain (P1) | (a) the upload form has **no file-size limit**: the team types **links** into the form | **closed** | nothing is uploaded as a file: the form gets links — the repository with its commit hash, the image archive `resense-image-<version>.tar.gz` and its `.sha256` (§7), the video and the presentation. Which links, and when, is the captain's: he sends the submission himself (25.09, [`../archive/CAPTAIN_board_2026-09-28.md`](../archive/CAPTAIN_board_2026-09-28.md) C12); GitHub releases are deferred (C13). The archive's size (0.49 GiB at gzip -1 in CI) is no longer a constraint on the form; a GitHub release asset holds up to 2 GB per file. Each link must open for a logged-out visitor, and the archive is loaded once on a second machine before submitting ([`../CAPTAIN.md`](../CAPTAIN.md) action 1b) |
+| 25.09 | the captain (P1) | (a) the upload form has **no file-size limit**: the team types **links** into the form | **closed** | nothing is uploaded as a file: the form gets links — the repository with its commit hash, the image archive `resense-image-<version>.tar.gz` and its `.sha256` (§7), the video and the presentation. Which links, and when, is the captain's: he sends the submission himself (25.09, [`../archive/CAPTAIN_board_2026-09-28.md`](../archive/CAPTAIN_board_2026-09-28.md) C12); GitHub releases are deferred (C13; as of 23.10 `v1.0.0` and `v1.2.0` are published on GitHub, `v1.2.0` on 20.10). The archive's size (0.49 GiB at gzip -1 in CI) is no longer a constraint on the form; a GitHub release asset holds up to 2 GB per file. Each link must open for a logged-out visitor, and the archive is loaded once on a second machine before submitting ([`../CAPTAIN.md`](../CAPTAIN.md) action 1b) |
 | 25.09 | the captain (P1) | (b) a **30 × 30 × 10 cm object lying on the bed between the rails** (below the rail head) is **not an obstacle**: it is not inside the train's clearance envelope | **closed** | the shipped bed policy is the organizers' own: nothing below the envelope floor (0.12 m above the rail head) between the rails is reported ([`../ALGORITHM.md`](../ALGORITHM.md) §3.3b, `gauge.profile`, `lowobj.*` unchanged). The opt-in central near-bed path (`lowobj.near_enabled`, off; [`../EXPERIMENTS.md`](../archive/EXPERIMENTS_log_2026-09.md) §1e) stays off and is no longer an open question: it is not needed for the organizers' check, and its ride and set F re-run is dropped. The criteria judgement's 8.1 hold-down "the 30 × 30 × 10 cm object below the rail head is not detected by default" is answered by the organizers ([`../SCORECARD.md`](../SCORECARD.md) §8; no re-score). Objects that reach the envelope — across a rail, straddling the floor, on a rail head, taller than the floor — are reported as before |
 
 ## 9. The envelope's reference and the synthetic objects (written answer, 29.09)
@@ -221,13 +221,13 @@ The messages are in [`../QUESTIONS.md`](../QUESTIONS.md): O1 asks for the pitch/
 1.1.x may be shown or re-run and affect scores, and whether hidden-check/expert results or another
 archive submission are available before 23.10; the five open questions of 16.10 ask how `CAUTION` is read,
 which objects and scenes the hidden set has, what "the filter" is, what the new data look like and how the
-bags will be played. Since 19.10 the team develops **1.2.0** and will not release 1.1.0 (captain's decision,
+bags will be played. Since 19.10 the team developed **1.2.0** (published 20.10) and will not release 1.1.0 (captain's decision,
 [`../DECISIONS.md`](../DECISIONS.md)): an answer about "1.1.x" is read as applying to the updated version.
 
 When a reply arrives, append its dated verbatim text and the resulting decisions here; update
 `PRESENTATION.md` and the backlog (§9 of [`../BACKLOG.md`](../BACKLOG.md)).
-The current five-minute preparation budget and the submitted v1.0.0 are unchanged assumptions,
-not a new answer from the organizers.
+The five-minute preparation budget and the submitted v1.0.0 (29.09) were unchanged assumptions on 19.10,
+not a new answer from the organizers. Since then v1.2.0 was published (20.10); the team reports (23.10) that the jury reviewed it; no jury score, report or organizer reply about it is recorded here.
 
 ## 12. Organizers' answers of 19.10 (relayed by the captain) and the marked synthetic bags
 

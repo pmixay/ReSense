@@ -3,7 +3,7 @@
 > **Purpose:** the GPU driver and CUDA software the organizers reported for the test stand (22.09),
 > verbatim, and what it means for ReSense.
 > **Audience:** team · **Owner:** P1 · **Language:** EN, the organizers' output verbatim
-> **Last verified:** 2026-09-24 against `537e220` · **Status:** current
+> **Last verified:** 2026-10-22 against 1.3.0 `f24d939` (links, citations, Dockerfile and compose GPU check, spec §3.1 hardware re-checked); earlier: 2026-09-24 against `537e220` · **Status:** current
 
 Hardware per the specification (§3.1): Intel Core i7-9700E (8 cores, 2.60 GHz), 128 GiB RAM,
 NVIDIA GeForce RTX 4070 Ti SUPER, Ubuntu 22.04.5 LTS, ROS 2 Humble, Docker. The team cannot run
@@ -33,9 +33,9 @@ What it means for ReSense:
   (numpy / scipy / scikit-learn, optional C++ kernels compiled at build time), and nothing in the
   launch or compose files requests a GPU. The stand's driver / toolkit state therefore does not
   affect the build or the demo; the per-frame budget on this machine is the CPU one in
-  [`../EXPERIMENTS.md`](../archive/EXPERIMENTS_log_2026-09.md) §3.
+  [`../archive/EXPERIMENTS_log_2026-09.md`](../archive/EXPERIMENTS_log_2026-09.md) §3.
 * **Evaluated on 24.09 and rejected for 29.09**
-  ([`../ARCHITECTURE.md`](../ARCHITECTURE.md) "GPU: evaluated, not used"): the i7-9700E has
+  ([`../ARCHITECTURE.md`](../ARCHITECTURE.md) "GPU: evaluated, not used", now headed "GPU: оценено, не используется"): the i7-9700E has
   PCIe 3.0 only; a frame is ~1 160 small array operations, so a CuPy port is dispatch-bound and
   would save at most 30–45 ms per 360° frame against numpy, 5–15 ms against fused CPU code; the
   `dpkg` list above has no `nvidia-container-toolkit`, and without it a container that requests

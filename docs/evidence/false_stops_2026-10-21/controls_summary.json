@@ -1,0 +1,115 @@
+{
+ "set_O_truth": {
+  "in_envelope": {
+   "n": 27,
+   "hit": 25,
+   "got": {
+    "in_envelope": 25,
+    "side": 1,
+    "bed_rail": 1
+   }
+  },
+  "unscored": 19,
+  "overhead": {
+   "n": 12,
+   "hit": 12,
+   "got": {
+    "overhead": 12
+   }
+  }
+ },
+ "set_O_transport": {
+  "in_envelope": {
+   "n": 26,
+   "hit": 20,
+   "got": {
+    "in_envelope": 20,
+    "overhead": 6
+   }
+  },
+  "unscored": 22,
+  "overhead": {
+   "n": 12,
+   "hit": 12,
+   "got": {
+    "overhead": 12
+   }
+  }
+ },
+ "doubleT_obstacle_truth": {
+  "in_envelope": {
+   "n": 10,
+   "hit": 9,
+   "got": {
+    "in_envelope": 9,
+    "bed_rail": 1
+   }
+  },
+  "side": {
+   "n": 5,
+   "hit": 5,
+   "got": {
+    "side": 5
+   }
+  }
+ },
+ "synthetic": {
+  "in_envelope": {
+   "n": 9,
+   "hit": 9,
+   "got": {
+    "in_envelope": 9
+   }
+  },
+  "side": {
+   "n": 9,
+   "hit": 9,
+   "got": {
+    "side": 9
+   }
+  },
+  "overhead": {
+   "n": 9,
+   "hit": 9,
+   "got": {
+    "overhead": 9
+   }
+  },
+  "bed_rail": {
+   "n": 9,
+   "hit": 9,
+   "got": {
+    "bed_rail": 9
+   }
+  },
+  "phantom": {
+   "n": 9,
+   "hit": 9,
+   "got": {
+    "phantom": 9
+   }
+  },
+  "not_in_envelope": {
+   "n": 9,
+   "hit": 9,
+   "got": {
+    "bed_rail": 9
+   }
+  }
+ },
+ "transport_error_m": {
+  "x": {
+   "median_abs": 2.83,
+   "p90_abs": 4.89
+  },
+  "y": {
+   "median_abs": 0.34,
+   "p90_abs": 0.52
+  },
+  "z": {
+   "median_abs": 0.09,
+   "p90_abs": 1.8
+  },
+  "n": 57
+ }
+}

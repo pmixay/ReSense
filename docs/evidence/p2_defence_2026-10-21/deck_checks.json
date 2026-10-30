@@ -1,0 +1,23 @@
+{
+  "pages": 16,
+  "range_bars_match_source": [
+    52,
+    83,
+    106,
+    45,
+    151,
+    218
+  ],
+  "set_o_bars_match_source": true,
+  "planted_change_detected": true,
+  "pdf_text_in_page": true,
+  "fonts": [
+    "BAAAAA+Montserrat-Bold",
+    "CAAAAA+Montserrat-Regular",
+    "DAAAAA+OpenSymbol",
+    "EAAAAA+DejaVuSans"
+  ],
+  "visual_review": "Contact sheet all 16 pages and full-size slides 12/14 inspected; no clipped chart labels or body text.",
+  "final_j1": false,
+  "p1_approval": false
+}

@@ -1,0 +1,61 @@
+  cloud_with_fake_obj.jsonl row 0: differs in ['n_corridor']
+  cloud_with_fake_obj.jsonl row 1: differs in ['n_corridor']
+  cloud_with_fake_obj.jsonl row 2: differs in ['n_corridor']
+cloud_with_fake_obj.jsonl: 1510 rows, 1026 differ
+  doubleT_obstacle.jsonl row 4: differs in ['n_corridor']
+  doubleT_obstacle.jsonl row 5: differs in ['n_corridor']
+  doubleT_obstacle.jsonl row 6: differs in ['n_corridor']
+doubleT_obstacle.jsonl: 201 rows, 172 differ
+  doubleT_platform.jsonl row 13: differs in ['n_corridor']
+  doubleT_platform.jsonl row 22: differs in ['n_corridor']
+  doubleT_platform.jsonl row 24: differs in ['clear_distance', 'health', 'n_corridor']
+doubleT_platform.jsonl: 345 rows, 208 differ
+  new_data_0.jsonl row 69: differs in ['n_corridor']
+  new_data_0.jsonl row 80: differs in ['n_corridor']
+  new_data_0.jsonl row 81: differs in ['n_corridor']
+new_data_0.jsonl: 1409 rows, 865 differ
+  new_data_1.jsonl row 4: differs in ['n_corridor']
+  new_data_1.jsonl row 5: differs in ['n_corridor']
+  new_data_1.jsonl row 7: differs in ['n_corridor']
+new_data_1.jsonl: 1409 rows, 681 differ
+  new_data_2.jsonl row 0: differs in ['n_corridor']
+  new_data_2.jsonl row 2: differs in ['n_corridor']
+  new_data_2.jsonl row 18: differs in ['clear_distance', 'health']
+new_data_2.jsonl: 1409 rows, 938 differ
+  new_data_3.jsonl row 0: differs in ['n_corridor']
+  new_data_3.jsonl row 2: differs in ['n_corridor']
+  new_data_3.jsonl row 3: differs in ['n_candidates', 'n_corridor']
+new_data_3.jsonl: 1409 rows, 1066 differ
+  new_data_4.jsonl row 1: differs in ['n_corridor']
+  new_data_4.jsonl row 2: differs in ['n_corridor']
+  new_data_4.jsonl row 3: differs in ['n_corridor']
+new_data_4.jsonl: 1409 rows, 977 differ
+  new_data_5.jsonl row 0: differs in ['n_corridor']
+  new_data_5.jsonl row 2: differs in ['n_corridor']
+  new_data_5.jsonl row 68: differs in ['n_corridor']
+new_data_5.jsonl: 1409 rows, 830 differ
+  new_data_6.jsonl row 4: differs in ['n_corridor']
+  new_data_6.jsonl row 10: differs in ['n_corridor']
+  new_data_6.jsonl row 13: differs in ['n_corridor']
+new_data_6.jsonl: 1409 rows, 884 differ
+  new_data_7.jsonl row 0: differs in ['n_corridor']
+  new_data_7.jsonl row 1: differs in ['n_corridor']
+  new_data_7.jsonl row 2: differs in ['n_corridor']
+new_data_7.jsonl: 1408 rows, 708 differ
+  roundT_doubleT.jsonl row 3: differs in ['n_corridor']
+  roundT_doubleT.jsonl row 6: differs in ['n_corridor']
+  roundT_doubleT.jsonl row 7: differs in ['n_corridor']
+roundT_doubleT.jsonl: 252 rows, 215 differ
+  roundT_pressureGate_roundT.jsonl row 1: differs in ['n_corridor']
+  roundT_pressureGate_roundT.jsonl row 2: differs in ['n_corridor']
+  roundT_pressureGate_roundT.jsonl row 3: differs in ['n_corridor']
+roundT_pressureGate_roundT.jsonl: 268 rows, 86 differ
+  roundT_squareT_pressureGate_squareT.jsonl row 0: differs in ['n_corridor']
+  roundT_squareT_pressureGate_squareT.jsonl row 1: differs in ['n_corridor']
+  roundT_squareT_pressureGate_squareT.jsonl row 2: differs in ['n_corridor']
+roundT_squareT_pressureGate_squareT.jsonl: 545 rows, 289 differ
+  squareT_platform_squareT_switch.jsonl row 0: differs in ['n_corridor']
+  squareT_platform_squareT_switch.jsonl row 1: differs in ['n_corridor']
+  squareT_platform_squareT_switch.jsonl row 2: differs in ['n_corridor']
+squareT_platform_squareT_switch.jsonl: 877 rows, 606 differ
+TOTAL 15269 rows, 9551 differ; by key {'n_corridor': 5944, 'detections': 530, 'n_candidates': 168, 'warnings': 4625, 'clear_distance': 328, 'health': 343, 'warning': 51, 'nearest_distance': 18, 'obstacle': 2, 'ego_speed_estimate': 44, 'ego_speed_confidence': 12} (level not compared on 3716 rows with a latency message)

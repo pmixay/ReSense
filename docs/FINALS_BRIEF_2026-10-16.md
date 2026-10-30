@@ -4,10 +4,12 @@
 > criteria (§2), the new requests (§3) and the cards N1–N4 (§4). The 16.10 analysis of each against the code, with the code
 > lines, is in [`archive/FINALS_BRIEF_history_2026-10-19.md`](archive/FINALS_BRIEF_history_2026-10-19.md).
 > **Audience:** P1 (to distribute), P2 (RViz, visuals), P3, P4 · **Owner:** P1 · **Language:** EN, the message in RU
-> **Last verified:** 2026-10-19 (evening): §2–§4 against [`BACKLOG.md`](BACKLOG.md) §9b and "Current plan" and the evidence of
+> **Last verified:** 2026-10-23, version-state pass: only the version statements were checked, against the git tags `v1.0.0`, `v1.2.0` (`git ls-remote --tags origin`; no `v1.3.0`) and the version fact sheet; §2–§4 are still the 19.10 state (see the note under the Status line). 2026-10-19 (evening): §2–§4 against [`BACKLOG.md`](BACKLOG.md) §9b and "Current plan" and the evidence of
 > 18–19.10; §1 is the message as relayed on 16.10 (unchanged).
 > **Status:** current state per criterion and card in §2–§4 (N1 and N4 done locally; N2 measured and complete; N3 measured,
 > acceptance fails, the guard is off; gauge stability and curves: K1/K2 switched on, numbers pending)
+
+> **Version note (23.10).** The "state on 19.10" columns describe the tree of 19.10, not the current release. Since then `v1.2.0` was published (20.10, the current published release; the team reports the jury reviewed it, no jury score is in the repository), K1 was left **off** in 1.2.0 (not on, as row 3 below says; `DECISIONS.md` rows 44 and 48), and the release image exists. 1.3.0 is an unreleased, untagged candidate. "Judge method, v1.0.0" and "judge 13.10 (v1.0.0)" below are measurements of v1.0.0 only.
 
 ## 1. The message (verbatim, as relayed by the team)
 
@@ -60,7 +62,7 @@ criteria"). In short:
 | 6 | real time at 10 Hz | 120° real-time with margin; 360° p95 106–119 ms on 4 vCPU; Falcon decode+detect ~17–21 ms | S2, S5 |
 | 7 | "the filter" | not defined; the question is sent and **unanswered** ([`QUESTIONS.md`](QUESTIONS.md)) | wait |
 | 8 | extra features | N1 box, N4 interactive launch, Falcon profiles, web prototype, N5 labels | PT1 |
-| 9 | ease of launch | N4 done locally; no published 1.2.0 image (CI red) | E1 |
+| 9 | ease of launch | N4 done locally; no published 1.2.0 image on 19.10 (CI red; the `v1.2.0` image was published 20.10) | E1 |
 
 ## 3. The new requests: state on 19.10
 
@@ -82,7 +84,7 @@ Format and roles as in [`BACKLOG.md`](BACKLOG.md) §1; the full text of N1–N4 
   ring-free orientation (L16/S3) is done by P3, on, P4 review pending.
 * **N3 · Dust / suspension** — measurement complete, robustness acceptance FAILS, guard off; the re-check of the organizers' dust
   on the final configuration is P0 in "Current plan".
-* **N4 · Interactive launch: pause, slow, switch bags, graphics** — done locally 18.10 (P1, no seal); the release image waits for CI.
+* **N4 · Interactive launch: pause, slow, switch bags, graphics** — done locally 18.10 (P1, no seal); the release image waited for CI on 19.10 (published 20.10 as `v1.2.0`).
 
 Order and the detector-side work: [`BACKLOG.md`](BACKLOG.md) "Current plan", with the [survey's](COMPETITOR_SURVEY_2026-10.md)
 shortlist attached to K2, F2 and H2.

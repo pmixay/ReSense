@@ -157,31 +157,35 @@ the live node's freshness and catch-up are **not** modelled (stale results are U
   raw points ([`pictures/person_cold_run_objects.png`](pictures/person_cold_run_objects.png): two clusters, the person and the 105.6 m structure, one detection).
   There is no ground truth; this is an attribution aid.
 
-## 7. ROS 2 check: UNVERIFIED
+## 7. ROS 2 check: VERIFIED on 21.10 (with one difference from section 6)
 
-`ros2` is not installed here and `docker info` fails (`dial unix /var/run/docker.sock: no such file`; `dockerd` exists but no daemon runs, and the
-repo's image `resense:*` is not present; building or pulling it needs Docker Hub and apt downloads, which this task did not allow). **So
-`ros2 bag info` and `ros2 bag play` were not run on this bag, and it is not claimed that they open it.** What was checked instead is in section 5
-(format and structure equal to the organizers' bag; an independent pure-Python rosbag2 reader opens it).
+Measured on 21.10 with the release-1.2.0 image built from `docker/Dockerfile` (`resense 1.2.0 ... native`), on the team's bridge server; full tables, raw logs and scripts:
+[`../falcon_ros_demo_2026-10-21/`](../falcon_ros_demo_2026-10-21/README.md). The bag was rebuilt with the section 4 command, `sha256sum -c BAG_SHA256SUMS` both OK.
 
-Commands for someone with the image (modelled on the CI steps "ROS 2 smoke test" and "the jury wrapper plays two bags"; `BAG` = the bag directory, `IMAGE` = the
-image tag, run from the repository root):
+| check | result |
+|---|---|
+| `ros2 bag info` | opens: sqlite3, 43.1008 s, 432 messages, `/iv_points` `PointCloud2` cdr |
+| `ros2 bag play` (`--rate 1.0 --delay 3 --read-ahead-queue-size 10 --disable-keyboard-controls`) into the node, `falcon_ros`, 7 trials (rate 1.0 and 0.5; `conservative` and `legacy` clear-range policy; repeats) | 432/432 frames processed, 0 dropped, 431 fresh (the first frame is the FAULT), result age from input arrival ~6 ms median, 33 ms max; node RSS peak 154 MB |
+| first line `profile=falcon_ros`, FAULT only on the first frame | every frame status carries `falcon_ros`; 1 FAULT (frame 2719) |
+| first STOP, rate 1.0 | frame **2916**, 130.48 m, 19.7 s of bag time = **23.2 s** after the player command (limit 30 s); the STOP the section 6 replay expects (frame 2950, 127.18 m) is also there, at 26.6 s |
+| first STOP, rate 0.5 | 42.9 s after the player command; frame 2950 at 49.7 s (the ~49 s of section 6); does not meet the 30 s rule, as stated |
+| against the section 6 cold replay | **24 of 432 decisions differ** (38 against the whole-recording record; section 6: 32); live 153 STOP vs 147 in the replay. Extra short STOPs at 2916-2919 and 2956-2957 are the person (all 57 live STOP frames up to 3033 are within 2.58 m of the person's line); the last STOP run starts at frame 3128, not 3108 |
+| repeatability | decision and distance sequences of all 7 trials are identical, also with the passive recorder's input subscription off |
+
+So the section 6 numbers were the replay's, not the live node's: for the pitch say "first STOP on the person at about 130 m, 20 s into the bag (23 s after the player command at rate 1.0)",
+not "127.18 m / 23.1 s". The cause of the difference to the replay was not investigated. Not verified: `scripts/play_bag.sh` itself (it sets a host sysctl; the same docker commands were run by `trial.sh`),
+RViz and the gauge box, a cold disk cache, other machines. Commands:
 
 ```bash
-BAG=/data/FALCON_DEMO_BAG IMAGE=resense:1.2.0-aec88d2
+BAG=/data/FALCON_DEMO_BAG IMAGE=resense:falcon-demo-1.3        # docker build -t $IMAGE -f docker/Dockerfile .
 (cd "$BAG" && sha256sum -c <repo>/docs/evidence/falcon_demo_bag_2026-10-20/BAG_SHA256SUMS)
 docker run --rm -v "$BAG":/data/bag:ro "$IMAGE" ros2 bag info /data/bag
-#   expect: Storage id: sqlite3 · Duration: about 43.1 s · Messages: 432 · Topic: /iv_points | sensor_msgs/msg/PointCloud2 | Count: 432 | cdr
-docker run --rm -v "$BAG":/data/bag:ro "$IMAGE" bash -lc \
-  "ros2 bag play /data/bag --rate 1.0 --delay 1 --read-ahead-queue-size 10 --disable-keyboard-controls"      # plays 43 s without error
-# one run through the node, headless, as the jury wrapper does (prints every decision change; one node, reset boundary, profile falcon_ros):
-IMAGE=$IMAGE PLAYER_USER=1000:1000 scripts/play_bag.sh --rate 1.0 --sensor-profile falcon_ros "$BAG" | tee out_falcon_demo.txt
-grep -q STOP out_falcon_demo.txt && grep 'profile=falcon_ros' out_falcon_demo.txt | head
+docs/evidence/falcon_ros_demo_2026-10-21/scripts/trial.sh r10 1.0 "$BAG" falcon_ros conservative "$IMAGE" /tmp/trials     # node + recorder + ros2 bag play, rate 1.0
+python3 docs/evidence/falcon_ros_demo_2026-10-21/scripts/analyze.py /tmp/trials/r10 docs/evidence/falcon_demo_bag_2026-10-20/out/coldstart.jsonl.xz
+# jury style, same node and player: IMAGE=$IMAGE PLAYER_USER=1000:1000 scripts/play_bag.sh --rate 1.0 --clear-range-policy conservative --sensor-profile falcon_ros "$BAG"
 ```
 
-Acceptance to record (PRESENTATION's "Falcon-бэг" paragraph): `ros2 bag info` opens it; one run through the node shows STOP on the person not later than 30 s
-from the start of playback; first line `profile=falcon_ros`; FAULT only on the first frame; record the first STOP and its distance (expect
-~127 m near 23 s of bag time, i.e. ~26 s after the player starts at `--rate 1.0`; a different value is a finding, not necessarily a failure).
+(Section 11's patch-ready text, written on 20.10, still says "not verified" and quotes 127.2 m / 23.1 s; update it from this section before it is applied.)
 
 ## 8. Where the bag is and how to move it
 

@@ -1,0 +1,183 @@
+{
+ "base": {
+  "frames_with_person": 2676,
+  "person_stop": 1379,
+  "person_warn_only": 134,
+  "decisions": {
+   "CAUTION": 1294,
+   "STOP": 1382
+  },
+  "go_with_person_inside_clear_and_monitored": 0,
+  "go_with_person_inside_monitored": 0,
+  "go_past_examples": [],
+  "go_past_x_range": null,
+  "first_person_stop": [
+   2950,
+   127.3
+  ]
+ },
+ "cand": {
+  "frames_with_person": 2676,
+  "person_stop": 1484,
+  "person_warn_only": 49,
+  "decisions": {
+   "GO": 931,
+   "CAUTION": 261,
+   "STOP": 1484
+  },
+  "go_with_person_inside_clear_and_monitored": 30,
+  "go_with_person_inside_monitored": 35,
+  "go_past_examples": [
+   [
+    2660,
+    162.3,
+    166.4,
+    166.4
+   ],
+   [
+    2692,
+    158.4,
+    159.0,
+    159.0
+   ],
+   [
+    2699,
+    157.5,
+    157.7,
+    157.7
+   ],
+   [
+    2700,
+    157.4,
+    157.6,
+    157.6
+   ],
+   [
+    2726,
+    154.2,
+    154.9,
+    154.9
+   ],
+   [
+    2737,
+    152.9,
+    157.9,
+    157.9
+   ],
+   [
+    2751,
+    151.1,
+    154.1,
+    159.5
+   ],
+   [
+    2752,
+    151.0,
+    154.7,
+    166.4
+   ],
+   [
+    2753,
+    150.9,
+    159.1,
+    159.1
+   ],
+   [
+    2754,
+    150.7,
+    159.1,
+    159.1
+   ],
+   [
+    2755,
+    150.6,
+    159.4,
+    159.4
+   ],
+   [
+    2756,
+    150.5,
+    167.0,
+    167.0
+   ]
+  ],
+  "go_past_x_range": [
+   138.6,
+   162.3
+  ],
+  "first_person_stop": [
+   2762,
+   149.7
+  ]
+ },
+ "c89": {
+  "frames_with_person": 2676,
+  "person_stop": 1388,
+  "person_warn_only": 138,
+  "decisions": {
+   "CAUTION": 622,
+   "GO": 666,
+   "STOP": 1388
+  },
+  "go_with_person_inside_clear_and_monitored": 7,
+  "go_with_person_inside_monitored": 15,
+  "go_past_examples": [
+   [
+    2692,
+    158.4,
+    158.4,
+    159.0
+   ],
+   [
+    2699,
+    157.5,
+    157.7,
+    157.7
+   ],
+   [
+    2700,
+    157.4,
+    157.6,
+    157.6
+   ],
+   [
+    2785,
+    146.8,
+    150.3,
+    159.4
+   ],
+   [
+    2798,
+    145.2,
+    167.0,
+    167.0
+   ],
+   [
+    2799,
+    145.0,
+    159.2,
+    159.2
+   ],
+   [
+    2806,
+    144.1,
+    167.0,
+    167.0
+   ]
+  ],
+  "go_past_x_range": [
+   144.1,
+   158.4
+  ],
+  "first_person_stop": [
+   2787,
+   146.5
+  ]
+ },
+ "transitions": {
+  "A_person_warn_or_stop__B_GO": [],
+  "A_person_stop__B_no_person_stop": [],
+  "A_person_warn_or_stop__B_neither": [],
+  "B_person_warn_or_stop__A_neither": 20
+ }
+}

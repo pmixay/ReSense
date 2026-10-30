@@ -1,0 +1,27 @@
+{
+ "union": true,
+ "new_data_piece2_0-899": {
+  "frames": 900,
+  "p50": 42.5,
+  "p95": 67.6,
+  "mean": 44.8
+ },
+ "roundT_doubleT": {
+  "frames": 252,
+  "p50": 54.7,
+  "p95": 94.2,
+  "mean": 60.6
+ },
+ "roundT_pressureGate_roundT": {
+  "frames": 268,
+  "p50": 46.1,
+  "p95": 68.5,
+  "mean": 48.4
+ },
+ "doubleT_obstacle": {
+  "frames": 201,
+  "p50": 72.5,
+  "p95": 115.5,
+  "mean": 78.0
+ }
+}

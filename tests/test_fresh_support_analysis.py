@@ -1,16 +1,16 @@
 """Reference and source fidelity when evaluating local parts outside the live detector."""
 from copy import deepcopy
 from dataclasses import asdict
-from pathlib import Path
 
 import numpy as np
 import pytest
 
 from resense.config import ClusterConfig, GaugeConfig
+from scripts.analyze_residual_events import CACHE
 from scripts.analyze_fresh_support import (decomposition, episode_count, exact_descriptor, negative_report, positive_report,
                                            runtime_support, validate_descriptor)
 
-DIRECT_CAPTURE_ROOT = Path("C:/Users/alikh/AppData/Local/Temp/opencode")
+DIRECT_CAPTURE_ROOT = CACHE
 
 
 def component():

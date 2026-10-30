@@ -714,7 +714,7 @@ def test_k2_variant_b_in_the_station_scene():
 
     cfg = DetectorConfig()
     cfg.track = replace(cfg.track, axis_joint_fit=True, axis_joint_range=False, axis_joint_min_curvature=1e-4,
-                        axis_joint_reach_cap=True)
+                        axis_joint_reach_cap=True, axis_joint_union=False)
     assert cfg.track.walls_min_far_support == 0.0
     end = box(82.9, 1.9, 2.2, 0.4, 1.25)
     res = last(end, cfg)

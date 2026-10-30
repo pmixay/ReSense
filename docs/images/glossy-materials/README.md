@@ -1,5 +1,7 @@
 # Glossy materials and frameless door transitions
 
+> **Superseded (22.10):** the saloon-wall interior shown here was replaced by the driver's cab on 21.10; current captures: [`../player-cab/`](../player-cab/README.md).
+
 Historical material pass. The latest interior/button correction is documented in
 [`../interior-restored/`](../interior-restored/).
 The current reference-led translucent door sequence is in

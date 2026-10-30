@@ -1,0 +1,15 @@
+{
+  "source": "31154690",
+  "profile": "pandar128",
+  "rate": 0.5,
+  "player_started_wall": 1792616596.6777177,
+  "player_ended_wall": 1792616641.0309463,
+  "node_returncode_during_playback": null,
+  "ros_domain_id": "173",
+  "screen": [
+    1920,
+    1080
+  ],
+  "fps": 15,
+  "software_gl": true
+}

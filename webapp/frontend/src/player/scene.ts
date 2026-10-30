@@ -116,9 +116,9 @@ export interface PipRect {
 }
 
 export interface PlayerSceneOptions {
-  /** Present the live view on the reference display's three-dimensional housing. */
+  /** Present the live view on the driver's cab windshield (screenDisplay.ts). */
   screenDisplay?: boolean;
-  /** Empty/error/selection states retain the same train wall without an active display. */
+  /** Empty/error/selection states keep the same cab without an active display. */
   wallOnly?: boolean;
   /** light single-frame view: smaller points, no train, no inset */
   preview?: boolean;
@@ -472,6 +472,12 @@ export class PlayerScene {
 
   setPointer(x: number, y: number): void {
     this.display?.setPointer(x, y);
+    this.opts.onInvalidate?.();
+  }
+
+  /** Instrument power of the modeled cab: 'off', 'on', or a boot started `elapsed` ms ago. */
+  setBoot(state: 'off' | 'on' | number): void {
+    this.display?.setBoot(state);
     this.opts.onInvalidate?.();
   }
 

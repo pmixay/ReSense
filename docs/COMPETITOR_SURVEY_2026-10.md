@@ -5,16 +5,17 @@
 > [`BACKLOG.md`](BACKLOG.md) card each idea belongs to. Per-repo detail:
 > [`evidence/competitors_2026-10/`](evidence/competitors_2026-10/README.md).
 > **Audience:** P3 (detector), P4 (evaluation), P1 · **Owner:** P1 · **Language:** EN
-> **Last verified:** 2026-10-16 against the sealed `resense/` of `main` (`3fdc879`, detector = `v1.0.0`): the four
+> **Last verified:** 2026-10-23, version-state pass: only the version labels were checked, against the git tags `v1.0.0`, `v1.2.0` (`git ls-remote --tags origin`; no `v1.3.0`) and the version fact sheet: "ours" figures in §1 are v1.0.0 (13.10, our own AI judge, not re-measured on the published v1.2.0 or the candidate 1.3.0), and "1.3.0" below is an unreleased, untagged candidate. 2026-10-22: the statements about our code (§2 table, the `beyond_axis`, `ego_veto`, `edge_margin_per_100m2`, `far_axis_both_sides`, `axis_disagree_range` and opinion-model facts, the `configs/experimental_*.yaml` and `robustness_battery.py` mentions) re-checked against the 1.3.0 tree (`f24d939`): the facts hold, three line references had moved and are corrected, the backlog-card references are corrected (see §3), and the "ours" figures in §1 are v1.0.0 measurements of 13.10, not re-measured on 1.3.0; the other repositories' contents are not re-checked. Earlier: 2026-10-16 against the sealed `resense/` of `main` (`3fdc879`, detector = `v1.0.0`): the four
 > "verified in our code" facts below were checked by the lead in the source; the rest is the agents' reading of
-> the other repositories, grepped against `resense/` but not run. **Status:** current; analysis only, nothing in
-> this document is measured on ReSense yet, and no detector file is changed.
+> the other repositories, grepped against `resense/` but not run. **Status:** current; analysis only. **Update 2026-10-22:** ideas 1, 3 (cheap form), 5 and 6 were screened on the sealed 1.3.0 candidate (unreleased) with the six organizer
+> recordings and set O, without the ride and without a detector change: none gives a clean gain, and the §3 expectation for idea 3 does not hold on our straight-track data
+> ([`evidence/competitor_screen_2026-10-22/`](evidence/competitor_screen_2026-10-22/README.md)). The sentences below that say nothing is measured date from 16.10.
 
 ## 1. Headline
 
 * **Nobody beats ReSense on what can be compared.** The best competitor false-alarm figure that could be read
   is about 5 `STOP` episodes per km on the 13 km ride (`ivanpabl/hakatanon_lidar`, by its own odometry; ours 2.1–2.5
-  per km, [`SCORECARD.md`](SCORECARD.md), [judgement 13.10](evidence/judgement_2026-10-13/README.md)); other
+  per km on v1.0.0, [`SCORECARD.md`](SCORECARD.md), [judgement 13.10](evidence/judgement_2026-10-13/README.md)); other
   figures: 15 episodes on the 2 287 empty frames (`KirpaDmitriy`, ours 12), 505 before its fix
   (`bryxosmmm/tunnel-guard`), 36 on 1 510 frames (`templeJJs`). Every "0 false alarms" claim is in-sample
   (per-recording maps, thresholds tuned on the same bags) and no repository ships result files to recount.
@@ -32,10 +33,10 @@
 
 | fact | where |
 |---|---|
-| beyond the trusted axis range a cluster is a hard `beyond_axis` demotion to `CAUTION` (no graded trust); the range is the last observed boundary bin + 15 m (+ 50 m straight) | `resense/clustering.py:349`, `resense/config.py:93-94` |
+| beyond the trusted axis range a cluster is a hard `beyond_axis` demotion to `CAUTION` (no graded trust); the range is the last observed boundary bin + 15 m (+ 50 m straight) | `resense/clustering.py:733-734` (`_advisory_reason`; also `resense/detector.py:950`, `:1031` for the K2 curve gauge), `resense/config.py:93-94` |
 | no turnout / branch concept, no behind-the-object (opacity) test, no along-track recurrence or collinearity test | `resense/clustering.py`, `tracking.py`, `track.py`, `gauge.py`, `lowobj.py` (grep) |
-| `ego_veto` needs at least 4 hits and 4 m of travel and a track beyond 25 m, so artefacts fragmenting into short tracks escape it | `resense/config.py:361-365` |
-| the second-opinion model sees track-level cluster statistics only, no frame-context features | `resense/opinion.py:28` |
+| `ego_veto` needs at least 4 hits and 4 m of travel and a track beyond 25 m, so artefacts fragmenting into short tracks escape it | `resense/config.py:437-441` |
+| the second-opinion model sees track-level cluster statistics only, no frame-context features | `resense/opinion.py:30` (`FEATURES`) |
 
 **Constraint from our own experiments** that every idea below must respect:
 [`EXPERIMENT_FAR_STRUCTURE.md`](EXPERIMENT_FAR_STRUCTURE.md) (28.09) found that most remaining false far targets are
@@ -47,7 +48,7 @@ never delete a component, and keep the "demote, never delete" rule.
 ## 3. Shortlist
 
 Ranked by convergence and fit to the weaknesses in [`BACKLOG.md`](BACKLOG.md) §3. "Card" = the existing backlog
-card the idea attaches to; nothing here needs a new card except where marked.
+card the idea attaches to; nothing here needs a new card except where marked. Since 22.10 the cards X1, X3 and H2 are closed and the K2 card no longer has a numbered task list; they are in [`archive/BACKLOG_history_2026-10-19.md`](archive/BACKLOG_history_2026-10-19.md), and "K2 task (1)" is the offline wall-vs-axis error study of the archived K2 card.
 
 | # | idea | sources (convergence) | targets | evidence in the source | risk and constraint | card |
 |---|---|---|---|---|---|---|

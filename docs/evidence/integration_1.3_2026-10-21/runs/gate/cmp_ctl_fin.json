@@ -1,0 +1,423 @@
+{
+ "cloud_with_fake_obj": {
+  "frames": 1510,
+  "stop_control": 450,
+  "stop_cand": 450,
+  "lost": [],
+  "new": [],
+  "runs_control": 8,
+  "runs_cand": 8,
+  "new_dets": {},
+  "control_warnings_there": {},
+  "frames_with_det_or_warn_difference": 0,
+  "caution_new": 0,
+  "caution_gone": 0
+ },
+ "doubleT_obstacle": {
+  "frames": 201,
+  "stop_control": 193,
+  "stop_cand": 193,
+  "lost": [],
+  "new": [],
+  "runs_control": 1,
+  "runs_cand": 1,
+  "new_dets": {},
+  "control_warnings_there": {},
+  "frames_with_det_or_warn_difference": 0,
+  "caution_new": 0,
+  "caution_gone": 0
+ },
+ "doubleT_platform": {
+  "frames": 345,
+  "stop_control": 0,
+  "stop_cand": 0,
+  "lost": [],
+  "new": [],
+  "runs_control": 0,
+  "runs_cand": 0,
+  "new_dets": {},
+  "control_warnings_there": {},
+  "frames_with_det_or_warn_difference": 0,
+  "caution_new": 0,
+  "caution_gone": 0
+ },
+ "new_data_0": {
+  "frames": 1409,
+  "stop_control": 12,
+  "stop_cand": 12,
+  "lost": [],
+  "new": [],
+  "runs_control": 3,
+  "runs_cand": 3,
+  "new_dets": {},
+  "control_warnings_there": {},
+  "frames_with_det_or_warn_difference": 1,
+  "caution_new": 0,
+  "caution_gone": 0
+ },
+ "new_data_1": {
+  "frames": 1409,
+  "stop_control": 12,
+  "stop_cand": 12,
+  "lost": [],
+  "new": [],
+  "runs_control": 3,
+  "runs_cand": 3,
+  "new_dets": {},
+  "control_warnings_there": {},
+  "frames_with_det_or_warn_difference": 0,
+  "caution_new": 0,
+  "caution_gone": 0
+ },
+ "new_data_2": {
+  "frames": 1409,
+  "stop_control": 2,
+  "stop_cand": 10,
+  "lost": [],
+  "new": [
+   1066,
+   1067,
+   1068,
+   1069,
+   1071,
+   1072,
+   1317,
+   1318
+  ],
+  "runs_control": 1,
+  "runs_cand": 4,
+  "new_dets": {
+   "1066": [
+    [
+     116.2,
+     -1.18,
+     [
+      116.2,
+      -2.4,
+      1.2
+     ],
+     "beyond_axis",
+     ""
+    ]
+   ],
+   "1067": [
+    [
+     114.0,
+     -1.18,
+     [
+      114.0,
+      -2.3,
+      1.7
+     ],
+     "beyond_axis",
+     ""
+    ]
+   ],
+   "1068": [
+    [
+     112.6,
+     -1.19,
+     [
+      112.6,
+      -2.5,
+      1.3
+     ],
+     "",
+     ""
+    ]
+   ],
+   "1069": [
+    [
+     110.8,
+     -1.19,
+     [
+      110.8,
+      -2.5,
+      1.4
+     ],
+     "",
+     ""
+    ]
+   ],
+   "1071": [
+    [
+     104.1,
+     -0.74,
+     [
+      107.2,
+      -2.4,
+      0.5
+     ],
+     "",
+     ""
+    ]
+   ],
+   "1072": [
+    [
+     102.3,
+     -0.74,
+     [
+      105.5,
+      -2.3,
+      0.1
+     ],
+     "",
+     ""
+    ]
+   ],
+   "1317": [
+    [
+     68.7,
+     -1.69,
+     [
+      70.9,
+      -2.4,
+      -1.3
+     ],
+     "",
+     ""
+    ]
+   ],
+   "1318": [
+    [
+     67.2,
+     -1.69,
+     [
+      69.4,
+      -2.3,
+      -1.3
+     ],
+     "",
+     ""
+    ]
+   ]
+  },
+  "control_warnings_there": {
+   "1066": [
+    [
+     86.7,
+     0.56,
+     "beyond_axis"
+    ],
+    [
+     116.2,
+     -1.18,
+     "beyond_axis"
+    ]
+   ],
+   "1067": [
+    [
+     84.8,
+     0.3,
+     "beyond_axis"
+    ],
+    [
+     114.2,
+     -1.18,
+     "beyond_axis"
+    ]
+   ],
+   "1068": [
+    [
+     83.0,
+     0.6,
+     "column"
+    ],
+    [
+     112.6,
+     -1.19,
+     ""
+    ]
+   ],
+   "1069": [
+    [
+     54.4,
+     1.3,
+     ""
+    ],
+    [
+     81.2,
+     0.43,
+     "beyond_axis"
+    ],
+    [
+     110.8,
+     -1.19,
+     ""
+    ]
+   ],
+   "1071": [
+    [
+     50.8,
+     1.36,
+     ""
+    ],
+    [
+     77.5,
+     0.78,
+     "column"
+    ]
+   ],
+   "1072": [
+    [
+     49.0,
+     1.35,
+     ""
+    ],
+    [
+     75.7,
+     0.64,
+     "beyond_axis"
+    ]
+   ],
+   "1317": [
+    [
+     106.4,
+     0.97,
+     ""
+    ],
+    [
+     112.3,
+     1.35,
+     "beyond_height_ref"
+    ]
+   ],
+   "1318": [
+    [
+     110.4,
+     1.35,
+     "beyond_height_ref"
+    ]
+   ]
+  },
+  "frames_with_det_or_warn_difference": 231,
+  "caution_new": 3,
+  "caution_gone": 0
+ },
+ "new_data_3": {
+  "frames": 1409,
+  "stop_control": 2,
+  "stop_cand": 2,
+  "lost": [],
+  "new": [],
+  "runs_control": 1,
+  "runs_cand": 1,
+  "new_dets": {},
+  "control_warnings_there": {},
+  "frames_with_det_or_warn_difference": 278,
+  "caution_new": 0,
+  "caution_gone": 0
+ },
+ "new_data_4": {
+  "frames": 1409,
+  "stop_control": 17,
+  "stop_cand": 17,
+  "lost": [],
+  "new": [],
+  "runs_control": 4,
+  "runs_cand": 4,
+  "new_dets": {},
+  "control_warnings_there": {},
+  "frames_with_det_or_warn_difference": 751,
+  "caution_new": 1,
+  "caution_gone": 0
+ },
+ "new_data_5": {
+  "frames": 1409,
+  "stop_control": 32,
+  "stop_cand": 32,
+  "lost": [],
+  "new": [],
+  "runs_control": 5,
+  "runs_cand": 5,
+  "new_dets": {},
+  "control_warnings_there": {},
+  "frames_with_det_or_warn_difference": 256,
+  "caution_new": 0,
+  "caution_gone": 2
+ },
+ "new_data_6": {
+  "frames": 1409,
+  "stop_control": 27,
+  "stop_cand": 27,
+  "lost": [],
+  "new": [],
+  "runs_control": 6,
+  "runs_cand": 6,
+  "new_dets": {},
+  "control_warnings_there": {},
+  "frames_with_det_or_warn_difference": 0,
+  "caution_new": 0,
+  "caution_gone": 0
+ },
+ "new_data_7": {
+  "frames": 1408,
+  "stop_control": 7,
+  "stop_cand": 7,
+  "lost": [],
+  "new": [],
+  "runs_control": 3,
+  "runs_cand": 3,
+  "new_dets": {},
+  "control_warnings_there": {},
+  "frames_with_det_or_warn_difference": 128,
+  "caution_new": 0,
+  "caution_gone": 0
+ },
+ "roundT_doubleT": {
+  "frames": 252,
+  "stop_control": 0,
+  "stop_cand": 0,
+  "lost": [],
+  "new": [],
+  "runs_control": 0,
+  "runs_cand": 0,
+  "new_dets": {},
+  "control_warnings_there": {},
+  "frames_with_det_or_warn_difference": 0,
+  "caution_new": 0,
+  "caution_gone": 0
+ },
+ "roundT_pressureGate_roundT": {
+  "frames": 268,
+  "stop_control": 0,
+  "stop_cand": 0,
+  "lost": [],
+  "new": [],
+  "runs_control": 0,
+  "runs_cand": 0,
+  "new_dets": {},
+  "control_warnings_there": {},
+  "frames_with_det_or_warn_difference": 0,
+  "caution_new": 0,
+  "caution_gone": 0
+ },
+ "roundT_squareT_pressureGate_squareT": {
+  "frames": 545,
+  "stop_control": 0,
+  "stop_cand": 0,
+  "lost": [],
+  "new": [],
+  "runs_control": 0,
+  "runs_cand": 0,
+  "new_dets": {},
+  "control_warnings_there": {},
+  "frames_with_det_or_warn_difference": 0,
+  "caution_new": 0,
+  "caution_gone": 0
+ },
+ "squareT_platform_squareT_switch": {
+  "frames": 877,
+  "stop_control": 37,
+  "stop_cand": 37,
+  "lost": [],
+  "new": [],
+  "runs_control": 11,
+  "runs_cand": 11,
+  "new_dets": {},
+  "control_warnings_there": {},
+  "frames_with_det_or_warn_difference": 0,
+  "caution_new": 0,
+  "caution_gone": 0
+ }
+}

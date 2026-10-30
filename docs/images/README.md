@@ -91,8 +91,10 @@ chart, events, the score against labels, a 3D preview and the downloads.
 «Быстрое подтверждение» (confirmation 0.5 → 0.3 s): aligned strips, distances, the best value per row
 and «Что изменилось».
 
-![Плеер: the cab view of demo_approach at frame 60 with the point cloud, the 2.1 × 3.0 m envelope, the obstacle at 70.0 m with a close-up and the HUD tiles](webapp-player.jpg)
+![Плеер: the driver's cab with demo_approach at frame 60 in the windshield: the point cloud, the 2.1 × 3.0 m envelope, the obstacle at 70.3 m with a close-up, and the open telemetry panels](webapp-player.jpg)
 
-**Плеер** (`/player/:id`): the fullscreen cab view: the frame's point cloud, the 2.1 × 3.0 m envelope
-along the fitted track, the obstacle with its distance and a close-up, tiles for the track scheme,
-the decision, the distance, latency and health, and the scrubber coloured by decision.
+**Плеер** (`/player/:id`): the driver's cab (recaptured 21.10 on a new 15 s `demo_approach`, 1600×1000,
+SwiftShader): the frame's point cloud in the windshield, the 2.1 × 3.0 m envelope along the fitted
+track, the obstacle with its distance and a close-up, the open telemetry (track scheme, decision,
+distance, latency and rate, health) and the scrubber coloured by decision. More captures of the cab,
+the walk into it and its boot: [`player-cab/`](player-cab/README.md).

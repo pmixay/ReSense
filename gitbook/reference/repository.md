@@ -29,7 +29,7 @@
 | [EVALUATION](https://github.com/pmixay/ReSense/blob/main/docs/EVALUATION.md) | протокол оценки и наборы данных |
 | [DATASET](https://github.com/pmixay/ReSense/blob/main/docs/DATASET.md), [SENSOR](https://github.com/pmixay/ReSense/blob/main/docs/SENSOR.md) | записи, форматы, Hesai Pandar128 |
 | [DECISIONS](https://github.com/pmixay/ReSense/blob/main/docs/DECISIONS.md), [RESEARCH](https://github.com/pmixay/ReSense/blob/main/docs/RESEARCH.md) | ключевые решения на одной странице; обзор литературы и рассмотренные подходы |
-| [DETECTOR_FREEZE](https://github.com/pmixay/ReSense/blob/main/docs/DETECTOR_FREEZE.md) | печать детектора (v1.0.0 — 29.09 ночь, `7464d80`; эталон кандидата 1.2.0 — 18.10, на 19.10 не проходит `verify` до перепечатки) и её проверка |
+| [DETECTOR_FREEZE](https://github.com/pmixay/ReSense/blob/main/docs/DETECTOR_FREEZE.md) | печать детектора (v1.0.0 — 29.09 ночь, `7464d80`; эталон 1.2.0 — перепечатка R3 20.10, `verify` проходит: 40 файлов) и её проверка |
 | [VM_GUIDE](https://github.com/pmixay/ReSense/blob/main/docs/VM_GUIDE.md) | пробный прогон на чистой машине, замеры производительности и репетиция без интернета на облачной ВМ |
 | [CHANGELOG](https://github.com/pmixay/ReSense/blob/main/CHANGELOG.md) | что изменилось — по версиям |
 | [webapp/README](https://github.com/pmixay/ReSense/blob/main/webapp/README.md), [webapp/API](https://github.com/pmixay/ReSense/blob/main/webapp/API.md) | веб-прототип: запуск, страницы, архитектура, тесты; HTTP-контракт бэкенда и фронтенда |

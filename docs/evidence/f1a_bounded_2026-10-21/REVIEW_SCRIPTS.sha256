@@ -1,0 +1,5 @@
+# review scripts used unchanged, from origin/claude/f1a-bounded-review-1.3 @ 15c3d0f, extracted to /home/user/review/docs/evidence/f1a_bounded_review_2026-10-21
+e6b70385370ded06cd806a6f299ae06c6ddf98f4f7f63889da1e5eddf45672fe  attack.py
+150d5e21d60232b462837e89d71d376c2afe65e01fbf742bb3977fefc53ce576  rc2.py
+f501e50b53121c770b36d2086f8b518419de05e2ef154d09e1293e8ce55aa22a  az_phase_measured.json
+63f30dd9d18140dd9ad4be57a0af5d832715a17eaf83f945575b401aa3cd4f08  cmp.py

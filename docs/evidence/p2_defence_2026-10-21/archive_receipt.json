@@ -1,0 +1,9 @@
+{
+  "path": "data/p2-defence/resense-p2-1.2.0-31154690.tar",
+  "sha256": "eb8190f73d0d544545da4a8fc12d9efe97cc2508c6bf04a090f05bbd00082693",
+  "bytes": 492529664,
+  "oci_manifest_digest": "sha256:2cfcbc693c278ed8aaf15da0104dcb202e03c60f3c788ce3260678903ee61006",
+  "config_digest": "sha256:e37697bc49b34290a5b06ca885bbfde3d6987cefe211fa14e2dafbef056705b1",
+  "verified_blobs": 40,
+  "second_device_load_verified": false
+}
